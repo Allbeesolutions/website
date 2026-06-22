@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Duplicate-content pages — index the canonical instead
+Disallow: /webpricing.html
+Disallow: /reels-growth.html
+
+Sitemap: https://allbeesolutions.com/sitemap.xml

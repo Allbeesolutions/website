@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en-IN" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>404 — Page Not Found | AllBee Solutions</title>
+<meta name="description" content="Oops — the page you're looking for doesn't exist. Explore AllBee Solutions IT courses, web development, and digital marketing services in Nagore, Tamil Nadu.">
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="404 — Page Not Found | AllBee Solutions">
+<meta property="og:description" content="The page you're looking for took an unscheduled break. Let's get you back on track.">
+<meta property="og:site_name" content="AllBee Solutions">
+<meta property="og:locale" content="en_IN">
+
+<!-- Icons & manifest -->
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=20260524b">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=20260524b">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260524b">
+<link rel="manifest" href="/site.webmanifest?v=20260524b">
+<meta name="theme-color" content="#0F7B6E">
+<meta name="msapplication-TileColor" content="#0F7B6E">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =================================================================
+   DESIGN TOKENS — AllBee Solutions
+================================================================= */
+:root{
+  --teal:#009B8B; --teal-l:#1FB3A1; --teal-d:#007A6D; --teal-gl:rgba(255,255,255,0.10);
+  --yellow:#F0B800; --yellow-d:#D99E00; --yellow-gl:rgba(240,184,0,0.14);
+  --ink:#073A33; --ink-2:#0A4A42; --muted:#0E5249; --faint:#2E6A60;
+  --s-0:#FFFFFF; --s-1:#FBF8F0; --s-2:#F5F0E0; --s-3:#E9F3F0; --s-4:#CCE5E0;
+  --border:rgba(255,255,255,0.16); --border-y:rgba(240,184,0,0.45); --border-strong:rgba(255,255,255,0.34);
+  --shadow-y:0 10px 34px rgba(240,184,0,0.30); --shadow-teal:0 14px 44px rgba(0,40,36,0.40);
+  --font-display:'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body:'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --nav-h:72px; --max-w:1300px;
+  --r-sm:8px; --r-lg:24px; --r-xl:32px;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --bounce:cubic-bezier(0.34,1.56,0.64,1);
+  --logo-mark:url('/logo.png?v=20260524b');
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--teal);
+  color:#fff;
+  line-height:1.6;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex; flex-direction:column; min-height:100vh;
+}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+.skip-link{
+  position:absolute; left:-9999px; top:0; z-index:2000;
+  background:var(--ink); color:#fff; padding:10px 18px; border-radius:var(--r-sm);
+}
+.skip-link:focus{left:12px; top:12px}
+
+:focus-visible{outline:2px solid var(--yellow); outline-offset:3px; border-radius:4px}
+
+/* =================================================================
+   NAVBAR
+================================================================= */
+#navbar{
+  position:fixed; top:0; left:0; right:0; height:var(--nav-h);
+  z-index:1000;
+  background:rgba(0,120,108,0.78);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:1px solid rgba(255,255,255,0.14);
+  transition:background 0.3s ease, box-shadow 0.3s ease;
+}
+#navbar.scrolled{
+  background:rgba(0,104,93,0.93);
+  box-shadow:0 4px 24px rgba(0,0,0,0.18);
+}
+.nav-inner{
+  max-width:var(--max-w); margin:0 auto; padding:0 32px;
+  height:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.logo-mark{
+  display:block; flex:none;
+  background:#fff var(--logo-mark) center/82% no-repeat;
+  border-radius:8px;
+  border:1px solid var(--border);
+}
+.nav-logo .logo-mark{
+  height:44px; width:44px;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.28));
+  transition:filter 0.3s ease, transform 0.3s ease;
+}
+.nav-logo:hover .logo-mark{
+  filter:drop-shadow(0 0 18px rgba(240,184,0,0.55));
+  transform:scale(1.05);
+}
+.nav-logo-text{display:flex;flex-direction:column}
+.nav-logo-text strong{
+  font-family:var(--font-display); font-size:16px; font-weight:800;
+  color:#fff; letter-spacing:0.3px; line-height:1.1;
+}
+.nav-logo-text span{
+  font-size:9px; color:var(--yellow); font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase;
+}
+.nav-links{display:flex; align-items:center; gap:4px; list-style:none}
+.nav-links a{
+  padding:8px 14px; border-radius:10px;
+  font-size:13.5px; font-weight:600; color:rgba(255,255,255,0.85);
+  text-decoration:none; transition:color 0.2s, background 0.2s;
+  position:relative; white-space:nowrap;
+}
+.nav-links a:hover{color:#fff; background:rgba(255,255,255,0.12)}
+.nav-cta-btn{
+  padding:10px 22px; border-radius:100px; border:none; cursor:pointer;
+  font-family:var(--font-body); font-size:13px; font-weight:700;
+  background:var(--yellow); color:var(--ink);
+  text-decoration:none;
+  box-shadow:0 4px 18px rgba(240,184,0,0.40);
+  transition:transform 0.3s var(--bounce), box-shadow 0.3s ease, background 0.3s ease;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.nav-cta-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(240,184,0,0.55);
+  background:#FFC81F;
+}
+.nav-cta-btn:active{transform:translateY(0)}
+.hamburger{
+  display:none; flex-direction:column; gap:5px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:var(--r-sm);
+  cursor:pointer; padding:9px 10px;
+  transition:background 0.2s ease;
+}
+.hamburger:hover{background:rgba(255,255,255,0.2)}
+.hamburger span{
+  width:20px; height:2px; background:#fff;
+  border-radius:2px; transition:transform 0.3s ease, opacity 0.3s ease;
+}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile menu */
+.mobile-menu{
+  display:none;
+  position:fixed; top:var(--nav-h); left:0; right:0;
+  background:rgba(0,116,104,0.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.14);
+  padding:16px 24px 24px; z-index:999;
+  box-shadow:0 12px 32px rgba(0,0,0,0.28);
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:block; padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  font-size:15px; font-weight:600; color:#fff;
+  text-decoration:none; transition:color 0.2s ease;
+}
+.mobile-menu a:hover, .mobile-menu a:focus-visible{color:var(--yellow)}
+.mobile-cta{
+  margin-top:16px; padding:14px !important;
+  background:var(--yellow); color:var(--ink) !important;
+  border-radius:var(--r-sm);
+  text-align:center; font-weight:700; border:none !important;
+}
+
+/* =================================================================
+   404 HERO
+================================================================= */
+main{flex:1; display:flex; flex-direction:column}
+.nf{
+  position:relative; flex:1;
+  padding:calc(var(--nav-h) + 70px) 24px 90px;
+  display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(120% 90% at 84% 2%, #12AA98 0%, rgba(0,155,139,0) 46%),
+    radial-gradient(110% 80% at 6% 100%, #00897A 0%, rgba(0,155,139,0) 50%),
+    var(--teal);
+  color:#fff;
+  overflow:hidden;
+}
+/* dot-grid texture */
+.nf::before{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    repeating-radial-gradient(circle at 95% 3%, transparent 0 66px, rgba(255,255,255,.06) 66px 68px),
+    repeating-radial-gradient(circle at 4% 99%, transparent 0 66px, rgba(255,255,255,.055) 66px 68px);
+}
+/* floating brand blobs */
+.nf-blob{position:absolute; border-radius:50%; filter:blur(60px); z-index:0; pointer-events:none}
+.nf-blob.b1{width:380px;height:380px; top:-110px; right:4%; background:rgba(240,184,0,0.16); animation:floatA 14s var(--ease) infinite}
+.nf-blob.b2{width:440px;height:440px; bottom:-150px; left:-70px; background:rgba(255,255,255,0.08); animation:floatB 18s var(--ease) infinite}
+@keyframes floatA{0%,100%{transform:translate(0,0)}50%{transform:translate(-26px,24px)}}
+@keyframes floatB{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-22px)}}
+
+.nf-inner{
+  position:relative; z-index:2;
+  max-width:760px; width:100%; text-align:center;
+}
+
+.nf-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 16px; border-radius:100px;
+  background:rgba(0,0,0,0.18);
+  border:1px solid rgba(240,184,0,0.5);
+  font-size:11px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase;
+  color:#FFD24A; margin-bottom:26px;
+  animation:rise .7s var(--ease) both;
+}
+.nf-dot{
+  width:7px; height:7px; border-radius:50%; background:var(--yellow);
+  box-shadow:0 0 12px rgba(240,184,0,0.9);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+
+.nf-404{
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(120px, 26vw, 250px);
+  line-height:.86; letter-spacing:-4px;
+  background:linear-gradient(180deg, #FFFFFF 0%, #FFE7A6 52%, #F0B800 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 16px 36px rgba(0,0,0,0.28)) drop-shadow(0 0 28px rgba(240,184,0,0.35));
+  animation:rise .8s var(--ease) both, floaty 6s ease-in-out 1s infinite;
+}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.nf-cap{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:60px; height:60px; margin:0 auto 6px; color:var(--teal);
+  background:#fff; border:1px solid rgba(255,255,255,0.6); border-radius:16px;
+  box-shadow:0 14px 40px rgba(0,0,0,0.30), 0 0 0 6px rgba(255,255,255,0.06);
+  transform:rotate(-7deg);
+  animation:rise .7s var(--ease) .05s both, tassel 5s ease-in-out infinite;
+}
+@keyframes tassel{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(4deg)}}
+.nf-cap-mark{width:38px; height:38px; background:var(--logo-mark) center/contain no-repeat}
+
+.nf-title{
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(26px, 4.4vw, 40px); line-height:1.15;
+  color:#fff; margin:8px 0 14px;
+  animation:rise .8s var(--ease) .12s both;
+}
+.nf-title em{font-style:italic; color:var(--yellow)}
+.nf-sub{
+  font-size:clamp(15px, 1.5vw, 17.5px); color:rgba(255,255,255,0.85);
+  line-height:1.7; max-width:520px; margin:0 auto 34px;
+  animation:rise .8s var(--ease) .2s both;
+}
+
+.nf-cta{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+  margin-bottom:54px;
+  animation:rise .8s var(--ease) .28s both;
+}
+.btn{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:15px 30px; border-radius:100px;
+  font-family:var(--font-body); font-size:14.5px; font-weight:700;
+  text-decoration:none; cursor:pointer; border:1px solid transparent;
+  transition:transform 0.3s var(--bounce), box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.btn svg{width:17px;height:17px}
+.btn-primary{
+  background:linear-gradient(180deg, #FFD23E 0%, #F0B800 100%);
+  color:var(--ink); border-color:rgba(255,255,255,0.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 30px rgba(240,184,0,0.45);
+}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,0.5), 0 14px 38px rgba(240,184,0,0.6)}
+.btn-ghost{
+  background:rgba(255,255,255,0.10); color:#fff;
+  border-color:rgba(255,255,255,0.35);
+  backdrop-filter:blur(6px);
+}
+.btn-ghost:hover{transform:translateY(-2px); border-color:var(--yellow); color:#FFE08A; background:rgba(240,184,0,0.14)}
+
+/* Popular destinations */
+.nf-explore-label{
+  font-size:11px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase;
+  color:rgba(255,255,255,0.65); margin-bottom:18px;
+  animation:rise .8s var(--ease) .34s both;
+}
+.nf-chips{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+  max-width:640px; margin:0 auto;
+  animation:rise .8s var(--ease) .4s both;
+}
+.nf-chip{
+  display:flex; align-items:center; gap:11px; text-align:left;
+  padding:15px 16px; border-radius:16px;
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.18);
+  text-decoration:none; color:#fff;
+  backdrop-filter:blur(6px);
+  transition:transform .3s var(--ease), border-color .3s ease, box-shadow .3s ease, background .3s ease;
+}
+.nf-chip:hover{
+  transform:translateY(-4px); background:rgba(255,255,255,0.16);
+  border-color:rgba(240,184,0,0.6);
+  box-shadow:0 14px 40px rgba(0,0,0,0.28);
+}
+.nf-chip .ic{
+  flex:none; width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(240,184,0,0.18); color:var(--yellow);
+  transition:background .3s ease, color .3s ease;
+}
+.nf-chip:hover .ic{background:var(--yellow); color:var(--ink)}
+.nf-chip .ic svg{width:19px;height:19px}
+.nf-chip b{display:block; font-size:14px; font-weight:700; line-height:1.2}
+.nf-chip span{display:block; font-size:11.5px; color:rgba(255,255,255,0.72); margin-top:2px}
+
+/* help line */
+.nf-help{
+  margin-top:40px; font-size:13.5px; color:rgba(255,255,255,0.82);
+  animation:rise .8s var(--ease) .46s both;
+}
+.nf-help a{
+  color:#FFD24A; font-weight:700; text-decoration:none;
+  border-bottom:1px solid transparent; transition:border-color .2s ease;
+}
+.nf-help a:hover{border-bottom-color:var(--yellow)}
+
+@keyframes rise{from{opacity:0; transform:translateY(22px)}to{opacity:1; transform:translateY(0)}}
+
+/* =================================================================
+   FOOTER
+================================================================= */
+footer{
+  background:var(--yellow);
+  border-top:none;
+  padding:60px 0 28px;
+}
+.section-container{max-width:var(--max-w); margin:0 auto; padding:0 32px}
+.footer-grid{
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:44px; margin-bottom:44px;
+}
+.footer-logo-row{display:flex; align-items:center; gap:12px; margin-bottom:18px}
+.footer-logo-row .logo-mark{
+  height:44px; width:44px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,0.20));
+}
+.footer-logo-text strong{
+  font-family:var(--font-display); font-size:16px;
+  color:var(--ink); display:block; line-height:1.1;
+}
+.footer-logo-text span{
+  font-size:10px; color:#0C5048; font-weight:800;
+  letter-spacing:1.5px; text-transform:uppercase;
+}
+.footer-tagline{
+  font-size:13.5px; color:#0C463F; line-height:1.75;
+  max-width:300px; margin-bottom:22px;
+}
+.footer-social{display:flex; gap:10px}
+.footer-social a{
+  width:38px; height:38px; border-radius:10px;
+  background:rgba(7,58,51,0.06); border:1px solid rgba(7,58,51,0.20);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--ink); text-decoration:none;
+  transition:background 0.3s ease, color 0.3s ease, transform 0.3s ease, border-color .3s ease;
+}
+.footer-social a svg{width:18px;height:18px}
+.footer-social a:hover{background:var(--ink); color:var(--yellow); border-color:var(--ink); transform:translateY(-3px)}
+.footer-col-title{
+  font-family:var(--font-display); font-size:13px; font-weight:800;
+  color:var(--ink); margin-bottom:16px; letter-spacing:0.4px;
+}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:10px}
+.footer-links a{
+  font-size:13px; color:#0C463F; text-decoration:none; font-weight:600;
+  transition:color 0.2s ease, padding-left 0.2s ease; display:inline-block;
+}
+.footer-links a:hover{color:var(--ink); padding-left:5px}
+.footer-bottom{
+  padding-top:24px; border-top:1px solid rgba(7,58,51,0.20);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:12px;
+}
+.footer-copy{font-size:12px; color:#0C463F}
+.footer-copy a{color:var(--ink); text-decoration:none; font-weight:700}
+.footer-legal{display:flex; gap:18px; font-size:12px}
+.footer-legal a{color:#0C463F; text-decoration:none; font-weight:600; transition:color 0.2s ease}
+.footer-legal a:hover{color:var(--ink)}
+
+/* =================================================================
+   RESPONSIVE
+================================================================= */
+@media (max-width:1100px){
+  .nav-links{gap:0}
+  .nav-links a{padding:8px 10px; font-size:12.5px}
+}
+@media (max-width:768px){
+  .nav-links, .nav-cta-btn{display:none}
+  .hamburger{display:flex}
+  .nav-logo-text strong{font-size:14px}
+  .nav-logo-text span{font-size:8px}
+  .section-container, .nav-inner{padding:0 20px}
+  .nf{padding:calc(var(--nav-h) + 44px) 20px 70px}
+  .nf-chips{grid-template-columns:1fr; max-width:360px}
+  .footer-grid{grid-template-columns:1fr; gap:28px}
+  .footer-bottom{flex-direction:column; text-align:center}
+  .btn{flex:1 1 auto; justify-content:center}
+}
+@media (max-width:480px){
+  .nf-cta{flex-direction:column}
+  .btn{width:100%}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms!important; animation-iteration-count:1!important;
+    transition-duration:0.01ms!important; scroll-behavior:auto!important;
+  }
+}
+
+/* =================================================================
+   GOLD PARTICLES — nav hover (falling) + footer social (burst)
+================================================================= */
+#navbar .nav-links a, #navbar .nav-cta-btn{ position:relative; overflow:visible; }
+.nav-spark{
+  position:absolute; left:var(--x,50%); top:100%;
+  width:4px; height:4px; border-radius:50%;
+  background:radial-gradient(circle, #FFE9A8 0%, #F0B800 45%, transparent 75%);
+  box-shadow:0 0 6px #FFE08A, 0 0 14px rgba(240,184,0,0.85);
+  pointer-events:none; transform:translate(-50%,0);
+  animation:navSparkFall var(--d,1.4s) cubic-bezier(0.35,0,0.85,0.95) forwards;
+  z-index:9999; will-change:transform,opacity;
+}
+@keyframes navSparkFall{
+  0%{ transform:translate(calc(-50% + 0px), -2px) scale(0.5); opacity:0; }
+  12%{ opacity:1; }
+  60%{ opacity:1; }
+  100%{ transform:translate(calc(-50% + var(--dx,0px)), var(--dy,64px)) scale(0.25); opacity:0; }
+}
+.footer-social a{ position:relative; overflow:visible; }
+.footer-social a:hover svg{
+  filter:drop-shadow(0 0 8px rgba(7,58,51,0.35));
+  transition:color .25s, filter .25s;
+}
+/* warm-white-gold so sparks stay visible against the gold footer */
+.foot-spark{
+  position:absolute; left:50%; top:50%;
+  width:5px; height:5px; border-radius:50%;
+  background:radial-gradient(circle, #FFFFFF 0%, #FFE08A 45%, transparent 72%);
+  box-shadow:0 0 6px #FFFFFF, 0 0 14px rgba(255,236,170,0.9);
+  pointer-events:none; transform:translate(-50%,-50%);
+  animation:footSparkBurn 0.9s cubic-bezier(0.22,0.7,0.34,1) forwards;
+  z-index:5; will-change:transform,opacity;
+}
+@keyframes footSparkBurn{
+  0%{ transform:translate(calc(-50% + 0px), -50%) scale(0.4); opacity:0; }
+  15%{ opacity:1; }
+  100%{ transform:translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,-60px))) scale(0.3); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){ .nav-spark, .foot-spark{ display:none; } }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-grad-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.7 2.7-2-2z"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+  <symbol id="i-youtube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.464 3.488"/></symbol>
+</svg>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+<nav id="navbar" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="AllBee Solutions — home">
+      <span class="logo-mark" role="img" aria-label="AllBee Solutions logo"></span>
+      <div class="nav-logo-text">
+        <strong>AllBee Solutions</strong>
+        <span>IT Training &amp; Digital Agency</span>
+      </div>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="/">Home</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/courses">Courses</a></li>
+      <li><a href="/webdevelopment">Web Development</a></li>
+      <li><a href="/digitalmarketing">Digital Marketing</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta-btn" href="/contact">
+      <svg width="14" height="14" aria-hidden="true"><use href="#i-grad-cap"/></svg>
+      Free Counseling
+    </a>
+    <button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
+  <a href="/">Home</a>
+  <a href="/services">Services</a>
+  <a href="/courses">Courses</a>
+  <a href="/webdevelopment">Web Development</a>
+  <a href="/digitalmarketing">Digital Marketing</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+  <a href="/contact" class="mobile-cta">Free Counseling</a>
+</div>
+</header>
+
+<!-- ================= 404 ================= -->
+<main id="main">
+<section class="nf" aria-labelledby="nf-title">
+  <span class="nf-blob b1" aria-hidden="true"></span>
+  <span class="nf-blob b2" aria-hidden="true"></span>
+
+  <div class="nf-inner">
+    <span class="nf-eyebrow">
+      <span class="nf-dot" aria-hidden="true"></span>
+      Error 404 · Page Not Found
+    </span>
+
+    <div class="nf-cap" aria-hidden="true"><span class="nf-cap-mark"></span></div>
+
+    <div class="nf-404" aria-hidden="true">404</div>
+
+    <h1 id="nf-title" class="nf-title">This page didn't make the <em>syllabus</em>.</h1>
+    <p class="nf-sub">The link you followed may be broken, or the page may have moved or been renamed. Don't worry — let's get you back on track and learning.</p>
+
+    <div class="nf-cta">
+      <a href="/" class="btn btn-primary">
+        <svg aria-hidden="true"><use href="#i-home"/></svg>
+        Back to Home
+      </a>
+      <a href="/courses" class="btn btn-ghost">
+        <svg aria-hidden="true"><use href="#i-grad-cap"/></svg>
+        Browse Courses
+      </a>
+    </div>
+
+    <div class="nf-explore-label">Or jump to a popular page</div>
+    <div class="nf-chips">
+      <a class="nf-chip" href="/courses">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-grad-cap"/></svg></span>
+        <span><b>Courses</b><span>Python, AWS, Photoshop &amp; more</span></span>
+      </a>
+      <a class="nf-chip" href="/webdevelopment">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-code"/></svg></span>
+        <span><b>Web Development</b><span>Websites &amp; pricing plans</span></span>
+      </a>
+      <a class="nf-chip" href="/services">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-wrench"/></svg></span>
+        <span><b>Services</b><span>SEO, design &amp; more</span></span>
+      </a>
+      <a class="nf-chip" href="/digitalmarketing">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-megaphone"/></svg></span>
+        <span><b>Digital Marketing</b><span>Reels &amp; social growth</span></span>
+      </a>
+      <a class="nf-chip" href="/about">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-users"/></svg></span>
+        <span><b>About Us</b><span>Who we are</span></span>
+      </a>
+      <a class="nf-chip" href="/contact">
+        <span class="ic"><svg aria-hidden="true"><use href="#i-message"/></svg></span>
+        <span><b>Contact</b><span>Talk to our team</span></span>
+      </a>
+    </div>
+
+    <p class="nf-help">
+      Still stuck? Call us at <a href="tel:+918903607506">+91 89036 07506</a>
+      or <a href="https://wa.me/918903607506" target="_blank" rel="noopener">message on WhatsApp</a>.
+    </p>
+  </div>
+</section>
+</main>
+
+<!-- ===================== AllBee — "Ignite" fire band (404) ===================== -->
+<style id="abfire-styles">
+.abfire{position:relative;overflow:hidden;min-height:clamp(280px,32vw,380px);
+  display:flex;align-items:center;justify-content:center;isolation:isolate;
+  background:
+    radial-gradient(120% 82% at 50% 120%, rgba(80,40,4,.9) 0%, rgba(22,11,6,0) 52%),
+    linear-gradient(180deg,#009B8B 0%, #04857A 8%, #045049 19%, #0a2723 32%, #0b100e 54%, #1c1206 72%, #5e4403 90%, #F0B800 100%);}
+.abfire-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block}
+.abfire-vig{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(80% 120% at 50% 100%, transparent 42%, rgba(8,12,11,.55) 100%);}
+.abfire-inner{position:relative;z-index:4;text-align:center;padding:0 24px;transform:translateY(-6%);pointer-events:none}
+.abfire-eyebrow{display:inline-flex;align-items:center;gap:9px;margin:0 0 16px;
+  font-family:'Lato',system-ui,sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:#FFCF6A;text-shadow:0 0 18px rgba(240,150,30,.6)}
+.abfire-eyebrow i{width:7px;height:7px;border-radius:50%;background:#FFB23E;font-style:normal;flex:none;
+  box-shadow:0 0 14px 3px rgba(255,150,40,.9);animation:abFlick 1.4s ease-in-out infinite}
+@keyframes abFlick{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.35)}}
+.abfire-title{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:800;
+  font-size:clamp(30px,5.4vw,58px);line-height:1.05;color:#FFF6E6;letter-spacing:.5px;
+  text-shadow:0 1px 0 #FFE6A8,0 0 26px rgba(255,170,50,.55),0 0 60px rgba(230,110,12,.45);
+  animation:abHeat 2.6s ease-in-out infinite}
+.abfire-title em{font-style:italic;background:linear-gradient(180deg,#FFE9A8 0%,#FFB23E 45%,#F0760C 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(255,150,40,.7))}
+@keyframes abHeat{0%,100%{text-shadow:0 1px 0 #FFE6A8,0 0 24px rgba(255,170,50,.5),0 0 56px rgba(230,110,12,.4)}
+  50%{text-shadow:0 1px 0 #FFEFC0,0 0 34px rgba(255,190,70,.7),0 0 78px rgba(240,120,20,.55)}}
+.abfire-sub{margin:14px 0 0;font-family:'Lato',system-ui,sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,221,160,.85);text-shadow:0 0 16px rgba(220,120,20,.5)}
+@media(prefers-reduced-motion:reduce){.abfire-eyebrow i,.abfire-title{animation:none}}
+</style>
+
+<section class="abfire" aria-label="AllBee Solutions — ignite your future">
+  <canvas class="abfire-canvas" id="abFireCanvas" aria-hidden="true"></canvas>
+  <div class="abfire-vig" aria-hidden="true"></div>
+  <div class="abfire-inner">
+    <div class="abfire-eyebrow"><i></i>Est. 2025 &middot; Nagore, Tamil Nadu</div>
+    <h2 class="abfire-title">Where Careers <em>Catch&nbsp;Fire</em></h2>
+    <div class="abfire-sub">AllBee Solutions</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var cv=document.getElementById('abFireCanvas'); if(!cv||!cv.getContext) return;
+  var ctx=cv.getContext('2d'); var DPR=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0,running=false,raf=0;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var palette=[[255,236,170],[255,201,92],[250,162,36],[238,118,20],[198,68,10],[120,32,5]];
+  function sprite(c,soft){var s=64,off=document.createElement('canvas');off.width=off.height=s;
+    var o=off.getContext('2d');var g=o.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+    g.addColorStop(0,'rgba('+c[0]+','+c[1]+','+c[2]+',1)');
+    g.addColorStop(soft?.35:.4,'rgba('+c[0]+','+c[1]+','+c[2]+',.4)');
+    g.addColorStop(1,'rgba('+c[0]+','+c[1]+','+c[2]+',0)');o.fillStyle=g;o.fillRect(0,0,s,s);return off;}
+  var sprites=palette.map(function(c){return sprite(c,false);});
+  var coreSprite=sprite([255,247,224],true);
+
+  var body=[],licks=[],embers=[];
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function resize(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;
+    cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);}
+  window.addEventListener('resize',resize);resize();
+
+  function spawnBody(){body.push({x:rnd(-30,W+30),y:H+rnd(0,18),vx:rnd(-.2,.2),vy:-rnd(1.2,2.4),
+    life:0,max:rnd(60,108),size:rnd(34,68),wob:rnd(0,6.28),wsp:rnd(.015,.045)});}
+  function spawnLick(){licks.push({x:rnd(0,W),y:H+rnd(-4,8),vx:rnd(-.35,.35),vy:-rnd(3.2,5.2),
+    life:0,max:rnd(46,82),size:rnd(14,30),wob:rnd(0,6.28),wsp:rnd(.05,.11),curl:rnd(-.05,.05)});}
+  function spawnEmber(){embers.push({x:rnd(0,W),y:H-rnd(0,40),vx:rnd(-.5,.5),vy:-rnd(1.8,4.2),
+    life:0,max:rnd(90,200),r:rnd(.7,2.2),tw:rnd(0,6.28)});}
+
+  function drawSet(arr,bm){for(var i=arr.length-1;i>=0;i--){var p=arr[i];p.life++;
+    if(p.life>=p.max){arr.splice(i,1);continue;}var t=p.life/p.max;
+    p.vy*=0.987;p.vy-=bm?0.012:0.02;p.wob+=p.wsp;
+    p.x+=p.vx+Math.sin(p.wob)*(bm?0.5:0.9)+(p.curl?p.curl*p.life*0.04:0);p.y+=p.vy;
+    var idx=Math.min(palette.length-1,Math.floor(t*palette.length));
+    var sz=p.size*(1-(bm?0.5:0.7)*t);var fade=(t<0.1?t/0.1:1-(t-0.1)/0.9);
+    var a=fade*(bm?0.20:0.17);if(a<=0)continue;ctx.globalAlpha=a;
+    ctx.drawImage(sprites[idx],p.x-sz/2,p.y-sz/2,sz,sz);}}
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+    var pulse=0.5+0.5*Math.sin(Date.now()/430);
+    var bg=ctx.createLinearGradient(0,H,0,H-H*0.55);
+    bg.addColorStop(0,'rgba(255,120,24,'+(0.11+0.05*pulse)+')');
+    bg.addColorStop(.5,'rgba(240,90,14,'+(0.04+0.02*pulse)+')');
+    bg.addColorStop(1,'rgba(240,90,14,0)');ctx.fillStyle=bg;ctx.fillRect(0,H*0.45,W,H*0.55);
+    if(!reduce){var nb=Math.max(4,Math.round(W/30)),nl=Math.max(3,Math.round(W/40));
+      for(var i=0;i<nb;i++)spawnBody();for(var j=0;j<nl;j++)spawnLick();
+      if(Math.random()<0.85)spawnEmber();}
+    drawSet(body,true);drawSet(licks,false);
+    for(var e=embers.length-1;e>=0;e--){var m=embers[e];m.life++;
+      if(m.life>=m.max){embers.splice(e,1);continue;}var et=m.life/m.max;
+      m.vy*=0.992;m.x+=m.vx+Math.sin((m.tw+=0.06))*0.6;m.y+=m.vy;
+      var ea=(1-et)*(0.55+0.45*Math.sin(m.life*0.45));if(ea<=0)continue;
+      var sz=m.r*2.6;ctx.globalAlpha=Math.max(0,ea);ctx.drawImage(coreSprite,m.x-sz/2,m.y-sz/2,sz,sz);}
+    ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+    var grd=ctx.createLinearGradient(0,H,0,H-50);
+    grd.addColorStop(0,'rgba(240,184,0,0.95)');grd.addColorStop(1,'rgba(240,184,0,0)');
+    ctx.fillStyle=grd;ctx.fillRect(0,H-50,W,50);
+    if(running)raf=requestAnimationFrame(frame);
+  }
+  function start(){if(running||reduce)return;running=true;raf=requestAnimationFrame(frame);}
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);}
+
+  if(reduce){ctx.globalCompositeOperation='lighter';
+    var g=ctx.createLinearGradient(0,H,0,0);
+    g.addColorStop(0,'rgba(255,140,36,.55)');g.addColorStop(.5,'rgba(235,110,18,.18)');g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);return;}
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){e.isIntersecting?start():stop();});},{threshold:0.02});
+    io.observe(cv);
+  } else { start(); }
+})();
+</script>
+<!-- =================== end "Ignite" fire band =================== -->
+
+
+<!-- ================= FOOTER ================= -->
+<footer>
+<div class="section-container">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo-row">
+        <span class="logo-mark" role="img" aria-label="AllBee Solutions logo"></span>
+        <div class="footer-logo-text">
+          <strong>AllBee Solutions</strong>
+          <span>Since 2025</span>
+        </div>
+      </div>
+      <p class="footer-tagline">Premier IT Training Institute &amp; Digital Marketing Agency in Nagore, Tamil Nadu. Empowering students and businesses since 2025.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
+        <a href="https://www.youtube.com/@allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a>
+        <a href="https://www.facebook.com/allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a>
+        <a href="https://wa.me/918903607506" target="_blank" rel="noopener" aria-label="Chat with AllBee on WhatsApp"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
+      </div>
+    </div>
+    <nav aria-label="Footer — explore">
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links" role="list">
+        <li><a href="/">Home</a></li>
+        <li><a href="/courses">Courses</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/webdevelopment">Web Development</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Footer — courses">
+      <div class="footer-col-title">Courses</div>
+      <ul class="footer-links" role="list">
+        <li><a href="/courses#python">Python Programming</a></li>
+        <li><a href="/courses#ms-office">MS-Office Advanced</a></li>
+        <li><a href="/courses#photoshop">Photoshop Advanced</a></li>
+        <li><a href="/courses#spoken-english">Spoken English</a></li>
+        <li><a href="/courses#hardware">Hardware &amp; Networking</a></li>
+        <li><a href="/courses#aws">AWS Cloud</a></li>
+      </ul>
+    </nav>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links" role="list">
+        <li><a href="tel:+918903607506">+91 89036 07506</a></li>
+        <li><a href="https://wa.me/918903607506" target="_blank" rel="noopener">+91 89036 07506 (WhatsApp)</a></li>
+        <li><a href="mailto:allbeesolutions@gmail.com">allbeesolutions@gmail.com</a></li>
+        <li><a href="https://maps.google.com/?q=No.80+Noori+Complex+Nagore+Tamil+Nadu+611002" target="_blank" rel="noopener">No.80, Noori Complex,<br>Nagore – 611 002</a></li>
+        <li><a href="/contact">Mon–Sat · 9 AM – 7 PM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 <a href="/">AllBee Solutions</a>. All rights reserved. Built with care for Tamil Nadu.</div>
+    <div class="footer-legal">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/refund">Refund Policy</a>
+    </div>
+  </div>
+</div>
+</footer>
+
+<script>
+(function(){
+  // Navbar scroll state
+  var navbar = document.getElementById('navbar');
+  if (navbar) {
+    var _s = null;
+    window.addEventListener('scroll', function(){
+      var s = window.scrollY > 20;
+      if (s !== _s) { _s = s; navbar.classList.toggle('scrolled', s); }
+    }, { passive: true });
+  }
+  // Mobile menu toggle
+  var hamburger = document.querySelector('.hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function(){
+      var isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('active', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+})();
+</script>
+<script>
+/* Gold particles: nav-link hover (falling) + footer social (upward burst) */
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // ---- nav links: continuous gold sparks falling on hover/focus ----
+  (function(){
+    function spawn(host){
+      var s=document.createElement('span'); s.className='nav-spark';
+      s.style.setProperty('--x',(15+Math.random()*70)+'%');
+      s.style.setProperty('--dx',((Math.random()-0.5)*30).toFixed(0)+'px');
+      s.style.setProperty('--dy',(50+Math.random()*30).toFixed(0)+'px');
+      var dur=(1.0+Math.random()*0.7).toFixed(2);
+      s.style.setProperty('--d',dur+'s');
+      host.appendChild(s);
+      setTimeout(function(){ if(s.parentNode) s.parentNode.removeChild(s); }, dur*1000+60);
+    }
+    document.querySelectorAll('#navbar .nav-links a, #navbar .nav-cta-btn').forEach(function(link){
+      var iv=null;
+      function start(){ if(iv) return; spawn(link); iv=setInterval(function(){ spawn(link); },90); }
+      function stop(){ if(iv){ clearInterval(iv); iv=null; } }
+      link.addEventListener('mouseenter',start);
+      link.addEventListener('mouseleave',stop);
+      link.addEventListener('focus',start);
+      link.addEventListener('blur',stop);
+    });
+  })();
+
+  // ---- footer social icons: 7-spark upward burst on hover/focus ----
+  (function(){
+    document.querySelectorAll('.footer-social a').forEach(function(icon){
+      var active=false;
+      function burst(){
+        if(active) return; active=true;
+        for(var i=0;i<7;i++){ (function(j){ setTimeout(function(){
+          var s=document.createElement('span'); s.className='foot-spark';
+          s.style.setProperty('--dx',((Math.random()-0.5)*36).toFixed(0)+'px');
+          s.style.setProperty('--dy',(-(40+Math.random()*40)).toFixed(0)+'px');
+          icon.appendChild(s);
+          setTimeout(function(){ if(s.parentNode) s.parentNode.removeChild(s); },1000);
+        }, j*50); })(i); }
+        setTimeout(function(){ active=false; },350);
+      }
+      icon.addEventListener('mouseenter',burst);
+      icon.addEventListener('focus',burst);
+    });
+  })();
+})();
+</script>
+</body>
+</html>
