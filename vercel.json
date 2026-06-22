@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/courses", "destination": "/courses.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/webdevelopment", "destination": "/webdevelopment.html" },
+    { "source": "/digitalmarketing", "destination": "/digitalmarketing.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/refund", "destination": "/refund.html" },
+    { "source": "/reels-growth", "destination": "/reels-growth.html" },
+    { "source": "/404", "destination": "/404.html" }
+  ]
+}
