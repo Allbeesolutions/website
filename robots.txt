@@ -5,4 +5,4 @@ Allow: /
 Disallow: /webpricing.html
 Disallow: /reels-growth.html
 
-Sitemap: https://allbeesolutions.com/sitemap.xml
+Sitemap: https://www.allbeesolutions.com/sitemap.xml
