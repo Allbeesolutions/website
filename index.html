@@ -1608,36 +1608,6 @@ footer{
 [data-aos].aos-in{opacity:1; transform:none}
 
 /* =================================================================
-   COOKIE CONSENT
-================================================================= */
-#cookie-banner{
-  display:none; position:fixed; bottom:0; left:0; right:0;
-  z-index:8000; background:var(--s-3);
-  border-top:1px solid var(--border);
-  padding:14px 24px;
-  align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:12px;
-  box-shadow:0 -4px 24px rgba(15,123,110,0.10);
-}
-#cookie-banner.show{display:flex}
-#cookie-banner p{
-  font-size:13px; color:var(--muted);
-  margin:0; max-width:680px;
-}
-#cookie-banner a{color:var(--teal); text-decoration:underline}
-#cookie-banner .cookie-actions{display:flex; gap:10px; flex-shrink:0}
-#cookie-banner button{
-  padding:8px 20px; border-radius:100px;
-  font-size:13px; font-weight:700; cursor:pointer;
-  border:none; font-family:var(--font-body);
-}
-.cookie-accept{background:var(--teal); color:var(--ink)}
-.cookie-decline{
-  background:transparent; color:var(--muted);
-  border:1px solid var(--border) !important;
-}
-
-/* =================================================================
    CHATBOT
 ================================================================= */
 #chatBtn{
@@ -1893,7 +1863,6 @@ footer{
     overscroll-behavior:contain;
     padding:18px 24px calc(96px + env(safe-area-inset-bottom));
   }
-  body:has(.mobile-menu.open) #cookie-banner,
   body:has(.mobile-menu.open) #chatBtn,
   body:has(.mobile-menu.open) #chatWindow,
   body:has(.mobile-menu.open) .wa-float{display:none}
@@ -1923,20 +1892,6 @@ footer{
     width:calc(100vw - 32px); right:16px; bottom:88px;
     max-height:calc(100vh - 140px);
   }
-  #cookie-banner{
-    align-items:flex-start;
-    padding:14px 20px calc(16px + env(safe-area-inset-bottom));
-  }
-  #cookie-banner p{
-    max-width:none;
-    font-size:12.5px;
-    line-height:1.55;
-  }
-  #cookie-banner .cookie-actions{width:100%; gap:10px}
-  #cookie-banner button{min-width:112px; padding:9px 18px}
-  body:has(#cookie-banner.show) #chatBtn,
-  body:has(#cookie-banner.show) #chatWindow,
-  body:has(#cookie-banner.show) .wa-float{display:none}
 
   .hero-stats{gap:20px}
   .hero-stat-num{font-size:1.7rem}
@@ -1951,7 +1906,7 @@ footer{
 /* Print */
 @media print{
   #navbar, .mobile-menu, .wa-float, #chatBtn, #chatWindow,
-  #cookie-banner, .modal-overlay, #scroll-progress,
+  .modal-overlay, #scroll-progress,
   .cursor, .cursor-ring{display:none!important}
   body{background:#fff; color:#000}
   a{color:#000; text-decoration:underline}
@@ -4798,15 +4753,6 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   </div>
 </aside>
 
-<!-- Cookie banner -->
-<div id="cookie-banner" role="region" aria-label="Cookie consent">
-  <p>🍪 We use cookies to improve your experience. By using our site, you agree to our <a href="/privacy">Privacy Policy</a>.</p>
-  <div class="cookie-actions">
-    <button class="cookie-accept" type="button" onclick="acceptCookies()">Accept</button>
-    <button class="cookie-decline" type="button" onclick="declineCookies()">Decline</button>
-  </div>
-</div>
-
 <!-- App scripts -->
 <script>
 /* cobe + phenomenon bundle (inlined for local file use) */
@@ -5327,27 +5273,6 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && chatOpen) window.toggleChat();
   });
-
-  /* ─────────────────────────────────────────────────────────────────
-     COOKIE BANNER
-  ───────────────────────────────────────────────────────────────── */
-  const cookieBanner = document.getElementById('cookie-banner');
-  window.acceptCookies = function(){
-    try { localStorage.setItem('cookies_accepted', '1'); } catch(_){}
-    if (cookieBanner) cookieBanner.classList.remove('show');
-  };
-  window.declineCookies = function(){
-    try { localStorage.setItem('cookies_declined', '1'); } catch(_){}
-    if (cookieBanner) cookieBanner.classList.remove('show');
-  };
-  if (cookieBanner) {
-    let accepted = '0', declined = '0';
-    try {
-      accepted = localStorage.getItem('cookies_accepted') || '0';
-      declined = localStorage.getItem('cookies_declined') || '0';
-    } catch(_){}
-    if (accepted !== '1' && declined !== '1') cookieBanner.classList.add('show');
-  }
 
   /* ─────────────────────────────────────────────────────────────────
      CONVERSION TRACKING — phone, WhatsApp clicks
