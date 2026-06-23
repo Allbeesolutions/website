@@ -6071,7 +6071,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
       // Canvas spans both Student Stories + Start Today, so scale by area (capped for perf).
-      var count = Math.min(480, Math.max(80, Math.floor((W * H) / 4200)));
+      var count = Math.min(336, Math.max(56, Math.floor((W * H) / 6000)));
       parts = [];
       for (var i=0;i<count;i++){ var p=makeP(); p.reset(true); parts.push(p); }
     }
