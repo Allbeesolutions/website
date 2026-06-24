@@ -13,6 +13,7 @@
     { "source": "/reels-growth", "destination": "/reels-growth.html" },
     { "source": "/invitation", "destination": "/invitation.html" },
     { "source": "/invitation-samples", "destination": "/invitation-samples.html" },
+    { "source": "/demo/:slug", "destination": "/demo/:slug.html" },
     { "source": "/404", "destination": "/404.html" }
   ],
   "headers": [

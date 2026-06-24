@@ -46,6 +46,31 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.allbeesolutions.com/demo/muslim-wedding</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/hindu-wedding</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/christian-wedding</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/birthday</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/business-launch</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.allbeesolutions.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
