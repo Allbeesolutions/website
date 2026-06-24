@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead CRM — AllBee Invitations</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<meta name="theme-color" content="#0F7B6E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0F7B6E;--teal-d:#085A52;--teal-l:#149987;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;
+ --s-1:#FBF8F0;--s-3:#E9F3F0;--border:rgba(15,123,110,.16);--paper:#fff;
+ --new:#0F7B6E;--contacted:#2563EB;--quote:#DCA50C;--nego:#9333EA;--won:#16A34A;--lost:#DC2626;
+ --font-display:'Playfair Display',Georgia,serif;--font-body:'Lato',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--s-3);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit} button,select,input,textarea{font-family:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 18px}
+/* top bar */
+.topbar{background:var(--teal-d);color:#fff;position:sticky;top:0;z-index:30}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.brand b{font-family:var(--font-display)}
+.brand span{font-size:11px;opacity:.8;font-weight:600;letter-spacing:.5px}
+.tb-actions{display:flex;align-items:center;gap:8px}
+.conn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.15)}
+.conn.live{background:#16A34A}.conn.demo{background:var(--gold);color:#3a2c06}
+.tb-btn{background:rgba(255,255,255,.14);border:none;color:#fff;font-weight:700;font-size:.82rem;padding:7px 14px;border-radius:9px;cursor:pointer}
+.tb-btn:hover{background:rgba(255,255,255,.24)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:20px 0}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:16px 16px}
+.stat .v{font-family:var(--font-display);font-size:1.7rem;font-weight:800;color:var(--teal-d);line-height:1}
+.stat .l{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:700}
+.stat.rev .v{color:var(--gold)}
+/* pipeline */
+.pipe{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px}
+.pchip{flex:1;min-width:120px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:border-color .2s,transform .2s}
+.pchip:hover{transform:translateY(-2px)}
+.pchip.active{border-color:var(--teal);box-shadow:0 4px 14px rgba(8,90,82,.12)}
+.pchip .pc-n{font-size:1.3rem;font-weight:800;font-family:var(--font-display)}
+.pchip .pc-l{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+/* toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:14px}
+.toolbar input,.toolbar select{padding:9px 12px;border:1px solid var(--border);border-radius:10px;font-size:.88rem;background:#fff}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.toolbar .clear{background:transparent;border:1px solid var(--border);border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:700;font-size:.85rem;color:var(--muted)}
+.daterange{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+/* leads list */
+.lhead,.lead{display:grid;grid-template-columns:78px 1.4fr 1fr 1fr .9fr 150px;gap:10px;align-items:center}
+.lhead{padding:0 14px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+@media(max-width:760px){.lhead{display:none}}
+.lead{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:9px}
+.lead small{color:var(--muted);font-size:.78rem}
+.lead .nm{font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:100px;white-space:nowrap}
+.b-new{background:rgba(15,123,110,.12);color:var(--new)} .b-contacted{background:rgba(37,99,235,.12);color:var(--contacted)}
+.b-quote{background:rgba(220,165,12,.15);color:#9a7406} .b-nego{background:rgba(147,51,234,.12);color:var(--nego)}
+.b-won{background:rgba(22,163,74,.13);color:var(--won)} .b-lost{background:rgba(220,38,38,.1);color:var(--lost)}
+.lead-actions{display:flex;gap:6px;justify-content:flex-end}
+.mini{border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--teal-d)}
+.mini:hover{background:var(--s-1)}
+@media(max-width:760px){
+  .lead{grid-template-columns:1fr 1fr;gap:8px}
+  .lead .cell-label{display:block;font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .lead-actions{grid-column:1/-1;justify-content:flex-start;flex-wrap:wrap}
+}
+@media(min-width:761px){.cell-label{display:none}}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+/* lock */
+.lock{position:fixed;inset:0;background:linear-gradient(160deg,var(--teal-d),#06302b);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.lock-card{background:#fff;border-radius:20px;padding:34px 30px;max-width:380px;width:100%;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.lock-card h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
+.lock-card p{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+.lock-card input{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:12px;font-size:1rem;margin-bottom:12px;text-align:center;letter-spacing:2px}
+.lock-card .btn-go{width:100%;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:13px;font-weight:800;cursor:pointer;font-size:.95rem}
+.lock-card .demo-link{display:inline-block;margin-top:16px;color:var(--teal-d);font-weight:700;font-size:.85rem;cursor:pointer;text-decoration:underline}
+.lock-err{color:var(--lost);font-size:.85rem;font-weight:700;min-height:18px;margin-bottom:8px}
+/* modal */
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(8,32,28,.55);backdrop-filter:blur(3px)}
+.modal-card{position:relative;background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:0;background:#fff}
+.modal-head h2{font-family:var(--font-display);font-size:1.3rem}
+.modal-head .x{border:none;background:var(--s-1);width:34px;height:34px;border-radius:50%;font-size:1.3rem;cursor:pointer;color:var(--ink)}
+.modal-body{padding:20px 22px}
+.field{margin-bottom:14px}
+.field label{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px}
+.field .val{font-size:.95rem}
+.field a{color:var(--teal)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.kv{grid-template-columns:1fr}}
+.modal-body select,.modal-body input,.modal-body textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:.92rem;background:#fff}
+.notelog{background:var(--s-1);border-radius:10px;padding:10px 12px;font-size:.85rem;color:var(--muted);max-height:150px;overflow:auto;white-space:pre-wrap}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;position:sticky;bottom:0;background:#fff}
+.btn{border:none;border-radius:100px;padding:11px 18px;font-weight:800;font-size:.85rem;cursor:pointer}
+.btn-save{background:var(--teal);color:#fff}.btn-won{background:var(--won);color:#fff}.btn-lost{background:var(--lost);color:#fff}.btn-ghost{background:var(--s-1);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:var(--teal-d);color:#fff;padding:12px 22px;border-radius:100px;font-weight:700;font-size:.9rem;z-index:200;transition:transform .4s var(--ease);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translate(-50%,0)}
+.banner{background:rgba(220,165,12,.14);border:1px solid rgba(220,165,12,.4);color:#7a5c06;border-radius:12px;padding:11px 14px;font-size:.85rem;font-weight:600;margin-bottom:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Passcode lock -->
+<div class="lock" id="lock">
+  <div class="lock-card">
+    <h1>🐝 Lead CRM</h1>
+    <p>AllBee Invitations — team access</p>
+    <div class="lock-err" id="lockErr"></div>
+    <input id="passInput" type="password" placeholder="Admin passcode" autocomplete="off">
+    <button class="btn-go" id="passGo">Open CRM</button>
+    <span class="demo-link" id="demoLink">Preview with demo data →</span>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><b>AllBee Invitations</b><span>Lead CRM</span></div>
+    <div class="tb-actions">
+      <span class="conn demo" id="conn">Demo</span>
+      <button class="tb-btn" id="refreshBtn">Refresh</button>
+      <button class="tb-btn" id="signoutBtn">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:18px;padding-bottom:60px">
+  <div class="banner" id="banner" style="display:none"></div>
+
+  <div class="stats" id="stats"></div>
+  <div class="pipe" id="pipe"></div>
+
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="Search name, mobile or email…">
+    <select id="fType"><option value="">All event types</option></select>
+    <select id="fStatus"><option value="">All statuses</option></select>
+    <span class="daterange">From <input type="date" id="fFrom"> to <input type="date" id="fTo"></span>
+    <button class="clear" id="clearBtn">Clear</button>
+  </div>
+
+  <div class="lhead">
+    <div>Lead ID</div><div>Name / Mobile</div><div>Event</div><div>Source / Date</div><div>Status</div><div></div>
+  </div>
+  <div id="list"></div>
+  <div class="empty" id="empty" style="display:none">No leads match your filters.</div>
+</main>
+
+<!-- Lead modal -->
+<div class="modal" id="modal">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="mTitle">Lead</h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body" id="mBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-save" id="mSave">Save changes</button>
+      <button class="btn btn-won" id="mWon">Mark Won</button>
+      <button class="btn btn-lost" id="mLost">Mark Lost</button>
+      <button class="btn btn-ghost" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STAGES=['New Lead','Contacted','Quotation Sent','Negotiation','Won','Lost'];
+const BADGE={'New Lead':'b-new','Contacted':'b-contacted','Quotation Sent':'b-quote','Negotiation':'b-nego','Won':'b-won','Lost':'b-lost'};
+const DOT={'New Lead':'var(--new)','Contacted':'var(--contacted)','Quotation Sent':'var(--quote)','Negotiation':'var(--nego)','Won':'var(--won)','Lost':'var(--lost)'};
+const EVENT_TYPES=['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
+
+/* Demo dataset (fictional — used for preview/testing; real data comes from the API) */
+const DEMO=[
+ {id:'AB-0001',date:'2026-06-20',name:'Ravi Kumar',mobile:'+91 90000 00001',email:'ravi@example.com',event_type:'Wedding',event_date:'2026-12-12',interested_in:'Both',notes:'Wants royal theme',source:'/invitation',status:'New Lead',value:0,crm_notes:''},
+ {id:'AB-0002',date:'2026-06-19',name:'Fathima S',mobile:'+91 90000 00002',email:'fathima@example.com',event_type:'Nikah',event_date:'2026-09-13',interested_in:'Website Invitation',notes:'Needs Tamil + English',source:'/invitation-samples',status:'Contacted',value:0,crm_notes:'[19 Jun] Called, sending samples.'},
+ {id:'AB-0003',date:'2026-06-18',name:'Anand R',mobile:'+91 90000 00003',email:'anand@example.com',event_type:'Birthday',event_date:'2026-08-15',interested_in:'PDF Invitation',notes:'Kids party',source:'/invitation',status:'Quotation Sent',value:0,crm_notes:'[18 Jun] Quote ₹299 sent.'},
+ {id:'AB-0004',date:'2026-06-16',name:'Grace Joseph',mobile:'+91 90000 00004',email:'grace@example.com',event_type:'Wedding',event_date:'2026-11-21',interested_in:'Both',notes:'Christian wedding website',source:'/demo/christian-wedding',status:'Negotiation',value:0,crm_notes:'[17 Jun] Discussing premium add-ons.'},
+ {id:'AB-0005',date:'2026-06-14',name:'Imran Khan',mobile:'+91 90000 00005',email:'imran@example.com',event_type:'Nikah',event_date:'2026-10-05',interested_in:'Website Invitation',notes:'Walima reception',source:'/demo/muslim-wedding',status:'Won',value:999,crm_notes:'[15 Jun] Paid ₹999. Delivered.'},
+ {id:'AB-0006',date:'2026-06-12',name:'Priya M',mobile:'+91 90000 00006',email:'priya@example.com',event_type:'Housewarming',event_date:'2026-07-30',interested_in:'PDF Invitation',notes:'',source:'/invitation',status:'Won',value:299,crm_notes:'[13 Jun] Paid ₹299.'},
+ {id:'AB-0007',date:'2026-06-10',name:'Suresh B',mobile:'+91 90000 00007',email:'',event_type:'Business Event',event_date:'2026-09-07',interested_in:'Both',notes:'Store opening',source:'/demo/business-launch',status:'Lost',value:0,crm_notes:'[12 Jun] Went with another vendor.'},
+ {id:'AB-0008',date:'2026-06-22',name:'Lakshmi V',mobile:'+91 90000 00008',email:'lakshmi@example.com',event_type:'Wedding',event_date:'2026-09-13',interested_in:'Both',notes:'Hindu muhurtham',source:'/demo/hindu-wedding',status:'New Lead',value:0,crm_notes:''}
+];
+
+let LEADS=[], MODE='demo', PASS='', activeStage='', editing=null;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmtMoney=n=>'₹'+(Number(n)||0).toLocaleString('en-IN');
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);};
+
+/* ---------- data layer (future-ready) ---------- */
+async function apiGet(){
+  const r=await fetch('/api/invitation-leads',{headers:{'x-admin-pass':PASS}});
+  if(r.status===401) throw {code:401};
+  if(r.status===503) return {ok:true,configured:false,leads:[]};
+  return r.json();
+}
+async function apiUpdate(id,patch){
+  if(MODE==='demo'){const l=LEADS.find(x=>x.id===id);Object.assign(l,patch);return {ok:true};}
+  const r=await fetch('/api/invitation-leads',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'update',id,patch})});
+  return r.json();
+}
+
+/* ---------- auth ---------- */
+async function unlock(pass){
+  $('#lockErr').textContent='';
+  try{
+    PASS=pass; const data=await apiGet();
+    MODE='live'; LEADS=data.leads||[];
+    $('#conn').className='conn live'; $('#conn').textContent='Live';
+    if(!data.configured){ $('#banner').style.display='block'; $('#banner').innerHTML='CRM connected, but no Google Sheet is wired yet. Set <b>LEAD_APPS_SCRIPT_URL</b> in Vercel to see real leads.'; }
+    sessionStorage.setItem('crm_pass',pass);
+    $('#lock').style.display='none'; render();
+  }catch(e){ $('#lockErr').textContent='Incorrect passcode. Try again.'; }
+}
+function loadDemo(){
+  MODE='demo'; PASS=''; LEADS=JSON.parse(JSON.stringify(DEMO));
+  $('#conn').className='conn demo'; $('#conn').textContent='Demo';
+  $('#banner').style.display='block'; $('#banner').innerHTML='Showing <b>demo data</b> — fictional leads for preview. Enter your passcode (Sign out → reload) to load real leads.';
+  $('#lock').style.display='none'; render();
+}
+
+/* ---------- filters ---------- */
+function filtered(){
+  const q=$('#search').value.trim().toLowerCase();
+  const t=$('#fType').value, s=$('#fStatus').value||activeStage, from=$('#fFrom').value, to=$('#fTo').value;
+  return LEADS.filter(l=>{
+    if(q && !((l.name||'').toLowerCase().includes(q)||(l.mobile||'').toLowerCase().includes(q)||(l.email||'').toLowerCase().includes(q))) return false;
+    if(t && l.event_type!==t) return false;
+    if(s && l.status!==s) return false;
+    if(from && (l.date||'') < from) return false;
+    if(to && (l.date||'') > to) return false;
+    return true;
+  });
+}
+
+/* ---------- render ---------- */
+function render(){
+  // stats
+  const total=LEADS.length, nw=LEADS.filter(l=>l.status==='New Lead').length;
+  const won=LEADS.filter(l=>l.status==='Won').length, lost=LEADS.filter(l=>l.status==='Lost').length;
+  const conv=(won+lost)? Math.round(won/(won+lost)*100):0;
+  const rev=LEADS.filter(l=>l.status==='Won').reduce((a,l)=>a+(Number(l.value)||0),0);
+  $('#stats').innerHTML=[
+    ['Total Leads',total],['New Leads',nw],['Won',won],['Lost',lost],['Conversion',conv+'%'],['Revenue',fmtMoney(rev),'rev']
+  ].map(([l,v,c])=>`<div class="stat ${c||''}"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+  // pipeline
+  $('#pipe').innerHTML=STAGES.map(s=>{
+    const n=LEADS.filter(l=>l.status===s).length;
+    return `<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${n}</div><div class="pc-l"><span class="dot" style="background:${DOT[s]}"></span>${s}</div></div>`;
+  }).join('');
+  // list
+  const rows=filtered();
+  $('#empty').style.display=rows.length?'none':'block';
+  $('#list').innerHTML=rows.map(l=>`
+    <div class="lead" data-id="${l.id}">
+      <div><span class="cell-label">Lead ID</span><strong>${l.id}</strong></div>
+      <div><span class="cell-label">Name</span><span class="nm">${esc(l.name)}</span><br><small>${esc(l.mobile||'')}</small></div>
+      <div><span class="cell-label">Event</span>${esc(l.event_type||'')}<br><small>${esc(l.event_date||'')}</small></div>
+      <div><span class="cell-label">Source</span><small>${esc(l.source||'')}</small><br><small>${esc(l.date||'')}</small></div>
+      <div><span class="cell-label">Status</span><span class="badge ${BADGE[l.status]||'b-new'}">${l.status}</span></div>
+      <div class="lead-actions"><button class="mini" data-view="${l.id}">View</button></div>
+    </div>`).join('');
+  // populate filter selects once
+  if(!$('#fType').dataset.filled){
+    $('#fType').innerHTML='<option value="">All event types</option>'+EVENT_TYPES.map(t=>`<option>${t}</option>`).join('');
+    $('#fStatus').innerHTML='<option value="">All statuses</option>'+STAGES.map(s=>`<option>${s}</option>`).join('');
+    $('#fType').dataset.filled='1';
+  }
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ---------- modal ---------- */
+function openLead(id){
+  const l=LEADS.find(x=>x.id===id); if(!l) return; editing=id;
+  $('#mTitle').textContent=l.id+' · '+l.name;
+  $('#mBody').innerHTML=`
+    <div class="kv">
+      <div class="field"><label>Name</label><div class="val">${esc(l.name)}</div></div>
+      <div class="field"><label>Mobile</label><div class="val"><a href="https://wa.me/${(l.mobile||'').replace(/\\D/g,'')}" target="_blank" rel="noopener">${esc(l.mobile)}</a></div></div>
+      <div class="field"><label>Email</label><div class="val">${l.email?`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`:'—'}</div></div>
+      <div class="field"><label>Event Type</label><div class="val">${esc(l.event_type)}</div></div>
+      <div class="field"><label>Event Date</label><div class="val">${esc(l.event_date||'—')}</div></div>
+      <div class="field"><label>Interested In</label><div class="val">${esc(l.interested_in||'—')}</div></div>
+      <div class="field"><label>Source</label><div class="val">${esc(l.source||'—')}</div></div>
+      <div class="field"><label>Enquiry Date</label><div class="val">${esc(l.date||'—')}</div></div>
+    </div>
+    <div class="field"><label>Enquiry Notes</label><div class="val">${esc(l.notes||'—')}</div></div>
+    <div class="kv">
+      <div class="field"><label>Status / Stage</label><select id="eStatus">${STAGES.map(s=>`<option ${s===l.status?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="field"><label>Deal Value (₹)</label><input id="eValue" type="number" min="0" value="${Number(l.value)||0}"></div>
+    </div>
+    <div class="field"><label>Activity Log</label><div class="notelog">${esc(l.crm_notes||'No notes yet.')}</div></div>
+    <div class="field"><label>Add Note</label><textarea id="eNote" rows="2" placeholder="Log a call, message or update…"></textarea></div>`;
+  $('#modal').classList.add('open');
+}
+function closeModal(){$('#modal').classList.remove('open');editing=null;}
+
+async function saveLead(extra){
+  const l=LEADS.find(x=>x.id===editing); if(!l) return;
+  const status=$('#eStatus').value, value=Number($('#eValue').value)||0, note=$('#eNote').value.trim();
+  let crm=l.crm_notes||'';
+  if(note){const stamp=new Date().toISOString().slice(0,10);crm=(crm?crm+'\n':'')+`[${stamp}] ${note}`;}
+  const patch=Object.assign({status,value,crm_notes:crm},extra||{});
+  try{
+    await apiUpdate(l.id,patch); Object.assign(l,patch);
+    toast('Lead updated'); closeModal(); render();
+  }catch(e){ toast('Save failed'); }
+}
+
+/* ---------- events ---------- */
+$('#passGo').onclick=()=>unlock($('#passInput').value);
+$('#passInput').addEventListener('keydown',e=>{if(e.key==='Enter')unlock($('#passInput').value);});
+$('#demoLink').onclick=loadDemo;
+$('#signoutBtn').onclick=()=>{sessionStorage.removeItem('crm_pass');location.reload();};
+$('#refreshBtn').onclick=async()=>{ if(MODE==='live'){try{const d=await apiGet();LEADS=d.leads||[];render();toast('Refreshed');}catch(e){toast('Refresh failed');}} else render(); };
+['#search','#fType','#fStatus','#fFrom','#fTo'].forEach(s=>$(s).addEventListener('input',render));
+$('#clearBtn').onclick=()=>{$('#search').value='';$('#fType').value='';$('#fStatus').value='';$('#fFrom').value='';$('#fTo').value='';activeStage='';render();};
+$('#pipe').addEventListener('click',e=>{const c=e.target.closest('.pchip');if(!c)return;activeStage=activeStage===c.dataset.stage?'':c.dataset.stage;$('#fStatus').value='';render();});
+$('#list').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b)openLead(b.dataset.view);});
+$$('[data-close]').forEach(x=>x.addEventListener('click',closeModal));
+$('#mSave').onclick=()=>saveLead();
+$('#mWon').onclick=()=>{const v=prompt('Deal value won (₹):',$('#eValue').value||'0');if(v===null)return;$('#eValue').value=Number(v)||0;$('#eStatus').value='Won';saveLead({status:'Won'});};
+$('#mLost').onclick=()=>{$('#eStatus').value='Lost';saveLead({status:'Lost'});};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* auto-resume session */
+(function(){const p=sessionStorage.getItem('crm_pass');if(p){$('#passInput').value=p;unlock(p);}})();
+</script>
+</body>
+</html>

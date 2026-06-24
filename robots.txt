@@ -5,4 +5,7 @@ Allow: /
 Disallow: /webpricing.html
 Disallow: /reels-growth.html
 
+# Internal admin CRM — never index
+Disallow: /admin/
+
 Sitemap: https://www.allbeesolutions.com/sitemap.xml

@@ -60,3 +60,24 @@ Add in **Vercel → Project → Settings → Environment Variables** (Production
 
 Submit the form at `https://www.allbeesolutions.com/invitation` → expect the success toast,
 a new row in the Sheet, an email to `NOTIFY_EMAIL`, and a WhatsApp to the admin number.
+
+---
+
+## 6. Lead CRM  (Phase 5)
+
+The team CRM lives at **`/admin/invitation-leads`** (noindex, passcode-gated). It reads/writes the
+same Google Sheet via `/api/invitation-leads`, which calls the Apps Script `list`/`update` actions.
+
+**Redeploy the Apps Script** with the updated `docs/lead-apps-script.gs` (adds Lead ID, Status, Value,
+CRM Notes, Updated columns + `list`/`update` actions), then add one env var:
+
+| Variable | Required | Value |
+|---|---|---|
+| `ADMIN_PASSCODE` | yes | passcode the AllBee team enters to open the CRM |
+| `LEAD_APPS_SCRIPT_URL` | yes | (already set in Phase 2) |
+| `LEAD_SHARED_SECRET` | yes | (already set in Phase 2) |
+
+Until `ADMIN_PASSCODE` + `LEAD_APPS_SCRIPT_URL` are set, the CRM page still works in **Demo mode**
+(fictional sample leads) so the team can preview the UI. Lead stages: New Lead → Contacted →
+Quotation Sent → Negotiation → Won / Lost. The architecture is future-ready: swap the Apps Script
+calls in `api/invitation-leads.js` for Supabase later without touching the CRM page.

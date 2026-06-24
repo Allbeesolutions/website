@@ -1,67 +1,84 @@
 /**
- * AllBee Invitations — Google Apps Script web app.
- * Appends each lead to the "Leads" sheet AND emails a notification.
+ * AllBee Invitations — Google Apps Script web app (lead capture + CRM).
  *
- * SETUP (in your own Google account):
- *  1. Create a Google Sheet (e.g. "AllBee Invitations Leads").
- *  2. Extensions → Apps Script. Paste this file. Save.
- *  3. Project Settings → Script properties, add:
- *        SHARED_SECRET  = <a long random string>   (must match Vercel LEAD_SHARED_SECRET)
- *        NOTIFY_EMAIL   = allbeesolutions@gmail.com (where to email leads)
- *  4. Deploy → New deployment → type "Web app":
- *        Execute as: Me
- *        Who has access: Anyone
- *     Copy the Web app URL → set it as Vercel env LEAD_APPS_SCRIPT_URL.
- *  5. Authorize the script when prompted (it needs Sheets + Gmail send scopes).
+ * Handles three actions on the "Leads" sheet:
+ *   (no action)      append a new lead   (called by /api/invitation-enquiry)
+ *   action:'list'    return all leads    (called by /api/invitation-leads — CRM read)
+ *   action:'update'  patch a lead by ID  (called by /api/invitation-leads — CRM write)
+ *
+ * SETUP (in your Google account):
+ *  1. Create a Google Sheet.
+ *  2. Extensions → Apps Script → paste this file → Save.
+ *  3. Project Settings → Script properties:
+ *        SHARED_SECRET = <long random string>   (match Vercel LEAD_SHARED_SECRET)
+ *        NOTIFY_EMAIL  = allbeesolutions@gmail.com
+ *  4. Deploy → New deployment → Web app → Execute as: Me · Who has access: Anyone.
+ *  5. Copy the Web app URL → Vercel env LEAD_APPS_SCRIPT_URL.  Authorize when prompted.
+ *
+ * Columns (auto-created):
+ *  Lead ID | Timestamp | Name | Mobile | Email | Event Type | Event Date |
+ *  Interested In | Notes | Source Page | Visitor IP | Status | Value | CRM Notes | Updated
  */
+
+var HEADERS = ['Lead ID','Timestamp','Name','Mobile','Email','Event Type','Event Date',
+  'Interested In','Notes','Source Page','Visitor IP','Status','Value','CRM Notes','Updated'];
+
+function sheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName('Leads') || ss.insertSheet('Leads');
+  if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold'); }
+  return sh;
+}
+function rowsToLeads_(sh) {
+  var data = sh.getDataRange().getValues(); data.shift(); // drop header
+  return data.filter(function(r){ return r[2]; }).map(function(r){
+    return { id:r[0], date:String(r[1]).slice(0,10), name:r[2], mobile:r[3], email:r[4],
+      event_type:r[5], event_date:r[6], interested_in:r[7], notes:r[8], source:r[9],
+      ip:r[10], status:r[11]||'New Lead', value:Number(r[12])||0, crm_notes:r[13]||'' };
+  });
+}
 
 function doPost(e) {
   try {
     var props = PropertiesService.getScriptProperties();
     var secret = props.getProperty('SHARED_SECRET');
-    var body = JSON.parse(e.postData.contents || '{}');
+    var b = JSON.parse(e.postData.contents || '{}');
+    if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
 
-    if (secret && body.secret !== secret) {
-      return _json({ ok: false, error: 'unauthorized' });
+    var sh = sheet_();
+
+    if (b.action === 'list') {
+      return _json({ ok:true, leads: rowsToLeads_(sh) });
     }
 
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName('Leads') || ss.insertSheet('Leads');
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['Timestamp', 'Name', 'Mobile', 'Email', 'Event Type',
-        'Event Date', 'Interested In', 'Notes', 'Source Page', 'Visitor IP']);
-      sheet.getRange(1, 1, 1, 10).setFontWeight('bold');
+    if (b.action === 'update') {
+      var vals = sh.getDataRange().getValues();
+      for (var i = 1; i < vals.length; i++) {
+        if (vals[i][0] === b.id) {
+          var p = b.patch || {};
+          if (p.status     !== undefined) sh.getRange(i+1, 12).setValue(p.status);
+          if (p.value      !== undefined) sh.getRange(i+1, 13).setValue(p.value);
+          if (p.crm_notes  !== undefined) sh.getRange(i+1, 14).setValue(p.crm_notes);
+          sh.getRange(i+1, 15).setValue(new Date().toISOString());
+          return _json({ ok:true });
+        }
+      }
+      return _json({ ok:false, error:'not_found' });
     }
-    sheet.appendRow([
-      body.timestamp || new Date().toISOString(),
-      body.name || '', body.mobile || '', body.email || '',
-      body.event_type || '', body.event_date || '',
-      (body.interested_in || []).join(', '),
-      body.notes || '', body.source || '', body.ip || ''
-    ]);
+
+    // default: append a new lead
+    var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
+    sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
+      b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
+      b.source||'', b.ip||'', 'New Lead', '', '', '' ]);
 
     var to = props.getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com';
-    var html =
-      '<h2>New AllBee Invitations lead</h2>' +
-      '<table cellpadding="6" style="border-collapse:collapse;font-family:Arial">' +
-      _row('Name', body.name) + _row('Mobile', body.mobile) + _row('Email', body.email) +
-      _row('Event Type', body.event_type) + _row('Event Date', body.event_date) +
-      _row('Interested In', (body.interested_in || []).join(', ')) +
-      _row('Notes', body.notes) + _row('Source', body.source) +
-      _row('Visitor IP', body.ip) + _row('Time', body.timestamp) +
-      '</table>';
-    MailApp.sendEmail({ to: to, subject: 'New AllBee Invitations lead — ' + (body.name || 'Unknown'), htmlBody: html });
-
-    return _json({ ok: true });
+    MailApp.sendEmail({ to: to, subject: 'New AllBee Invitations lead — ' + (b.name||'Unknown'),
+      htmlBody: 'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||'') });
+    return _json({ ok:true, id:id });
   } catch (err) {
-    return _json({ ok: false, error: String(err) });
+    return _json({ ok:false, error:String(err) });
   }
 }
 
-function _row(k, v) {
-  return '<tr><td style="border:1px solid #ddd"><b>' + k + '</b></td>' +
-         '<td style="border:1px solid #ddd">' + (v || '-') + '</td></tr>';
-}
-function _json(o) {
-  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
-}
+function _json(o){ return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
