@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mission: Aarav-08 — A Space Birthday | AllBee Invitations Demo</title>
+<meta name="description" content="A sample space-journey birthday invitation for Aarav's 8th by AllBee Solutions — a galactic mission with launch sequence, star map and destination arrival.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.allbeesolutions.com/demo/space-journey">
+<meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/space-journey">
+<meta property="og:title" content="Mission: Aarav-08 — A Space Birthday | AllBee Invitations Demo">
+<meta property="og:description" content="A galactic space-journey birthday invitation by AllBee Solutions.">
+<meta property="og:image" content="https://www.allbeesolutions.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Mission: Aarav-08 — A Space Birthday">
+<meta name="twitter:description" content="A galactic space-journey birthday invitation by AllBee Solutions.">
+<meta name="theme-color" content="#05060f">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Mission: Aarav-08 — Birthday","startDate":"2026-07-18T17:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Stellar Play Arena","address":"Orbit Road, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/space-journey"}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#05060f;--bg2:#0b0d1d;--cyan:#38e1ff;--mag:#ff5ccf;--amber:#ffd24d;--ink:#e7ecff;--soft:#8b93b8}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-weight:300;overflow-x:hidden}
+.orb{font-family:'Orbitron',sans-serif}
+a{color:inherit;text-decoration:none}
+.ribbon{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(0,0,0,.55);color:var(--cyan);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;backdrop-filter:blur(6px);border-bottom:1px solid rgba(56,225,255,.25)}
+.ribbon a{color:#fff;font-weight:600;border-bottom:1px solid var(--cyan)}
+/* parallax starfield */
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.stars .layer{position:absolute;inset:-50% 0;background-repeat:repeat}
+.l1{background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),radial-gradient(1px 1px at 40% 80%,#cfe8ff,transparent);background-size:300px 300px;animation:drift 60s linear infinite}
+.l2{background-image:radial-gradient(1.5px 1.5px at 50% 20%,#bfe6ff,transparent),radial-gradient(1.5px 1.5px at 15% 70%,#fff,transparent),radial-gradient(1.5px 1.5px at 85% 45%,#ffd9f4,transparent);background-size:420px 420px;animation:drift 38s linear infinite;opacity:.8}
+.l3{background-image:radial-gradient(2px 2px at 30% 50%,var(--cyan),transparent),radial-gradient(2px 2px at 80% 25%,var(--mag),transparent);background-size:600px 600px;animation:drift 22s linear infinite;opacity:.6}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(300px)}}
+section,header{position:relative;z-index:2}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+/* HUD hero */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 22px 60px}
+.planet{width:min(46vw,180px);height:min(46vw,180px);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe6a3,var(--amber) 30%,#c2622a 70%,#6b2f12);box-shadow:0 0 70px rgba(255,210,77,.35),inset -14px -10px 40px rgba(0,0,0,.5);position:relative;margin-bottom:30px}
+.planet::after{content:"";position:absolute;left:-26%;right:-26%;top:46%;height:18%;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(56,225,255,.5),transparent);transform:rotate(-16deg)}
+.mtag{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--cyan)}
+.hero h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2rem,8vw,3.8rem);margin:12px 0 6px;color:#fff;text-shadow:0 0 24px rgba(56,225,255,.4)}
+.hero .dest{color:var(--soft);letter-spacing:3px;text-transform:uppercase;font-size:12px}
+.hero .dest b{color:var(--mag)}
+.hud{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:24px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px}
+.hud .chip{border:1px solid rgba(56,225,255,.4);border-radius:6px;padding:8px 14px;color:var(--cyan)}
+/* launch countdown */
+.launch{text-align:center;padding:60px 22px;background:linear-gradient(180deg,transparent,rgba(11,13,29,.7))}
+.lbl{font-family:'Orbitron',sans-serif;letter-spacing:4px;text-transform:uppercase;color:var(--mag);font-size:12px}
+.cd{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.cd .u{border:1px solid rgba(56,225,255,.35);border-radius:10px;padding:16px 16px;min-width:84px;background:rgba(5,6,15,.6)}
+.cd .n{font-family:'Orbitron',sans-serif;font-weight:700;font-size:2rem;color:var(--cyan)}.cd .l{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-top:3px}
+.sec{padding:70px 22px;max-width:900px;margin:0 auto}
+.kick{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);text-align:center}
+.h2{font-family:'Orbitron',sans-serif;font-weight:700;text-align:center;font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0 28px;color:#fff}
+/* mission timeline */
+.flight{max-width:620px;margin:0 auto;position:relative;padding-left:34px}
+.flight::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--cyan),var(--mag))}
+.fp{position:relative;margin-bottom:26px}
+.fp::before{content:"";position:absolute;left:-34px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.fp .st{font-family:'Orbitron',sans-serif;color:#fff;font-size:1.05rem}.fp small{color:var(--soft)}
+/* star map planets */
+.planets{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:620px){.planets{grid-template-columns:1fr}}
+.pl{border:1px solid rgba(56,225,255,.25);border-radius:16px;padding:26px;text-align:center;background:rgba(11,13,29,.6)}
+.pl .pic{width:54px;height:54px;border-radius:50%;margin:0 auto 12px}
+.pl:nth-child(1) .pic{background:radial-gradient(circle at 35% 30%,#9be7ff,#2a72c2)}
+.pl:nth-child(2) .pic{background:radial-gradient(circle at 35% 30%,#ffb3ea,#a8328a)}
+.pl:nth-child(3) .pic{background:radial-gradient(circle at 35% 30%,#ffe6a3,#c2622a)}
+.pl h3{font-family:'Orbitron',sans-serif;font-size:1rem;color:#fff}.pl small{color:var(--soft)}
+.btn{display:inline-block;font-family:'Orbitron',sans-serif;font-weight:500;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;padding:14px 30px;border-radius:8px;cursor:pointer;border:1px solid var(--cyan);background:var(--cyan);color:#05060f;transition:.25s}
+.btn:hover{box-shadow:0 0 28px rgba(56,225,255,.5)}
+.btn-o{background:transparent;color:var(--cyan)}.btn-o:hover{background:rgba(56,225,255,.12);box-shadow:none}
+.venue{text-align:center}
+.rsvp form{max-width:420px;margin:22px auto 0;display:flex;flex-direction:column;gap:12px}
+.rsvp input,.rsvp select{padding:13px;border:1px solid rgba(56,225,255,.3);border-radius:10px;background:rgba(11,13,29,.7);color:#fff;font-family:inherit}
+.rsvp .ok{display:none;color:var(--cyan);font-family:'Orbitron',sans-serif;margin-top:6px;font-size:.9rem}.rsvp .ok.show{display:block}
+.cta{text-align:center;padding:70px 22px;border-top:1px solid rgba(56,225,255,.25)}
+.cta h2{font-family:'Orbitron',sans-serif;font-weight:700;color:#fff;font-size:clamp(1.4rem,4.5vw,2rem)}
+.cta p{color:var(--soft);max-width:460px;margin:12px auto 24px}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.foot{text-align:center;padding:28px;font-size:.82rem;color:var(--soft)}.foot a{color:var(--cyan)}
+.rv{opacity:0;transform:translateY(22px);transition:.8s}.rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="stars"><div class="layer l1"></div><div class="layer l2"></div><div class="layer l3"></div></div>
+<div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
+
+<header class="hero">
+  <div class="planet rv"></div>
+  <div class="mtag">Mission Briefing</div>
+  <h1 class="orb">MISSION: AARAV-08</h1>
+  <div class="dest">Objective: <b>Birthday Celebration</b> · Commander Aarav turns 8</div>
+  <div class="hud"><div class="chip">CREW: ALL FRIENDS</div><div class="chip">FUEL: CAKE</div><div class="chip">STATUS: GO</div></div>
+</header>
+
+<section class="launch"><div class="lbl">Launch sequence · T-minus</div>
+  <div class="cd" id="cd"><div class="u"><div class="n" data-d>—</div><div class="l">Days</div></div><div class="u"><div class="n" data-h>—</div><div class="l">Hrs</div></div><div class="u"><div class="n" data-m>—</div><div class="l">Min</div></div><div class="u"><div class="n" data-s>—</div><div class="l">Sec</div></div></div>
+</section>
+
+<section class="sec"><div class="kick rv">Flight plan</div><h2 class="h2 rv">The Mission Timeline</h2>
+  <div class="flight">
+    <div class="fp rv"><div class="st">T-00:00 · Lift-Off</div><small>5:00 PM — boarding &amp; blast-off</small></div>
+    <div class="fp rv"><div class="st">Orbit · The Feast</div><small>Refuelling with snacks &amp; cake</small></div>
+    <div class="fp rv"><div class="st">Deep Space · The Games</div><small>Zero-gravity fun &amp; missions</small></div>
+    <div class="fp rv"><div class="st">Re-entry · The Send-Off</div><small>Return capsules (party bags) issued</small></div>
+  </div>
+</section>
+
+<section class="sec"><div class="kick rv">Navigation</div><h2 class="h2 rv">The Star Map</h2>
+  <div class="planets">
+    <div class="pl rv"><div class="pic"></div><h3>Planet Cake</h3><small>Sweetest in the galaxy</small></div>
+    <div class="pl rv"><div class="pic"></div><h3>Planet Play</h3><small>Games &amp; adventures</small></div>
+    <div class="pl rv"><div class="pic"></div><h3>Planet Party</h3><small>Where we celebrate</small></div>
+  </div>
+</section>
+
+<section class="sec venue"><div class="kick rv">Destination arrival</div><h2 class="h2 rv">Stellar Play Arena</h2><p class="rv" style="color:var(--soft)">Orbit Road, Nagapattinam · Touchdown 5:00 PM</p><div class="rv" style="margin-top:16px"><a class="btn btn-o" href="https://maps.google.com/?q=Stellar+Play+Arena+Orbit+Road+Nagapattinam" target="_blank" rel="noopener">📍 Set Navigation</a></div></section>
+
+<section class="sec rsvp"><div class="kick rv">Recruiting crew</div><h2 class="h2 rv">Join the Mission</h2>
+  <form id="rsvp" class="rv" novalidate>
+    <input name="name" type="text" placeholder="Astronaut name" required>
+    <select name="att" aria-label="Your response"><option>Cleared for launch — I'm in 🚀</option><option>Grounded — can't make it</option></select>
+    <input name="g" type="number" min="1" value="1" placeholder="Crew size">
+    <button class="btn" type="submit">Board the Ship</button>
+    <div class="ok" id="ok">✓ Crew confirmed. See you at lift-off. (Demo)</div>
+  </form>
+</section>
+
+<section class="cta"><h2>Want a space-mission invite?</h2><p>AllBee Solutions launches immersive, out-of-this-world digital invitations.</p><div class="row"><a class="btn" href="/invitation#enquiry">Enquire Now</a><a class="btn btn-o" href="https://wa.me/918903607506" target="_blank" rel="noopener">WhatsApp Us</a></div></section>
+<footer class="foot">A sample invitation website crafted by <a href="/invitation">AllBee Solutions</a> · <a href="/invitation-samples">View more designs</a></footer>
+
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+  var target=new Date("2026-07-18T17:00:00+05:30").getTime(),cd=document.getElementById('cd');
+  function p(n){return String(n).padStart(2,'0');}
+  function tick(){var d=Math.max(0,target-Date.now());cd.querySelector('[data-d]').textContent=Math.floor(d/864e5);cd.querySelector('[data-h]').textContent=p(Math.floor(d%864e5/36e5));cd.querySelector('[data-m]').textContent=p(Math.floor(d%36e5/6e4));cd.querySelector('[data-s]').textContent=p(Math.floor(d%6e4/1e3));}
+  tick();setInterval(tick,1000);
+  document.getElementById('rsvp').addEventListener('submit',function(e){e.preventDefault();if(!this.name.value.trim()){this.name.focus();return;}document.getElementById('ok').classList.add('show');this.querySelector('button').textContent='Confirmed ✓';});
+})();
+</script>
+</body>
+</html>

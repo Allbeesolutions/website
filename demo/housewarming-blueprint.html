@@ -123,7 +123,7 @@ section,header,.ribbon{position:relative;z-index:2}
 <section class="rsvp"><div class="sectit rv">Confirm attendance</div><h2 class="rv" style="font-weight:300;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:4px">Add yourself to the <b style="font-weight:600">guest log</b></h2>
   <form id="rsvp" class="rv" novalidate>
     <input name="name" type="text" placeholder="Your name" required>
-    <select name="att"><option>Will attend the open house</option><option>Unable to attend</option></select>
+    <select name="att" aria-label="Your response"><option>Will attend the open house</option><option>Unable to attend</option></select>
     <input name="g" type="number" min="1" value="2" placeholder="Party size">
     <button class="btn" type="submit">Log RSVP</button>
     <div class="ok" id="ok">// Logged. We'll keep a plate warm. (Demo)</div>
