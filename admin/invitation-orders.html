@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Management — AllBee Invitations</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<meta name="theme-color" content="#0F7B6E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--s-1:#FBF8F0;--s-3:#E9F3F0;--border:rgba(15,123,110,.16);--paper:#fff;
+ --new:#2563EB;--designing:#9333EA;--review:#DCA50C;--delivered:#0F7B6E;--completed:#16A34A;
+ --font-display:'Playfair Display',Georgia,serif;--font-body:'Lato',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--s-3);color:var(--ink);line-height:1.5}
+a{color:inherit}button,select,input,textarea{font-family:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 18px}
+.topbar{background:var(--teal-d);color:#fff;position:sticky;top:0;z-index:30}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{font-weight:800}.brand b{font-family:var(--font-display)}.brand span{font-size:11px;opacity:.8;margin-left:6px}
+.tb-actions{display:flex;align-items:center;gap:8px}
+.conn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.15)}
+.conn.live{background:#16A34A}.conn.demo{background:var(--gold);color:#3a2c06}
+.tb-btn{background:rgba(255,255,255,.14);border:none;color:#fff;font-weight:700;font-size:.82rem;padding:7px 14px;border-radius:9px;cursor:pointer}
+.tb-btn:hover{background:rgba(255,255,255,.24)}
+.tablink{color:#fff;font-size:.8rem;font-weight:700;text-decoration:none;opacity:.85;padding:6px 10px;border-radius:8px}
+.tablink:hover{background:rgba(255,255,255,.15)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:16px}
+.stat .v{font-family:var(--font-display);font-size:1.7rem;font-weight:800;color:var(--teal-d);line-height:1}
+.stat .l{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:700}
+.stat.rev .v{color:var(--gold)}
+.pipe{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px}
+.pchip{flex:1;min-width:120px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:border-color .2s,transform .2s}
+.pchip:hover{transform:translateY(-2px)}.pchip.active{border-color:var(--teal);box-shadow:0 4px 14px rgba(8,90,82,.12)}
+.pchip .pc-n{font-size:1.3rem;font-weight:800;font-family:var(--font-display)}
+.pchip .pc-l{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:14px}
+.toolbar input,.toolbar select{padding:9px 12px;border:1px solid var(--border);border-radius:10px;font-size:.88rem;background:#fff}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.toolbar .clear{background:transparent;border:1px solid var(--border);border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:700;font-size:.85rem;color:var(--muted)}
+.lhead,.ord{display:grid;grid-template-columns:90px 1.3fr 1fr .8fr .8fr 130px;gap:10px;align-items:center}
+.lhead{padding:0 14px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+@media(max-width:760px){.lhead{display:none}}
+.ord{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:9px}
+.ord small{color:var(--muted);font-size:.78rem}.ord .nm{font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:4px 10px;border-radius:100px;white-space:nowrap}
+.b-new{background:rgba(37,99,235,.12);color:var(--new)}.b-designing{background:rgba(147,51,234,.12);color:var(--designing)}
+.b-review{background:rgba(220,165,12,.15);color:#9a7406}.b-delivered{background:rgba(15,123,110,.12);color:var(--delivered)}.b-completed{background:rgba(22,163,74,.13);color:var(--completed)}
+.amt{font-weight:800;color:var(--teal-d)}
+.ord-actions{display:flex;gap:6px;justify-content:flex-end}
+.mini{border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--teal-d)}.mini:hover{background:var(--s-1)}
+@media(max-width:760px){.ord{grid-template-columns:1fr 1fr;gap:8px}.ord .cell-label{display:block;font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:700}.ord-actions{grid-column:1/-1;justify-content:flex-start}}
+@media(min-width:761px){.cell-label{display:none}}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.lock{position:fixed;inset:0;background:linear-gradient(160deg,var(--teal-d),#06302b);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.lock-card{background:#fff;border-radius:20px;padding:34px 30px;max-width:380px;width:100%;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.lock-card h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}.lock-card p{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+.lock-card input{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:12px;font-size:1rem;margin-bottom:12px;text-align:center;letter-spacing:2px}
+.lock-card .btn-go{width:100%;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:13px;font-weight:800;cursor:pointer}
+.lock-card .demo-link{display:inline-block;margin-top:16px;color:var(--teal-d);font-weight:700;font-size:.85rem;cursor:pointer;text-decoration:underline}
+.lock-err{color:#DC2626;font-size:.85rem;font-weight:700;min-height:18px;margin-bottom:8px}
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}
+.modal-bg{position:absolute;inset:0;background:rgba(8,32,28,.55)}
+.modal-card{position:relative;background:#fff;border-radius:18px;max-width:520px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+.modal-head h2{font-family:var(--font-display);font-size:1.3rem}.modal-head .x{border:none;background:var(--s-1);width:34px;height:34px;border-radius:50%;font-size:1.3rem;cursor:pointer}
+.modal-body{padding:20px 22px}.field{margin-bottom:14px}.field label{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;display:block;margin-bottom:4px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:480px){.kv{grid-template-columns:1fr}}
+.modal-body select,.modal-body textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:.92rem;background:#fff}
+.notelog{background:var(--s-1);border-radius:10px;padding:10px 12px;font-size:.85rem;color:var(--muted);white-space:pre-wrap;max-height:130px;overflow:auto}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;border-radius:100px;padding:11px 18px;font-weight:800;font-size:.85rem;cursor:pointer}.btn-save{background:var(--teal);color:#fff}.btn-ghost{background:var(--s-1);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:var(--teal-d);color:#fff;padding:12px 22px;border-radius:100px;font-weight:700;font-size:.9rem;z-index:200;transition:transform .4s var(--ease)}.toast.show{transform:translate(-50%,0)}
+.banner{background:rgba(220,165,12,.14);border:1px solid rgba(220,165,12,.4);color:#7a5c06;border-radius:12px;padding:11px 14px;font-size:.85rem;font-weight:600;margin-bottom:14px;text-align:center}
+</style>
+</head>
+<body>
+<div class="lock" id="lock"><div class="lock-card"><h1>📦 Order Management</h1><p>AllBee Invitations — team access</p>
+  <div class="lock-err" id="lockErr"></div>
+  <input id="passInput" type="password" placeholder="Admin passcode" autocomplete="off">
+  <button class="btn-go" id="passGo">Open Orders</button>
+  <span class="demo-link" id="demoLink">Preview with demo data →</span></div></div>
+
+<header class="topbar"><div class="wrap">
+  <div class="brand"><b>AllBee Invitations</b><span>Order Management</span></div>
+  <div class="tb-actions"><a class="tablink" href="/admin/invitation-leads">Leads CRM →</a>
+    <span class="conn demo" id="conn">Demo</span>
+    <button class="tb-btn" id="refreshBtn">Refresh</button><button class="tb-btn" id="signoutBtn">Sign out</button></div>
+</div></header>
+
+<main class="wrap" style="padding-top:18px;padding-bottom:60px">
+  <div class="banner" id="banner" style="display:none"></div>
+  <div class="stats" id="stats"></div>
+  <div class="pipe" id="pipe"></div>
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="Search order, name or mobile…">
+    <select id="fStatus"><option value="">All statuses</option></select>
+    <span style="font-size:.82rem;color:var(--muted)">From <input type="date" id="fFrom"> to <input type="date" id="fTo"></span>
+    <button class="clear" id="clearBtn">Clear</button>
+  </div>
+  <div class="lhead"><div>Order ID</div><div>Customer</div><div>Package</div><div>Amount</div><div>Status</div><div></div></div>
+  <div id="list"></div>
+  <div class="empty" id="empty" style="display:none">No orders match your filters.</div>
+</main>
+
+<div class="modal" id="modal"><div class="modal-bg" data-close></div><div class="modal-card">
+  <div class="modal-head"><h2 id="mTitle">Order</h2><button class="x" data-close>&times;</button></div>
+  <div class="modal-body" id="mBody"></div>
+  <div class="modal-foot"><button class="btn btn-save" id="mSave">Save changes</button><button class="btn btn-ghost" data-close>Close</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STAGES=['New','Designing','Review','Delivered','Completed'];
+const BADGE={'New':'b-new','Designing':'b-designing','Review':'b-review','Delivered':'b-delivered','Completed':'b-completed'};
+const DOT={'New':'var(--new)','Designing':'var(--designing)','Review':'var(--review)','Delivered':'var(--delivered)','Completed':'var(--completed)'};
+const DEMO=[
+ {id:'ORD-1001',date:'2026-06-22',name:'Imran Khan',mobile:'+91 90000 00005',email:'imran@example.com',event_type:'Nikah',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo01',status:'New',notes:''},
+ {id:'ORD-1002',date:'2026-06-21',name:'Priya M',mobile:'+91 90000 00006',email:'priya@example.com',event_type:'Housewarming',invitation_type:'PDF Invitation',package:'Basic',amount:299,payment_id:'pay_demo02',status:'Designing',notes:'[21 Jun] Draft in progress.'},
+ {id:'ORD-1003',date:'2026-06-20',name:'Grace Joseph',mobile:'+91 90000 00004',email:'grace@example.com',event_type:'Wedding',invitation_type:'Both (PDF + Website)',package:'Elite',amount:4999,payment_id:'pay_demo03',status:'Review',notes:'[20 Jun] Shared for approval.'},
+ {id:'ORD-1004',date:'2026-06-18',name:'Karthik R',mobile:'+91 90000 00009',email:'karthik@example.com',event_type:'Wedding',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo04',status:'Delivered',notes:'[19 Jun] Website live.'},
+ {id:'ORD-1005',date:'2026-06-15',name:'Ayesha N',mobile:'+91 90000 00010',email:'',event_type:'Birthday',invitation_type:'PDF Invitation',package:'Premium',amount:599,payment_id:'pay_demo05',status:'Completed',notes:'[16 Jun] Delivered & closed.'},
+ {id:'ORD-1006',date:'2026-06-23',name:'Suresh B',mobile:'+91 90000 00007',email:'suresh@example.com',event_type:'Business Event',invitation_type:'Both (PDF + Website)',package:'Basic',amount:1299,payment_id:'pay_demo06',status:'New',notes:''}
+];
+let ORDERS=[],MODE='demo',PASS='',activeStage='',editing=null;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>'₹'+(Number(n)||0).toLocaleString('en-IN');
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function apiGet(){const r=await fetch('/api/invitation-orders',{headers:{'x-admin-pass':PASS}});if(r.status===401)throw{code:401};if(r.status===503)return{ok:true,configured:false,orders:[]};return r.json();}
+async function apiUpdate(id,patch){if(MODE==='demo'){const o=ORDERS.find(x=>x.id===id);Object.assign(o,patch);return{ok:true};}const r=await fetch('/api/invitation-orders',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'update',id,patch})});return r.json();}
+
+async function unlock(pass){$('#lockErr').textContent='';try{PASS=pass;const d=await apiGet();MODE='live';ORDERS=d.orders||[];$('#conn').className='conn live';$('#conn').textContent='Live';if(!d.configured){$('#banner').style.display='block';$('#banner').innerHTML='Connected, but no Orders sheet yet. Set <b>LEAD_APPS_SCRIPT_URL</b> + Razorpay env to receive real orders.';}sessionStorage.setItem('crm_pass',pass);$('#lock').style.display='none';render();}catch(e){$('#lockErr').textContent='Incorrect passcode.';}}
+function loadDemo(){MODE='demo';PASS='';ORDERS=JSON.parse(JSON.stringify(DEMO));$('#conn').className='conn demo';$('#conn').textContent='Demo';$('#banner').style.display='block';$('#banner').innerHTML='Showing <b>demo data</b> — fictional orders for preview.';$('#lock').style.display='none';render();}
+
+function filtered(){const q=$('#search').value.trim().toLowerCase(),s=$('#fStatus').value||activeStage,from=$('#fFrom').value,to=$('#fTo').value;
+  return ORDERS.filter(o=>{if(q&&!((o.name||'').toLowerCase().includes(q)||(o.mobile||'').toLowerCase().includes(q)||(o.id||'').toLowerCase().includes(q)))return false;if(s&&o.status!==s)return false;if(from&&(o.date||'')<from)return false;if(to&&(o.date||'')>to)return false;return true;});}
+
+function render(){
+  const total=ORDERS.length,rev=ORDERS.reduce((a,o)=>a+(Number(o.amount)||0),0);
+  const pending=ORDERS.filter(o=>['New','Designing','Review'].includes(o.status)).length;
+  const completed=ORDERS.filter(o=>o.status==='Completed').length;
+  $('#stats').innerHTML=[['Orders',total],['Revenue',fmt(rev),'rev'],['Pending',pending],['Completed',completed]]
+    .map(([l,v,c])=>`<div class="stat ${c||''}"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+  $('#pipe').innerHTML=STAGES.map(s=>`<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${ORDERS.filter(o=>o.status===s).length}</div><div class="pc-l"><span class="dot" style="background:${DOT[s]}"></span>${s}</div></div>`).join('');
+  const rows=filtered();$('#empty').style.display=rows.length?'none':'block';
+  $('#list').innerHTML=rows.map(o=>`<div class="ord" data-id="${o.id}">
+    <div><span class="cell-label">Order</span><strong>${o.id}</strong><br><small>${esc(o.date||'')}</small></div>
+    <div><span class="cell-label">Customer</span><span class="nm">${esc(o.name)}</span><br><small>${esc(o.mobile||'')}</small></div>
+    <div><span class="cell-label">Package</span>${esc(o.package||'')}<br><small>${esc((o.invitation_type||'').replace(' (PDF + Website)',''))}</small></div>
+    <div><span class="cell-label">Amount</span><span class="amt">${fmt(o.amount)}</span></div>
+    <div><span class="cell-label">Status</span><span class="badge ${BADGE[o.status]||'b-new'}">${o.status}</span></div>
+    <div class="ord-actions"><button class="mini" data-view="${o.id}">View</button></div></div>`).join('');
+  if(!$('#fStatus').dataset.filled){$('#fStatus').innerHTML='<option value="">All statuses</option>'+STAGES.map(s=>`<option>${s}</option>`).join('');$('#fStatus').dataset.filled='1';}
+}
+function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id;$('#mTitle').textContent=o.id+' · '+o.name;
+  $('#mBody').innerHTML=`<div class="kv">
+    <div class="field"><label>Customer</label>${esc(o.name)}</div>
+    <div class="field"><label>Mobile</label><a href="https://wa.me/${(o.mobile||'').replace(/\\D/g,'')}" target="_blank" rel="noopener">${esc(o.mobile)}</a></div>
+    <div class="field"><label>Email</label>${o.email?esc(o.email):'—'}</div>
+    <div class="field"><label>Event</label>${esc(o.event_type||'—')}</div>
+    <div class="field"><label>Invitation</label>${esc(o.invitation_type||'—')}</div>
+    <div class="field"><label>Package</label>${esc(o.package||'—')}</div>
+    <div class="field"><label>Amount</label><strong>${fmt(o.amount)}</strong></div>
+    <div class="field"><label>Payment ID</label><small>${esc(o.payment_id||'—')}</small></div>
+    <div class="field"><label>Status</label><select id="eStatus">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="field"><label>Order Date</label>${esc(o.date||'—')}</div></div>
+    <div class="field"><label>Activity Log</label><div class="notelog">${esc(o.notes||'No notes yet.')}</div></div>
+    <div class="field"><label>Add Note</label><textarea id="eNote" rows="2" placeholder="Log an update…"></textarea></div>`;
+  $('#modal').classList.add('open');}
+function closeModal(){$('#modal').classList.remove('open');editing=null;}
+async function save(){const o=ORDERS.find(x=>x.id===editing);if(!o)return;const status=$('#eStatus').value,note=$('#eNote').value.trim();let notes=o.notes||'';if(note){notes=(notes?notes+'\n':'')+`[${new Date().toISOString().slice(0,10)}] ${note}`;}const patch={status,notes};try{await apiUpdate(o.id,patch);Object.assign(o,patch);toast('Order updated');closeModal();render();}catch(e){toast('Save failed');}}
+
+$('#passGo').onclick=()=>unlock($('#passInput').value);$('#passInput').addEventListener('keydown',e=>{if(e.key==='Enter')unlock($('#passInput').value);});
+$('#demoLink').onclick=loadDemo;$('#signoutBtn').onclick=()=>{sessionStorage.removeItem('crm_pass');location.reload();};
+$('#refreshBtn').onclick=async()=>{if(MODE==='live'){try{const d=await apiGet();ORDERS=d.orders||[];render();toast('Refreshed');}catch(e){toast('Failed');}}else render();};
+['#search','#fStatus','#fFrom','#fTo'].forEach(s=>$(s).addEventListener('input',render));
+$('#clearBtn').onclick=()=>{$('#search').value='';$('#fStatus').value='';$('#fFrom').value='';$('#fTo').value='';activeStage='';render();};
+$('#pipe').addEventListener('click',e=>{const c=e.target.closest('.pchip');if(!c)return;activeStage=activeStage===c.dataset.stage?'':c.dataset.stage;$('#fStatus').value='';render();});
+$('#list').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b)openOrder(b.dataset.view);});
+$$('[data-close]').forEach(x=>x.addEventListener('click',closeModal));$('#mSave').onclick=save;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+(function(){const p=sessionStorage.getItem('crm_pass');if(p){$('#passInput').value=p;unlock(p);}})();
+</script>
+</body>
+</html>

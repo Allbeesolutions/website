@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Place Your Order | AllBee Invitations</title>
+<meta name="description" content="Order your digital invitation in minutes — choose your event, package and pay securely. PDF and website invitations by AllBee Solutions.">
+<link rel="canonical" href="https://www.allbeesolutions.com/order">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.allbeesolutions.com/order">
+<meta property="og:title" content="Place Your Order | AllBee Invitations">
+<meta property="og:description" content="Order your digital invitation in minutes — choose your event, package and pay securely.">
+<meta property="og:image" content="https://www.allbeesolutions.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<meta name="theme-color" content="#0F7B6E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0F7B6E;--teal-d:#085A52;--teal-l:#149987;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;
+ --s-1:#FBF8F0;--s-3:#E9F3F0;--border:rgba(15,123,110,.16);--paper:#fff;
+ --font-display:'Playfair Display',Georgia,serif;--font-body:'Lato',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--s-3);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.bar{background:var(--teal-d);color:#fff;height:56px;display:flex;align-items:center}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+.brand{font-weight:800}.brand b{font-family:var(--font-display)}.brand span{font-size:11px;opacity:.8;margin-left:6px}
+.bar a.back{color:#fff;font-size:.82rem;font-weight:700;text-decoration:none;opacity:.9}
+.steps{display:flex;gap:6px;margin:22px 0 18px;flex-wrap:wrap}
+.stepdot{flex:1;min-width:40px;height:6px;border-radius:100px;background:#d9e6e2}
+.stepdot.done{background:var(--gold)}.stepdot.active{background:var(--teal)}
+.stepnum{text-align:center;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:18px}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:18px;padding:24px}
+h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:20px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:560px){.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+.opt{border:1.5px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;background:#fff;text-align:left}
+.opt:hover{transform:translateY(-2px)}
+.opt.sel{border-color:var(--teal);box-shadow:0 8px 22px rgba(8,90,82,.12);background:rgba(15,123,110,.03)}
+.opt h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:3px}
+.opt .d{font-size:.82rem;color:var(--muted)}
+.opt .price{font-family:var(--font-display);font-size:1.4rem;color:var(--teal-d);font-weight:800;margin-top:8px}
+.opt ul{margin:10px 0 0;padding-left:18px;font-size:.82rem;color:var(--muted)}
+.opt .pop{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;background:var(--gold);color:#3a2c06;padding:3px 9px;border-radius:100px;margin-bottom:8px}
+.evgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:520px){.evgrid{grid-template-columns:repeat(2,1fr)}}
+.ev{border:1.5px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;font-weight:700;font-size:.86rem;transition:border-color .2s,transform .2s}
+.ev:hover{transform:translateY(-2px)}.ev.sel{border-color:var(--teal);background:rgba(15,123,110,.05)}
+.field{margin-bottom:14px}
+.field label{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;display:block;margin-bottom:5px}
+.field .req{color:#DC2626}
+.field input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:.95rem;background:#fff;font-family:inherit}
+.field input:focus{outline:none;border-color:var(--teal)}
+.row{display:flex;gap:12px}@media(max-width:480px){.row{flex-direction:column}}.row>div{flex:1}
+.summary{background:var(--s-1);border-radius:14px;padding:18px;margin-bottom:6px}
+.sline{display:flex;justify-content:space-between;padding:7px 0;font-size:.92rem;border-bottom:1px dashed var(--border)}
+.sline:last-child{border-bottom:none}
+.sline .lbl{color:var(--muted)} .stotal{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--teal-d)}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn{border:none;border-radius:100px;padding:13px 26px;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--teal);color:#fff}.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
+.btn-pay{background:var(--gold);color:#3a2c06;width:100%;justify-content:center;padding:15px}
+.err{color:#DC2626;font-size:.84rem;font-weight:700;margin-top:8px;min-height:18px}
+.secure{text-align:center;font-size:.8rem;color:var(--muted);margin-top:14px}
+.result{text-align:center;padding:30px 10px}
+.result .big{font-size:3rem}.result h2{font-family:var(--font-display);font-size:1.6rem;margin:10px 0 6px}
+.result p{color:var(--muted);max-width:440px;margin:0 auto 18px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap"><div class="brand"><b>AllBee Invitations</b><span>Order</span></div><a class="back" href="/invitation">← Back to site</a></div></div>
+
+<main class="wrap" style="padding-bottom:60px">
+  <div class="steps" id="steps"></div>
+  <div class="stepnum" id="stepnum"></div>
+
+  <!-- Step 1 -->
+  <section class="card step" data-step="1">
+    <h1>What's the occasion?</h1>
+    <p class="sub">Select your event type to get started.</p>
+    <div class="evgrid" id="evGrid"></div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="card step hidden" data-step="2">
+    <h1>Invitation type</h1>
+    <p class="sub">How would you like to invite your guests?</p>
+    <div class="grid g3" id="typeGrid"></div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="card step hidden" data-step="3">
+    <h1>Choose your package</h1>
+    <p class="sub">Pricing for <strong id="pkgFor">your invitation</strong>.</p>
+    <div class="grid g3" id="pkgGrid"></div>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="card step hidden" data-step="4">
+    <h1>Your details</h1>
+    <p class="sub">So we can personalise and deliver your invitation.</p>
+    <form id="custForm" novalidate>
+      <div class="row">
+        <div class="field"><label>Name <span class="req">*</span></label><input name="name" type="text" placeholder="Your name" required autocomplete="name"></div>
+        <div class="field"><label>Mobile <span class="req">*</span></label><input name="mobile" type="tel" placeholder="+91 ..." required pattern="[+0-9 ()-]{8,20}" autocomplete="tel"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Email</label><input name="email" type="email" placeholder="your@email.com" autocomplete="email"></div>
+        <div class="field"><label>Event Date</label><input name="event_date" type="date"></div>
+      </div>
+    </form>
+  </section>
+
+  <!-- Step 5 -->
+  <section class="card step hidden" data-step="5">
+    <h1>Order summary</h1>
+    <p class="sub">Please review before payment.</p>
+    <div class="summary" id="summary"></div>
+  </section>
+
+  <!-- Step 6 -->
+  <section class="card step hidden" data-step="6">
+    <div id="payView">
+      <h1>Secure payment</h1>
+      <p class="sub">Pay securely to confirm your order. You'll receive an Order ID instantly.</p>
+      <div class="summary" id="paySummary"></div>
+      <button class="btn btn-pay" id="payBtn">Pay <span id="payAmt"></span> &amp; Place Order</button>
+      <div class="err" id="payErr"></div>
+      <div class="secure">🔒 Payments are processed securely via Razorpay. We never store your card details.</div>
+    </div>
+    <div id="resultView" class="result hidden"></div>
+  </section>
+
+  <div class="nav" id="nav">
+    <button class="btn btn-ghost" id="backBtn">← Back</button>
+    <button class="btn btn-primary" id="nextBtn">Continue →</button>
+  </div>
+</main>
+
+<script>
+/* ---------- configurable pricing (display) — server re-computes authoritatively ---------- */
+const PRICING={
+  'PDF Invitation':   {Basic:299, Premium:599, Elite:999},
+  'Website Invitation':{Basic:999, Premium:1999, Elite:3999},
+  'Both (PDF + Website)':{Basic:1299, Premium:2499, Elite:4999}
+};
+const EVENTS=['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
+const TYPES=[
+ {k:'PDF Invitation',d:'A beautiful downloadable invitation card to share on WhatsApp.'},
+ {k:'Website Invitation',d:'A live invitation website with RSVP, countdown, maps & gallery.'},
+ {k:'Both (PDF + Website)',d:'Get the card and the website together — best value.'}
+];
+const PKG_FEATURES={
+ Basic:['1 design concept','Standard delivery','WhatsApp ready'],
+ Premium:['Premium design','Priority delivery','Revisions included'],
+ Elite:['Signature design','Fastest delivery','Unlimited revisions','Custom domain (website)']
+};
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+
+const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0};
+let step=1; const TOTAL=6;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+function renderSteps(){
+  $('#steps').innerHTML=Array.from({length:TOTAL},(_,i)=>`<div class="stepdot ${i+1<step?'done':''} ${i+1===step?'active':''}"></div>`).join('');
+  $('#stepnum').textContent=`Step ${step} of ${TOTAL}`;
+}
+function show(){
+  $$('.step').forEach(s=>s.classList.toggle('hidden',+s.dataset.step!==step));
+  $('#backBtn').style.visibility=step===1?'hidden':'visible';
+  $('#nav').style.display=step===6?'none':'flex';
+  if(step===3) buildPackages();
+  if(step===5) buildSummary('#summary');
+  if(step===6) buildPay();
+  renderSteps();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function amount(){ return (PRICING[order.type]&&PRICING[order.type][order.pkg])||0; }
+
+/* step builders */
+$('#evGrid').innerHTML=EVENTS.map(e=>`<div class="ev" data-ev="${e}">${e}</div>`).join('');
+$('#typeGrid').innerHTML=TYPES.map(t=>`<div class="opt" data-type="${t.k}"><h3>${t.k.replace(' (PDF + Website)','')}</h3><div class="d">${t.d}</div></div>`).join('');
+function buildPackages(){
+  $('#pkgFor').textContent=order.type;
+  const p=PRICING[order.type];
+  $('#pkgGrid').innerHTML=['Basic','Premium','Elite'].map(k=>`
+    <div class="opt ${k==='Premium'?'':''}" data-pkg="${k}">
+      ${k==='Premium'?'<span class="pop">Most Popular</span>':''}
+      <h3>${k}</h3><div class="price">${fmt(p[k])}</div>
+      <ul>${PKG_FEATURES[k].map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>`).join('');
+  $$('#pkgGrid .opt').forEach(o=>o.classList.toggle('sel',o.dataset.pkg===order.pkg));
+}
+function buildSummary(sel){
+  $(sel).innerHTML=`
+    <div class="sline"><span class="lbl">Event</span><span>${order.event||'—'}</span></div>
+    <div class="sline"><span class="lbl">Invitation</span><span>${order.type.replace(' (PDF + Website)','')||'—'}</span></div>
+    <div class="sline"><span class="lbl">Package</span><span>${order.pkg||'—'}</span></div>
+    <div class="sline"><span class="lbl">Name</span><span>${order.name||'—'}</span></div>
+    <div class="sline"><span class="lbl">Mobile</span><span>${order.mobile||'—'}</span></div>
+    <div class="sline"><span class="lbl">Event date</span><span>${order.event_date||'—'}</span></div>
+    <div class="sline"><span class="lbl">Total</span><span class="stotal">${fmt(amount())}</span></div>`;
+}
+function buildPay(){ buildSummary('#paySummary'); $('#payAmt').textContent=fmt(amount()); }
+
+/* selection events */
+$('#evGrid').addEventListener('click',e=>{const c=e.target.closest('.ev');if(!c)return;order.event=c.dataset.ev;$$('#evGrid .ev').forEach(x=>x.classList.toggle('sel',x===c));});
+$('#typeGrid').addEventListener('click',e=>{const c=e.target.closest('.opt');if(!c)return;order.type=c.dataset.type;order.pkg='';$$('#typeGrid .opt').forEach(x=>x.classList.toggle('sel',x===c));});
+$('#pkgGrid').addEventListener('click',e=>{const c=e.target.closest('.opt');if(!c)return;order.pkg=c.dataset.pkg;$$('#pkgGrid .opt').forEach(x=>x.classList.toggle('sel',x===c));});
+
+/* validation per step */
+function valid(){
+  if(step===1) return !!order.event;
+  if(step===2) return !!order.type;
+  if(step===3) return !!order.pkg;
+  if(step===4){const f=$('#custForm');order.name=f.name.value.trim();order.mobile=f.mobile.value.trim();order.email=f.email.value.trim();order.event_date=f.event_date.value;
+    if(!order.name||!/^[+0-9 ()-]{8,20}$/.test(order.mobile)){f.reportValidity();return false;} return true;}
+  return true;
+}
+$('#nextBtn').onclick=()=>{ if(!valid()){alert('Please complete this step to continue.');return;} order.amount=amount(); if(step<TOTAL){step++;show();} };
+$('#backBtn').onclick=()=>{ if(step>1){step--;show();} };
+
+/* ---------- payment ---------- */
+function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=cb; s.onerror=()=>{$('#payErr').textContent='Could not load the payment gateway. Please try again.';}; document.head.appendChild(s); }
+function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
+function successView(orderId){ showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`); }
+
+$('#payBtn').onclick=async()=>{
+  $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
+  try{
+    const res=await fetch('/api/order-create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});
+    const data=await res.json();
+    if(!data.ok){ $('#payErr').textContent=data.error==='validation_error'?'Please check your details.':'Something went wrong. Please try again.'; reset(); return; }
+    if(!data.configured){
+      /* Razorpay not live yet — capture the order so no customer is lost */
+      await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
+          interested_in:[order.type],notes:`ORDER REQUEST · ${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:'/order',render_ts:Date.now()-3000})});
+      showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
+      return;
+    }
+    loadRzp(()=>{
+      const rzp=new Razorpay({key:data.key_id,order_id:data.order_id,amount:data.amount,currency:'INR',
+        name:'AllBee Invitations',description:`${order.pkg} · ${order.type}`,image:'/logo.png',
+        prefill:{name:order.name,email:order.email,contact:order.mobile},theme:{color:'#0F7B6E'},
+        handler:function(resp){ successView(data.receipt); },
+        modal:{ondismiss:function(){ reset(); }}});
+      rzp.on('payment.failed',function(){ $('#payErr').textContent='Payment failed or cancelled. Please try again.'; reset(); });
+      rzp.open();
+    });
+  }catch(e){ $('#payErr').textContent='Network error. Please try again.'; reset(); }
+  function reset(){ $('#payBtn').disabled=false; $('#payBtn').innerHTML='Pay <span id="payAmt">'+fmt(amount())+'</span> &amp; Place Order'; }
+};
+
+show();
+</script>
+</body>
+</html>
