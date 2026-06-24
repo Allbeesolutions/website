@@ -6182,12 +6182,15 @@ function tsHover(id){
 </script>
 
 <script>
-/* ── AllBee Invitations — enquiry form (no backend yet; ready for API) ── */
+/* ── AllBee Invitations — enquiry form → /api/invitation-enquiry ── */
 (function(){
   var form=document.getElementById('invEnquiryForm');
   var toast=document.getElementById('invToast');
+  var RENDER_TS=Date.now();              // time-trap baseline for spam protection
   function showToast(msg){ if(!toast)return; var s=toast.querySelector('.inv-toast-msg'); if(s)s.textContent=msg; toast.classList.add('show'); setTimeout(function(){toast.classList.remove('show');},4500); }
   if(form){
+    var btn=form.querySelector('button[type="submit"]');
+    var btnHTML=btn?btn.innerHTML:'';
     form.addEventListener('submit',function(e){
       e.preventDefault();
       if(form.querySelector('[name="_gotcha"]') && form.querySelector('[name="_gotcha"]').value){ return; }
@@ -6196,11 +6199,16 @@ function tsHover(id){
       var data={ name:fd.get('name'), mobile:fd.get('mobile'), email:fd.get('email'),
         event_type:fd.get('event_type'), event_date:fd.get('event_date'),
         interested_in:fd.getAll('interested_in'), notes:fd.get('notes'),
-        source:'invitation_landing' };
-      /* TODO: POST `data` to /api/invitation-enquiry when the backend is ready. */
-      console.log('AllBee Invitations — enquiry submitted:', data);
-      showToast('Thank you! We will contact you soon.');
-      form.reset();
+        source:'/invitation', render_ts:RENDER_TS, _gotcha:fd.get('_gotcha')||'' };
+      if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+      fetch('/api/invitation-enquiry',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
+        .then(function(r){ return r.json().catch(function(){ return {ok:r.ok}; }); })
+        .then(function(res){
+          if(res && res.ok){ showToast('Thank you! We will contact you soon.'); form.reset(); }
+          else { showToast('Sorry, something went wrong. Please try again or WhatsApp us.'); }
+        })
+        .catch(function(){ showToast('Network error. Please try again or WhatsApp us.'); })
+        .finally(function(){ if(btn){ btn.disabled=false; btn.innerHTML=btnHTML; } });
     });
   }
   document.querySelectorAll('[data-scroll="enquiry"]').forEach(function(b){
