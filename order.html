@@ -164,7 +164,14 @@ const PKG_FEATURES={
 };
 const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
 
-const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0};
+const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0,lead_id:'',source:'/order'};
+/* Prefill from URL (e.g. "Convert Lead to Order" from the CRM) */
+(function(){const q=new URLSearchParams(location.search);
+  if(q.get('name'))order.name=q.get('name'); if(q.get('mobile'))order.mobile=q.get('mobile');
+  if(q.get('email'))order.email=q.get('email'); if(q.get('event'))order.event=q.get('event');
+  if(q.get('type'))order.type=q.get('type'); if(q.get('event_date'))order.event_date=q.get('event_date');
+  if(q.get('lead_id')){order.lead_id=q.get('lead_id');order.source='lead_crm';}
+  if(q.get('source'))order.source=q.get('source');})();
 let step=1; const TOTAL=6;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 
@@ -187,6 +194,13 @@ function amount(){ return (PRICING[order.type]&&PRICING[order.type][order.pkg])|
 /* step builders */
 $('#evGrid').innerHTML=EVENTS.map(e=>`<div class="ev" data-ev="${e}">${e}</div>`).join('');
 $('#typeGrid').innerHTML=TYPES.map(t=>`<div class="opt" data-type="${t.k}"><h3>${t.k.replace(' (PDF + Website)','')}</h3><div class="d">${t.d}</div></div>`).join('');
+/* reflect any URL prefill in the UI */
+(function(){
+  if(order.event){const el=document.querySelector('#evGrid [data-ev="'+order.event+'"]');if(el)el.classList.add('sel');}
+  if(order.type){const el=document.querySelector('#typeGrid [data-type="'+order.type+'"]');if(el)el.classList.add('sel');}
+  const f=$('#custForm'); if(order.name)f.name.value=order.name; if(order.mobile)f.mobile.value=order.mobile;
+  if(order.email)f.email.value=order.email; if(order.event_date)f.event_date.value=order.event_date;
+})();
 function buildPackages(){
   $('#pkgFor').textContent=order.type;
   const p=PRICING[order.type];
@@ -239,10 +253,13 @@ $('#payBtn').onclick=async()=>{
     const data=await res.json();
     if(!data.ok){ $('#payErr').textContent=data.error==='validation_error'?'Please check your details.':'Something went wrong. Please try again.'; reset(); return; }
     if(!data.configured){
-      /* Razorpay not live yet — capture the order so no customer is lost */
-      await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
-          interested_in:[order.type],notes:`ORDER REQUEST · ${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:'/order',render_ts:Date.now()-3000})});
+      /* Razorpay not live yet — capture the order so no customer is lost.
+         Skip creating a new lead when this came from an existing lead (avoid duplicates). */
+      if(!order.lead_id){
+        await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
+            interested_in:[order.type],notes:`ORDER REQUEST · ${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',render_ts:Date.now()-3000})});
+      }
       showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
       return;
     }

@@ -161,6 +161,7 @@ a{color:inherit} button,select,input,textarea{font-family:inherit}
     <div class="modal-body" id="mBody"></div>
     <div class="modal-foot">
       <button class="btn btn-save" id="mSave">Save changes</button>
+      <button class="btn btn-won" id="mConvert" style="background:var(--gold);color:#3a2c06">Convert to Order →</button>
       <button class="btn btn-won" id="mWon">Mark Won</button>
       <button class="btn btn-lost" id="mLost">Mark Lost</button>
       <button class="btn btn-ghost" data-close>Close</button>
@@ -325,6 +326,10 @@ $('#pipe').addEventListener('click',e=>{const c=e.target.closest('.pchip');if(!c
 $('#list').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b)openLead(b.dataset.view);});
 $$('[data-close]').forEach(x=>x.addEventListener('click',closeModal));
 $('#mSave').onclick=()=>saveLead();
+$('#mConvert').onclick=()=>{const l=LEADS.find(x=>x.id===editing);if(!l)return;
+  const ii=(l.interested_in||'');const type=/both/i.test(ii)?'Both (PDF + Website)':/website/i.test(ii)?'Website Invitation':/pdf/i.test(ii)?'PDF Invitation':'';
+  const p=new URLSearchParams({name:l.name||'',mobile:l.mobile||'',email:l.email||'',event:l.event_type||'',event_date:l.event_date||'',type:type,lead_id:l.id,source:l.source||'lead_crm'});
+  window.open('/order?'+p.toString(),'_blank');};
 $('#mWon').onclick=()=>{const v=prompt('Deal value won (₹):',$('#eValue').value||'0');if(v===null)return;$('#eValue').value=Number(v)||0;$('#eStatus').value='Won';saveLead({status:'Won'});};
 $('#mLost').onclick=()=>{$('#eStatus').value='Lost';saveLead({status:'Lost'});};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});

@@ -78,6 +78,17 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
 .btn{border:none;border-radius:100px;padding:11px 18px;font-weight:800;font-size:.85rem;cursor:pointer}.btn-save{background:var(--teal);color:#fff}.btn-ghost{background:var(--s-1);color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:var(--teal-d);color:#fff;padding:12px 22px;border-radius:100px;font-weight:700;font-size:.9rem;z-index:200;transition:transform .4s var(--ease)}.toast.show{transform:translate(-50%,0)}
 .banner{background:rgba(220,165,12,.14);border:1px solid rgba(220,165,12,.4);color:#7a5c06;border-radius:12px;padding:11px 14px;font-size:.85rem;font-weight:600;margin-bottom:14px;text-align:center}
+.rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.rep-grid{grid-template-columns:1fr}}
+.rep-card{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:20px}
+.rep-card h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:14px}
+.rep-month{grid-column:1/-1;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.rep-month .big{font-family:var(--font-display);font-size:2.4rem;font-weight:800;color:var(--gold)}
+.rep-row{margin-bottom:12px}
+.rep-row .top{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:5px}
+.rep-row .top b{font-weight:700}.rep-row .top .amt{color:var(--teal-d);font-weight:800}
+.rep-bar{height:9px;border-radius:100px;background:var(--s-3);overflow:hidden}
+.rep-bar span{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-l))}
+.rep-row small{color:var(--muted);font-size:.76rem}
 </style>
 </head>
 <body>
@@ -91,6 +102,7 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
   <div class="brand"><b>AllBee Invitations</b><span>Order Management</span></div>
   <div class="tb-actions"><a class="tablink" href="/admin/invitation-leads">Leads CRM →</a>
     <span class="conn demo" id="conn">Demo</span>
+    <button class="tb-btn" id="reportsBtn">Reports</button>
     <button class="tb-btn" id="refreshBtn">Refresh</button><button class="tb-btn" id="signoutBtn">Sign out</button></div>
 </div></header>
 
@@ -107,6 +119,7 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
   <div class="lhead"><div>Order ID</div><div>Customer</div><div>Package</div><div>Amount</div><div>Status</div><div></div></div>
   <div id="list"></div>
   <div class="empty" id="empty" style="display:none">No orders match your filters.</div>
+  <div id="reports" style="display:none"></div>
 </main>
 
 <div class="modal" id="modal"><div class="modal-bg" data-close></div><div class="modal-card">
@@ -121,12 +134,12 @@ const STAGES=['New','Designing','Review','Delivered','Completed'];
 const BADGE={'New':'b-new','Designing':'b-designing','Review':'b-review','Delivered':'b-delivered','Completed':'b-completed'};
 const DOT={'New':'var(--new)','Designing':'var(--designing)','Review':'var(--review)','Delivered':'var(--delivered)','Completed':'var(--completed)'};
 const DEMO=[
- {id:'ORD-1001',date:'2026-06-22',name:'Imran Khan',mobile:'+91 90000 00005',email:'imran@example.com',event_type:'Nikah',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo01',status:'New',notes:''},
- {id:'ORD-1002',date:'2026-06-21',name:'Priya M',mobile:'+91 90000 00006',email:'priya@example.com',event_type:'Housewarming',invitation_type:'PDF Invitation',package:'Basic',amount:299,payment_id:'pay_demo02',status:'Designing',notes:'[21 Jun] Draft in progress.'},
- {id:'ORD-1003',date:'2026-06-20',name:'Grace Joseph',mobile:'+91 90000 00004',email:'grace@example.com',event_type:'Wedding',invitation_type:'Both (PDF + Website)',package:'Elite',amount:4999,payment_id:'pay_demo03',status:'Review',notes:'[20 Jun] Shared for approval.'},
- {id:'ORD-1004',date:'2026-06-18',name:'Karthik R',mobile:'+91 90000 00009',email:'karthik@example.com',event_type:'Wedding',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo04',status:'Delivered',notes:'[19 Jun] Website live.'},
- {id:'ORD-1005',date:'2026-06-15',name:'Ayesha N',mobile:'+91 90000 00010',email:'',event_type:'Birthday',invitation_type:'PDF Invitation',package:'Premium',amount:599,payment_id:'pay_demo05',status:'Completed',notes:'[16 Jun] Delivered & closed.'},
- {id:'ORD-1006',date:'2026-06-23',name:'Suresh B',mobile:'+91 90000 00007',email:'suresh@example.com',event_type:'Business Event',invitation_type:'Both (PDF + Website)',package:'Basic',amount:1299,payment_id:'pay_demo06',status:'New',notes:''}
+ {id:'ORD-1001',date:'2026-06-22',name:'Imran Khan',mobile:'+91 90000 00005',email:'imran@example.com',event_type:'Nikah',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo01',status:'New',source:'/demo/muslim-wedding',lead_id:'',notes:''},
+ {id:'ORD-1002',date:'2026-06-21',name:'Priya M',mobile:'+91 90000 00006',email:'priya@example.com',event_type:'Housewarming',invitation_type:'PDF Invitation',package:'Basic',amount:299,payment_id:'pay_demo02',status:'Designing',source:'lead_crm',lead_id:'AB-0006',notes:'[21 Jun] Draft in progress.'},
+ {id:'ORD-1003',date:'2026-06-20',name:'Grace Joseph',mobile:'+91 90000 00004',email:'grace@example.com',event_type:'Wedding',invitation_type:'Both (PDF + Website)',package:'Elite',amount:4999,payment_id:'pay_demo03',status:'Review',source:'lead_crm',lead_id:'AB-0004',notes:'[20 Jun] Shared for approval.'},
+ {id:'ORD-1004',date:'2026-06-18',name:'Karthik R',mobile:'+91 90000 00009',email:'karthik@example.com',event_type:'Wedding',invitation_type:'Website Invitation',package:'Premium',amount:1999,payment_id:'pay_demo04',status:'Delivered',source:'/order',lead_id:'',notes:'[19 Jun] Website live.'},
+ {id:'ORD-1005',date:'2026-06-15',name:'Ayesha N',mobile:'+91 90000 00010',email:'',event_type:'Birthday',invitation_type:'PDF Invitation',package:'Premium',amount:599,payment_id:'pay_demo05',status:'Completed',source:'/invitation',lead_id:'',notes:'[16 Jun] Delivered & closed.'},
+ {id:'ORD-1006',date:'2026-06-23',name:'Suresh B',mobile:'+91 90000 00007',email:'suresh@example.com',event_type:'Business Event',invitation_type:'Both (PDF + Website)',package:'Basic',amount:1299,payment_id:'pay_demo06',status:'New',source:'/demo/business-launch',lead_id:'',notes:''}
 ];
 let ORDERS=[],MODE='demo',PASS='',activeStage='',editing=null;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -170,6 +183,7 @@ function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id
     <div class="field"><label>Package</label>${esc(o.package||'—')}</div>
     <div class="field"><label>Amount</label><strong>${fmt(o.amount)}</strong></div>
     <div class="field"><label>Payment ID</label><small>${esc(o.payment_id||'—')}</small></div>
+    <div class="field"><label>Lead Source</label>${esc(o.source||'—')}${o.lead_id?` · <a href="/admin/invitation-leads" target="_blank">${esc(o.lead_id)}</a>`:''}</div>
     <div class="field"><label>Status</label><select id="eStatus">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
     <div class="field"><label>Order Date</label>${esc(o.date||'—')}</div></div>
     <div class="field"><label>Activity Log</label><div class="notelog">${esc(o.notes||'No notes yet.')}</div></div>
@@ -185,6 +199,35 @@ $('#refreshBtn').onclick=async()=>{if(MODE==='live'){try{const d=await apiGet();
 $('#clearBtn').onclick=()=>{$('#search').value='';$('#fStatus').value='';$('#fFrom').value='';$('#fTo').value='';activeStage='';render();};
 $('#pipe').addEventListener('click',e=>{const c=e.target.closest('.pchip');if(!c)return;activeStage=activeStage===c.dataset.stage?'':c.dataset.stage;$('#fStatus').value='';render();});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b)openOrder(b.dataset.view);});
+
+/* ---------- reporting ---------- */
+let reportsOn=false;
+function group(key){const m={};ORDERS.forEach(o=>{const k=key(o)||'—';(m[k]=m[k]||{count:0,rev:0}).count++;m[k].rev+=Number(o.amount)||0;});return m;}
+function bars(obj,title){
+  const ents=Object.entries(obj).sort((a,b)=>b[1].rev-a[1].rev);const max=Math.max(1,...ents.map(e=>e[1].rev));
+  return `<div class="rep-card"><h3>${title}</h3>${ents.map(([k,v])=>`
+    <div class="rep-row"><div class="top"><b>${esc(k)}</b><span class="amt">${fmt(v.rev)}</span></div>
+    <div class="rep-bar"><span style="width:${Math.round(v.rev/max*100)}%"></span></div>
+    <small>${v.count} order${v.count===1?'':'s'}</small></div>`).join('')||'<small>No data.</small>'}</div>`;
+}
+function renderReports(){
+  const ym=new Date().toISOString().slice(0,7);
+  const month=ORDERS.filter(o=>(o.date||'').slice(0,7)===ym);
+  const monthRev=month.reduce((a,o)=>a+(Number(o.amount)||0),0);
+  $('#reports').innerHTML=`<div class="rep-grid">
+    <div class="rep-card rep-month"><div><div class="l" style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700">Revenue this month</div><div class="big">${fmt(monthRev)}</div></div><div><div class="l" style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700">Orders this month</div><div class="big" style="color:var(--teal-d)">${month.length}</div></div></div>
+    ${bars(group(o=>o.package),'Revenue by Package')}
+    ${bars(group(o=>o.event_type),'Revenue by Event Type')}
+    ${bars(group(o=>o.source||'direct'),'Lead Source Performance')}
+  </div>`;
+}
+$('#reportsBtn').onclick=()=>{
+  reportsOn=!reportsOn;
+  ['#stats','#pipe','.toolbar','.lhead','#list','#empty'].forEach(s=>{const el=document.querySelector(s);if(el)el.style.display=reportsOn?'none':'';});
+  $('#reports').style.display=reportsOn?'block':'none';
+  $('#reportsBtn').textContent=reportsOn?'← Orders':'Reports';
+  if(reportsOn)renderReports();
+};
 $$('[data-close]').forEach(x=>x.addEventListener('click',closeModal));$('#mSave').onclick=save;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 (function(){const p=sessionStorage.getItem('crm_pass');if(p){$('#passInput').value=p;unlock(p);}})();

@@ -49,6 +49,7 @@ module.exports = async (req, res) => {
           name: n.name, mobile: n.mobile, email: n.email,
           event_type: n.event, invitation_type: n.type, package: n.pkg,
           event_date: n.event_date, receipt: n.receipt,
+          lead_id: n.lead_id, source: n.source,
         }),
       });
     } catch (e) { console.error('[order-webhook] persist failed:', String(e.message || e), 'payment', pay.id); }
