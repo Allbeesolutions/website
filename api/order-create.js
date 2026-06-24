@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
   const name = s(b.name).slice(0,80), mobile = s(b.mobile).slice(0,20), email = s(b.email).slice(0,120);
   const event_date = s(b.event_date).slice(0,20);
   const lead_id = s(b.lead_id).slice(0,20), source = s(b.source).slice(0,60) || '/order';
+  const template_id = s(b.template_id).slice(0,20), template_name = s(b.template_name).slice(0,60), demo = s(b.demo).slice(0,40);
 
   // validate + authoritative price
   const price = PRICING[type] && PRICING[type][pkg];
@@ -51,7 +52,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: `Basic ${auth}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         amount: amountPaise, currency: 'INR', receipt,
-        notes: { event, type, pkg, name, mobile, email, event_date, receipt, lead_id, source },
+        notes: { event, type, pkg, name, mobile, email, event_date, receipt, lead_id, source, template_id, template_name, demo },
       }),
     });
     const order = await rp.json();

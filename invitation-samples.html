@@ -6209,7 +6209,7 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
   function card(t){
     var demoHref = t.demo ? ('/demo/'+t.demo+(t.variant?('?v='+t.variant):'')) : null;
     var demoBtn = t.demo ? `<a href="${demoHref}" target="_blank" rel="noopener" class="btn-primary">View Demo</a>` : `<span class="btn-disabled">Preview soon</span>`;
-    var order='/order?event='+encodeURIComponent(t.event)+'&source='+encodeURIComponent('template:'+t.id);
+    var order='/order?event='+encodeURIComponent(t.event)+'&template_id='+encodeURIComponent(t.id)+'&template_name='+encodeURIComponent(t.name)+(t.demo?'&demo='+encodeURIComponent(t.demo):'')+(t.variant?'&v='+encodeURIComponent(t.variant):'')+'&source='+encodeURIComponent('template:'+t.id);
     var img = t.img ? `<img src="${t.img}" alt="${esc(t.name)} invitation template" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">` : '';
     return `<article class="is-card" data-aos>
       <div class="is-thumb is-theme-${t.theme}">

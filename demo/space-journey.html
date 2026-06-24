@@ -142,5 +142,38 @@ section,header{position:relative;z-index:2}
   document.getElementById('rsvp').addEventListener('submit',function(e){e.preventDefault();if(!this.name.value.trim()){this.name.focus();return;}document.getElementById('ok').classList.add('show');this.querySelector('button').textContent='Confirmed ✓';});
 })();
 </script>
+<!--abx-conv-->
+<style>
+.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
+.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
+.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
+.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
+.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
+.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
+.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
+.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
+.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
+@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
+</style>
+<section class="abx-trust">
+  <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
+  <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" href="/invitation#enquiry">Enquire First</a></div>
+  <div class="idline" data-abx-id></div>
+</section>
+<div class="abx-dock">
+  <a class="o" data-abx-order href="/order">&#128722; <span>Order this design</span></a>
+  <a class="wa" data-abx-wa href="https://wa.me/918903607506" target="_blank" rel="noopener" aria-label="WhatsApp us">&#128172;</a>
+</div>
+<script>(function(){var CFG={"slug":"space-journey","def":{"id":"AB-BIR-008","name":"Space Journey","event":"Birthday"},"variants":{}};
+var v=new URLSearchParams(location.search).get('v')||'';
+var t=CFG.variants[v]||CFG.def;
+var u='/order?event='+encodeURIComponent(t.event||'')+'&template_id='+encodeURIComponent(t.id||'')+'&template_name='+encodeURIComponent(t.name||'')+'&demo='+encodeURIComponent(CFG.slug)+(v?('&v='+encodeURIComponent(v)):'')+'&source='+encodeURIComponent('demo:'+CFG.slug);
+[].forEach.call(document.querySelectorAll('[data-abx-order]'),function(a){a.href=u;});
+var idl=document.querySelector('[data-abx-id]');if(idl)idl.textContent=(t.id?('Template '+t.id):'')+(t.name?('  ·  '+t.name):'');
+var wa=document.querySelector('[data-abx-wa]');if(wa)wa.href='https://wa.me/918903607506?text='+encodeURIComponent('Hi AllBee! I love the "'+(t.name||CFG.slug)+'" design and would like to order one.');
+})();</script>
+
 </body>
 </html>

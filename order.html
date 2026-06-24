@@ -164,13 +164,16 @@ const PKG_FEATURES={
 };
 const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
 
-const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0,lead_id:'',source:'/order'};
-/* Prefill from URL (e.g. "Convert Lead to Order" from the CRM) */
+const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0,lead_id:'',source:'/order',template_id:'',template_name:'',demo:''};
+/* Prefill from URL (e.g. "Convert Lead to Order" from the CRM, or "Order this design" from a demo) */
 (function(){const q=new URLSearchParams(location.search);
   if(q.get('name'))order.name=q.get('name'); if(q.get('mobile'))order.mobile=q.get('mobile');
   if(q.get('email'))order.email=q.get('email'); if(q.get('event'))order.event=q.get('event');
   if(q.get('type'))order.type=q.get('type'); if(q.get('event_date'))order.event_date=q.get('event_date');
   if(q.get('lead_id')){order.lead_id=q.get('lead_id');order.source='lead_crm';}
+  if(q.get('template_id'))order.template_id=q.get('template_id').slice(0,20);
+  if(q.get('template_name'))order.template_name=q.get('template_name').slice(0,60);
+  if(q.get('demo'))order.demo=q.get('demo').slice(0,40);
   if(q.get('source'))order.source=q.get('source');})();
 let step=1; const TOTAL=6;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -214,6 +217,7 @@ function buildPackages(){
 }
 function buildSummary(sel){
   $(sel).innerHTML=`
+    ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${order.template_name}${order.template_id?` <small style="color:var(--muted)">(${order.template_id})</small>`:''}</span></div>`:''}
     <div class="sline"><span class="lbl">Event</span><span>${order.event||'—'}</span></div>
     <div class="sline"><span class="lbl">Invitation</span><span>${order.type.replace(' (PDF + Website)','')||'—'}</span></div>
     <div class="sline"><span class="lbl">Package</span><span>${order.pkg||'—'}</span></div>
@@ -258,7 +262,7 @@ $('#payBtn').onclick=async()=>{
       if(!order.lead_id){
         await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
-            interested_in:[order.type],notes:`ORDER REQUEST · ${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',render_ts:Date.now()-3000})});
+            interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',render_ts:Date.now()-3000})});
       }
       showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
       return;
