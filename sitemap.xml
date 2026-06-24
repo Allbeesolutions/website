@@ -126,6 +126,31 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://www.allbeesolutions.com/demo/cinema-trailer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/netflix-premiere</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/passport-journey</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/museum-exhibit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/luxury-watch</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.allbeesolutions.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
