@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Sharma Residence — Open House | AllBee Invitations Demo</title>
+<meta name="description" content="A sample architectural-blueprint digital housewarming invitation by AllBee Solutions — technical-drawing aesthetic with floor plan, title block and move-in countdown.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.allbeesolutions.com/demo/housewarming-blueprint">
+<meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/housewarming-blueprint">
+<meta property="og:title" content="The Sharma Residence — Open House | AllBee Invitations Demo">
+<meta property="og:description" content="An architectural-blueprint style housewarming invitation by AllBee Solutions.">
+<meta property="og:image" content="https://www.allbeesolutions.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Sharma Residence — Open House">
+<meta name="twitter:description" content="An architectural-blueprint style housewarming invitation by AllBee Solutions.">
+<meta name="theme-color" content="#0a2440">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"The Sharma Residence — Housewarming","startDate":"2026-08-30T11:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"The Sharma Residence","address":"Plot 24, Lake View Layout, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/housewarming-blueprint"}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#0a2440;--blue2:#0d2b4e;--cyan:#7fd4ff;--ink:#dce9f5;--soft:#7e9bb8;--line:rgba(127,212,255,.35)}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--blue);color:var(--ink);line-height:1.7;font-weight:300}
+.mono{font-family:'Space Mono',monospace}
+a{color:inherit;text-decoration:none}
+/* blueprint grid background */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;opacity:.4}
+.grid-bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(127,212,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(127,212,255,.18) 1px,transparent 1px);background-size:140px 140px}
+section,header,.ribbon{position:relative;z-index:2}
+.ribbon{background:rgba(0,0,0,.35);color:var(--cyan);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;font-family:'Space Mono',monospace;border-bottom:1px solid var(--line)}
+.ribbon a{color:#fff;font-weight:700;border-bottom:1px solid var(--cyan)}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px}
+/* drafting title block hero */
+.hero{padding:80px 24px 50px}
+.sheet{border:1.5px solid var(--cyan);position:relative}
+.sheet .corner{position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan)}
+.c1{top:-1px;left:-1px;border-right:none;border-bottom:none}.c2{top:-1px;right:-1px;border-left:none;border-bottom:none}
+.c3{bottom:-1px;left:-1px;border-right:none;border-top:none}.c4{bottom:-1px;right:-1px;border-left:none;border-top:none}
+.sheet .head{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:12px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--soft);text-transform:uppercase;flex-wrap:wrap;gap:6px}
+.sheet .body{padding:48px 28px;text-align:center}
+.sheet .proj{font-family:'Space Mono',monospace;color:var(--cyan);letter-spacing:4px;text-transform:uppercase;font-size:12px}
+.sheet h1{font-weight:300;font-size:clamp(2.2rem,8vw,4.4rem);line-height:1.05;margin:14px 0 6px;letter-spacing:-.01em}
+.sheet h1 b{font-weight:600}
+.sheet .scope{color:var(--soft);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px}
+.dim{display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(--cyan);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px}
+.dim .l{width:46px;height:1px;background:var(--cyan);position:relative}.dim .l::before,.dim .l::after{content:"";position:absolute;top:-3px;width:1px;height:7px;background:var(--cyan)}.dim .l::before{left:0}.dim .l::after{right:0}
+/* floor plan */
+.plan{padding:60px 24px}
+.plan h2,.sectit{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);text-align:center;margin-bottom:6px}
+.plan .cap{text-align:center;color:var(--soft);margin-bottom:28px;font-size:.95rem}
+.rooms{display:grid;grid-template-columns:1.4fr 1fr;gap:0;border:1.5px solid var(--cyan);max-width:640px;margin:0 auto;aspect-ratio:16/11}
+@media(max-width:560px){.rooms{aspect-ratio:auto}}
+.room{border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;min-height:90px}
+.room .rn{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--ink)}
+.room .rd{font-family:'Space Mono',monospace;font-size:10px;color:var(--soft)}
+.room.big{grid-row:span 2}
+.col2{display:grid;grid-template-rows:1fr 1fr}
+/* spec table */
+.specs{max-width:640px;margin:36px auto 0;border:1px solid var(--line)}
+.specs .r{display:grid;grid-template-columns:160px 1fr;border-bottom:1px solid var(--line);font-family:'Space Mono',monospace;font-size:13px}
+.specs .r:last-child{border-bottom:none}
+.specs .r .k{padding:12px 16px;color:var(--cyan);border-right:1px solid var(--line);letter-spacing:1px;text-transform:uppercase;font-size:11px}
+.specs .r .v{padding:12px 16px}
+.specs .r .v a{color:var(--cyan);border-bottom:1px solid var(--cyan)}
+/* countdown */
+.cdsec{text-align:center;padding:50px 24px}
+.cd{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.cd .u{border:1px solid var(--cyan);padding:14px 16px;min-width:78px;font-family:'Space Mono',monospace}
+.cd .n{font-size:1.9rem;font-weight:700;color:var(--cyan)}.cd .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-top:2px}
+.btn{display:inline-block;font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;padding:13px 28px;border:1.5px solid var(--cyan);background:var(--cyan);color:var(--blue);cursor:pointer;transition:.25s}
+.btn:hover{background:transparent;color:var(--cyan)}
+.btn-o{background:transparent;color:var(--cyan)}.btn-o:hover{background:var(--cyan);color:var(--blue)}
+.rsvp{text-align:center;padding:50px 24px}
+.rsvp form{max-width:420px;margin:22px auto 0;display:flex;flex-direction:column;gap:12px}
+.rsvp input,.rsvp select{padding:13px;border:1px solid var(--line);background:rgba(127,212,255,.05);color:#fff;font-family:'Space Mono',monospace;font-size:.95rem}
+.rsvp .ok{display:none;font-family:'Space Mono',monospace;color:var(--cyan);margin-top:6px;letter-spacing:1px}.rsvp .ok.show{display:block}
+.cta{text-align:center;padding:60px 24px;border-top:1px solid var(--line)}
+.cta h2{font-weight:300;font-size:clamp(1.5rem,4.5vw,2.2rem)}.cta h2 b{font-weight:600}
+.cta p{color:var(--soft);max-width:440px;margin:10px auto 22px}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.foot{text-align:center;padding:24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--soft);text-transform:uppercase}.foot a{color:var(--cyan)}
+.rv{opacity:0;transform:translateY(18px);transition:.7s}.rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
+
+<header class="hero wrap"><div class="sheet rv">
+  <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+  <div class="head"><span>DWG № AB-HW-024</span><span>SCALE 1:1 · SHEET 1/1</span><span>REV. A</span></div>
+  <div class="body">
+    <div class="proj">Project</div>
+    <h1>The <b>Sharma</b> Residence</h1>
+    <div class="scope">// Open House &amp; Housewarming · Griha Pravesh</div>
+    <div class="dim"><span class="l"></span><span>30 · 08 · 2026 — 11:00 HRS</span><span class="l"></span></div>
+  </div>
+</div></header>
+
+<section class="plan wrap"><h2 class="rv">Floor Plan</h2><p class="cap rv">Every door open. Every room yours to explore.</p>
+  <div class="rooms rv">
+    <div class="room big"><div class="rn">LIVING</div><div class="rd">5.4 × 4.2 m</div></div>
+    <div class="col2">
+      <div class="room"><div class="rn">DINING</div><div class="rd">3.6 × 3.0</div></div>
+      <div class="room"><div class="rn">KITCHEN</div><div class="rd">3.0 × 2.8</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="plan wrap" style="padding-top:0"><h2 class="rv">Specifications</h2>
+  <div class="specs rv">
+    <div class="r"><div class="k">Date</div><div class="v">Sunday, 30 August 2026</div></div>
+    <div class="r"><div class="k">Pooja</div><div class="v">11:00 AM — Griha Pravesh ceremony</div></div>
+    <div class="r"><div class="k">Lunch</div><div class="v">12:30 PM onwards</div></div>
+    <div class="r"><div class="k">Site</div><div class="v">Plot 24, Lake View Layout, Nagapattinam &nbsp;·&nbsp; <a href="https://maps.google.com/?q=Lake+View+Layout+Nagapattinam" target="_blank" rel="noopener">[ LOCATE ]</a></div></div>
+  </div>
+</section>
+
+<section class="cdsec"><div class="sectit rv">Handover / Move-in in</div>
+  <div class="cd rv" id="cd"><div class="u"><div class="n" data-d>—</div><div class="l">Days</div></div><div class="u"><div class="n" data-h>—</div><div class="l">Hrs</div></div><div class="u"><div class="n" data-m>—</div><div class="l">Min</div></div><div class="u"><div class="n" data-s>—</div><div class="l">Sec</div></div></div>
+</section>
+
+<section class="rsvp"><div class="sectit rv">Confirm attendance</div><h2 class="rv" style="font-weight:300;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:4px">Add yourself to the <b style="font-weight:600">guest log</b></h2>
+  <form id="rsvp" class="rv" novalidate>
+    <input name="name" type="text" placeholder="Your name" required>
+    <select name="att"><option>Will attend the open house</option><option>Unable to attend</option></select>
+    <input name="g" type="number" min="1" value="2" placeholder="Party size">
+    <button class="btn" type="submit">Log RSVP</button>
+    <div class="ok" id="ok">// Logged. We'll keep a plate warm. (Demo)</div>
+  </form>
+</section>
+
+<section class="cta"><h2>Want a <b>blueprint-style</b> invitation like this?</h2><p>AllBee Solutions builds concept-driven digital invitations for every kind of event.</p><div class="row"><a class="btn" href="/invitation#enquiry">Enquire Now</a><a class="btn btn-o" href="https://wa.me/918903607506" target="_blank" rel="noopener">WhatsApp Us</a></div></section>
+<footer class="foot">A sample invitation website crafted by <a href="/invitation">AllBee Solutions</a> · <a href="/invitation-samples">View more designs</a></footer>
+
+<script>
+(function(){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+  var target=new Date("2026-08-30T11:00:00+05:30").getTime(),cd=document.getElementById('cd');
+  function p(n){return String(n).padStart(2,'0');}
+  function tick(){var d=Math.max(0,target-Date.now());cd.querySelector('[data-d]').textContent=Math.floor(d/864e5);cd.querySelector('[data-h]').textContent=p(Math.floor(d%864e5/36e5));cd.querySelector('[data-m]').textContent=p(Math.floor(d%36e5/6e4));cd.querySelector('[data-s]').textContent=p(Math.floor(d%6e4/1e3));}
+  tick();setInterval(tick,1000);
+  document.getElementById('rsvp').addEventListener('submit',function(e){e.preventDefault();if(!this.name.value.trim()){this.name.focus();return;}document.getElementById('ok').classList.add('show');this.querySelector('button').textContent='Logged ✓';});
+})();
+</script>
+</body>
+</html>

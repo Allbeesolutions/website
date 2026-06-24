@@ -76,6 +76,31 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://www.allbeesolutions.com/demo/wedding-timeline</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/wedding-magazine</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/birthday-vip</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/housewarming-blueprint</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.allbeesolutions.com/demo/business-opening</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.allbeesolutions.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
