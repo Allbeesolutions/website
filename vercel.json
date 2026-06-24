@@ -11,6 +11,7 @@
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/refund", "destination": "/refund.html" },
     { "source": "/reels-growth", "destination": "/reels-growth.html" },
+    { "source": "/invitation", "destination": "/invitation.html" },
     { "source": "/404", "destination": "/404.html" }
   ],
   "headers": [
