@@ -80,6 +80,11 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
 <main class="wrap" style="padding-bottom:60px">
   <div class="steps" id="steps"></div>
   <div class="stepnum" id="stepnum"></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 18px;font-size:11.5px;color:var(--muted,#4A6363)">
+    <span>1 · Choose</span><span>›</span><span>2 · Order</span><span>›</span><span>3 · Send Details</span><span>›</span><span>4 · Review Draft</span><span>›</span><span>5 · Receive</span>
+  </div>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEX4FWGJFQ"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TEX4FWGJFQ');function gax(n,p){try{if(window.gtag)gtag('event',n,p||{});}catch(e){}}</script>
 
   <!-- Step 1 -->
   <section class="card step" data-step="1">
@@ -254,7 +259,7 @@ $('#backBtn').onclick=()=>{ if(step>1){step--;show();} };
 /* ---------- payment ---------- */
 function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=cb; s.onerror=()=>{$('#payErr').textContent='Could not load the payment gateway. Please try again.';}; document.head.appendChild(s); }
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
-function successView(orderId){ showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`); }
+function successView(orderId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`); }
 
 $('#payBtn').onclick=async()=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
@@ -270,6 +275,7 @@ $('#payBtn').onclick=async()=>{
           body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
             interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
       }
+      gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
       showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
       return;
     }
@@ -287,6 +293,7 @@ $('#payBtn').onclick=async()=>{
 };
 
 show();
+gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''});
 </script>
 </body>
 </html>

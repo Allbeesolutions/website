@@ -6285,6 +6285,8 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
   rev.innerHTML='<h3>Loved by families across Tamil Nadu</h3><div class="sub">Real words from couples and hosts who shared their AllBee invitation.</div><div class="rev-grid">'+
     REVIEWS.map(function(r){return '<div class="rev"><div class="stars">'+'&#9733;'.repeat(r.s)+'</div><p>&ldquo;'+r.t+'&rdquo;</p><div class="who"><b>'+r.n+'</b> &middot; '+r.c+' &middot; '+r.e+'</div></div>';}).join('')+'</div>';
   grid.parentNode.appendChild(rev);
+  /* ── GA4 catalog event tracking ── */
+  grid.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var card=e.target.closest('.is-card');if(!card)return;var tid=((card.querySelector('.tpl-id')||{}).textContent||'').trim();var lbl=a.textContent.trim().toLowerCase();var ev=lbl.indexOf('demo')>=0?'demo_open':(lbl.indexOf('order')>=0?'order_start':(lbl.indexOf('preview')>=0?'template_preview':'template_click'));try{if(window.gtag)gtag('event',ev,{template_id:tid,source:'catalog'});}catch(_){}});
   document.querySelectorAll('[data-scroll="categories"]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById('categories');if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
 })();
 </script>

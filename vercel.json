@@ -18,6 +18,7 @@
     { "source": "/birthday-invitations", "destination": "/birthday-invitations.html" },
     { "source": "/housewarming-invitations", "destination": "/housewarming-invitations.html" },
     { "source": "/business-launch-invitations", "destination": "/business-launch-invitations.html" },
+    { "source": "/top-templates", "destination": "/top-templates.html" },
     { "source": "/demo/:slug", "destination": "/demo/:slug.html" },
     { "source": "/admin/invitation-leads", "destination": "/admin/invitation-leads.html" },
     { "source": "/admin/invitation-orders", "destination": "/admin/invitation-orders.html" },
