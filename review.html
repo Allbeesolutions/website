@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave a Review — AllBee Invitations</title>
+<meta name="description" content="Share your experience with your AllBee invitation.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://www.allbeesolutions.com/review">
+<meta name="theme-color" content="#0F7B6E">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--paper:#fbfaf7;--line:#e7e3da}
+body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+a{color:inherit}
+.bar{background:var(--teal-d);color:#fff;padding:14px 20px;font-family:Playfair Display,serif;font-weight:700}
+.wrap{max-width:560px;margin:0 auto;padding:34px 20px 60px}
+.hd{text-align:center;margin-bottom:22px}.hd .eb{color:var(--gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px}
+.hd h1{font-family:Playfair Display,serif;font-size:clamp(1.7rem,5vw,2.4rem);margin-top:6px}.hd p{color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(15,31,31,.06)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:480px){.row{grid-template-columns:1fr}}
+.field{margin-bottom:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:1rem;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.stars{display:flex;gap:6px;font-size:2rem;color:var(--line);cursor:pointer}
+.stars span.on,.stars span:hover,.stars span.hov{color:var(--gold)}
+.btn{width:100%;background:var(--teal);color:#fff;border:none;padding:14px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer}.btn:hover{background:var(--teal-d)}
+.err{color:#b5302a;font-size:13px;margin-top:10px;display:none}.err.show{display:block}
+.ok{display:none;text-align:center;padding:30px 10px}.ok.show{display:block}.ok .big{font-size:2.4rem}.ok h2{font-family:Playfair Display,serif;margin:8px 0}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="bar">AllBee Invitations</div>
+<div class="wrap">
+  <div class="hd"><span class="eb">Your Review</span><h1>How was your invitation?</h1><p>Your words help other families choose with confidence.</p></div>
+  <div class="card" id="card">
+    <form id="rvForm" novalidate>
+      <input type="text" class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field"><label>Your Rating</label><div class="stars" id="stars"><span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span></div></div>
+      <div class="row">
+        <div class="field"><label>Your Name</label><input name="name" required></div>
+        <div class="field"><label>City</label><input name="city" placeholder="e.g. Nagapattinam"></div>
+      </div>
+      <div class="field"><label>Event Type</label><select name="event_type"><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Business Event</option><option>Other</option></select></div>
+      <div class="field"><label>Your Review</label><textarea name="review" rows="4" placeholder="What did you and your guests love?" required></textarea></div>
+      <button class="btn" type="submit" id="go">Submit Review</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+  <div class="card ok" id="ok"><div class="big">🌟</div><h2>Thank you!</h2><p>Your review has been received and will appear once our team approves it.</p></div>
+</div>
+<script>
+(function(){
+  var RT=Date.now(),rating=0;
+  var q=new URLSearchParams(location.search);
+  var stars=document.getElementById('stars').children;
+  function paint(n){for(var i=0;i<stars.length;i++)stars[i].classList.toggle('on',i<n);}
+  for(var i=0;i<stars.length;i++){(function(i){stars[i].addEventListener('click',function(){rating=i+1;paint(rating);});stars[i].addEventListener('mouseover',function(){for(var j=0;j<stars.length;j++)stars[j].classList.toggle('hov',j<=i);});stars[i].addEventListener('mouseout',function(){for(var j=0;j<stars.length;j++)stars[j].classList.remove('hov');});})(i);}
+  var form=document.getElementById('rvForm'),err=document.getElementById('err'),go=document.getElementById('go');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();err.classList.remove('show');
+    if(form._gotcha.value)return;
+    if(!rating){err.textContent='Please tap a star rating.';err.classList.add('show');return;}
+    if(!form.checkValidity()){form.reportValidity();return;}
+    var f=new FormData(form);
+    var data={action:'submit',name:f.get('name'),city:f.get('city'),event_type:f.get('event_type'),rating:rating,review:f.get('review'),order_id:q.get('order')||'',template_id:q.get('t')||'',render_ts:RT,_gotcha:''};
+    go.disabled=true;go.textContent='Submitting…';
+    fetch('/api/reviews',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
+      .then(function(res){if(res&&res.ok){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0});}else{err.textContent='Please check your details and try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';}})
+      .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';});
+  });
+})();
+</script>
+</body>
+</html>

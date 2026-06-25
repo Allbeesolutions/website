@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Moderation — AllBee Invitations</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F1F1F">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0F1F1F;--muted:#4A6363;--paper:#f4f6f5;--line:#e2e6e4;--ok:#16A34A;--bad:#b5302a;--teal:#0F7B6E;--gold:#DCA50C}
+body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+.top{background:var(--ink);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.top .t{font-family:Playfair Display,serif;font-weight:700}.top a{color:#cfe;font-size:13px;text-decoration:none}
+.wrap{max-width:820px;margin:0 auto;padding:22px}
+.lock{max-width:360px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}
+.lock input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:10px 0;text-align:center}
+.lock button{width:100%;background:var(--teal);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
+.lock .demo{margin-top:12px;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;display:inline-block}
+.banner{background:#fff7e6;border:1px solid rgba(220,165,12,.4);color:#9a6a12;border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:16px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tab{padding:8px 16px;border-radius:100px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700;font-size:13px}.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.rev .h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.rev .st{color:var(--gold);letter-spacing:1px}
+.rev .who{font-size:13px;color:var(--muted)}.rev p{margin:8px 0}
+.rev .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.rev .badge.p{background:#fdf3e2;color:#9a6a12}.rev .badge.a{background:#e7f7ed;color:var(--ok)}
+.rev .acts{display:flex;gap:8px;margin-top:8px}
+.rev button{border:none;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px}
+.rev .ap{background:var(--ok);color:#fff}.rev .rej{background:#fff;border:1px solid var(--line);color:var(--bad)}
+.empty{text-align:center;color:var(--muted);padding:30px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="top"><div class="t">Review Moderation</div><div><a href="/admin/ceo">CEO</a> · <a href="/admin/invitation-orders">Orders</a></div></div>
+<div id="lock" class="lock"><h2>Reviews</h2><p style="color:var(--muted);font-size:14px">Enter the admin passcode.</p><input id="pass" type="password" placeholder="Passcode"><button id="go">Open</button><br><span class="demo" id="demoLink">Preview with demo data →</span></div>
+<div class="wrap hidden" id="app">
+  <div class="banner hidden" id="banner"></div>
+  <div class="tabs"><div class="tab on" data-f="pending">Pending</div><div class="tab" data-f="approved">Approved</div><div class="tab" data-f="all">All</div></div>
+  <div id="list"></div>
+</div>
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s);};
+  var REVIEWS=[],PASS='',MODE='live',FILTER='pending';
+  var DEMO=[
+    {id:'REV-0001',date:'2026-06-24',name:'Priya & Karthik',city:'Nagapattinam',event_type:'Wedding',rating:5,review:'Our relatives loved this invitation — everyone asked who designed it.',moderated:true},
+    {id:'REV-0002',date:'2026-06-23',name:'Ayesha N.',city:'Nagore',event_type:'Nikah',rating:5,review:'Very premium looking website, and so easy to share on WhatsApp.',moderated:false},
+    {id:'REV-0003',date:'2026-06-22',name:'Suresh B.',city:'Chennai',event_type:'Business Event',rating:4,review:'Worth every rupee. Looked very professional.',moderated:false}
+  ];
+  function stars(n){return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n);}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+  function render(){
+    var rows=REVIEWS.filter(function(r){return FILTER==='all'?true:(FILTER==='approved'?r.moderated:!r.moderated);});
+    $('#list').innerHTML=rows.map(function(r){
+      return '<div class="rev"><div class="h"><span class="st">'+stars(r.rating)+'</span><span class="badge '+(r.moderated?'a':'p')+'">'+(r.moderated?'Approved':'Pending')+'</span></div>'+
+        '<p>&ldquo;'+esc(r.review)+'&rdquo;</p><div class="who">'+esc(r.name)+(r.city?' · '+esc(r.city):'')+(r.event_type?' · '+esc(r.event_type):'')+' · '+esc(r.date)+'</div>'+
+        '<div class="acts">'+(r.moderated?'<button class="rej" data-id="'+r.id+'" data-m="0">Unpublish</button>':'<button class="ap" data-id="'+r.id+'" data-m="1">Approve</button>')+'</div></div>';
+    }).join('')||'<div class="empty">No '+FILTER+' reviews.</div>';
+  }
+  function open(){$('#lock').classList.add('hidden');$('#app').classList.remove('hidden');}
+  function loadDemo(){MODE='demo';REVIEWS=DEMO.slice();$('#banner').classList.remove('hidden');$('#banner').textContent='Demo data — connect the data layer for live reviews.';open();render();}
+  async function load(pass){
+    try{var r=await fetch('/api/reviews',{method:'POST',headers:{'x-admin-pass':pass,'Content-Type':'application/json'},body:JSON.stringify({action:'list'})});
+      if(r.status===401){alert('Wrong passcode.');return;}var d=await r.json();
+      if(d.configured===false){loadDemo();return;}
+      PASS=pass;MODE='live';REVIEWS=d.reviews||[];open();render();}catch(e){alert('Failed to load.');}
+  }
+  async function moderate(id,m){
+    if(MODE==='demo'){var x=REVIEWS.find(function(r){return r.id===id;});if(x)x.moderated=!!m;render();return;}
+    try{await fetch('/api/reviews',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'moderate',id:id,moderated:!!m})});var y=REVIEWS.find(function(r){return r.id===id;});if(y)y.moderated=!!m;render();}catch(e){alert('Failed.');}
+  }
+  $('#go').onclick=function(){var p=$('#pass').value.trim();if(p)load(p);};
+  $('#pass').addEventListener('keydown',function(e){if(e.key==='Enter')$('#go').click();});
+  $('#demoLink').onclick=loadDemo;
+  document.querySelector('.tabs').addEventListener('click',function(e){var t=e.target.closest('.tab');if(!t)return;FILTER=t.dataset.f;document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);});render();});
+  $('#list').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(b)moderate(b.dataset.id,b.dataset.m==='1');});
+  if(new URLSearchParams(location.search).get('demo'))loadDemo();
+})();
+</script>
+</body>
+</html>

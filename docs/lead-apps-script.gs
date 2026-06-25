@@ -50,7 +50,7 @@ function doPost(e) {
     var action = b.action || 'lead';
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
-    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead');
+    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate');
     if (isWrite) { lock = LockService.getScriptLock(); if (!lock.tryLock(25000)) return _json({ ok:false, error:'busy_try_again' }); }
 
     // ----- reads (cheap, cacheable, paginated) -----
@@ -68,6 +68,12 @@ function doPost(e) {
     if (action === 'order_create') { var rc = orderCreate_(b); bustCache_('orders_all'); return _json(rc); }
     if (action === 'order_update') { var ru = orderUpdate_(b.id, b.patch || {}); bustCache_('orders_all'); return _json(ru); }
     if (action === 'order_mark')   { var rk = orderMark_(b.payment_id, b.status, b.note); bustCache_('orders_all'); return _json(rk); }
+
+    // ----- Reviews (collection → moderation → approval) -----
+    if (action === 'review_public')   { return _json({ ok:true, reviews: reviewsList_(true) }); }
+    if (action === 'review_list')     { return _json({ ok:true, reviews: reviewsList_(false) }); }
+    if (action === 'review_create')   { return _json(reviewCreate_(b)); }
+    if (action === 'review_moderate') { return _json(reviewModerate_(b.id, b.moderated)); }
 
     var sh = sheet_();
     if (action === 'update') {
@@ -196,6 +202,36 @@ function orderTrack_(id, mobile) {
         template_name:r[14]||'', updated:r[17]||'', delivery:r[19]||'' } };
     }
   }
+  return { ok:false, error:'not_found' };
+}
+
+/* ===== Reviews ===== */
+var REVIEW_HEADERS = ['Review ID','Date','Name','City','Event Type','Rating','Review','Template ID','Order ID','Moderated'];
+function reviewSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName('Reviews') || ss.insertSheet('Reviews');
+  if (sh.getLastRow() === 0) { sh.appendRow(REVIEW_HEADERS); sh.getRange(1,1,1,REVIEW_HEADERS.length).setFontWeight('bold'); }
+  return sh;
+}
+function reviewCreate_(b) {
+  var sh = reviewSheet_();
+  var id = 'REV-' + Utilities.formatString('%04d', sh.getLastRow());
+  var rating = Math.max(1, Math.min(5, Number(b.rating) || 5));
+  sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.city||'', b.event_type||'',
+    rating, String(b.review||'').slice(0,600), b.template_id||'', b.order_id||'', false ]); // moderated=false → hidden until approved
+  return { ok:true, id:id };
+}
+function isTrue_(v){ return v === true || v === 'TRUE' || v === 'true' || v === 1; }
+function reviewsList_(approvedOnly) {
+  var sh = reviewSheet_(); var data = sh.getDataRange().getValues(); data.shift();
+  return data.filter(function(r){ return r[0] && (!approvedOnly || isTrue_(r[9])); }).map(function(r){
+    return { id:r[0], date:String(r[1]).slice(0,10), name:r[2], city:r[3], event_type:r[4],
+      rating:Number(r[5])||5, review:r[6], template_id:r[7], order_id:r[8], moderated:isTrue_(r[9]) };
+  }).reverse(); // newest first
+}
+function reviewModerate_(id, moderated) {
+  var sh = reviewSheet_(); var vals = sh.getDataRange().getValues();
+  for (var i = 1; i < vals.length; i++) { if (vals[i][0] === id) { sh.getRange(i+1, 10).setValue(!!moderated); return { ok:true }; } }
   return { ok:false, error:'not_found' };
 }
 
