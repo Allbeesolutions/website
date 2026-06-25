@@ -41,25 +41,36 @@ function rowsToLeads_(sh) {
 }
 
 function doPost(e) {
+  var lock = null;
   try {
     var props = PropertiesService.getScriptProperties();
     var secret = props.getProperty('SHARED_SECRET');
     var b = JSON.parse(e.postData.contents || '{}');
     if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
+    var action = b.action || 'lead';
+
+    // Serialize writes so concurrent order_create / appends never collide on IDs.
+    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead');
+    if (isWrite) { lock = LockService.getScriptLock(); if (!lock.tryLock(25000)) return _json({ ok:false, error:'busy_try_again' }); }
+
+    // ----- reads (cheap, cacheable, paginated) -----
+    if (action === 'list') {
+      var leads = rowsToLeads_(sheet_());
+      return _json({ ok:true, total: leads.length, leads: paginate_(leads, b) });
+    }
+    if (action === 'order_list') {
+      var orders = ordersListCached_();
+      return _json({ ok:true, total: orders.length, orders: paginate_(orders, b) });
+    }
+    if (action === 'order_track')  { return _json(orderTrack_(b.id, b.mobile)); }
+
+    // ----- writes (under lock) -----
+    if (action === 'order_create') { var rc = orderCreate_(b); bustCache_('orders_all'); return _json(rc); }
+    if (action === 'order_update') { var ru = orderUpdate_(b.id, b.patch || {}); bustCache_('orders_all'); return _json(ru); }
+    if (action === 'order_mark')   { var rk = orderMark_(b.payment_id, b.status, b.note); bustCache_('orders_all'); return _json(rk); }
 
     var sh = sheet_();
-
-    if (b.action === 'list') {
-      return _json({ ok:true, leads: rowsToLeads_(sh) });
-    }
-
-    // ----- Orders (Phase 6) -----
-    if (b.action === 'order_create') { return _json(orderCreate_(b)); }
-    if (b.action === 'order_list')   { return _json({ ok:true, orders: ordersList_() }); }
-    if (b.action === 'order_update') { return _json(orderUpdate_(b.id, b.patch || {})); }
-    if (b.action === 'order_track')  { return _json(orderTrack_(b.id, b.mobile)); }
-
-    if (b.action === 'update') {
+    if (action === 'update') {
       var vals = sh.getDataRange().getValues();
       for (var i = 1; i < vals.length; i++) {
         if (vals[i][0] === b.id) {
@@ -74,19 +85,36 @@ function doPost(e) {
       return _json({ ok:false, error:'not_found' });
     }
 
-    // default: append a new lead
+    // default: append a new lead (ID is race-safe under the lock)
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
       b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
-
-    var to = props.getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com';
-    MailApp.sendEmail({ to: to, subject: 'New AllBee Invitations lead — ' + (b.name||'Unknown'),
-      htmlBody: 'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||'') });
+    safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com',
+      'New AllBee Invitations lead — ' + (b.name||'Unknown'),
+      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''));
     return _json({ ok:true, id:id });
   } catch (err) {
     return _json({ ok:false, error:String(err) });
+  } finally {
+    if (lock) lock.releaseLock();
   }
+}
+
+/* ===== Production-hardening helpers (Phase 1) ===== */
+function paginate_(arr, b){ var lim = Number(b && b.limit) || 0; if (!lim) return arr; var off = Number(b && b.offset) || 0; return arr.slice(off, off + lim); }
+function ordersListCached_(){
+  var cache = CacheService.getScriptCache(), hit = cache.get('orders_all');
+  if (hit) { try { return JSON.parse(hit); } catch (e) {} }
+  var data = ordersList_();
+  try { var j = JSON.stringify(data); if (j.length < 95000) cache.put('orders_all', j, 12); } catch (e) {}
+  return data;
+}
+function bustCache_(key){ try { CacheService.getScriptCache().remove(key); } catch (e) {} }
+// MailApp has a hard daily quota (100/day consumer, 1500 Workspace). Never let an
+// email failure roll back a paid order — skip silently when out of quota.
+function safeEmail_(to, subject, html){
+  try { if (MailApp.getRemainingDailyQuota() > 0) MailApp.sendEmail({ to:to, subject:subject, htmlBody:html }); } catch (e) {}
 }
 
 /* ===== Orders (Phase 6) — separate "Orders" sheet ===== */
@@ -100,14 +128,38 @@ function orderSheet_() {
 }
 function orderCreate_(b) {
   var sh = orderSheet_();
+  // Idempotency: a Razorpay webhook can fire more than once for the same payment.
+  // If we've already recorded this payment_id, return the existing order instead of duplicating.
+  if (b.payment_id) {
+    var vals = sh.getDataRange().getValues();
+    for (var k = 1; k < vals.length; k++) { if (String(vals[k][9]) === String(b.payment_id)) { return { ok:true, id:vals[k][0], duplicate:true }; } }
+  }
   var id = 'ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow());
   sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
     b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
     'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
-  var to = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com';
-  MailApp.sendEmail({ to: to, subject: 'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
-    htmlBody: id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0) });
+  safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com',
+    'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
+    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0));
   return { ok:true, id:id };
+}
+/* Mark an order by payment_id (refund / failed). Records an orphan row if the
+   payment has no order yet (e.g. failed before capture) so nothing is lost. */
+function orderMark_(payment_id, status, note) {
+  if (!payment_id) return { ok:false, error:'missing_payment_id' };
+  var sh = orderSheet_(), vals = sh.getDataRange().getValues();
+  for (var i = 1; i < vals.length; i++) {
+    if (String(vals[i][9]) === String(payment_id)) {
+      if (status) sh.getRange(i+1, 11).setValue(status);
+      if (note) { var prev = vals[i][16] || ''; sh.getRange(i+1, 17).setValue((prev ? prev + '\n' : '') + '[' + new Date().toISOString().slice(0,10) + '] ' + note); }
+      sh.getRange(i+1, 18).setValue(new Date().toISOString());
+      return { ok:true, id:vals[i][0] };
+    }
+  }
+  var id = 'ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow());
+  sh.appendRow([ id, new Date().toISOString().slice(0,10), '', '', '', '', '', '', 0, payment_id,
+    status || 'Payment Failed', 'webhook', '', '', '', '', note || '', new Date().toISOString(), '', '' ]);
+  return { ok:true, id:id, created:true };
 }
 function ordersList_() {
   var sh = orderSheet_(); var data = sh.getDataRange().getValues(); data.shift();

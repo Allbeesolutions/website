@@ -34,29 +34,38 @@ module.exports = async (req, res) => {
   }
 
   let evt; try { evt = JSON.parse(raw || '{}'); } catch { evt = {}; }
-  if (evt.event !== 'payment.captured') { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, ignored:true })); }
-
+  const ev = evt.event || '';
   const pay = (evt.payload && evt.payload.payment && evt.payload.payment.entity) || {};
+  const ref = (evt.payload && evt.payload.refund && evt.payload.refund.entity) || {};
   const n = pay.notes || {};
   const url = process.env.LEAD_APPS_SCRIPT_URL;
-  if (url) {
+
+  // Persist via Apps Script. order_create is idempotent (dedups by payment_id),
+  // so duplicate/retried webhooks are safe.
+  async function persist(payload) {
+    if (!url) { console.log('[order-webhook]', ev, 'no sheet configured:', pay.id || ref.id || ''); return; }
     try {
-      await fetch(url, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'order_create', secret: process.env.LEAD_SHARED_SECRET || '',
-          payment_id: pay.id, amount: (pay.amount || 0) / 100,
-          name: n.name, mobile: n.mobile, email: n.email,
-          event_type: n.event, invitation_type: n.type, package: n.pkg,
-          event_date: n.event_date, receipt: n.receipt,
-          lead_id: n.lead_id, source: n.source,
-          template_id: n.template_id, template_name: n.template_name, demo: n.demo,
-        }),
-      });
-    } catch (e) { console.error('[order-webhook] persist failed:', String(e.message || e), 'payment', pay.id); }
+      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, secret: process.env.LEAD_SHARED_SECRET || '' }) });
+    } catch (e) { console.error('[order-webhook]', ev, 'persist failed:', String(e.message || e)); }
+  }
+
+  if (ev === 'payment.captured') {
+    await persist({ action: 'order_create',
+      payment_id: pay.id, amount: (pay.amount || 0) / 100,
+      name: n.name, mobile: n.mobile, email: n.email,
+      event_type: n.event, invitation_type: n.type, package: n.pkg,
+      event_date: n.event_date, receipt: n.receipt, lead_id: n.lead_id, source: n.source,
+      template_id: n.template_id, template_name: n.template_name, demo: n.demo });
+  } else if (ev === 'payment.failed') {
+    await persist({ action: 'order_mark', payment_id: pay.id, status: 'Payment Failed',
+      note: 'Payment failed — ' + (pay.error_description || pay.error_reason || pay.error_code || 'unknown') + ' · ' + (n.name || '') + ' ' + (n.mobile || '') });
+  } else if (ev === 'refund.created' || ev === 'refund.processed') {
+    await persist({ action: 'order_mark', payment_id: ref.payment_id, status: 'Refunded',
+      note: ev + ' — ₹' + ((ref.amount || 0) / 100) + ' (refund ' + (ref.id || '') + ')' });
   } else {
-    console.log('[order-webhook] captured (no sheet configured):', pay.id, JSON.stringify(n));
+    res.statusCode = 200; return res.end(JSON.stringify({ ok:true, ignored:true, event: ev }));
   }
   res.statusCode = 200;
-  return res.end(JSON.stringify({ ok:true }));
+  return res.end(JSON.stringify({ ok:true, event: ev }));
 };

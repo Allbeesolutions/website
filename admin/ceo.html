@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Dashboard — AllBee Invitations</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F1F1F">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--paper:#f4f6f5;--line:#e2e6e4;--ok:#16A34A;--bad:#b5302a}
+body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+.top{background:var(--ink);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.top .t{font-family:Playfair Display,serif;font-weight:800;font-size:1.3rem}
+.top .meta{font-size:12px;color:#9fb3ad}
+.top a,.top button{color:#cfe; background:none;border:none;font-size:13px;cursor:pointer;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:22px}
+.lock{max-width:380px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+.lock h2{font-family:Playfair Display,serif;margin-bottom:6px}.lock p{color:var(--muted);font-size:14px;margin-bottom:16px}
+.lock input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;margin-bottom:10px;text-align:center}
+.lock button{width:100%;background:var(--teal);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
+.lock .demo{margin-top:14px;color:var(--teal-d);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;display:inline-block}
+.banner{background:#fff7e6;border:1px solid rgba(220,165,12,.4);color:#9a6a12;border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.kpi .v{font-family:Playfair Display,serif;font-weight:800;font-size:1.9rem;color:var(--teal-d);line-height:1}
+.kpi.gold .v{color:var(--gold)}.kpi.bad .v{color:var(--bad)}.kpi.bad{border-color:rgba(181,48,42,.35);background:#fdecea}
+.kpi .l{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-top:8px;font-weight:700}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:4px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+.panel h3{font-family:Playfair Display,serif;font-size:1.15rem;margin-bottom:14px}
+.tt{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.tt:first-of-type{border-top:none}
+.tt .rk{font-family:Playfair Display,serif;font-weight:800;color:var(--gold);width:18px}
+.tt .nm{flex:1;font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt .ct{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.tt .mt{font-weight:800;color:var(--teal-d)}
+.pipe{display:flex;flex-direction:column;gap:8px}
+.pr{display:flex;align-items:center;gap:10px}.pr .pl{width:90px;font-size:13px;font-weight:700}.pr .bar{flex:1;height:18px;background:var(--paper);border-radius:9px;overflow:hidden}.pr .bar span{display:block;height:100%;background:var(--teal);border-radius:9px}.pr .pn{width:30px;text-align:right;font-weight:800}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="top"><div><div class="t">AllBee · Executive Dashboard</div><div class="meta" id="meta">—</div></div>
+  <div><button id="refresh">↻ Refresh</button> · <a href="/admin/invitation-orders">Orders</a> · <a href="/admin/invitation-leads">Leads</a></div></div>
+
+<div id="lock" class="lock">
+  <h2>CEO Dashboard</h2><p>Enter the admin passcode.</p>
+  <input id="pass" type="password" placeholder="Passcode" autocomplete="off">
+  <button id="go">Open dashboard</button>
+  <span class="demo" id="demoLink">Preview with demo data →</span>
+</div>
+
+<div class="wrap hidden" id="app">
+  <div class="banner hidden" id="banner"></div>
+  <div class="grid" id="kpis"></div>
+  <div class="cols">
+    <div class="panel"><h3>Top Templates (by revenue)</h3><div id="topTpl"></div></div>
+    <div class="panel"><h3>Order Pipeline</h3><div class="pipe" id="pipe"></div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s);};
+  var STAGES=['New','Designing','Review','Delivered','Completed'];
+  var SLA={New:1,Designing:3,Review:2};
+  var ORDERS=[],LEADS=[],PASS='',MODE='live';
+  var fmt=function(n){return '₹'+Number(n||0).toLocaleString('en-IN');};
+  var today=new Date().toISOString().slice(0,10), ym=today.slice(0,7);
+  function ageDays(o){var d=o.updated||o.date;var t=Date.parse(d);return isNaN(t)?0:(Date.now()-t)/864e5;}
+  function overdue(o){var l=SLA[o.status];return l?ageDays(o)>l:false;}
+
+  var DEMO_O=[
+   {id:'ORD-1001',date:today,amount:1999,status:'Designing',template_name:'Crescent Elegance',event_type:'Nikah'},
+   {id:'ORD-1002',date:today,amount:4999,status:'New',template_name:'The Editorial',event_type:'Wedding'},
+   {id:'ORD-1003',date:'2026-06-20',amount:999,status:'Review',template_name:'Passport Journey',event_type:'Wedding'},
+   {id:'ORD-1004',date:'2026-06-18',amount:1299,status:'Delivered',template_name:'Royal Mandap',event_type:'Wedding'},
+   {id:'ORD-1005',date:today,amount:599,status:'Completed',template_name:'VIP Access',event_type:'Birthday'},
+   {id:'ORD-1006',date:'2026-06-12',amount:3999,status:'Designing',template_name:'Luxury Watch',event_type:'Business Event'}
+  ];
+  var DEMO_L=[{date:today},{date:today},{date:today},{date:'2026-06-20'},{date:'2026-06-19'}];
+
+  function kpi(v,l,s,cls){return '<div class="kpi '+(cls||'')+'"><div class="v">'+v+'</div><div class="l">'+l+'</div>'+(s?'<div class="s">'+s+'</div>':'')+'</div>';}
+  function render(){
+    var revToday=ORDERS.filter(function(o){return (o.date||'').slice(0,10)===today;}).reduce(function(a,o){return a+(+o.amount||0);},0);
+    var revMonth=ORDERS.filter(function(o){return (o.date||'').slice(0,7)===ym;}).reduce(function(a,o){return a+(+o.amount||0);},0);
+    var ordersToday=ORDERS.filter(function(o){return (o.date||'').slice(0,10)===today;}).length;
+    var leadsToday=LEADS.filter(function(l){return (l.date||'').slice(0,10)===today;}).length;
+    var pending=ORDERS.filter(function(o){return ['New','Designing','Review'].indexOf(o.status)>=0;}).length;
+    var over=ORDERS.filter(overdue).length;
+    var conv=LEADS.length?Math.round(ORDERS.length/LEADS.length*100):0;
+    $('#kpis').innerHTML=
+      kpi(fmt(revToday),'Revenue Today','','gold')+
+      kpi(fmt(revMonth),'Revenue This Month','','gold')+
+      kpi(leadsToday,'Leads Today')+
+      kpi(ordersToday,'Orders Today')+
+      kpi(conv+'%','Conversion Rate',ORDERS.length+' orders / '+LEADS.length+' leads')+
+      kpi(pending,'Pending Deliveries')+
+      kpi(over,'Overdue Orders', over?'Needs attention':'All on track', over?'bad':'')+
+      kpi(fmt(ORDERS.length?Math.round(ORDERS.reduce(function(a,o){return a+(+o.amount||0);},0)/ORDERS.length):0),'Avg Order Value');
+    // top templates by revenue
+    var m={};ORDERS.forEach(function(o){var k=o.template_name||'—';(m[k]=m[k]||{rev:0,n:0,cat:o.event_type});m[k].rev+=(+o.amount||0);m[k].n++;});
+    var top=Object.keys(m).map(function(k){return [k,m[k]];}).sort(function(a,b){return b[1].rev-a[1].rev;}).slice(0,5);
+    $('#topTpl').innerHTML=top.map(function(e,i){return '<div class="tt"><span class="rk">'+(i+1)+'</span><span class="nm">'+e[0]+'<div class="ct">'+(e[1].cat||'')+'</div></span><span class="mt">'+fmt(e[1].rev)+'</span></div>';}).join('')||'<div class="ct">No orders yet.</div>';
+    var max=Math.max(1,Math.max.apply(null,STAGES.map(function(s){return ORDERS.filter(function(o){return o.status===s;}).length;})));
+    $('#pipe').innerHTML=STAGES.map(function(s){var c=ORDERS.filter(function(o){return o.status===s;}).length;return '<div class="pr"><span class="pl">'+s+'</span><span class="bar"><span style="width:'+Math.round(c/max*100)+'%"></span></span><span class="pn">'+c+'</span></div>';}).join('');
+    $('#meta').textContent=(MODE==='demo'?'Demo data':'Live')+' · updated '+new Date().toLocaleTimeString();
+  }
+  function open(){$('#lock').classList.add('hidden');$('#app').classList.remove('hidden');}
+  function loadDemo(){MODE='demo';ORDERS=DEMO_O.slice();LEADS=DEMO_L.slice();$('#banner').classList.remove('hidden');$('#banner').textContent='Showing demo data — connect the order system for live numbers.';open();render();}
+  async function loadLive(pass){
+    try{
+      var ho={'x-admin-pass':pass,'Content-Type':'application/json'};
+      var ro=await fetch('/api/invitation-orders',{headers:ho}); var dro=await ro.json();
+      if(ro.status===401||ro.status===403){alert('Wrong passcode.');return;}
+      var rl=await fetch('/api/invitation-leads',{headers:ho}); var drl=await rl.json();
+      if(dro.configured===false){loadDemo();return;}
+      PASS=pass;MODE='live';ORDERS=dro.orders||[];LEADS=(drl&&drl.leads)||[];open();render();
+    }catch(e){alert('Could not load. Try again.');}
+  }
+  $('#go').onclick=function(){var p=$('#pass').value.trim();if(!p)return;loadLive(p);};
+  $('#pass').addEventListener('keydown',function(e){if(e.key==='Enter')$('#go').click();});
+  $('#demoLink').onclick=loadDemo;
+  $('#refresh').onclick=function(){if(MODE==='demo')render();else if(PASS)loadLive(PASS);};
+  if(new URLSearchParams(location.search).get('demo'))loadDemo();
+})();
+</script>
+</body>
+</html>
