@@ -57,6 +57,7 @@ function doPost(e) {
     if (b.action === 'order_create') { return _json(orderCreate_(b)); }
     if (b.action === 'order_list')   { return _json({ ok:true, orders: ordersList_() }); }
     if (b.action === 'order_update') { return _json(orderUpdate_(b.id, b.patch || {})); }
+    if (b.action === 'order_track')  { return _json(orderTrack_(b.id, b.mobile)); }
 
     if (b.action === 'update') {
       var vals = sh.getDataRange().getValues();
@@ -90,7 +91,7 @@ function doPost(e) {
 
 /* ===== Orders (Phase 6) — separate "Orders" sheet ===== */
 var ORDER_HEADERS = ['Order ID','Date','Name','Mobile','Email','Event Type','Invitation Type',
-  'Package','Amount','Payment ID','Status','Source','Lead ID','Template ID','Template Name','Demo','Notes','Updated'];
+  'Package','Amount','Payment ID','Status','Source','Lead ID','Template ID','Template Name','Demo','Notes','Updated','Assignee','Delivery'];
 function orderSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName('Orders') || ss.insertSheet('Orders');
@@ -102,7 +103,7 @@ function orderCreate_(b) {
   var id = 'ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow());
   sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
     b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
-    'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString() ]);
+    'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
   var to = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com';
   MailApp.sendEmail({ to: to, subject: 'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
     htmlBody: id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0) });
@@ -113,17 +114,36 @@ function ordersList_() {
   return data.filter(function(r){ return r[0]; }).map(function(r){
     return { id:r[0], date:String(r[1]).slice(0,10), name:r[2], mobile:r[3], email:r[4], event_type:r[5],
       invitation_type:r[6], package:r[7], amount:Number(r[8])||0, payment_id:r[9], status:r[10]||'New',
-      source:r[11]||'', lead_id:r[12]||'', template_id:r[13]||'', template_name:r[14]||'', demo:r[15]||'', notes:r[16]||'' };
+      source:r[11]||'', lead_id:r[12]||'', template_id:r[13]||'', template_name:r[14]||'', demo:r[15]||'', notes:r[16]||'',
+      updated:r[17]||'', assignee:r[18]||'', delivery:r[19]||'' };
   });
 }
 function orderUpdate_(id, patch) {
   var sh = orderSheet_(); var vals = sh.getDataRange().getValues();
   for (var i=1;i<vals.length;i++){ if (vals[i][0]===id){
-    if (patch.status !== undefined) sh.getRange(i+1,11).setValue(patch.status);
-    if (patch.notes  !== undefined) sh.getRange(i+1,17).setValue(patch.notes);
+    if (patch.status   !== undefined) sh.getRange(i+1,11).setValue(patch.status);
+    if (patch.notes    !== undefined) sh.getRange(i+1,17).setValue(patch.notes);
+    if (patch.assignee !== undefined) sh.getRange(i+1,19).setValue(patch.assignee);
+    if (patch.delivery !== undefined) sh.getRange(i+1,20).setValue(patch.delivery);
     sh.getRange(i+1,18).setValue(new Date().toISOString());
     return { ok:true };
   }}
+  return { ok:false, error:'not_found' };
+}
+
+/* Public order tracking — match by Order ID + mobile (digits), return safe fields only */
+function orderTrack_(id, mobile) {
+  var sh = orderSheet_(); var data = sh.getDataRange().getValues(); data.shift();
+  var want = String(mobile||'').replace(/\D/g,'').slice(-10);
+  for (var i=0;i<data.length;i++){ var r=data[i];
+    if (String(r[0]).toUpperCase() === String(id||'').toUpperCase().trim()) {
+      var have = String(r[3]||'').replace(/\D/g,'').slice(-10);
+      if (!want || want !== have) return { ok:false, error:'no_match' };
+      return { ok:true, order:{ id:r[0], date:String(r[1]).slice(0,10), name:r[2],
+        event_type:r[5], invitation_type:r[6], package:r[7], status:r[10]||'New',
+        template_name:r[14]||'', updated:r[17]||'', delivery:r[19]||'' } };
+    }
+  }
   return { ok:false, error:'not_found' };
 }
 
