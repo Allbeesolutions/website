@@ -25,6 +25,7 @@
     { "source": "/admin/invitation-leads", "destination": "/admin/invitation-leads.html" },
     { "source": "/admin/invitation-orders", "destination": "/admin/invitation-orders.html" },
     { "source": "/admin/ceo", "destination": "/admin/ceo.html" },
+    { "source": "/admin/launch", "destination": "/admin/launch.html" },
     { "source": "/order", "destination": "/order.html" },
     { "source": "/404", "destination": "/404.html" }
   ],

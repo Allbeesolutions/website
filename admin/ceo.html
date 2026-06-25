@@ -61,8 +61,12 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
   <div class="banner hidden" id="banner"></div>
   <div class="grid" id="kpis"></div>
   <div class="cols">
-    <div class="panel"><h3>Top Templates (by revenue)</h3><div id="topTpl"></div></div>
+    <div class="panel"><h3>Revenue by Template</h3><div id="topTpl"></div></div>
     <div class="panel"><h3>Order Pipeline</h3><div class="pipe" id="pipe"></div></div>
+  </div>
+  <div class="cols" style="margin-top:18px">
+    <div class="panel"><h3>Revenue by Category</h3><div class="pipe" id="catRev"></div></div>
+    <div class="panel"><h3>Revenue by Source</h3><div class="pipe" id="srcRev"></div></div>
   </div>
 </div>
 
@@ -85,7 +89,9 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
    {id:'ORD-1005',date:today,amount:599,status:'Completed',template_name:'VIP Access',event_type:'Birthday'},
    {id:'ORD-1006',date:'2026-06-12',amount:3999,status:'Designing',template_name:'Luxury Watch',event_type:'Business Event'}
   ];
-  var DEMO_L=[{date:today},{date:today},{date:today},{date:'2026-06-20'},{date:'2026-06-19'}];
+  var DEMO_L=[{date:today,template_id:'AB-NIK-002'},{date:today,template_id:'AB-WED-006'},{date:today,template_id:'AB-WED-001'},{date:'2026-06-20',template_id:'AB-WED-009'},{date:'2026-06-19',template_id:'AB-BIR-005'}];
+  // add template_id + source + updated to demo orders for the new breakdowns
+  DEMO_O.forEach(function(o,i){o.template_id=['AB-NIK-002','AB-WED-006','AB-WED-009','AB-WED-001','AB-BIR-005','AB-BIZ-004'][i];o.source=['demo:nikah-makkah-night','template:AB-WED-006','category:wedding','demo:hindu-wedding','featured:AB-BIR-005','demo:luxury-watch'][i];o.updated=(['Delivered','Completed'].indexOf(o.status)>=0)?new Date(Date.parse(o.date)+3*864e5).toISOString():o.updated;});
 
   function kpi(v,l,s,cls){return '<div class="kpi '+(cls||'')+'"><div class="v">'+v+'</div><div class="l">'+l+'</div>'+(s?'<div class="s">'+s+'</div>':'')+'</div>';}
   function render(){
@@ -96,6 +102,11 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
     var pending=ORDERS.filter(function(o){return ['New','Designing','Review'].indexOf(o.status)>=0;}).length;
     var over=ORDERS.filter(overdue).length;
     var conv=LEADS.length?Math.round(ORDERS.length/LEADS.length*100):0;
+    var aov=ORDERS.length?Math.round(ORDERS.reduce(function(a,o){return a+(+o.amount||0);},0)/ORDERS.length):0;
+    // average delivery time (order date → updated) for Delivered/Completed orders
+    var deliv=ORDERS.filter(function(o){return ['Delivered','Completed'].indexOf(o.status)>=0 && o.updated && o.date;})
+      .map(function(o){return (Date.parse(o.updated)-Date.parse(o.date))/864e5;}).filter(function(d){return d>=0;});
+    var avgDeliv=deliv.length?(deliv.reduce(function(a,b){return a+b;},0)/deliv.length):0;
     $('#kpis').innerHTML=
       kpi(fmt(revToday),'Revenue Today','','gold')+
       kpi(fmt(revMonth),'Revenue This Month','','gold')+
@@ -104,11 +115,18 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
       kpi(conv+'%','Conversion Rate',ORDERS.length+' orders / '+LEADS.length+' leads')+
       kpi(pending,'Pending Deliveries')+
       kpi(over,'Overdue Orders', over?'Needs attention':'All on track', over?'bad':'')+
-      kpi(fmt(ORDERS.length?Math.round(ORDERS.reduce(function(a,o){return a+(+o.amount||0);},0)/ORDERS.length):0),'Avg Order Value');
-    // top templates by revenue
-    var m={};ORDERS.forEach(function(o){var k=o.template_name||'—';(m[k]=m[k]||{rev:0,n:0,cat:o.event_type});m[k].rev+=(+o.amount||0);m[k].n++;});
+      kpi(fmt(aov),'Avg Order Value')+
+      kpi(avgDeliv?avgDeliv.toFixed(1)+'d':'—','Avg Delivery Time',deliv.length+' delivered');
+    // leads per template (for conversion by template)
+    var lt={};LEADS.forEach(function(l){if(l.template_id)lt[l.template_id]=(lt[l.template_id]||0)+1;});
+    // revenue + conversion by template
+    var m={};ORDERS.forEach(function(o){var k=o.template_name||'—';(m[k]=m[k]||{rev:0,n:0,cat:o.event_type,tid:o.template_id});m[k].rev+=(+o.amount||0);m[k].n++;});
     var top=Object.keys(m).map(function(k){return [k,m[k]];}).sort(function(a,b){return b[1].rev-a[1].rev;}).slice(0,5);
-    $('#topTpl').innerHTML=top.map(function(e,i){return '<div class="tt"><span class="rk">'+(i+1)+'</span><span class="nm">'+e[0]+'<div class="ct">'+(e[1].cat||'')+'</div></span><span class="mt">'+fmt(e[1].rev)+'</span></div>';}).join('')||'<div class="ct">No orders yet.</div>';
+    $('#topTpl').innerHTML=top.map(function(e,i){var L=lt[e[1].tid]||0;var cv=L?Math.round(e[1].n/L*100)+'% conv':e[1].n+' ord';return '<div class="tt"><span class="rk">'+(i+1)+'</span><span class="nm">'+e[0]+'<div class="ct">'+(e[1].cat||'')+' · '+cv+'</div></span><span class="mt">'+fmt(e[1].rev)+'</span></div>';}).join('')||'<div class="ct">No orders yet.</div>';
+    // revenue by category + by source (bars)
+    function bars(el,keyf){var g={};ORDERS.forEach(function(o){var k=keyf(o)||'—';g[k]=(g[k]||0)+(+o.amount||0);});var ks=Object.keys(g).sort(function(a,b){return g[b]-g[a];});var mx=Math.max.apply(null,ks.map(function(k){return g[k];}).concat([1]));$(el).innerHTML=ks.map(function(k){return '<div class="pr"><span class="pl" title="'+k+'">'+k+'</span><span class="bar"><span style="width:'+Math.round(g[k]/mx*100)+'%"></span></span><span class="pn" style="width:auto">'+fmt(g[k])+'</span></div>';}).join('')||'<div class="ct">No data.</div>';}
+    bars('#catRev',function(o){return o.event_type;});
+    bars('#srcRev',function(o){return (String(o.source||'direct').split(':')[0]);});
     var max=Math.max(1,Math.max.apply(null,STAGES.map(function(s){return ORDERS.filter(function(o){return o.status===s;}).length;})));
     $('#pipe').innerHTML=STAGES.map(function(s){var c=ORDERS.filter(function(o){return o.status===s;}).length;return '<div class="pr"><span class="pl">'+s+'</span><span class="bar"><span style="width:'+Math.round(c/max*100)+'%"></span></span><span class="pn">'+c+'</span></div>';}).join('');
     $('#meta').textContent=(MODE==='demo'?'Demo data':'Live')+' · updated '+new Date().toLocaleTimeString();

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch Checklist — AllBee Invitations</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F1F1F">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0F1F1F;--muted:#4A6363;--paper:#f4f6f5;--line:#e2e6e4;--ok:#16A34A;--bad:#b5302a;--teal-d:#085A52}
+body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+.top{background:var(--ink);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.top .t{font-family:Playfair Display,serif;font-weight:700;font-size:1.25rem}.top a{color:#cfe;font-size:13px;text-decoration:none}
+.wrap{max-width:780px;margin:0 auto;padding:24px 22px}
+.hero{text-align:center;margin-bottom:20px}
+.hero h1{font-family:Playfair Display,serif;font-size:1.8rem}
+.status{display:inline-block;margin-top:10px;padding:8px 18px;border-radius:100px;font-weight:700}
+.status.go{background:#e7f7ed;color:var(--ok)}.status.nogo{background:#fdecea;color:var(--bad)}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:14px auto;max-width:420px}
+.bar span{display:block;height:100%;background:var(--ok);transition:width .4s}
+.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
+.item .ic{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
+.item.ready .ic{background:var(--ok)}.item.pending .ic{background:var(--bad)}
+.item .b{flex:1}.item h3{font-size:1.05rem;margin-bottom:2px}
+.item .st{font-size:13px;font-weight:700}.item.ready .st{color:var(--ok)}.item.pending .st{color:var(--bad)}
+.item .fix{font-size:13px;color:var(--muted);margin-top:6px}
+.item code{background:var(--paper);padding:1px 6px;border-radius:4px;font-size:12px}
+.muted{color:var(--muted);font-size:13px;text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="top"><div class="t">Launch Checklist</div><a href="/admin/ceo">CEO dashboard →</a></div>
+<div class="wrap">
+  <div class="hero"><h1>Production Readiness</h1>
+    <div class="bar"><span id="bar" style="width:0"></span></div>
+    <div id="status" class="status nogo">Checking…</div>
+  </div>
+  <div id="list"></div>
+  <div class="muted">This page reads only whether each integration's keys are set (never the values). Set env vars in Vercel → Project → Settings → Environment Variables, then redeploy.</div>
+</div>
+<script>
+(function(){
+  var ITEMS=[
+    {k:'razorpay',h:'Razorpay Live Ready',fix:'Set <code>RAZORPAY_KEY_ID</code> + <code>RAZORPAY_KEY_SECRET</code> (live keys) to take online payments. Until then orders are captured for a manual WhatsApp payment link.'},
+    {k:'webhook',h:'Webhook Ready',fix:'Set <code>RAZORPAY_WEBHOOK_SECRET</code> and add the webhook in Razorpay → Webhooks for payment.captured / payment.failed / refund.* pointing to <code>/api/order-webhook</code>.'},
+    {k:'appsScript',h:'Apps Script Ready',fix:'Deploy <code>docs/lead-apps-script.gs</code> as a Web App and set <code>LEAD_APPS_SCRIPT_URL</code> + <code>LEAD_SHARED_SECRET</code>. Re-deploy after any edit.'},
+    {k:'crm',h:'CRM Ready',fix:'Set <code>ADMIN_PASSCODE</code> to unlock the live Leads/Orders dashboards.'},
+    {k:'tracking',h:'Tracking Ready',fix:'Customer order tracking needs the Apps Script data layer (same as above).'}
+  ];
+  function render(checks,ready){
+    var done=ITEMS.filter(function(i){return checks[i.k];}).length;
+    document.getElementById('bar').style.width=Math.round(done/ITEMS.length*100)+'%';
+    var st=document.getElementById('status');
+    st.className='status '+(ready?'go':'nogo');
+    st.textContent=ready?'✓ GO — all systems ready':('● '+done+' of '+ITEMS.length+' ready');
+    document.getElementById('list').innerHTML=ITEMS.map(function(i){
+      var ok=!!checks[i.k];
+      return '<div class="item '+(ok?'ready':'pending')+'"><div class="ic">'+(ok?'✓':'!')+'</div><div class="b"><h3>'+i.h+'</h3><div class="st">'+(ok?'Ready':'Not configured')+'</div>'+(ok?'':'<div class="fix">'+i.fix+'</div>')+'</div></div>';
+    }).join('');
+  }
+  fetch('/api/health',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){render(d.checks||{},d.ready);})
+    .catch(function(){render({},false);document.getElementById('status').textContent='Could not reach /api/health';});
+})();
+</script>
+</body>
+</html>
