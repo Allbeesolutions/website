@@ -259,7 +259,7 @@ $('#backBtn').onclick=()=>{ if(step>1){step--;show();} };
 /* ---------- payment ---------- */
 function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=cb; s.onerror=()=>{$('#payErr').textContent='Could not load the payment gateway. Please try again.';}; document.head.appendChild(s); }
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
-function successView(orderId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`); }
+function successView(orderId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`); }
 
 $('#payBtn').onclick=async()=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
@@ -276,7 +276,7 @@ $('#payBtn').onclick=async()=>{
             interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
       }
       gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
-      showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
+      showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`);
       return;
     }
     loadRzp(()=>{

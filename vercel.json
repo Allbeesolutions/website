@@ -20,6 +20,7 @@
     { "source": "/business-launch-invitations", "destination": "/business-launch-invitations.html" },
     { "source": "/top-templates", "destination": "/top-templates.html" },
     { "source": "/track-order", "destination": "/track-order.html" },
+    { "source": "/design-brief", "destination": "/design-brief.html" },
     { "source": "/demo/:slug", "destination": "/demo/:slug.html" },
     { "source": "/admin/invitation-leads", "destination": "/admin/invitation-leads.html" },
     { "source": "/admin/invitation-orders", "destination": "/admin/invitation-orders.html" },

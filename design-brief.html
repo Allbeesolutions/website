@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Brief — AllBee Invitations</title>
+<meta name="description" content="Share your event details so our team can craft your AllBee invitation.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://www.allbeesolutions.com/design-brief">
+<meta name="theme-color" content="#0F7B6E">
+<link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--paper:#fbfaf7;--line:#e7e3da}
+body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+a{color:inherit}
+.bar{background:var(--teal-d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.bar .b{font-family:Playfair Display,serif;font-weight:700}.bar a{color:#eafff9;font-size:13px;text-decoration:none}
+.wrap{max-width:640px;margin:0 auto;padding:34px 20px 60px}
+.hd{text-align:center;margin-bottom:22px}
+.hd .eb{color:var(--gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px}
+.hd h1{font-family:Playfair Display,serif;font-size:clamp(1.7rem,5vw,2.4rem);margin-top:6px}
+.hd p{color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(15,31,31,.06)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:520px){.row{grid-template-columns:1fr}}
+.field{margin-bottom:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:1rem;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.req::after{content:" *";color:#b5302a}
+.btn{width:100%;background:var(--teal);color:#fff;border:none;padding:14px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer}.btn:hover{background:var(--teal-d)}
+.note{background:rgba(220,165,12,.08);border:1px solid rgba(220,165,12,.3);color:#9a6a12;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px}
+.err{color:#b5302a;font-size:13px;margin-top:10px;display:none}.err.show{display:block}
+.ok{display:none;text-align:center;padding:30px 10px}.ok.show{display:block}.ok .big{font-size:2.4rem}.ok h2{font-family:Playfair Display,serif;margin:8px 0}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="bar"><span class="b">AllBee Invitations</span><a href="/track-order">Track order →</a></div>
+<div class="wrap">
+  <div class="hd"><span class="eb">Design Brief</span><h1>Tell us about your event</h1><p>The more you share, the more personal your invitation.</p></div>
+  <div class="card" id="card">
+    <div class="note" id="ordNote" style="display:none"></div>
+    <div class="note">📸 Have photos? After submitting, send them to us on <a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="font-weight:700">WhatsApp</a> — quick and easy.</div>
+    <form id="briefForm" novalidate>
+      <input type="text" class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="row">
+        <div class="field"><label class="req">Your Name</label><input name="name" required></div>
+        <div class="field"><label class="req">Mobile</label><input name="mobile" inputmode="tel" required></div>
+      </div>
+      <div class="row">
+        <div class="field"><label class="req">Event Type</label><select name="event_type" required><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Dargah Event</option><option>School Event</option><option>Business Event</option><option>Political Event</option><option>Other</option></select></div>
+        <div class="field"><label>Order ID</label><input name="order_id" id="order_id" placeholder="If you have one"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Names (e.g. Bride &amp; Groom)</label><input name="names"></div>
+        <div class="field"><label>Parents / Family</label><input name="parents"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Event Date</label><input name="event_date" type="date"></div>
+        <div class="field"><label>Event Time</label><input name="time" placeholder="e.g. 7:00 PM"></div>
+      </div>
+      <div class="field"><label>Venue</label><input name="venue" placeholder="Hall name, area, city"></div>
+      <div class="row">
+        <div class="field"><label>Theme / Colours</label><input name="theme" placeholder="e.g. royal maroon &amp; gold"></div>
+        <div class="field"><label>Language</label><input name="language" placeholder="Tamil / English / Urdu"></div>
+      </div>
+      <div class="field"><label>Special Notes</label><textarea name="special" rows="3" placeholder="Anything else we should know — events, hashtags, must-haves…"></textarea></div>
+      <button class="btn" type="submit" id="go">Submit Design Brief</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+  <div class="card ok" id="ok"><div class="big">✅</div><h2>Brief received!</h2><p>Thank you — our design team has your details and will begin shortly. Please send any photos to us on WhatsApp.</p><p style="margin-top:14px"><a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="color:var(--teal-d);font-weight:700;text-decoration:none">Send photos on WhatsApp →</a></p></div>
+</div>
+<script>
+(function(){
+  var RT=Date.now();
+  var q=new URLSearchParams(location.search),oid=q.get('order')||q.get('order_id')||'';
+  if(oid){document.getElementById('order_id').value=oid;var n=document.getElementById('ordNote');n.style.display='block';n.innerHTML='Brief for order <b>'+oid.replace(/[<>]/g,'')+'</b>';}
+  var form=document.getElementById('briefForm'),err=document.getElementById('err'),go=document.getElementById('go');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();err.classList.remove('show');
+    if(form._gotcha.value)return;
+    if(!form.checkValidity()){form.reportValidity();return;}
+    var f=new FormData(form);
+    var brief=['Order: '+(f.get('order_id')||'—'),'Names: '+(f.get('names')||'—'),'Parents: '+(f.get('parents')||'—'),'Venue: '+(f.get('venue')||'—'),'Time: '+(f.get('time')||'—'),'Theme: '+(f.get('theme')||'—'),'Language: '+(f.get('language')||'—'),'Notes: '+(f.get('special')||'—')].join(' | ');
+    var data={name:f.get('name'),mobile:f.get('mobile'),event_type:f.get('event_type'),event_date:f.get('event_date')||'',
+      interested_in:[],notes:'DESIGN BRIEF · '+brief,source:'design_brief'+(oid?(':'+oid):''),render_ts:RT-4000,_gotcha:''};
+    go.disabled=true;go.textContent='Submitting…';
+    fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
+      .then(function(res){if(res&&res.ok){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
+      .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';});
+  });
+})();
+</script>
+</body>
+</html>
