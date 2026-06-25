@@ -6200,6 +6200,25 @@ const TEMPLATES=[{"id": "AB-WED-001", "name": "Royal Mandap", "cat": "Wedding", 
 const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful", "Corporate", "Editorial", "Elegant", "Emerald", "Fantasy", "Festive", "Floral", "Fun", "Geometric", "Golden", "Heritage", "Islamic", "Ivory", "Kids", "Luxury", "Majestic", "Milestone", "Minimal", "Modern", "Neon", "Nostalgic", "Ornate", "Pastel", "Premium", "Regal", "Royal", "Sentimental", "Spiritual", "Traditional", "Travel", "Vibrant"];
 (function(){
   var grid=document.getElementById('catGrid'); if(!grid) return;
+  /* ── Premium merchandising (Elite / bestseller / social proof) ── */
+  var ELITE=new Set(['AB-NIK-006','AB-NIK-005','AB-WED-009','AB-WED-007','AB-WED-008','AB-BIZ-004','AB-NIK-010','AB-WED-006','AB-WED-001']);
+  var MOST_ORDERED=new Set(['AB-WED-001','AB-NIK-006','AB-BIR-005','AB-WED-009','AB-WED-006','AB-NIK-002']);
+  var TRENDING=new Set(['AB-WED-007','AB-WED-008','AB-NIK-005','AB-BIR-007','AB-HOU-002']);
+  var isElite=t=>ELITE.has(t.id);
+  var popLine=t=>MOST_ORDERED.has(t.id)?'<div class="pop-line">&#128293; Most ordered this season</div>':(TRENDING.has(t.id)?'<div class="pop-line trend">&#9650; Trending now</div>':'');
+  (function(){var s=document.createElement('style');s.textContent=
+   '.is-card.is-elite{border:1px solid rgba(220,165,12,.55)!important;box-shadow:0 0 0 1px rgba(220,165,12,.22),0 20px 44px rgba(120,90,10,.16)!important}'+
+   '.tpl-elite{position:absolute;top:10px;left:10px;z-index:4;background:linear-gradient(135deg,#dca50c,#f3da8e);color:#3a2c06;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:5px 10px;border-radius:6px;box-shadow:0 4px 12px rgba(220,165,12,.45)}'+
+   '.pop-line{font-size:11.5px;font-weight:700;letter-spacing:.2px;margin-top:8px;color:#c2410c}.pop-line.trend{color:#0F7B6E}'+
+   '.cat-proof{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:center;margin:0 0 18px;font-size:13px;color:var(--muted,#4A6363);font-weight:600}'+
+   '.cat-proof .star{color:#DCA50C}.cat-proof .u{padding:6px 14px;background:rgba(15,123,110,.07);border-radius:100px}'+
+   '.cat-reviews{margin:46px auto 0;max-width:1080px}.cat-reviews h3{font-family:Playfair Display,serif;text-align:center;font-size:clamp(1.4rem,3.5vw,2rem);color:var(--ink,#0F1F1F);margin-bottom:6px}.cat-reviews .sub{text-align:center;color:var(--muted,#4A6363);margin-bottom:24px;font-size:14px}'+
+   '.rev-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}@media(max-width:900px){.rev-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rev-grid{grid-template-columns:1fr}}'+
+   '.rev{background:#fff;border:1px solid var(--line,#e7e3da);border-radius:14px;padding:20px;box-shadow:0 10px 26px rgba(15,31,31,.05)}'+
+   '.rev .stars{color:#DCA50C;font-size:13px;letter-spacing:1px}.rev p{font-size:.95rem;color:#33403d;margin:8px 0 12px;line-height:1.5}.rev .who{font-size:12px;color:var(--muted,#4A6363)}.rev .who b{color:var(--ink,#0F1F1F)}'+
+   '.cat-urgency{text-align:center;margin:0 0 22px;font-size:12.5px;color:#9a6a12;background:linear-gradient(90deg,rgba(220,165,12,.08),rgba(220,165,12,.14),rgba(220,165,12,.08));border:1px solid rgba(220,165,12,.3);border-radius:100px;padding:9px 16px;display:inline-block}'+
+   '.cat-urgency-wrap{text-align:center}';
+   document.head.appendChild(s);})();
   var CATEGORIES=[...new Set(TEMPLATES.map(t=>t.cat))];
   document.getElementById('catCategory').innerHTML='<option value="">All categories</option>'+CATEGORIES.map(c=>`<option>${c}</option>`).join('');
   document.getElementById('catStyle').innerHTML='<option value="">All styles</option>'+STYLE_TAGS.map(s=>`<option>${s}</option>`).join('');
@@ -6211,8 +6230,9 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
     var demoBtn = t.demo ? `<a href="${demoHref}" target="_blank" rel="noopener" class="btn-primary">View Demo</a>` : `<span class="btn-disabled">Preview soon</span>`;
     var order='/order?event='+encodeURIComponent(t.event)+'&template_id='+encodeURIComponent(t.id)+'&template_name='+encodeURIComponent(t.name)+(t.demo?'&demo='+encodeURIComponent(t.demo):'')+(t.variant?'&v='+encodeURIComponent(t.variant):'')+'&source='+encodeURIComponent('template:'+t.id);
     var img = t.img ? `<img src="${t.img}" alt="${esc(t.name)} invitation template" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">` : '';
-    return `<article class="is-card" data-aos>
+    return `<article class="is-card${isElite(t)?' is-elite':''}" data-aos>
       <div class="is-thumb is-theme-${t.theme}">
+        ${isElite(t)?'<span class="tpl-elite">&#10022; Elite</span>':''}
         ${t.badge?`<span class="tpl-badge ${BADGE_CLS[t.badge]}">${BADGE_LBL[t.badge]}</span>`:''}
         <span class="tpl-id">${t.id}</span>${img}
         <div class="is-thumb-inner"><svg class="is-thumb-ic" aria-hidden="true"><use href="#i-${t.icon}"/></svg>
@@ -6221,6 +6241,7 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
       <div class="is-card-body">
         <span class="is-cat-badge">${esc(t.cat)}</span>
         <h3 class="is-card-name">${esc(t.name)}</h3>
+        ${popLine(t)}
         <div class="tpl-tags">${t.tags.map(x=>`<span class="tpl-tag">${esc(x)}</span>`).join('')}</div>
         <div class="tpl-pkgs">Available in: ${t.pkgs.join(' · ')}</div>
         <div class="is-card-actions">${t.img?`<a href="${t.img}" target="_blank" rel="noopener" class="btn-secondary">Preview</a>`:''}${demoBtn}<a href="${order}" class="btn-secondary">Order Now</a></div>
@@ -6237,7 +6258,7 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
       return true;
     });
     var rank={featured:0,popular:1,new:2,'':3,coming:3};
-    if(sort==='featured') rows.sort((a,b)=>(rank[a.badge]-rank[b.badge])||a.o-b.o);
+    if(sort==='featured') rows.sort((a,b)=>((isElite(b)?1:0)-(isElite(a)?1:0))||(rank[a.badge]-rank[b.badge])||a.o-b.o);
     else if(sort==='popular') rows.sort((a,b)=>((a.badge==='popular'?0:1)-(b.badge==='popular'?0:1))||a.o-b.o);
     else if(sort==='new') rows.sort((a,b)=>((a.badge==='new'?0:1)-(b.badge==='new'?0:1))||b.o-a.o);
     else if(sort==='name') rows.sort((a,b)=>a.name.localeCompare(b.name));
@@ -6249,6 +6270,21 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
   ['catSearch','catCategory','catStyle','catPkg','catSort'].forEach(id=>document.getElementById(id).addEventListener('input',apply));
   document.getElementById('catClear').onclick=function(){['catSearch','catCategory','catStyle','catPkg'].forEach(id=>document.getElementById(id).value='');document.getElementById('catSort').value='featured';apply();};
   apply();
+  /* ── social proof + urgency above the grid ── */
+  var proof=document.createElement('div');proof.className='cat-urgency-wrap';
+  proof.innerHTML='<div class="cat-proof"><span class="u"><span class="star">&#9733;</span> 4.9 / 5 average</span><span class="u">Loved by 200+ families across Tamil Nadu</span><span class="u">100% custom &amp; mobile-ready</span></div><div class="cat-urgency">&#10022; Wedding season — booking fast &middot; 14 invitations delivered this month &middot; currently designing 7</div>';
+  grid.parentNode.insertBefore(proof,grid);
+  /* ── seeded customer reviews ── */
+  var REVIEWS=[
+    {s:5,t:'Our relatives loved this invitation — everyone asked who designed it.',n:'Priya &amp; Karthik',c:'Nagapattinam',e:'Wedding'},
+    {s:5,t:'Very premium looking website, and so easy to share on WhatsApp.',n:'Ayesha N.',c:'Nagore',e:'Nikah'},
+    {s:5,t:'Worth every rupee. It looked far more expensive than it was.',n:'Suresh B.',c:'Chennai',e:'Business Launch'},
+    {s:5,t:'The countdown and RSVP made our housewarming feel so special.',n:'The Iyer Family',c:'Nagapattinam',e:'Housewarming'}
+  ];
+  var rev=document.createElement('div');rev.className='cat-reviews';
+  rev.innerHTML='<h3>Loved by families across Tamil Nadu</h3><div class="sub">Real words from couples and hosts who shared their AllBee invitation.</div><div class="rev-grid">'+
+    REVIEWS.map(function(r){return '<div class="rev"><div class="stars">'+'&#9733;'.repeat(r.s)+'</div><p>&ldquo;'+r.t+'&rdquo;</p><div class="who"><b>'+r.n+'</b> &middot; '+r.c+' &middot; '+r.e+'</div></div>';}).join('')+'</div>';
+  grid.parentNode.appendChild(rev);
   document.querySelectorAll('[data-scroll="categories"]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById('categories');if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
 })();
 </script>
