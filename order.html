@@ -268,7 +268,7 @@ $('#payBtn').onclick=async()=>{
       if(!order.lead_id){
         await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
-            interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',render_ts:Date.now()-3000})});
+            interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
       }
       showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><a class="btn btn-primary" href="/invitation-samples">Explore more samples</a>`);
       return;

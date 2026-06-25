@@ -21,7 +21,8 @@
  */
 
 var HEADERS = ['Lead ID','Timestamp','Name','Mobile','Email','Event Type','Event Date',
-  'Interested In','Notes','Source Page','Visitor IP','Status','Value','CRM Notes','Updated'];
+  'Interested In','Notes','Source Page','Visitor IP','Status','Value','CRM Notes','Updated',
+  'Template ID','Template Name','Demo'];
 
 function sheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -34,7 +35,8 @@ function rowsToLeads_(sh) {
   return data.filter(function(r){ return r[2]; }).map(function(r){
     return { id:r[0], date:String(r[1]).slice(0,10), name:r[2], mobile:r[3], email:r[4],
       event_type:r[5], event_date:r[6], interested_in:r[7], notes:r[8], source:r[9],
-      ip:r[10], status:r[11]||'New Lead', value:Number(r[12])||0, crm_notes:r[13]||'' };
+      ip:r[10], status:r[11]||'New Lead', value:Number(r[12])||0, crm_notes:r[13]||'',
+      template_id:r[15]||'', template_name:r[16]||'', demo:r[17]||'' };
   });
 }
 
@@ -75,7 +77,7 @@ function doPost(e) {
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
-      b.source||'', b.ip||'', 'New Lead', '', '', '' ]);
+      b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
 
     var to = props.getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com';
     MailApp.sendEmail({ to: to, subject: 'New AllBee Invitations lead — ' + (b.name||'Unknown'),

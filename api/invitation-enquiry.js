@@ -36,6 +36,9 @@ function validate(b) {
   const eventType = clip(b.event_type, 40);
   const eventDate = clip(b.event_date, 20);
   const notes = clip(b.notes, 2000);
+  const template_id = clip(b.template_id, 20);
+  const template_name = clip(b.template_name, 60);
+  const demo = clip(b.demo, 40);
   let interested = Array.isArray(b.interested_in) ? b.interested_in : (b.interested_in ? [b.interested_in] : []);
   interested = interested.filter((x) => INTEREST.includes(x));
 
@@ -45,7 +48,7 @@ function validate(b) {
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Enter a valid email.';
   if (eventDate && !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) errors.event_date = 'Invalid date.';
 
-  return { errors, lead: { name, mobile, email, event_type: eventType, event_date: eventDate, interested_in: interested, notes } };
+  return { errors, lead: { name, mobile, email, event_type: eventType, event_date: eventDate, interested_in: interested, notes, template_id, template_name, demo } };
 }
 
 function isSpam(b) {
