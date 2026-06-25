@@ -4302,6 +4302,71 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
+<!-- ===== Featured Templates Carousel ===== -->
+<section class="section section-alt" aria-labelledby="feat-carousel-h">
+  <div class="section-container">
+    <div class="text-center" data-aos>
+      <span class="eyebrow" style="color:var(--gold,#DCA50C);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px">Featured Designs</span>
+      <h2 id="feat-carousel-h" class="section-title">A glimpse of what your invitation could be</h2>
+      <p class="section-subtitle">Six of our most-loved premium designs. Tap any to open the live demo.</p>
+    </div>
+    <div class="fcar" id="fcar">
+      <button class="fcar-arrow prev" id="fcarPrev" aria-label="Previous">&#8249;</button>
+      <div class="fcar-track" id="fcarTrack"></div>
+      <button class="fcar-arrow next" id="fcarNext" aria-label="Next">&#8250;</button>
+    </div>
+    <div class="fcar-dots" id="fcarDots"></div>
+  </div>
+</section>
+<style>
+.fcar{position:relative;max-width:920px;margin:30px auto 0}
+.fcar-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:18px}
+.fcar-track::-webkit-scrollbar{display:none}
+.fcar-slide{flex:0 0 100%;scroll-snap-align:center;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:8px}
+@media(max-width:720px){.fcar-slide{grid-template-columns:1fr;text-align:center}}
+.fcar-lap{max-width:480px;margin:0 auto;width:100%}
+.fcar-lap .scr{border:9px solid #1c2422;border-radius:12px 12px 0 0;background:#000;overflow:hidden;aspect-ratio:16/10}
+.fcar-lap .scr img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.fcar-lap .bs{height:12px;background:linear-gradient(#cfd4d2,#9aa3a0);border-radius:0 0 10px 10px}
+.fcar-info .ec{color:var(--gold,#DCA50C);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:11px}
+.fcar-info h3{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin:8px 0 6px;color:var(--ink,#0F1F1F)}
+.fcar-info .el{display:inline-block;background:linear-gradient(135deg,#dca50c,#f3da8e);color:#3a2c06;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:6px;margin-bottom:10px}
+.fcar-info p{color:var(--muted,#4A6363);margin-bottom:16px}
+.fcar-info .row{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:720px){.fcar-info .row{justify-content:center}}
+.fcar-arrow{position:absolute;top:42%;transform:translateY(-50%);z-index:3;width:42px;height:42px;border-radius:50%;border:1px solid var(--line,#e7e3da);background:#fff;color:var(--ink,#0F1F1F);font-size:22px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.fcar-arrow.prev{left:-8px}.fcar-arrow.next{right:-8px}
+@media(max-width:720px){.fcar-arrow{top:32%}}
+.fcar-dots{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.fcar-dots b{width:8px;height:8px;border-radius:50%;background:var(--line,#cfc8b6);cursor:pointer;transition:.2s;border:none;padding:0}
+.fcar-dots b.on{background:var(--teal,#0F7B6E);width:22px;border-radius:5px}
+</style>
+<script>
+(function(){
+  var F=[
+    {id:'AB-WED-001',n:'Royal Mandap',c:'Wedding',el:1,demo:'hindu-wedding',img:'/demo-shots/AB-WED-001.jpg',d:'Cinematic curtain-open grandeur with a love-story timeline.'},
+    {id:'AB-NIK-006',n:'Makkah Night',c:'Nikah',el:1,demo:'nikah-makkah-night',img:'/demo-shots/AB-NIK-006.jpg',d:'Serene, spiritual, celestial — the Kaaba under a starlit sky.'},
+    {id:'AB-WED-009',n:'Passport Journey',c:'Wedding',el:1,demo:'passport-journey',img:'/demo-shots/AB-WED-009.jpg',d:'A travel-document experience with boarding pass and visa stamps.'},
+    {id:'AB-BIR-005',n:'VIP Access',c:'Birthday',el:0,demo:'birthday-vip',img:'/demo-shots/AB-BIR-005.jpg',d:'A perforated VIP pass with barcode and departures-board countdown.'},
+    {id:'AB-BIZ-004',n:'Luxury Watch',c:'Business Launch',el:1,demo:'luxury-watch',img:'/demo-shots/AB-BIZ-004.jpg',d:'A Maison-grade reveal with a live ticking dial.'},
+    {id:'AB-HOU-002',n:'Time Capsule',c:'Housewarming',el:0,demo:'time-capsule',img:'/demo-shots/AB-HOU-002.jpg',d:'A sealed vault that unlocks family memories as you scroll.'}
+  ];
+  var track=document.getElementById('fcarTrack'),dots=document.getElementById('fcarDots');if(!track)return;
+  function order(t){return '/order?event='+encodeURIComponent(t.c==='Business Launch'?'Business Event':t.c)+'&template_id='+encodeURIComponent(t.id)+'&template_name='+encodeURIComponent(t.n)+'&demo='+encodeURIComponent(t.demo)+'&source='+encodeURIComponent('featured:'+t.id);}
+  track.innerHTML=F.map(function(t){return '<div class="fcar-slide"><a class="fcar-lap" href="/demo/'+t.demo+'" target="_blank" rel="noopener"><div class="scr"><img loading="lazy" src="'+t.img+'" alt="'+t.n+' invitation preview"></div><div class="bs"></div></a><div class="fcar-info">'+(t.el?'<span class="el">&#10022; Elite</span><br>':'')+'<span class="ec">'+t.c+'</span><h3>'+t.n+'</h3><p>'+t.d+'</p><div class="row"><a class="btn-primary" href="/demo/'+t.demo+'" target="_blank" rel="noopener">View Demo</a><a class="btn-secondary" href="'+order(t)+'">Order Now</a></div></div></div>';}).join('');
+  dots.innerHTML=F.map(function(_,i){return '<button class="'+(i===0?'on':'')+'" data-i="'+i+'" aria-label="Slide '+(i+1)+'"></button>';}).join('');
+  var dotEls=[].slice.call(dots.children),cur=0,timer;
+  function go(i){cur=(i+F.length)%F.length;track.scrollTo({left:track.clientWidth*cur,behavior:'smooth'});dotEls.forEach(function(d,j){d.classList.toggle('on',j===cur);});}
+  document.getElementById('fcarNext').onclick=function(){go(cur+1);rest();};
+  document.getElementById('fcarPrev').onclick=function(){go(cur-1);rest();};
+  dots.addEventListener('click',function(e){var b=e.target.closest('[data-i]');if(b){go(+b.dataset.i);rest();}});
+  var st;track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){var i=Math.round(track.scrollLeft/track.clientWidth);if(i!==cur){cur=i;dotEls.forEach(function(d,j){d.classList.toggle('on',j===cur);});}},120);});
+  function start(){timer=setInterval(function(){go(cur+1);},5000);}function rest(){clearInterval(timer);start();}
+  start();
+  track.addEventListener('mouseenter',function(){clearInterval(timer);});track.addEventListener('mouseleave',start);
+})();
+</script>
+
 <!-- ===== Event Categories ===== -->
 <section class="section" aria-labelledby="cat-h">
   <div class="section-container">
@@ -4363,7 +4428,7 @@ html{scroll-behavior:smooth}
       <h2 id="why-h" class="section-title">Made for <em>Your Celebrations</em></h2>
       <p class="section-sub">Local understanding, modern technology, fair pricing.</p>
     </div>
-    <div class="inv-why-grid"><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-map-pin"/></svg></div><div><h3>Designed for Indian Events</h3><p>Templates and flows built around weddings, nikah, dargah events and local functions.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-message"/></svg></div><div><h3>Tamil, English & Urdu Planned</h3><p>Create invitations in the language your guests are most comfortable with.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-zap"/></svg></div><div><h3>Affordable Pricing</h3><p>Beautiful digital invitations starting from just ₹99 — a fraction of print costs.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-rocket"/></svg></div><div><h3>Fast Delivery</h3><p>Generate cards and invitation websites in minutes, not days.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-phone-mobile"/></svg></div><div><h3>Mobile-First Design</h3><p>Every invitation looks stunning on the phones your guests actually use.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><div><h3>Built by AllBee Solutions</h3><p>Backed by a trusted Nagore-based IT and digital agency.</p></div></div></div>
+    <div class="inv-why-grid"><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-map-pin"/></svg></div><div><h3>Designed for Indian Events</h3><p>Templates and flows built around weddings, nikah, dargah events and local functions.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-message"/></svg></div><div><h3>Tamil, English & Urdu Planned</h3><p>Create invitations in the language your guests are most comfortable with.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-zap"/></svg></div><div><h3>Affordable Pricing</h3><p>Beautiful digital invitations starting from just ₹299 — a fraction of print costs.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-rocket"/></svg></div><div><h3>Fast Delivery</h3><p>Generate cards and invitation websites in minutes, not days.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-phone-mobile"/></svg></div><div><h3>Mobile-First Design</h3><p>Every invitation looks stunning on the phones your guests actually use.</p></div></div><div class="inv-why" data-aos><div class="inv-why-ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><div><h3>Built by AllBee Solutions</h3><p>Backed by a trusted Nagore-based IT and digital agency.</p></div></div></div>
   </div>
 </section>
 
