@@ -11,7 +11,7 @@
  *  2. Extensions → Apps Script → paste this file → Save.
  *  3. Project Settings → Script properties:
  *        SHARED_SECRET = <long random string>   (match Vercel LEAD_SHARED_SECRET)
- *        NOTIFY_EMAIL  = allbeesolutions@gmail.com
+ *        NOTIFY_EMAIL  = contact@allbeesolutions.com
  *  4. Deploy → New deployment → Web app → Execute as: Me · Who has access: Anyone.
  *  5. Copy the Web app URL → Vercel env LEAD_APPS_SCRIPT_URL.  Authorize when prompted.
  *
@@ -96,7 +96,7 @@ function doPost(e) {
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
       b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
-    safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com',
+    safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
       'New AllBee Invitations lead — ' + (b.name||'Unknown'),
       'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''));
     return _json({ ok:true, id:id });
@@ -144,7 +144,7 @@ function orderCreate_(b) {
   sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
     b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
     'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
-  safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'allbeesolutions@gmail.com',
+  safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
     'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
     id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0));
   return { ok:true, id:id };

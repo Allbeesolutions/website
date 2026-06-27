@@ -17,7 +17,7 @@ skipped gracefully and the lead is logged to Vercel function logs (recoverable).
 2. **Extensions → Apps Script**, paste `docs/lead-apps-script.gs`, **Save**.
 3. **Project Settings → Script properties**, add:
    - `SHARED_SECRET` = a long random string (match Vercel `LEAD_SHARED_SECRET`)
-   - `NOTIFY_EMAIL` = `allbeesolutions@gmail.com`
+   - `NOTIFY_EMAIL` = `contact@allbeesolutions.com`
 4. **Deploy → New deployment → Web app** → *Execute as: Me*, *Who has access: Anyone* → **Deploy**.
 5. Authorize (grants Sheets + Gmail-send). Copy the **Web app URL**.
 
