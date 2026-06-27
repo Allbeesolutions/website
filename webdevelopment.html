@@ -3948,6 +3948,22 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   .ctm-img{opacity:.32;}
 }
 
+
+/* ========== PORTFOLIO PREVIEW STRIP ========== */
+.pf-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+@media(max-width:900px){.pf-preview-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:580px){.pf-preview-grid{grid-template-columns:1fr}}
+.pf-prev-card{background:var(--s-0);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;transition:transform .35s var(--ease,ease),border-color .35s,box-shadow .35s;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.pf-prev-card:hover{transform:translateY(-6px);border-color:var(--teal);box-shadow:var(--shadow-3,0 16px 48px rgba(15,123,110,0.12)),var(--shadow-teal,0 8px 40px rgba(15,123,110,0.18))}
+.pf-prev-thumb{height:160px;overflow:hidden;background:linear-gradient(135deg,var(--s-3,#e9f3f0),var(--s-4,#cce5e0));display:flex;align-items:center;justify-content:center}
+.pf-prev-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease}
+.pf-prev-card:hover .pf-prev-thumb img{transform:scale(1.05)}
+.pf-prev-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
+.pf-prev-cat{display:inline-flex;padding:3px 10px;border-radius:100px;background:rgba(15,123,110,0.08);border:1px solid rgba(15,123,110,0.18);font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal,#0F7B6E);margin-bottom:8px;width:fit-content}
+.pf-prev-name{font-family:var(--font-display,'Playfair Display',serif);font-size:1.05rem;font-weight:700;color:var(--ink,#0F1F1F);margin-bottom:6px}
+.pf-prev-desc{font-size:12.5px;color:var(--muted,#4A6363);line-height:1.65;flex:1;margin-bottom:12px}
+.pf-prev-link{font-size:12px;font-weight:800;color:var(--teal,#0F7B6E);display:inline-flex;align-items:center;gap:5px;transition:gap .2s}
+.pf-prev-card:hover .pf-prev-link{gap:9px}
 </style>
 
 <script type="application/ld+json">
@@ -4662,6 +4678,49 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 </section>
 </main>
 
+
+<!--pf-preview-->
+<section class="section-pad section-alt" aria-labelledby="pf-preview-h2">
+  <div class="section-container">
+    <div class="text-center">
+      <span class="section-eyebrow">Our Work</span>
+      <h2 class="section-title" id="pf-preview-h2">Web Platforms We've <em>Built</em></h2>
+      <p class="section-sub">From digital invitation platforms to customer portals — see how we approach web development projects. <a href="/portfolio" style="color:var(--teal);font-weight:700">Full portfolio →</a></p>
+    </div>
+    <div class="pf-preview-grid">
+    <a class="pf-prev-card" href="/portfolio#all-projects" aria-label="AllBee Invitations">
+    <div class="pf-prev-thumb"><img src="/assets/portfolio/invitations.jpg" alt="AllBee Invitations screenshot" loading="lazy" width="360" height="160"></div>
+    <div class="pf-prev-body">
+      <span class="pf-prev-cat">Internal Product</span>
+      <div class="pf-prev-name">AllBee Invitations</div>
+      <p class="pf-prev-desc">Digital invitation platform — 34+ design templates, website & PDF delivery, order management, Razorpay payments.</p>
+      <span class="pf-prev-link">View in Portfolio →</span>
+    </div>
+  </a>
+    <a class="pf-prev-card" href="/portfolio#all-projects" aria-label="AllBee CRM & Dashboard">
+    <div class="pf-prev-thumb"><img src="/assets/portfolio/crm.jpg" alt="AllBee CRM & Dashboard screenshot" loading="lazy" width="360" height="160"></div>
+    <div class="pf-prev-body">
+      <span class="pf-prev-cat">Internal Product</span>
+      <div class="pf-prev-name">AllBee CRM & Dashboard</div>
+      <p class="pf-prev-desc">Business management system for leads, orders, analytics, and review moderation — all in one interface.</p>
+      <span class="pf-prev-link">View in Portfolio →</span>
+    </div>
+  </a>
+    <a class="pf-prev-card" href="/portfolio#all-projects" aria-label="AllBee Training Platform">
+    <div class="pf-prev-thumb"><img src="/assets/portfolio/training.jpg" alt="AllBee Training Platform screenshot" loading="lazy" width="360" height="160"></div>
+    <div class="pf-prev-body">
+      <span class="pf-prev-cat">Training Programs</span>
+      <div class="pf-prev-name">AllBee Training Platform</div>
+      <p class="pf-prev-desc">Online course catalog with 6 IT programs, syllabi, pricing, and direct WhatsApp enrollment inquiry.</p>
+      <span class="pf-prev-link">View in Portfolio →</span>
+    </div>
+  </a>
+    </div>
+    <div class="text-center" style="margin-top:36px">
+      <a href="/portfolio" class="btn-secondary">View All Projects →</a>
+    </div>
+  </div>
+</section>
 <!--tz-mounts-->
   <section class="tz tz-section" data-trust="rating"></section>
   <section class="tz tz-section alt" data-trust="cases" data-trust-eyebrow="Our Work" data-trust-title="Recent Projects"></section>
