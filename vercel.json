@@ -30,6 +30,7 @@
     { "source": "/admin/ceo", "destination": "/admin/ceo.html" },
     { "source": "/admin/launch", "destination": "/admin/launch.html" },
     { "source": "/order", "destination": "/order.html" },
+    { "source": "/webpricing", "destination": "/webpricing.html" },
     { "source": "/404", "destination": "/404.html" }
   ],
   "headers": [
