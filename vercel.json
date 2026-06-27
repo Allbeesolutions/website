@@ -19,6 +19,7 @@
     { "source": "/housewarming-invitations", "destination": "/housewarming-invitations.html" },
     { "source": "/business-launch-invitations", "destination": "/business-launch-invitations.html" },
     { "source": "/top-templates", "destination": "/top-templates.html" },
+    { "source": "/portfolio", "destination": "/portfolio.html" },
     { "source": "/track-order", "destination": "/track-order.html" },
     { "source": "/design-brief", "destination": "/design-brief.html" },
     { "source": "/review", "destination": "/review.html" },
