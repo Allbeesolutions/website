@@ -3969,6 +3969,54 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   .ctm-img{opacity:.32;}
 }
 
+
+/*nav-dd*/
+/* ===== Grouped dropdown navigation ===== */
+.nav-links{display:flex;align-items:center;gap:2px;list-style:none;margin-left:auto}
+.nav-links>li{position:relative;display:flex;align-items:center}
+.nav-links a,.nav-dd-toggle{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink-2);background:transparent;border:none;cursor:pointer;text-decoration:none;white-space:nowrap;transition:color .2s,background .2s}
+.nav-links a:hover,.nav-dd-toggle:hover{color:var(--ink);background:var(--s-2)}
+.nav-links a.active,.nav-links a[aria-current="page"],.nav-dd-toggle.active{color:var(--teal);background:var(--teal-gl)}
+.nav-dd-toggle .nav-chev{width:11px;height:11px;opacity:.7;transition:transform .25s var(--ease,ease)}
+.nav-dd:hover .nav-dd-toggle .nav-chev,.nav-dd:focus-within .nav-dd-toggle .nav-chev,.nav-dd[data-open="true"] .nav-dd-toggle .nav-chev{transform:rotate(180deg)}
+.nav-dd-menu{position:absolute;top:calc(100% + 10px);left:0;min-width:212px;background:var(--s-0,#fff);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 44px rgba(8,60,55,.14),0 4px 12px rgba(8,60,55,.06);padding:8px;list-style:none;margin:0;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .22s var(--ease,ease),transform .22s var(--ease,ease),visibility .22s;z-index:120}
+.nav-dd-menu::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
+.nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu,.nav-dd[data-open="true"] .nav-dd-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dd-menu li{display:block}
+.nav-dd-menu a{display:flex;align-items:center;width:100%;padding:10px 12px;border-radius:9px;font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.nav-dd-menu a:hover{background:var(--s-2);color:var(--teal)}
+.nav-dd-menu a.active,.nav-dd-menu a[aria-current="page"]{color:var(--teal);background:var(--teal-gl)}
+.nav-cta-btn{text-decoration:none}
+/* transparent starfall hero — dropdown toggles match white links */
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle{color:#fff}
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle:hover{color:#E8B527}
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle.active{color:#E8B527;background:rgba(255,255,255,.08)}
+/* dropdown panel links stay dark on the white panel even over transparent hero */
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a{color:var(--ink-2)}
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a:hover,
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.active{color:var(--teal)}
+/* ===== Mobile accordion ===== */
+.m-acc{border-bottom:1px solid var(--s-2)}
+.m-acc-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 16px;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink-2);border-radius:10px}
+.m-acc-toggle:hover,.m-acc-toggle.active{color:var(--teal)}
+.m-acc-toggle .nav-chev{width:14px;height:14px;opacity:.7;transition:transform .25s var(--ease,ease)}
+.m-acc-toggle[aria-expanded="true"] .nav-chev{transform:rotate(180deg)}
+.m-acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s var(--ease,ease)}
+.m-acc-panel>div{overflow:hidden;min-height:0}
+.m-acc-toggle[aria-expanded="true"]+.m-acc-panel{grid-template-rows:1fr}
+.m-acc-panel a{display:block;padding:11px 16px 11px 30px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--s-1)}
+.m-acc-panel a:last-child{border-bottom:none}
+.m-acc-panel a:hover,.m-acc-panel a.active{color:var(--teal)}
+@media (prefers-reduced-motion: reduce){.nav-dd-menu,.m-acc-panel,.nav-chev{transition:none}}
+/* mobile breakpoint — #navbar-scoped so it wins over base .nav-links display */
+@media (max-width:768px){
+  #navbar .nav-links,#navbar .nav-cta-btn{display:none}
+  #navbar .hamburger{display:flex}
+}
+@media (min-width:769px){
+  #navbar .hamburger{display:none}
+}
+/*nav-dd-end*/
 </style>
 
 <script type="application/ld+json">
@@ -4232,20 +4280,36 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
     </a>
     <ul class="nav-links" role="list">
       <li><a href="/">Home</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/courses" aria-current="page">Courses</a></li>
-      <li><a href="/webdevelopment">Web Development</a></li>
-      <li><a href="/digitalmarketing">Digital Marketing</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact</a></li>
+      <li class="nav-dd">
+        <button type="button" class="nav-dd-toggle" aria-haspopup="true" aria-expanded="false">Services <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-dd-menu" role="menu">
+          <li><a role="menuitem" href="/webdevelopment">Web Development</a></li>
+          <li><a role="menuitem" href="/digitalmarketing">Digital Marketing</a></li>
+          <li><a role="menuitem" href="/services#design">Branding &amp; Design</a></li>
+          <li><a role="menuitem" href="/invitation">Invitation Design</a></li>
+        </ul>
+      </li>
       <li><a href="/portfolio">Portfolio</a></li>
-      <li><a href="/portfolio">Portfolio</a>
-  <a href="/invitation">Invitation</a></li>
+      <li class="nav-dd">
+        <button type="button" class="nav-dd-toggle active" aria-haspopup="true" aria-expanded="false">Courses <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-dd-menu" role="menu">
+          <li><a role="menuitem" href="/courses" class="active" aria-current="page">IT Courses</a></li>
+          <li><a role="menuitem" href="/digitalmarketing">Digital Marketing</a></li>
+          <li><a role="menuitem" href="/courses#spoken-english">Spoken English</a></li>
+        </ul>
+      </li>
+      <li class="nav-dd">
+        <button type="button" class="nav-dd-toggle" aria-haspopup="true" aria-expanded="false">About <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <ul class="nav-dd-menu" role="menu">
+          <li><a role="menuitem" href="/about">About Us</a></li>
+          <li><a role="menuitem" href="/contact">Contact Us</a></li>
+        </ul>
+      </li>
     </ul>
-    <button class="nav-cta-btn" type="button" onclick="openModal()">
+    <a class="nav-cta-btn" href="/contact">
       <svg width="14" height="14" aria-hidden="true"><use href="#i-grad-cap"/></svg>
-      Free Counseling
-    </button>
+      Get Quote
+    </a>
     <button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
       <span></span><span></span><span></span>
     </button>
@@ -4253,15 +4317,32 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 </nav>
 <div class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
   <a href="/">Home</a>
-  <a href="/services">Services</a>
-  <a href="/courses" aria-current="page">Courses</a>
-  <a href="/webdevelopment">Web Development</a>
-  <a href="/digitalmarketing">Digital Marketing</a>
-  <a href="/about">About</a>
-  <a href="/contact">Contact</a>
+  <div class="m-acc">
+    <button type="button" class="m-acc-toggle" aria-expanded="false">Services <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-panel"><div>
+        <a href="/webdevelopment">Web Development</a>
+        <a href="/digitalmarketing">Digital Marketing</a>
+        <a href="/services#design">Branding &amp; Design</a>
+        <a href="/invitation">Invitation Design</a>
+    </div></div>
+  </div>
   <a href="/portfolio">Portfolio</a>
-  <a href="/invitation">Invitation</a>
-  <a href="javascript:void(0)" class="mobile-cta" onclick="openModal()">Enquire Now</a>
+  <div class="m-acc">
+    <button type="button" class="m-acc-toggle active" aria-expanded="true">Courses <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-panel"><div>
+        <a href="/courses" class="active" aria-current="page">IT Courses</a>
+        <a href="/digitalmarketing">Digital Marketing</a>
+        <a href="/courses#spoken-english">Spoken English</a>
+    </div></div>
+  </div>
+  <div class="m-acc">
+    <button type="button" class="m-acc-toggle" aria-expanded="false">About <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-panel"><div>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
+    </div></div>
+  </div>
+  <a href="/contact" class="mobile-cta">Get Quote</a>
 </div>
 </header>
 <main id="main">
@@ -4732,7 +4813,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   <div class="chat-msgs" id="chatMsgs" aria-live="polite" aria-relevant="additions">
     <div class="chat-bubble bot">
       👋 Hi! I'm the <strong>AllBee AI Assistant</strong>.<br><br>
-      I can answer questions about our courses, fees, admissions, and location. How can I help you today?
+      I can help with courses, services, AllBee Invitations, pricing, and how to get started. How can I help you today?
     </div>
   </div>
   <div class="chat-typing" id="chatTyping" aria-hidden="true">
@@ -4740,6 +4821,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   </div>
   <div class="chat-quick" id="chatQuick">
     <button class="chat-qbtn" type="button" onclick="sendQuick('What courses do you offer?')">📚 Courses</button>
+    <button class="chat-qbtn" type="button" onclick="sendQuick('Tell me about invitations')">💌 Invitations</button>
     <button class="chat-qbtn" type="button" onclick="sendQuick('What are the fees?')">💰 Fees</button>
     <button class="chat-qbtn" type="button" onclick="sendQuick('How do I enroll?')">📝 Enroll</button>
     <button class="chat-qbtn" type="button" onclick="sendQuick('Where are you located?')">📍 Location</button>
@@ -5136,6 +5218,18 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
      CHATBOT — rule-based KB, accessible
   ───────────────────────────────────────────────────────────────── */
   const KB = [
+    { keys:['invitation','invitations','invite','digital invitation','e-invite','e invitation','allbee invitations','wedding card','nikah card'],
+      reply:'💌 <strong>AllBee Invitations</strong> — premium digital invitations with 34+ designs!<br><br>📄 <strong>PDF Invitation</strong> — from ₹299<br>🌐 <strong>Website Invitation</strong> — from ₹999 (most popular)<br>🎁 <strong>PDF + Website Combo</strong> — from ₹1,299<br><br>Browse designs: <strong>/invitation-samples</strong><br>Order now: <strong>/invitation</strong>' },
+    { keys:['pdf invitation','website invitation','combo','pdf + website','which invitation','invitation type','types of invitation','invitation product'],
+      reply:'We offer <strong>3 invitation products</strong>:<br><br>📄 <strong>PDF Invitation</strong> (from ₹299) — downloadable card, print &amp; WhatsApp ready<br>🌐 <strong>Website Invitation</strong> (from ₹999) — live invite site with RSVP, countdown &amp; maps<br>🎁 <strong>Combo</strong> (from ₹1,299) — card + website together (best value)<br><br>See all designs: <strong>/invitation-samples</strong>' },
+    { keys:['package','packages','basic package','premium package','elite package','invitation price','invitation cost','invitation fee','invitation pricing'],
+      reply:'Every invitation comes in <strong>3 packages</strong>:<br><br>⭐ <strong>Basic</strong> · 💎 <strong>Premium</strong> · 👑 <strong>Elite</strong><br><br>Pricing starts at ₹299 (PDF), ₹999 (Website) or ₹1,299 (Combo). Final package price is shown at checkout.<br><br>Order: <strong>/invitation</strong>' },
+    { keys:['rsvp','whatsapp sharing','unlimited guests','mobile friendly','custom design','invitation feature','invitation features','countdown'],
+      reply:'✨ <strong>Invitation features:</strong><br><br>✅ RSVP collection<br>✅ WhatsApp sharing<br>✅ Mobile friendly<br>✅ Unlimited guests<br>✅ Order tracking<br>✅ Custom design<br><br>Browse designs: <strong>/invitation-samples</strong>' },
+    { keys:['how to order','order process','how does it work','how do i order','invitation steps','ordering','order invitation','place order','how to get invitation','draft','approve'],
+      reply:'📝 <strong>How it works — 6 easy steps:</strong><br><br>1️⃣ Choose a template<br>2️⃣ Place your order<br>3️⃣ Submit your details<br>4️⃣ Receive your draft<br>5️⃣ Approve it<br>6️⃣ Get delivery 🎉<br><br>Start now: <strong>/invitation</strong>' },
+    { keys:['track','track order','order status','where is my order','tracking','my order'],
+      reply:'🔎 <strong>Track your invitation order</strong> anytime:<br><br>Visit <strong>/track-order</strong> and enter your mobile number to see live status &amp; updates.' },
     { keys:['course','courses','what course','offer','training','learn','class','program','all course'],
       reply:'We offer <strong>7 courses</strong> at AllBee Solutions:<br><br>' +
             '🐍 <strong>Python Programming</strong> — 40 Days — ₹2,999<br>' +
@@ -6286,5 +6380,40 @@ function tsHover(id){
 
 </script>
 
+<script>
+/*nav-dd-js*/
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  ready(function(){
+    var dds = document.querySelectorAll('#navbar .nav-dd');
+    function closeAll(except){
+      dds.forEach(function(o){ if(o!==except){ o.removeAttribute('data-open'); var b=o.querySelector('.nav-dd-toggle'); if(b) b.setAttribute('aria-expanded','false'); } });
+    }
+    dds.forEach(function(dd){
+      var btn = dd.querySelector('.nav-dd-toggle');
+      if(!btn) return;
+      btn.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        var open = dd.getAttribute('data-open')==='true';
+        closeAll(dd);
+        if(open){ dd.removeAttribute('data-open'); btn.setAttribute('aria-expanded','false'); }
+        else { dd.setAttribute('data-open','true'); btn.setAttribute('aria-expanded','true'); }
+      });
+      // Keyboard: CSS :focus-within opens the menu visually — keep aria-expanded in sync for screen readers
+      dd.addEventListener('focusin', function(){ btn.setAttribute('aria-expanded','true'); });
+      dd.addEventListener('focusout', function(e){ if(!dd.contains(e.relatedTarget)){ dd.removeAttribute('data-open'); btn.setAttribute('aria-expanded','false'); } });
+    });
+    document.addEventListener('click', function(e){ if(!e.target.closest('#navbar .nav-dd')) closeAll(null); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(null); });
+    // Mobile accordion
+    document.querySelectorAll('#mobileMenu .m-acc-toggle').forEach(function(t){
+      t.addEventListener('click', function(){
+        var open = t.getAttribute('aria-expanded')==='true';
+        t.setAttribute('aria-expanded', String(!open));
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
