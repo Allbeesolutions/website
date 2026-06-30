@@ -219,8 +219,8 @@ img,svg,video{max-width:100%;height:auto;display:block}
   position:fixed; top:0; left:0; right:0; height:var(--nav-h);
   z-index:1000;
   background:rgba(255,255,255,0.92);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(12px) saturate(150%);
+  -webkit-backdrop-filter:blur(12px) saturate(150%);
   border-bottom:1px solid var(--border);
   transition:background 0.3s ease, box-shadow 0.3s ease;
 }
@@ -312,7 +312,7 @@ img,svg,video{max-width:100%;height:auto;display:block}
   display:none;
   position:fixed; top:var(--nav-h); left:0; right:0;
   background:rgba(255,255,255,0.99);
-  backdrop-filter:blur(20px);
+  backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);
   padding:16px 24px 24px;
   z-index:999;
@@ -1604,8 +1604,8 @@ footer{
    AOS-LITE
 ================================================================= */
 [data-aos]{
-  opacity:0; transform:translateY(28px);
-  transition:opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  opacity:0; transform:translateY(14px);
+  transition:opacity 0.45s var(--ease), transform 0.45s var(--ease);
 }
 [data-aos].aos-in{opacity:1; transform:none}
 
@@ -2578,8 +2578,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
   border-radius: inherit;
   pointer-events: none;
   /* very faint turbulence layer above the bg */
-  backdrop-filter: url("#tm-glass");
-  -webkit-backdrop-filter: url("#tm-glass");
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   opacity: 0.5;
 }
 .tm-card:hover {
@@ -3950,15 +3950,19 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 
 
 /*nav-dd*/
-/* ===== Grouped dropdown navigation ===== */
+/* ===== Split-button dropdown navigation (parent text = link, arrow = toggle) ===== */
 .nav-links{display:flex;align-items:center;gap:2px;list-style:none;margin-left:auto}
 .nav-links>li{position:relative;display:flex;align-items:center}
-.nav-links a,.nav-dd-toggle{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink-2);background:transparent;border:none;cursor:pointer;text-decoration:none;white-space:nowrap;transition:color .2s,background .2s}
-.nav-links a:hover,.nav-dd-toggle:hover{color:var(--ink);background:var(--s-2)}
-.nav-links a.active,.nav-links a[aria-current="page"],.nav-dd-toggle.active{color:var(--teal);background:var(--teal-gl)}
-.nav-dd-toggle .nav-chev{width:11px;height:11px;opacity:.7;transition:transform .25s var(--ease,ease)}
-.nav-dd:hover .nav-dd-toggle .nav-chev,.nav-dd:focus-within .nav-dd-toggle .nav-chev,.nav-dd[data-open="true"] .nav-dd-toggle .nav-chev{transform:rotate(180deg)}
-.nav-dd-menu{position:absolute;top:calc(100% + 10px);left:0;min-width:212px;background:var(--s-0,#fff);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 44px rgba(8,60,55,.14),0 4px 12px rgba(8,60,55,.06);padding:8px;list-style:none;margin:0;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .22s var(--ease,ease),transform .22s var(--ease,ease),visibility .22s;z-index:120}
+.nav-links a{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink-2);text-decoration:none;white-space:nowrap;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--ink);background:var(--s-2)}
+.nav-links a.active,.nav-links a[aria-current="page"]{color:var(--teal);background:var(--teal-gl)}
+.nav-dd-row{display:inline-flex;align-items:center;gap:0}
+.nav-dd-row .nav-dd-link{padding-right:4px}
+.nav-dd-arrow{display:inline-flex;align-items:center;justify-content:center;padding:8px 8px 8px 2px;background:transparent;border:none;cursor:pointer;color:var(--ink-2);border-radius:8px;transition:color .2s}
+.nav-dd-arrow:hover{color:var(--teal)}
+.nav-chev{width:11px;height:11px;opacity:.7;transition:transform .25s var(--ease,ease)}
+.nav-dd:hover .nav-chev,.nav-dd:focus-within .nav-chev,.nav-dd[data-open="true"] .nav-chev{transform:rotate(180deg)}
+.nav-dd-menu{position:absolute;top:calc(100% + 10px);left:0;min-width:212px;background:var(--s-0,#fff);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 44px rgba(8,60,55,.14),0 4px 12px rgba(8,60,55,.06);padding:8px;list-style:none;margin:0;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s var(--ease,ease),transform .2s var(--ease,ease),visibility .2s;z-index:120}
 .nav-dd-menu::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
 .nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu,.nav-dd[data-open="true"] .nav-dd-menu{opacity:1;visibility:visible;transform:translateY(0)}
 .nav-dd-menu li{display:block}
@@ -3966,35 +3970,40 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .nav-dd-menu a:hover{background:var(--s-2);color:var(--teal)}
 .nav-dd-menu a.active,.nav-dd-menu a[aria-current="page"]{color:var(--teal);background:var(--teal-gl)}
 .nav-cta-btn{text-decoration:none}
-/* transparent starfall hero — dropdown toggles match white links */
-body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle{color:#fff}
-body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle:hover{color:#E8B527}
-body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-toggle.active{color:#E8B527;background:rgba(255,255,255,.08)}
+/* transparent starfall hero — links + arrows go white */
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links>li>a,
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-link,
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-arrow{color:#fff}
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links>li>a:hover,
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-link:hover,
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-dd-arrow:hover{color:#E8B527}
+body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links a.active{color:#E8B527;background:rgba(255,255,255,.08)}
 /* dropdown panel links stay dark on the white panel even over transparent hero */
 body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a{color:var(--ink-2)}
 body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a:hover,
 body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.active{color:var(--teal)}
-/* ===== Mobile accordion ===== */
+/* ===== Mobile accordion (split: link navigates, arrow toggles) ===== */
 .m-acc{border-bottom:1px solid var(--s-2)}
-.m-acc-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 16px;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink-2);border-radius:10px}
-.m-acc-toggle:hover,.m-acc-toggle.active{color:var(--teal)}
-.m-acc-toggle .nav-chev{width:14px;height:14px;opacity:.7;transition:transform .25s var(--ease,ease)}
-.m-acc-toggle[aria-expanded="true"] .nav-chev{transform:rotate(180deg)}
+.m-acc-row{display:flex;align-items:center;justify-content:space-between}
+.m-acc-link{flex:1;display:block;padding:13px 16px;font-size:15px;font-weight:700;color:var(--ink-2);text-decoration:none;border-radius:10px}
+.m-acc-link:hover,.m-acc-link.active{color:var(--teal)}
+.m-acc-arrow{display:flex;align-items:center;justify-content:center;width:48px;align-self:stretch;border:none;background:transparent;cursor:pointer;color:var(--ink-2);border-left:1px solid var(--s-2)}
+.m-acc-arrow:hover{color:var(--teal)}
+.m-acc-arrow .nav-chev{width:14px;height:14px}
+.m-acc-arrow[aria-expanded="true"] .nav-chev{transform:rotate(180deg)}
 .m-acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s var(--ease,ease)}
 .m-acc-panel>div{overflow:hidden;min-height:0}
-.m-acc-toggle[aria-expanded="true"]+.m-acc-panel{grid-template-rows:1fr}
+.m-acc-arrow[aria-expanded="true"]+.m-acc-panel,
+.m-acc-row:has(.m-acc-arrow[aria-expanded="true"])+.m-acc-panel{grid-template-rows:1fr}
 .m-acc-panel a{display:block;padding:11px 16px 11px 30px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--s-1)}
 .m-acc-panel a:last-child{border-bottom:none}
 .m-acc-panel a:hover,.m-acc-panel a.active{color:var(--teal)}
 @media (prefers-reduced-motion: reduce){.nav-dd-menu,.m-acc-panel,.nav-chev{transition:none}}
-/* mobile breakpoint — #navbar-scoped so it wins over base .nav-links display */
 @media (max-width:768px){
   #navbar .nav-links,#navbar .nav-cta-btn{display:none}
   #navbar .hamburger{display:flex}
 }
-@media (min-width:769px){
-  #navbar .hamburger{display:none}
-}
+@media (min-width:769px){ #navbar .hamburger{display:none} }
 /*nav-dd-end*/
 </style>
 
@@ -4239,7 +4248,10 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     <ul class="nav-links" role="list">
       <li><a href="/">Home</a></li>
       <li class="nav-dd">
-        <button type="button" class="nav-dd-toggle active" aria-haspopup="true" aria-expanded="false">Services <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <span class="nav-dd-row">
+          <a class="nav-dd-link active" href="/services" aria-current="page">Services</a>
+          <button type="button" class="nav-dd-arrow" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Services submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </span>
         <ul class="nav-dd-menu" role="menu">
           <li><a role="menuitem" href="/webdevelopment">Web Development</a></li>
           <li><a role="menuitem" href="/digitalmarketing">Digital Marketing</a></li>
@@ -4249,15 +4261,21 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       </li>
       <li><a href="/portfolio">Portfolio</a></li>
       <li class="nav-dd">
-        <button type="button" class="nav-dd-toggle" aria-haspopup="true" aria-expanded="false">Courses <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <span class="nav-dd-row">
+          <a class="nav-dd-link" href="/courses">Courses</a>
+          <button type="button" class="nav-dd-arrow" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Courses submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </span>
         <ul class="nav-dd-menu" role="menu">
           <li><a role="menuitem" href="/courses">IT Courses</a></li>
-          <li><a role="menuitem" href="/digitalmarketing">Digital Marketing</a></li>
           <li><a role="menuitem" href="/courses#spoken-english">Spoken English</a></li>
+          <li><a role="menuitem" href="/courses">All Courses</a></li>
         </ul>
       </li>
       <li class="nav-dd">
-        <button type="button" class="nav-dd-toggle" aria-haspopup="true" aria-expanded="false">About <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <span class="nav-dd-row">
+          <a class="nav-dd-link" href="/about">About</a>
+          <button type="button" class="nav-dd-arrow" aria-haspopup="true" aria-expanded="false" aria-label="Toggle About submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </span>
         <ul class="nav-dd-menu" role="menu">
           <li><a role="menuitem" href="/about">About Us</a></li>
           <li><a role="menuitem" href="/contact">Contact Us</a></li>
@@ -4276,7 +4294,10 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <div class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
   <a href="/">Home</a>
   <div class="m-acc">
-    <button type="button" class="m-acc-toggle active" aria-expanded="false">Services <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-row">
+      <a class="m-acc-link active" href="/services" aria-current="page">Services</a>
+      <button type="button" class="m-acc-arrow" aria-expanded="false" aria-label="Toggle Services submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
     <div class="m-acc-panel"><div>
         <a href="/webdevelopment">Web Development</a>
         <a href="/digitalmarketing">Digital Marketing</a>
@@ -4286,15 +4307,21 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
   </div>
   <a href="/portfolio">Portfolio</a>
   <div class="m-acc">
-    <button type="button" class="m-acc-toggle" aria-expanded="false">Courses <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-row">
+      <a class="m-acc-link" href="/courses">Courses</a>
+      <button type="button" class="m-acc-arrow" aria-expanded="false" aria-label="Toggle Courses submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
     <div class="m-acc-panel"><div>
         <a href="/courses">IT Courses</a>
-        <a href="/digitalmarketing">Digital Marketing</a>
         <a href="/courses#spoken-english">Spoken English</a>
+        <a href="/courses">All Courses</a>
     </div></div>
   </div>
   <div class="m-acc">
-    <button type="button" class="m-acc-toggle" aria-expanded="false">About <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="m-acc-row">
+      <a class="m-acc-link" href="/about">About</a>
+      <button type="button" class="m-acc-arrow" aria-expanded="false" aria-label="Toggle About submenu"><svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
     <div class="m-acc-panel"><div>
         <a href="/about">About Us</a>
         <a href="/contact">Contact Us</a>
@@ -4993,7 +5020,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const delay = parseFloat(entry.target.dataset.aosDelay || '0') * 1000;
+          const delay = Math.min(parseFloat(entry.target.dataset.aosDelay || '0') * 1000, 220);
           setTimeout(() => entry.target.classList.add('aos-in'), delay);
           obs.unobserve(entry.target);
         }
@@ -6285,27 +6312,28 @@ function tsHover(id){
   ready(function(){
     var dds = document.querySelectorAll('#navbar .nav-dd');
     function closeAll(except){
-      dds.forEach(function(o){ if(o!==except){ o.removeAttribute('data-open'); var b=o.querySelector('.nav-dd-toggle'); if(b) b.setAttribute('aria-expanded','false'); } });
+      dds.forEach(function(o){ if(o!==except){ o.removeAttribute('data-open'); var b=o.querySelector('.nav-dd-arrow'); if(b) b.setAttribute('aria-expanded','false'); } });
     }
     dds.forEach(function(dd){
-      var btn = dd.querySelector('.nav-dd-toggle');
-      if(!btn) return;
-      btn.addEventListener('click', function(e){
+      var arrow = dd.querySelector('.nav-dd-arrow');
+      if(!arrow) return;
+      arrow.addEventListener('click', function(e){
         e.preventDefault(); e.stopPropagation();
         var open = dd.getAttribute('data-open')==='true';
         closeAll(dd);
-        if(open){ dd.removeAttribute('data-open'); btn.setAttribute('aria-expanded','false'); }
-        else { dd.setAttribute('data-open','true'); btn.setAttribute('aria-expanded','true'); }
+        if(open){ dd.removeAttribute('data-open'); arrow.setAttribute('aria-expanded','false'); }
+        else { dd.setAttribute('data-open','true'); arrow.setAttribute('aria-expanded','true'); }
       });
-      // Keyboard: CSS :focus-within opens the menu visually — keep aria-expanded in sync for screen readers
-      dd.addEventListener('focusin', function(){ btn.setAttribute('aria-expanded','true'); });
-      dd.addEventListener('focusout', function(e){ if(!dd.contains(e.relatedTarget)){ dd.removeAttribute('data-open'); btn.setAttribute('aria-expanded','false'); } });
+      // keyboard: CSS :focus-within opens the menu — keep aria in sync for screen readers
+      dd.addEventListener('focusin', function(){ arrow.setAttribute('aria-expanded','true'); });
+      dd.addEventListener('focusout', function(e){ if(!dd.contains(e.relatedTarget)){ dd.removeAttribute('data-open'); arrow.setAttribute('aria-expanded','false'); } });
     });
     document.addEventListener('click', function(e){ if(!e.target.closest('#navbar .nav-dd')) closeAll(null); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(null); });
-    // Mobile accordion
-    document.querySelectorAll('#mobileMenu .m-acc-toggle').forEach(function(t){
-      t.addEventListener('click', function(){
+    // Mobile accordion — arrow toggles, link navigates
+    document.querySelectorAll('#mobileMenu .m-acc-arrow').forEach(function(t){
+      t.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
         var open = t.getAttribute('aria-expanded')==='true';
         t.setAttribute('aria-expanded', String(!open));
       });
