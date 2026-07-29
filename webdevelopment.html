@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Website Design Pricing in Nagore | From ₹9,999 — AllBee Solutions</title>
-<meta name="description" content="Professional website packages in Nagore, Tamil Nadu. Basic ₹9,999 · Business ₹19,999 · E-Commerce ₹34,999. Mobile-responsive, SEO-ready, free domain + hosting. Built by AllBee Solutions.">
-<meta name="keywords" content="website design Nagore, web development pricing Tamil Nadu, ecommerce website Nagore, cheap website India, WordPress alternative Nagore">
+<title>Website & Software Development in Nagore | AllBee Solutions</title>
+<meta name="description" content="Professional website packages and custom software development in Nagore, Tamil Nadu. Build responsive websites, POS and billing software, ERP platforms, dashboards and business automation systems, including the Chai Al Saadah POS &amp; ERP System, with AllBee Solutions.">
+<meta name="keywords" content="website design Nagore, custom software development Nagore, business software Tamil Nadu, POS software, ERP development, restaurant POS, billing software, inventory management software, dashboard development, business automation, ecommerce website Nagore">
 <meta name="author" content="AllBee Solutions">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
@@ -23,8 +23,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.allbeesolutions.com/webdevelopment">
-<meta property="og:title" content="Website Packages in Nagore — From ₹9,999 | AllBee Solutions">
-<meta property="og:description" content="Mobile-responsive websites built to convert. Basic / Business / E-Commerce packages. Free domain + hosting.">
+<meta property="og:title" content="Website & Software Development in Nagore | AllBee Solutions">
+<meta property="og:description" content="Responsive websites, custom business software, POS systems, ERP platforms and dashboards built by AllBee Solutions, including the Chai Al Saadah POS &amp; ERP System.">
 <meta property="og:image" content="https://www.allbeesolutions.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -4680,6 +4680,18 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       </div>
     </div>
 
+    <div class="abp-group" aria-labelledby="software-solutions-h">
+      <div class="abp-group-head">
+        <div class="section-eyebrow">
+          <svg width="13" height="13" aria-hidden="true"><use href="#i-code"/></svg>
+          SOFTWARE SOLUTIONS
+        </div>
+        <h2 id="software-solutions-h" class="section-title">Software <em>Solutions</em></h2>
+        <p class="section-sub" style="margin:0 auto;">Custom business software, POS systems, dashboards, ERP platforms and internal tools designed to automate operations and scale businesses.</p>
+      </div>
+      <div class="abp-grid" id="software-solutions-grid" aria-live="polite"></div>
+    </div>
+
     <div class="abp-group">
       <div class="abp-group-head">
         <div class="section-eyebrow">
@@ -6731,6 +6743,43 @@ function tsHover(id){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 
+</script>
+
+<script src="/assets/software-solutions.js"></script>
+<script>
+(function(){
+  var grid = document.getElementById('software-solutions-grid');
+  var projects = window.ALLBEE_SOFTWARE_SOLUTIONS || [];
+  if(!grid || !projects.length) return;
+
+  function esc(s){
+    return String(s || '').replace(/[&<>\"]/g,function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'})[c];
+    });
+  }
+
+  function displayUrl(url){
+    return String(url || '').replace(/^https?:\/\//,'').replace(/\/$/,'');
+  }
+
+  grid.innerHTML = projects.map(function(p){
+    var tags = (p.tech || []).map(function(tag){ return '<span>'+esc(tag)+'</span>'; }).join('');
+    var url = esc(p.url);
+    var label = esc(p.urlLabel || 'View Product');
+    return '<article class="abp-card">'
+      +'<a class="abp-card-link" href="'+url+'" target="_blank" rel="noopener" aria-label="'+label+' — '+esc(p.name)+' (opens in a new tab)">'
+      +'<div class="abp-preview">'
+      +'<div class="abp-bar"><i></i><i></i><i></i><span class="abp-url">'+esc(displayUrl(p.url))+'</span></div>'
+      +'<div class="abp-shot abp-shot--cover"><img src="'+esc(p.img)+'" alt="'+esc(p.name)+' preview" width="'+esc(p.imgWidth || 900)+'" height="'+esc(p.imgHeight || 506)+'" loading="lazy" decoding="async"></div>'
+      +'</div>'
+      +'<div class="abp-body">'
+      +'<div class="abp-tags">'+tags+'</div>'
+      +'<h3 class="abp-name">'+esc(p.name)+'</h3>'
+      +'<p class="abp-desc">'+esc(p.summary)+'</p>'
+      +'<span class="abp-visit">'+label+' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>'
+      +'</div></a></article>';
+  }).join('');
+})();
 </script>
 
 <script src="/assets/trust.js" defer></script>

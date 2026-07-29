@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Portfolio | Business Websites, E-Commerce & AI Products — AllBee Solutions</title>
-<meta name="description" content="Explore AllBee Solutions' work — business websites, e-commerce, AI products and internal tools built for Tamil Nadu businesses. View real project details and technologies used.">
-<meta name="keywords" content="AllBee Solutions portfolio, web development portfolio Nagore, digital marketing projects Tamil Nadu, AI products Tamil Nadu, AllBee Invitations, website development examples">
+<title>Portfolio | Websites, Software Solutions & AI Products — AllBee Solutions</title>
+<meta name="description" content="Explore AllBee Solutions' work — business websites, software solutions, POS and ERP systems, e-commerce, AI products and internal tools, including the Chai Al Saadah POS &amp; ERP System for UAE restaurant operations.">
+<meta name="keywords" content="AllBee Solutions portfolio, custom software development Nagore, business software Tamil Nadu, POS software, ERP development, restaurant POS, billing software, inventory management software, dashboard development, business automation, AI products Tamil Nadu, website development examples">
 <meta name="author" content="AllBee Solutions">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
@@ -21,8 +21,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.allbeesolutions.com/portfolio">
-<meta property="og:title" content="Portfolio — AllBee Solutions | Business Websites, E-Commerce & AI Products">
-<meta property="og:description" content="Explore AllBee Solutions' portfolio — business websites, e-commerce, AI products and software built for Tamil Nadu businesses.">
+<meta property="og:title" content="Portfolio — AllBee Solutions | Websites, Software & AI Products">
+<meta property="og:description" content="Explore AllBee Solutions' portfolio — business websites, custom software, POS and ERP systems, e-commerce, AI products and internal tools, including the Chai Al Saadah POS &amp; ERP System.">
 <meta property="og:image" content="https://www.allbeesolutions.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -32,7 +32,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Portfolio — AllBee Solutions">
-<meta name="twitter:description" content="Business websites, e-commerce, AI products and software built in Nagore, Tamil Nadu.">
+<meta name="twitter:description" content="Business websites, custom software, POS and billing systems, e-commerce, AI products and software built by AllBee Solutions.">
 <meta name="twitter:image" content="https://www.allbeesolutions.com/og-image.jpg">
 
 <!-- Icons -->
@@ -637,6 +637,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       <button class="pf-tab" data-filter="ai-product">AI Products</button>
       <button class="pf-tab" data-filter="internal-product">Internal Products</button>
       <button class="pf-tab" data-filter="digital-product">Digital Products</button>
+      <button class="pf-tab" data-filter="software-solution">Software Solutions</button>
     </div>
 
     <div class="pf-grid" id="pf-grid" role="list" aria-live="polite" aria-label="Portfolio projects">
@@ -750,6 +751,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 </a>
 
 <!-- PORTFOLIO DATA & RENDER -->
+<script src="/assets/software-solutions.js"></script>
 <script>
 /* Project data — factual only. No invented metrics. */
 var PF_PROJECTS = [
@@ -952,6 +954,7 @@ var PF_PROJECTS = [
     urlLabel: null
   }
 ];
+PF_PROJECTS = PF_PROJECTS.slice(0,1).concat(window.ALLBEE_SOFTWARE_SOLUTIONS || [], PF_PROJECTS.slice(1));
 
 /* ---- Helpers ---- */
 function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];}) }
@@ -975,6 +978,7 @@ var ICONS = {
   'ecommerce':        'i-shopping',
   'ai-product':       'i-spark',
   'digital-product':  'i-briefcase',
+  'software-solution':'i-code',
 };
 
 /* ---- Card HTML ---- */
@@ -993,7 +997,7 @@ function cardHTML(p, role){
     +catBadge(p.category)
     +'<h3 class="pf-name">'+esc(p.name)+'</h3>'
     +'<p class="pf-desc">'+esc(p.summary)+'</p>'
-    +'<div class="pf-tags">'+techTags(p.tech.slice(0,4))+'</div>'
+    +'<div class="pf-tags">'+techTags(p.categoryKey === 'software-solution' ? p.tech : p.tech.slice(0,4))+'</div>'
     +'<span class="pf-cta">View Details <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>'
     +'</div></article>';
 }
@@ -1051,6 +1055,7 @@ function openModal(id){
   if(p.challenge) blocks += '<div class="pf-detail-block"><div class="pf-detail-label">Challenge</div><div class="pf-detail-text">'+esc(p.challenge)+'</div></div>';
   if(p.solution)  blocks += '<div class="pf-detail-block"><div class="pf-detail-label">Solution</div><div class="pf-detail-text">'+esc(p.solution)+'</div></div>';
   if(p.results)   blocks += '<div class="pf-detail-block full"><div class="pf-detail-label">Outcome</div><div class="pf-detail-text">'+esc(p.results)+'</div></div>';
+  if(p.highlight) blocks += '<div class="pf-detail-block full"><div class="pf-detail-label">Highlight</div><div class="pf-detail-text">'+esc(p.highlight)+'</div></div>';
   document.getElementById('pfDetailGrid').innerHTML = blocks;
 
   // Tech tags
