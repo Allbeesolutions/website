@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <title>Website Design Pricing in Nagore | From ₹9,999 — AllBee Solutions</title>
-<meta name="description" content="Professional website packages in Nagore, Tamil Nadu. Basic ₹9,999 · Business ₹19,999 · E-Commerce ₹34,999. Mobile-responsive, SEO-ready, free domain + hosting. Built by AllBee Solutions.">
+<meta name="description" content="Professional website packages in Nagore, Tamil Nadu. Single Page ₹9,999 · Starter ₹14,999 · Business ₹24,999 · E-Commerce ₹34,999. Mobile-responsive, SEO-ready, free domain + hosting. Built by AllBee Solutions.">
 <meta name="keywords" content="website design Nagore, web development pricing Tamil Nadu, ecommerce website Nagore, cheap website India, WordPress alternative Nagore">
 <meta name="author" content="AllBee Solutions">
 <meta name="robots" content="noindex, follow">
@@ -4381,7 +4381,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
         <div class="pricing-badge">Popular</div>
         <div class="pricing-icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div>
         <h3 class="pricing-title">Business Website</h3>
-        <div class="pricing-from">Starts from</div><div class="pricing-amount">₹19,999</div>
+        <div class="pricing-from">Starts from</div><div class="pricing-amount">₹24,999</div>
         <div class="pricing-dur">One-time · Up to 10 pages</div>
         <ul class="pricing-features">
           <li>Premium custom design</li>
@@ -6428,6 +6428,48 @@ function tsHover(id){
       });
     });
   });
+})();
+</script>
+
+<style id="live-pricing-catalog-css">
+.live-pricing-note{margin:18px 0 0;padding:12px 16px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:rgba(255,255,255,.7);font-size:13px;color:var(--muted)}
+.live-catalog{margin-top:54px}.live-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:32px}.live-catalog-card{padding:24px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:0 8px 28px rgba(0,0,0,.05)}.live-catalog-card h3{margin:0 0 7px}.live-catalog-price{font-size:25px;font-weight:800;margin:12px 0}.live-catalog-meta{font-size:12px;color:var(--muted);margin-bottom:15px}.live-catalog-lines{display:grid;gap:9px}.live-catalog-line{display:flex;justify-content:space-between;gap:12px;padding-top:9px;border-top:1px solid var(--border);font-size:13px}.live-catalog-line strong{white-space:nowrap}.live-catalog-source{font-size:11px;color:var(--muted);margin-top:16px}.live-pricing-loading{padding:20px;text-align:center;color:var(--muted)}
+@media(max-width:900px){.live-catalog-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.live-catalog-grid{grid-template-columns:1fr}.live-catalog-card{padding:19px}}
+</style>
+<script>
+(function(){
+  'use strict';
+  var money=function(v){return v==null?'Custom quote':'₹'+Number(v).toLocaleString('en-IN',{maximumFractionDigits:0});};
+  var period=function(m){return ({per_month:'/month',per_year:'/year',per_user:'/user',per_feature:'/feature',fixed:'one-time',custom_quote:'quote',negotiable:'negotiable',hidden_price:'TBD'})[m]||'';};
+  var esc=function(v){return String(v==null?'':v).replace(/[&<>'"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[c];});};
+  var sortRows=function(rows){return rows.slice().sort(function(a,b){var aa=Number(a.amount),bb=Number(b.amount);if(a.source_type!==b.source_type)return a.source_type==='package'?-1:1;return (isNaN(aa)?Infinity:aa)-(isNaN(bb)?Infinity:bb);});};
+  function render(rows){
+    if(!Array.isArray(rows)||!rows.length)return;
+    var webSection=document.getElementById('webpkg-h')&&document.getElementById('webpkg-h').closest('section');
+    if(webSection){
+      var grid=webSection.querySelector('.pricing-grid');
+      var groups={}; rows.filter(function(r){return r.service_slug==='website'||r.service_slug==='ecommerce';}).forEach(function(r){var k=r.package_slug;if(!groups[k])groups[k]=[];groups[k].push(r);});
+      var cards=Object.keys(groups).map(function(k){var rs=groups[k],base=rs.find(function(r){return /from|starter|website \(/i.test(r.label)&&r.billing_model==='fixed';})||rs.find(function(r){return r.billing_model==='fixed';})||rs[0];var extras=rs.filter(function(r){return r!==base;}).slice(0,6);return '<div class="pricing-card live-db-card"><div class="pricing-icon"><svg aria-hidden="true"><use href="#i-building"/></svg></div><h3 class="pricing-title">'+esc(base.package_name)+'</h3><div class="pricing-from">Starts from</div><div class="pricing-amount">'+money(base.amount)+'</div><div class="pricing-dur">'+esc(period(base.billing_model))+' · '+esc(base.service_name)+'</div><ul class="pricing-features">'+extras.map(function(x){return '<li>'+esc(x.label)+' — <strong>'+money(x.amount)+'</strong>'+esc(period(x.billing_model))+'</li>';}).join('')+'</ul><a href="https://wa.me/918903607506?text=Hi%20AllBee!%20I%20want%20a%20quote%20for%20'+encodeURIComponent(base.package_name)+'" target="_blank" rel="noopener" class="btn-primary" style="display:flex;justify-content:center;">Get a Quote</a></div>';}).slice(0,4);
+      if(cards.length)grid.innerHTML=cards.join('');
+      var sub=webSection.querySelector('.section-sub');if(sub)sub.innerHTML='Live starting prices from the ALLBEE Pricing & Knowledge catalogue. <strong>Hosting, domain, SSL and optional services are itemised below.</strong>';
+    }
+    var detail=document.getElementById('pkgdetail-h')&&document.getElementById('pkgdetail-h').closest('section');
+    if(detail){
+      var body=detail.querySelector('.ptable tbody');
+      var websitePackages={};rows.filter(function(r){return r.service_slug==='website'||r.service_slug==='ecommerce';}).forEach(function(r){(websitePackages[r.package_slug]||(websitePackages[r.package_slug]=[])).push(r);});
+      if(body){body.innerHTML=Object.keys(websitePackages).map(function(k){var rs=websitePackages[k],base=rs.find(function(r){return r.is_base||/from|starter|website \(/i.test(r.label);})||rs[0];var domain=rs.find(function(r){return /domain/i.test(r.label)}),hosting=rs.find(function(r){return /hosting/i.test(r.label)}),ssl=rs.find(function(r){return /ssl/i.test(r.label)}),maint=rs.find(function(r){return /maintenance|amc/i.test(r.label)}),extra=rs.find(function(r){return /extra page/i.test(r.label)});return '<tr><th class="ptable-pkg">'+esc(base.package_name)+'</th><td data-l="Amount">'+money(base.amount)+'</td><td data-l="Domain">'+money(domain&&domain.amount)+'</td><td data-l="Hosting">'+money(hosting&&hosting.amount)+'</td><td data-l="Design">Included</td><td data-l="Maintenance">'+money(maint&&maint.amount)+'</td><td data-l="Extra Page">'+money(extra&&extra.amount)+'</td><td data-l="Yearly">See hosting / AMC</td></tr>';}).join('');}
+      var note=detail.querySelector('.ptable-note');if(note)note.innerHTML='<strong>Live catalogue:</strong> prices are read from ALLBEE Pricing & Knowledge. Domain, hosting, SSL, maintenance, integrations and other third-party costs are shown separately where applicable. Final quotation depends on confirmed scope.';
+    }
+    var anchor=document.getElementById('pkgdetail-h')&&document.getElementById('pkgdetail-h').closest('section');
+    if(anchor&&!document.getElementById('liveCatalogExtras')){
+      var section=document.createElement('section');section.className='section live-catalog';section.id='liveCatalogExtras';
+      var groups={};rows.forEach(function(r){var key=r.service_slug;if(!groups[key])groups[key]=[];groups[key].push(r);});
+      var skip={website:1,ecommerce:1};var cards=Object.keys(groups).filter(function(k){return !skip[k];}).map(function(k){var rs=sortRows(groups[k]);var base=rs.find(function(r){return r.billing_model==='fixed'&&/from|starter|monthly|course|basic/i.test(r.label);})||rs.find(function(r){return r.billing_model==='fixed';})||rs[0];var lines=rs.filter(function(r){return r!==base;}).slice(0,5);return '<article class="live-catalog-card"><h3>'+esc(base.service_name)+'</h3><div class="live-catalog-meta">'+esc(base.package_name)+'</div><div class="live-catalog-price">'+money(base.amount)+' <small>'+esc(period(base.billing_model))+'</small></div><div class="live-catalog-lines">'+lines.map(function(x){return '<div class="live-catalog-line"><span>'+esc(x.label)+'</span><strong>'+money(x.amount)+' '+esc(period(x.billing_model))+'</strong></div>';}).join('')+'</div><div class="live-catalog-source">Editable by admin in Pricing & Knowledge</div></article>';});
+      section.innerHTML='<div class="section-container"><div class="text-center"><div class="section-eyebrow">Complete Catalogue</div><h2 class="section-title">More AllBee <em>Services</em></h2><p class="section-sub">Business systems, AI automation, marketing, SEO, hosting, AMC and consultation — all maintained from one pricing source.</p></div><div class="live-catalog-grid">'+cards.join('')+'</div><div class="live-pricing-note">Prices marked “from” are starting points. Third-party charges such as payment gateways, domain registrar fees, advertising spend, paid SaaS/API subscriptions and other external charges are not silently included unless the catalogue explicitly says so.</div></div>';
+      anchor.parentNode.insertBefore(section,anchor.nextSibling);
+    }
+  }
+  fetch('/api/public-pricing',{headers:{Accept:'application/json'},cache:'no-store'}).then(function(r){return r.json();}).then(function(payload){if(payload&&payload.ok)render(payload.rows);}).catch(function(e){console.warn('Live pricing unavailable',e);});
 })();
 </script>
 </body>
