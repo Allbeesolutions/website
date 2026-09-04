@@ -81,7 +81,7 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
   <div class="steps" id="steps"></div>
   <div class="stepnum" id="stepnum"></div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 18px;font-size:11.5px;color:var(--muted,#4A6363)">
-    <span>1 · Choose</span><span>›</span><span>2 · Order</span><span>›</span><span>3 · Send Details</span><span>›</span><span>4 · Review Draft</span><span>›</span><span>5 · Receive</span>
+    <span>1 · Occasion</span><span>›</span><span>2 · Format</span><span>›</span><span>3 · Package</span><span>›</span><span>4 · Details</span><span>›</span><span>5 · Review</span><span>›</span><span>6 · Pay</span>
   </div>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEX4FWGJFQ"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TEX4FWGJFQ');function gax(n,p){try{if(window.gtag)gtag('event',n,p||{});}catch(e){}}</script>
@@ -89,7 +89,8 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
   <!-- Step 1 -->
   <section class="card step" data-step="1">
     <h1>What's the occasion?</h1>
-    <p class="sub">Select your event type to get started.</p>
+    <p class="sub">Select your event type. If you came from a design, your chosen template will stay attached to this order.</p>
+    <div id="designHint" class="summary" style="display:none;margin-bottom:14px"></div>
     <div class="evgrid" id="evGrid"></div>
   </section>
 
@@ -110,7 +111,7 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
   <!-- Step 4 -->
   <section class="card step hidden" data-step="4">
     <h1>Your details</h1>
-    <p class="sub">So we can personalise and deliver your invitation.</p>
+    <p class="sub">Enter your contact and event basics. After payment, you’ll get the design brief to send photos, wording and the remaining content.</p>
     <form id="custForm" novalidate>
       <div class="row">
         <div class="field"><label>Name <span class="req">*</span></label><input name="name" type="text" placeholder="Your name" required autocomplete="name"></div>
@@ -189,6 +190,8 @@ function renderSteps(){
 }
 function show(){
   $$('.step').forEach(s=>s.classList.toggle('hidden',+s.dataset.step!==step));
+  const hint=$('#designHint');
+  if(hint){ hint.style.display=order.template_id||order.template_name?'block':'none'; if(order.template_id||order.template_name){ hint.innerHTML='<div class="sline"><span class="lbl">Selected design</span><strong>'+String(order.template_name||order.template_id).replace(/[<>]/g,'')+'</strong></div><div style="font-size:12px;color:var(--muted)">You can change the design before ordering by going back to the catalogue.</div>'; } }
   $('#backBtn').style.visibility=step===1?'hidden':'visible';
   $('#nav').style.display=step===6?'none':'flex';
   if(step===3) buildPackages();

@@ -3966,7 +3966,7 @@ html{scroll-behavior:smooth}
 .inv-orb-1{width:340px;height:340px;background:var(--teal-gl);top:-90px;left:-60px}
 .inv-orb-2{width:300px;height:300px;background:var(--border-y);bottom:-110px;right:-60px}
 .inv-cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:44px}
-.inv-cat-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 22px;text-align:center;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s ease;box-shadow:0 2px 10px rgba(8,90,82,.05)}
+a.inv-cat-card{display:block;text-decoration:none;color:inherit}.inv-cat-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 22px;text-align:center;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s ease;box-shadow:0 2px 10px rgba(8,90,82,.05)}
 .inv-cat-card:hover{transform:translateY(-6px);border-color:var(--teal);box-shadow:0 18px 40px rgba(8,90,82,.12)}
 .inv-cat-ic{width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:var(--teal-gl);color:var(--teal)}
 .inv-cat-ic svg{width:27px;height:27px}
@@ -4398,17 +4398,17 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
   <div class="inv-orb inv-orb-1" aria-hidden="true"></div>
   <div class="inv-orb inv-orb-2" aria-hidden="true"></div>
   <div class="section-container">
-    <span class="inv-eyebrow-gold"><svg width="13" height="13" aria-hidden="true"><use href="#i-spark"/></svg> AllBee Invitations · Coming Soon</span>
-    <h1 id="inv-h">Create Beautiful Digital <em>Invitations</em> in Minutes</h1>
+    <span class="inv-eyebrow-gold"><svg width="13" height="13" aria-hidden="true"><use href="#i-spark"/></svg> AllBee Invitations · Now Live · Self-Service Ordering</span>
+    <h1 id="inv-h">Choose. Order. Personalise. <em>Share.</em></h1>
     <p class="inv-hero-tags">Wedding • Nikah • Birthday • Housewarming • Dargah Events • School Events • Business Events • Political Events</p>
-    <p class="inv-hero-desc">Create stunning invitation cards and invitation websites with ease. Share your event with guests through beautiful designs, RSVP tracking, QR codes, WhatsApp sharing, and more.</p>
+    <p class="inv-hero-desc">Browse our live designs, choose your format and package, enter your event details, pay securely, then send your content for personalisation and approval.</p>
     <div class="cta-actions">
-      <a href="#enquiry" data-scroll="enquiry" class="btn-primary">Get Early Access <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-      <a href="#enquiry" data-scroll="enquiry" class="btn-secondary">Request Custom Invitation</a>
+      <a href="/invitation-samples" class="btn-primary">Browse 40+ Designs <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <a href="/order" class="btn-secondary">Start an Order</a>
     </div>
     <div class="cta-actions" style="margin-top:14px">
-      <a href="/invitation-samples" class="btn-secondary">View Samples</a>
-      <a href="/invitation-samples#templates" class="btn-secondary">Explore Templates</a>
+      <a href="/top-templates" class="btn-secondary">See Bestsellers</a>
+      <a href="#price-h" data-scroll="pricing" class="btn-secondary">Compare Packages</a>
     </div>
   </div>
 </section>
@@ -4419,7 +4419,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     <div class="text-center" data-aos>
       <span class="eyebrow" style="color:var(--gold,#DCA50C);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px">Featured Designs</span>
       <h2 id="feat-carousel-h" class="section-title">A glimpse of what your invitation could be</h2>
-      <p class="section-subtitle">Six of our most-loved premium designs. Tap any to open the live demo.</p>
+      <p class="section-subtitle">See a live demo first, then choose the design and order it yourself.</p>
     </div>
     <div class="fcar" id="fcar">
       <button class="fcar-arrow prev" id="fcarPrev" aria-label="Previous">&#8249;</button>
@@ -4484,9 +4484,9 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     <div class="text-center" data-aos>
       <div class="section-eyebrow">Event Categories</div>
       <h2 id="cat-h" class="section-title">Invitations for <em>Every Occasion</em></h2>
-      <p class="section-sub">From grand weddings to community functions — a design for every celebration.</p>
+      <p class="section-sub">Choose an occasion, browse the right collection, and order online without waiting for a callback.</p>
     </div>
-    <div class="inv-cat-grid"><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-spark"/></svg></div><h3>Wedding Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-leaf"/></svg></div><h3>Nikah Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-award"/></svg></div><h3>Birthday Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-building"/></svg></div><h3>Housewarming Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><h3>Dargah Event Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-grad-cap"/></svg></div><h3>School Event Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-briefcase"/></svg></div><h3>Business Event Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-megaphone"/></svg></div><h3>Political Event Invitations</h3></div><div class="inv-cat-card" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-users"/></svg></div><h3>General Function Invitations</h3></div></div>
+    <div class="inv-cat-grid"><a class="inv-cat-card" href="/wedding-invitations" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-spark"/></svg></div><h3>Wedding Invitations</h3></a><a class="inv-cat-card" href="/nikah-invitations" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-leaf"/></svg></div><h3>Nikah Invitations</h3></a><a class="inv-cat-card" href="/birthday-invitations" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-award"/></svg></div><h3>Birthday Invitations</h3></a><a class="inv-cat-card" href="/housewarming-invitations" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-building"/></svg></div><h3>Housewarming Invitations</h3></a><a class="inv-cat-card" href="/invitation-samples" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></div><h3>Dargah Event Invitations</h3></a><a class="inv-cat-card" href="/invitation-samples" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-grad-cap"/></svg></div><h3>School Event Invitations</h3></a><a class="inv-cat-card" href="/business-launch-invitations" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-briefcase"/></svg></div><h3>Business Event Invitations</h3></a><a class="inv-cat-card" href="/invitation-samples" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-megaphone"/></svg></div><h3>Political Event Invitations</h3></a><a class="inv-cat-card" href="/invitation-samples" data-aos><div class="inv-cat-ic"><svg aria-hidden="true"><use href="#i-users"/></svg></div><h3>General Function Invitations</h3></a></div>
   </div>
 </section>
 
@@ -4494,9 +4494,9 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <section class="section section-alt" aria-labelledby="feat-h">
   <div class="section-container">
     <div class="text-center" data-aos>
-      <div class="section-eyebrow">Coming Features</div>
+      <div class="section-eyebrow">What You Get</div>
       <h2 id="feat-h" class="section-title">Everything You Need to <em>Invite &amp; Delight</em></h2>
-      <p class="section-sub">A complete digital invitation toolkit — launching soon.</p>
+      <p class="section-sub">Everything included in the AllBee Invitations service, from selection to delivery.</p>
     </div>
     <div class="inv-feat-grid"><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-monitor"/></svg></div><span>Digital Invitation Websites</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-send"/></svg></div><span>PDF Invitations</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-palette"/></svg></div><span>JPG Invitations</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-users"/></svg></div><span>RSVP Management</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-target"/></svg></div><span>QR Code Sharing</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></div><span>WhatsApp Sharing</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><span>Countdown Timer</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-film"/></svg></div><span>Photo Galleries</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-map-pin"/></svg></div><span>Google Maps Integration</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-zap"/></svg></div><span>Background Music</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-phone-mobile"/></svg></div><span>Mobile Friendly Design</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-message"/></svg></div><span>Multiple Languages</span></div><div class="inv-feat" data-aos><div class="inv-feat-ic"><svg aria-hidden="true"><use href="#i-trophy"/></svg></div><span>Premium Templates</span></div></div>
   </div>
@@ -4507,10 +4507,10 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
   <div class="section-container">
     <div class="text-center" data-aos>
       <div class="section-eyebrow">How It Works</div>
-      <h2 id="how-h" class="section-title">Ready in <em>Four Simple Steps</em></h2>
-      <p class="section-sub">No design skills needed — we make it effortless.</p>
+      <h2 id="how-h" class="section-title">Ready in <em>Five Simple Steps</em></h2>
+      <p class="section-sub">No design skills needed. You choose the design and package; we handle the personalisation and delivery.</p>
     </div>
-    <div class="inv-steps"><div class="inv-step" data-aos><div class="inv-step-num">1</div><h3>Choose Template</h3><p>Browse the collection and pick a design you love — view the live demo first.</p></div><div class="inv-step" data-aos><div class="inv-step-num">2</div><h3>Place Order</h3><p>Select your package and confirm your order in a couple of minutes.</p></div><div class="inv-step" data-aos><div class="inv-step-num">3</div><h3>Send Details</h3><p>Share your names, date, venue and photos over WhatsApp.</p></div><div class="inv-step" data-aos><div class="inv-step-num">4</div><h3>Review Draft</h3><p>We craft your invitation and send a draft for your approval.</p></div><div class="inv-step" data-aos><div class="inv-step-num">5</div><h3>Receive Invitation</h3><p>Get your final card or website link, ready to share with every guest.</p></div></div>
+    <div class="inv-steps"><div class="inv-step" data-aos><div class="inv-step-num">1</div><h3>Choose Template</h3><p>Browse the collection and pick a design you love — view the live demo first.</p></div><div class="inv-step" data-aos><div class="inv-step-num">2</div><h3>Place Order</h3><p>Select your package and confirm your order in a couple of minutes.</p></div><div class="inv-step" data-aos><div class="inv-step-num">3</div><h3>Enter Your Details</h3><p>Enter your name, mobile number and event date directly in the order form.</p></div><div class="inv-step" data-aos><div class="inv-step-num">4</div><h3>Pay Securely</h3><p>Complete your order online. Your order is recorded and the design team can begin.</p></div><div class="inv-step" data-aos><div class="inv-step-num">5</div><h3>Send Content &amp; Approve</h3><p>Share photos and final wording through the design brief, review the draft, then receive your finished invitation.</p></div></div>
   </div>
 </section>
 
@@ -4527,7 +4527,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       <div class="pricing-card featured" data-aos><div class="pricing-badge">Most Popular</div><div class="pricing-icon"><svg aria-hidden="true"><use href="#i-monitor"/></svg></div><h3 class="pricing-title">Website Invitation</h3><div class="pricing-amount">from ₹999</div><div class="pricing-dur">Live invitation website</div><ul class="pricing-features"><li>Basic · Premium · Elite</li><li>RSVP, countdown &amp; maps</li><li>Unlimited sharing</li></ul><a href="/order" class="btn-primary" style="display:flex;justify-content:center;">Order Now</a></div>
       <div class="pricing-card" data-aos><div class="pricing-icon"><svg aria-hidden="true"><use href="#i-spark"/></svg></div><h3 class="pricing-title">PDF + Website</h3><div class="pricing-amount">from ₹1,299</div><div class="pricing-dur">Best value combo</div><ul class="pricing-features"><li>Basic · Premium · Elite</li><li>Card + website together</li><li>Priority delivery</li></ul><a href="/order" class="btn-secondary" style="display:flex;justify-content:center;">Order Now</a></div>
     </div>
-    <p class="inv-price-note">Final pricing for each package is shown at <a href="/order" style="color:var(--teal);text-decoration:underline">checkout</a>.</p>
+    <p class="inv-price-note">Already picked a design? Use its <strong>Order Now</strong> button. You can also start an order and choose your event, format and package first.</p>
   </div>
 </section>
 
@@ -4547,9 +4547,9 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <section class="section section-alt" id="enquiry" aria-labelledby="enq-h">
   <div class="section-container">
     <div class="text-center" data-aos>
-      <div class="section-eyebrow">Early Access</div>
-      <h2 id="enq-h" class="section-title">Get <em>Early Access</em></h2>
-      <p class="section-sub">Tell us about your event and we'll reach out with early access, pricing, and a custom quote if you need one.</p>
+      <div class="section-eyebrow">Need Help?</div>
+      <h2 id="enq-h" class="section-title">Need help <em>choosing?</em></h2>
+      <p class="section-sub">If you already know what you want, order directly. If you want help choosing a design or package, leave your details and our team will guide you.</p>
     </div>
     <form id="invEnquiryForm" class="contact-form" style="max-width:760px;margin:36px auto 0" novalidate>
       <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -4594,7 +4594,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
         <label for="inv-notes">Additional Notes</label>
         <textarea id="inv-notes" name="notes" rows="4" placeholder="Tell us about your event..."></textarea>
       </div>
-      <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Get Early Access <svg width="14" height="14" aria-hidden="true"><use href="#i-send"/></svg></button>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Help Me Choose <svg width="14" height="14" aria-hidden="true"><use href="#i-send"/></svg></button>
     </form>
   </div>
 </section>
@@ -4614,12 +4614,12 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <section class="cta-band cta-glow" aria-labelledby="cta-title">
   <div class="section-container">
     <div class="cta-inner" data-aos>
-      <div class="section-eyebrow">Early Access</div>
-      <h2 id="cta-title" class="cta-title">Ready To Create Your <em>Next Invitation?</em></h2>
-      <p class="cta-sub">Join our early access list and be among the first users of AllBee Invitations.</p>
+      <div class="section-eyebrow">Now Live</div>
+      <h2 id="cta-title" class="cta-title">Ready To Create Your <em>Invitation?</em></h2>
+      <p class="cta-sub">Choose a design, pick your package, enter your details and place your order online.</p>
       <div class="cta-actions">
-        <a href="#enquiry" data-scroll="enquiry" class="btn-yellow"><svg width="14" height="14" aria-hidden="true"><use href="#i-spark"/></svg>Join Early Access</a>
-        <a href="/invitation-samples" class="btn-primary">View Invitation Samples <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <a href="/invitation-samples" class="btn-yellow"><svg width="14" height="14" aria-hidden="true"><use href="#i-spark"/></svg>Browse Designs</a>
+        <a href="/order" class="btn-primary">Start Your Order <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       </div>
     </div>
   </div>
