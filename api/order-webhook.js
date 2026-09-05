@@ -25,12 +25,15 @@ module.exports = async (req, res) => {
 
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
   const raw = await readRaw(req);
+  if (!secret) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'webhook_not_configured' })); }
 
-  // verify signature
-  if (secret) {
-    const sig = req.headers['x-razorpay-signature'] || '';
-    const expected = crypto.createHmac('sha256', secret).update(raw).digest('hex');
-    if (sig !== expected) { res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'bad_signature' })); }
+  // Fail closed and compare signatures in constant time.
+  const sig = req.headers['x-razorpay-signature'] || '';
+  const expected = crypto.createHmac('sha256', secret).update(raw).digest('hex');
+  const sigBuf = Buffer.from(String(sig), 'utf8');
+  const expectedBuf = Buffer.from(expected, 'utf8');
+  if (sigBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(sigBuf, expectedBuf)) {
+    res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'bad_signature' }));
   }
 
   let evt; try { evt = JSON.parse(raw || '{}'); } catch { evt = {}; }
@@ -43,28 +46,32 @@ module.exports = async (req, res) => {
   // Persist via Apps Script. order_create is idempotent (dedups by payment_id),
   // so duplicate/retried webhooks are safe.
   async function persist(payload) {
-    if (!url) { console.log('[order-webhook]', ev, 'no sheet configured:', pay.id || ref.id || ''); return; }
-    try {
-      await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, secret: process.env.LEAD_SHARED_SECRET || '' }) });
-    } catch (e) { console.error('[order-webhook]', ev, 'persist failed:', String(e.message || e)); }
+    if (!url || !process.env.LEAD_SHARED_SECRET) throw new Error('order persistence is not configured');
+    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, secret: process.env.LEAD_SHARED_SECRET }) });
+    if (!r.ok) throw new Error('order persistence returned ' + r.status);
   }
 
-  if (ev === 'payment.captured') {
-    await persist({ action: 'order_create',
+  try {
+    if (ev === 'payment.captured') {
+      await persist({ action: 'order_create',
       payment_id: pay.id, amount: (pay.amount || 0) / 100,
       name: n.name, mobile: n.mobile, email: n.email,
       event_type: n.event, invitation_type: n.type, package: n.pkg,
       event_date: n.event_date, receipt: n.receipt, lead_id: n.lead_id, source: n.source,
       template_id: n.template_id, template_name: n.template_name, demo: n.demo });
-  } else if (ev === 'payment.failed') {
-    await persist({ action: 'order_mark', payment_id: pay.id, status: 'Payment Failed',
+    } else if (ev === 'payment.failed') {
+      await persist({ action: 'order_mark', payment_id: pay.id, status: 'Payment Failed',
       note: 'Payment failed — ' + (pay.error_description || pay.error_reason || pay.error_code || 'unknown') + ' · ' + (n.name || '') + ' ' + (n.mobile || '') });
-  } else if (ev === 'refund.created' || ev === 'refund.processed') {
-    await persist({ action: 'order_mark', payment_id: ref.payment_id, status: 'Refunded',
+    } else if (ev === 'refund.created' || ev === 'refund.processed') {
+      await persist({ action: 'order_mark', payment_id: ref.payment_id, status: 'Refunded',
       note: ev + ' — ₹' + ((ref.amount || 0) / 100) + ' (refund ' + (ref.id || '') + ')' });
-  } else {
-    res.statusCode = 200; return res.end(JSON.stringify({ ok:true, ignored:true, event: ev }));
+    } else {
+      res.statusCode = 200; return res.end(JSON.stringify({ ok:true, ignored:true, event: ev }));
+    }
+  } catch (e) {
+    console.error('[order-webhook] persistence failed:', String(e.message || e));
+    res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'persistence_failed' }));
   }
   res.statusCode = 200;
   return res.end(JSON.stringify({ ok:true, event: ev }));

@@ -81,8 +81,8 @@ a{color:inherit}
 
 <script>
 (function(){
-  var STAGES=['New','Designing','Review','Delivered','Completed'];
-  var DESC={New:'Order received — we’re getting started.',Designing:'Our design team is crafting your invitation.',Review:'A draft is ready for your approval.',Delivered:'Your invitation has been delivered.',Completed:'All done — thank you!'};
+  var STAGES=['Order Placed','Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered'];
+  var DESC={'Order Placed':'Your order has been received.','Payment Confirmed':'Payment has been confirmed.','Details Submitted':'Your design brief is with our team.','Designing':'Our design team is crafting your invitation.','First Preview Ready':'Your first personalised preview is ready.','Revision Requested':'Your requested changes have been recorded.','Revision In Progress':'We are applying the requested changes.','Final Approval':'Your final approval is pending.','Delivered':'Your invitation is ready to share.'};
   var form=document.getElementById('trackForm'),err=document.getElementById('err'),result=document.getElementById('result'),btn=document.getElementById('goBtn');
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
   function showErr(m){err.textContent=m;err.classList.add('show');}

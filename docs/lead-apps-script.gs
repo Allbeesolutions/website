@@ -2,7 +2,7 @@
  * AllBee Invitations — Google Apps Script web app (lead capture + CRM).
  *
  * Handles three actions on the "Leads" sheet:
- *   (no action)      append a new lead   (called by /api/invitation-enquiry)
+ *   action:'lead'    append a new lead   (called by /api/invitation-enquiry)
  *   action:'list'    return all leads    (called by /api/invitation-leads — CRM read)
  *   action:'update'  patch a lead by ID  (called by /api/invitation-leads — CRM write)
  *
@@ -46,8 +46,21 @@ function doPost(e) {
     var props = PropertiesService.getScriptProperties();
     var secret = props.getProperty('SHARED_SECRET');
     var b = JSON.parse(e.postData.contents || '{}');
+    var action = b.action;
+    leadTrace_('doPost received', b, action, secret, 43);
+    if (['lead','list','update','order_list','order_track','order_create','order_update','order_mark',
+      'review_public','review_list','review_create','review_moderate'].indexOf(action) === -1) {
+      return _json({ ok:false, error:'invalid_action', status:400 });
+    }
     if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
-    var action = b.action || 'lead';
+
+    // Validate before sheet_() can create a header row or the lead branch can
+    // append a data row. This protects the email and sheet sinks even if the
+    // Apps Script URL is called directly instead of through Vercel.
+    if (action === 'lead') {
+      var leadValidation = validateLeadPayload_(b);
+      if (!leadValidation.ok) return _json({ ok:false, error:'validation_error', fields:leadValidation.errors, status:422 });
+    }
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
     var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate');
@@ -91,14 +104,15 @@ function doPost(e) {
       return _json({ ok:false, error:'not_found' });
     }
 
-    // default: append a new lead (ID is race-safe under the lock)
+    // append a validated lead (ID is race-safe under the lock)
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
+    leadTrace_('before lead appendRow', b, action, secret, 110);
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
       b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
     safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
       'New AllBee Invitations lead — ' + (b.name||'Unknown'),
-      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''));
+      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''), b, action);
     return _json({ ok:true, id:id });
   } catch (err) {
     return _json({ ok:false, error:String(err) });
@@ -117,13 +131,57 @@ function ordersListCached_(){
   return data;
 }
 function bustCache_(key){ try { CacheService.getScriptCache().remove(key); } catch (e) {} }
+function leadTrace_(phase, b, action, secret, callerLine) {
+  var payload = JSON.parse(JSON.stringify(b || {}));
+  if (payload.secret) payload.secret = '[redacted]';
+  var secretValidation = secret ? (b.secret === secret ? 'valid' : 'invalid') : 'not_configured';
+  var meta = b.request_meta || {};
+  console.log(JSON.stringify({
+    phase: phase,
+    timestamp: new Date().toISOString(),
+    current_url: b.current_url || b.source || meta.current_url || 'server-side',
+    referrer: b.referrer || meta.referer || '',
+    request_headers: meta.request_headers || {},
+    origin: meta.origin || '',
+    user_agent: meta.user_agent || '',
+    ip: b.ip || meta.ip || '',
+    stack: (new Error()).stack || '',
+    event_is_trusted: b.eventIsTrusted === undefined ? null : b.eventIsTrusted,
+    caller_filename: 'docs/lead-apps-script.gs',
+    caller_line: callerLine,
+    payload: payload,
+    action: action || b.action || 'missing',
+    request_from_vercel: secret ? b.secret === secret : false,
+    shared_secret_validation: secretValidation
+  }));
+}
+
+function isNonBlank_(v) { return typeof v === 'string' && v.trim() !== ''; }
+function validateLeadPayload_(b) {
+  var errors = {};
+  if (!isNonBlank_(b.name) || b.name.trim().length < 2) errors.name = 'name_required';
+  if (!isNonBlank_(b.mobile)) errors.mobile = 'mobile_required';
+  if (!isNonBlank_(b.event_type)) errors.event_type = 'occasion_required';
+  if (!isNonBlank_(b.mobile) && !isNonBlank_(b.email)) errors.contact = 'contact_required';
+  return { ok:Object.keys(errors).length === 0, errors:errors };
+}
+
 // MailApp has a hard daily quota (100/day consumer, 1500 Workspace). Never let an
 // email failure roll back a paid order — skip silently when out of quota.
-function safeEmail_(to, subject, html){
+function safeEmail_(to, subject, html, payload, action){
+  if (action === 'lead') {
+    var validation = validateLeadPayload_(payload || {});
+    if (!validation.ok) {
+      leadTrace_('MailApp skipped invalid lead', payload || {}, action, PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 180);
+      return;
+    }
+  }
+  leadTrace_('before MailApp.sendEmail', payload || {}, action || 'unknown', PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 180);
   try { if (MailApp.getRemainingDailyQuota() > 0) MailApp.sendEmail({ to:to, subject:subject, htmlBody:html }); } catch (e) {}
 }
 
 /* ===== Orders (Phase 6) — separate "Orders" sheet ===== */
+var ORDER_STATUSES = ['Order Placed','Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered','Payment Failed','Refunded','Cancelled'];
 var ORDER_HEADERS = ['Order ID','Date','Name','Mobile','Email','Event Type','Invitation Type',
   'Package','Amount','Payment ID','Status','Source','Lead ID','Template ID','Template Name','Demo','Notes','Updated','Assignee','Delivery'];
 function orderSheet_() {
@@ -140,13 +198,14 @@ function orderCreate_(b) {
     var vals = sh.getDataRange().getValues();
     for (var k = 1; k < vals.length; k++) { if (String(vals[k][9]) === String(b.payment_id)) { return { ok:true, id:vals[k][0], duplicate:true }; } }
   }
-  var id = 'ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow());
+  var id = b.receipt ? String(b.receipt).slice(0,40) : ('ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow()));
+  leadTrace_('before order appendRow', b, 'order_create', PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 168);
   sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
     b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
-    'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
+    'Payment Confirmed', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
   safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
     'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
-    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0));
+    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0), b, 'order_create');
   return { ok:true, id:id };
 }
 /* Mark an order by payment_id (refund / failed). Records an orphan row if the
@@ -179,7 +238,8 @@ function ordersList_() {
 function orderUpdate_(id, patch) {
   var sh = orderSheet_(); var vals = sh.getDataRange().getValues();
   for (var i=1;i<vals.length;i++){ if (vals[i][0]===id){
-    if (patch.status   !== undefined) sh.getRange(i+1,11).setValue(patch.status);
+    if (patch.status !== undefined && ORDER_STATUSES.indexOf(String(patch.status)) === -1) return { ok:false, error:'invalid_status' };
+    if (patch.status !== undefined) sh.getRange(i+1,11).setValue(patch.status);
     if (patch.notes    !== undefined) sh.getRange(i+1,17).setValue(patch.notes);
     if (patch.assignee !== undefined) sh.getRange(i+1,19).setValue(patch.assignee);
     if (patch.delivery !== undefined) sh.getRange(i+1,20).setValue(patch.delivery);

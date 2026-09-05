@@ -5,6 +5,7 @@
  *
  * Env: ADMIN_PASSCODE, LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET
  */
+const ORDER_STATUSES=['Order Placed','Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered','Payment Failed','Refunded','Cancelled'];
 function authed(req){
   const pass=req.headers['x-admin-pass']||'', exp=process.env.ADMIN_PASSCODE||'';
   if(!exp) return {ok:false,code:503,error:'crm_not_configured'};
@@ -13,7 +14,7 @@ function authed(req){
   return d===0?{ok:true}:{ok:false,code:401,error:'unauthorized'};
 }
 async function callScript(payload){
-  const url=process.env.LEAD_APPS_SCRIPT_URL; if(!url) return null;
+  const url=process.env.LEAD_APPS_SCRIPT_URL; if(!url || !process.env.LEAD_SHARED_SECRET) throw new Error('orders data layer not configured');
   const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,secret:process.env.LEAD_SHARED_SECRET||''})});
   if(!r.ok) throw new Error('apps-script HTTP '+r.status); return r.json();
 }
@@ -23,14 +24,14 @@ module.exports=async(req,res)=>{
   try{
     if(req.method==='GET'){
       const d=await callScript({action:'order_list'});
-      if(!d){res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:false,orders:[]}));}
+      if(!d){res.statusCode=503;return res.end(JSON.stringify({ok:false,error:'orders_not_configured'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true,orders:d.orders||[]}));
     }
     if(req.method==='POST'){
       let b=req.body; try{if(typeof b==='string')b=JSON.parse(b||'{}');}catch{b={}}
       if(!b||b.action!=='update'||!b.id){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'bad_request'}));}
-      const d=await callScript({action:'order_update',id:b.id,patch:b.patch||{}});
-      if(!d){res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:false}));}
+      const patch=b.patch||{}; if(patch.status!==undefined && !ORDER_STATUSES.includes(String(patch.status))) {res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_status'}));} const d=await callScript({action:'order_update',id:b.id,patch});
+      if(!d){res.statusCode=503;return res.end(JSON.stringify({ok:false,error:'orders_not_configured'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true}));
     }
     res.statusCode=405;return res.end(JSON.stringify({ok:false,error:'method_not_allowed'}));

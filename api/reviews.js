@@ -12,6 +12,7 @@ const s = v => (typeof v === 'string' ? v.trim() : '');
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const url = process.env.LEAD_APPS_SCRIPT_URL, secret = process.env.LEAD_SHARED_SECRET || '';
+  const ready = !!(url && secret);
   async function script(payload) {
     const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, secret }) });
     return r.json();
@@ -19,7 +20,7 @@ module.exports = async (req, res) => {
 
   // ---- public approved list (catalog) ----
   if (req.method === 'GET') {
-    if (!url) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:false, reviews:[] })); }
+    if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
     try { const d = await script({ action:'review_public' }); return res.end(JSON.stringify({ ok:true, configured:true, reviews:(d && d.reviews) || [] })); }
     catch { return res.end(JSON.stringify({ ok:true, configured:true, reviews:[] })); }
   }
@@ -32,8 +33,8 @@ module.exports = async (req, res) => {
   if (action === 'list' || action === 'moderate') {
     const exp = process.env.ADMIN_PASSCODE || '';
     if (!exp) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'crm_not_configured' })); }
-    if ((req.headers['x-admin-pass'] || '') !== exp) { res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'unauthorized' })); }
-    if (!url) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:false, reviews:[] })); }
+    const pass=req.headers['x-admin-pass'] || ''; if (pass.length!==exp.length) { res.statusCode=401; return res.end(JSON.stringify({ok:false,error:'unauthorized'})); } let diff=0; for(let i=0;i<exp.length;i++) diff|=pass.charCodeAt(i)^exp.charCodeAt(i); if (diff!==0) { res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'unauthorized' })); }
+    if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
     try {
       if (action === 'list') { const d = await script({ action:'review_list' }); return res.end(JSON.stringify({ ok:true, configured:true, reviews:(d && d.reviews) || [] })); }
       const d = await script({ action:'review_moderate', id: s(b.id).slice(0,20), moderated: !!b.moderated });
@@ -48,7 +49,7 @@ module.exports = async (req, res) => {
   const name = s(b.name).slice(0,60), review = s(b.review).slice(0,600);
   const rating = Math.max(1, Math.min(5, Number(b.rating) || 0));
   if (name.length < 2 || review.length < 4 || !rating) { res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'validation_error' })); }
-  if (!url) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:false })); }
+  if (!ready) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'reviews_not_configured' })); }
   try {
     await script({ action:'review_create', name, city:s(b.city).slice(0,40), event_type:s(b.event_type).slice(0,40),
       rating, review, template_id:s(b.template_id).slice(0,20), order_id:s(b.order_id).slice(0,24) });

@@ -2,8 +2,7 @@
  * AllBee Invitations — public order tracking (no login).
  * POST { order_id, mobile } → looks up the order via Apps Script `order_track`
  * (matches Order ID + mobile digits) and returns a safe public subset.
- * Returns { ok:true, configured:false } when the data layer isn't wired yet,
- * so /track-order can fall back to demo mode.
+ * Fails closed when the data layer isn't wired; tracking never fabricates an order.
  *
  * Env: LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET
  */
@@ -20,12 +19,12 @@ module.exports = async (req, res) => {
   if (!order_id || !mobile) { res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'missing_fields' })); }
 
   const url = process.env.LEAD_APPS_SCRIPT_URL;
-  if (!url) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:false })); }
+  if (!url || !process.env.LEAD_SHARED_SECRET) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'tracking_not_configured' })); }
 
   try {
     const r = await fetch(url, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'order_track', id: order_id, mobile, secret: process.env.LEAD_SHARED_SECRET || '' }),
+      body: JSON.stringify({ action: 'order_track', id: order_id, mobile, secret: process.env.LEAD_SHARED_SECRET }),
     });
     const d = await r.json();
     if (!d || !d.ok) { res.statusCode = 200; return res.end(JSON.stringify({ ok:false, configured:true, error:'not_found' })); }

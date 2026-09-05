@@ -139,7 +139,7 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
       <div class="summary" id="paySummary"></div>
       <button class="btn btn-pay" id="payBtn">Pay <span id="payAmt"></span> &amp; Place Order</button>
       <div class="err" id="payErr"></div>
-      <div class="secure">🔒 Payments are processed securely via Razorpay. We never store your card details.</div>
+      <div class="secure" id="paymentStatus">🔒 Online checkout status is being checked…</div>
     </div>
     <div id="resultView" class="result hidden"></div>
   </section>
@@ -238,7 +238,7 @@ function buildSummary(sel){
       <span>&#10003; Unlimited Guests</span><span>&#10003; 100% Custom Design</span>
       <span>&#10003; Fast Delivery</span><span>&#10003; Support Available</span>
     </div>
-    <div style="text-align:center;margin-top:14px;font-size:12px;color:#9a6a12;background:linear-gradient(90deg,rgba(220,165,12,.08),rgba(220,165,12,.14),rgba(220,165,12,.08));border:1px solid rgba(220,165,12,.3);border-radius:100px;padding:8px 14px">&#10022; Wedding season — booking fast &middot; we&rsquo;re currently designing 7 invitations</div>`;
+    `;
 }
 function buildPay(){ buildSummary('#paySummary'); $('#payAmt').textContent=fmt(amount()); }
 
@@ -264,7 +264,7 @@ function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createEle
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
 function successView(orderId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`); }
 
-$('#payBtn').onclick=async()=>{
+$('#payBtn').onclick=async(e)=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
   try{
     const res=await fetch('/api/order-create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});
@@ -274,12 +274,13 @@ $('#payBtn').onclick=async()=>{
       /* Razorpay not live yet — capture the order so no customer is lost.
          Skip creating a new lead when this came from an existing lead (avoid duplicates). */
       if(!order.lead_id){
+        console.log('[lead-trace] order fallback request',{timestamp:new Date().toISOString(),currentUrl:location.href,referer:document.referrer||'',userAgent:navigator.userAgent||'',method:'POST',eventIsTrusted:e&&e.isTrusted,callerFilename:'order.html',callerLine:275,stack:(new Error()).stack,body:{name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000}});
         await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
           body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
             interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
       }
-      gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
-      showResult(`<div class="big">✅</div><h2>Order received!</h2><p>Thank you, ${order.name}. We've received your order for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Our team will send you a secure payment link on WhatsApp shortly.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`);
+      gax('order_request_submitted',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
+      showResult(`<div class="big">📝</div><h2>Order request received</h2><p>Thank you, ${order.name}. We saved your ${order.pkg} ${order.type.replace(' (PDF + Website)','')} request (${fmt(order.amount)}). Online payment is not configured yet, so no payment has been taken.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/invitation">Browse more designs</a><a class="btn btn-secondary" href="/track-order">Track your request</a></div>`);
       return;
     }
     loadRzp(()=>{
@@ -295,6 +296,7 @@ $('#payBtn').onclick=async()=>{
   function reset(){ $('#payBtn').disabled=false; $('#payBtn').innerHTML='Pay <span id="payAmt">'+fmt(amount())+'</span> &amp; Place Order'; }
 };
 
+fetch('/api/health').then(r=>r.json()).then(h=>{const el=document.getElementById('paymentStatus');if(!el)return;if(h&&h.checks&&h.checks.razorpay){el.textContent='🔒 Payments are processed securely via Razorpay. We never store your card details.';}else{el.textContent='ℹ️ Online payment is not active yet. Your order request can still be saved; no payment will be taken until checkout is enabled.';}}).catch(()=>{const el=document.getElementById('paymentStatus');if(el)el.textContent='ℹ️ Online checkout status is unavailable. No payment is taken unless the secure gateway opens.'});
 show();
 gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''});
 </script>
