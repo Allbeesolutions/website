@@ -134,24 +134,12 @@ function ordersListCached_(){
 }
 function bustCache_(key){ try { CacheService.getScriptCache().remove(key); } catch (e) {} }
 function leadTrace_(phase, b, action, secret, callerLine) {
-  var payload = JSON.parse(JSON.stringify(b || {}));
-  if (payload.secret) payload.secret = '[redacted]';
   var secretValidation = secret ? (b.secret === secret ? 'valid' : 'invalid') : 'not_configured';
-  var meta = b.request_meta || {};
   console.log(JSON.stringify({
     phase: phase,
     timestamp: new Date().toISOString(),
-    current_url: b.current_url || b.source || meta.current_url || 'server-side',
-    referrer: b.referrer || meta.referer || '',
-    request_headers: meta.request_headers || {},
-    origin: meta.origin || '',
-    user_agent: meta.user_agent || '',
-    ip: b.ip || meta.ip || '',
-    stack: (new Error()).stack || '',
-    event_is_trusted: b.eventIsTrusted === undefined ? null : b.eventIsTrusted,
     caller_filename: 'docs/lead-apps-script.gs',
     caller_line: callerLine,
-    payload: payload,
     action: action || b.action || 'missing',
     request_from_vercel: secret ? b.secret === secret : false,
     shared_secret_validation: secretValidation
