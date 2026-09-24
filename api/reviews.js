@@ -11,6 +11,7 @@ const s = v => (typeof v === 'string' ? v.trim() : '');
 
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
   const url = process.env.LEAD_APPS_SCRIPT_URL, secret = process.env.LEAD_SHARED_SECRET || '';
   const ready = !!(url && secret);
   async function script(payload) {

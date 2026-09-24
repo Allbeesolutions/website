@@ -21,6 +21,7 @@ function readRaw(req) {
 
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false })); }
 
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
