@@ -4,6 +4,7 @@
  * (never the values). Powers /admin/launch.
  */
 module.exports = async (req, res) => {
+  if (req.method !== 'GET') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false, error:'method_not_allowed' })); }
   const env = process.env;
   const has = (...keys) => keys.every(k => !!(env[k] && String(env[k]).trim()));
   const checks = {

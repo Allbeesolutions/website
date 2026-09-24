@@ -7,11 +7,11 @@
  *
  * Env: LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET, ADMIN_PASSCODE
  */
+const { guard, noStore } = require('./_security');
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res); const blocked = guard(req, res, 'reviews', 20); if (blocked) return;
   const url = process.env.LEAD_APPS_SCRIPT_URL, secret = process.env.LEAD_SHARED_SECRET || '';
   const ready = !!(url && secret);
   async function script(payload) {

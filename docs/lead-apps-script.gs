@@ -47,12 +47,13 @@ function doPost(e) {
     var secret = props.getProperty('SHARED_SECRET');
     var b = JSON.parse(e.postData.contents || '{}');
     var action = b.action;
+    if (!secret) return _json({ ok:false, error:'not_configured' });
     leadTrace_('doPost received', b, action, secret, 43);
     if (['lead','list','update','order_list','order_track','order_create','order_update','order_mark',
       'review_public','review_list','review_create','review_moderate'].indexOf(action) === -1) {
       return _json({ ok:false, error:'invalid_action', status:400 });
     }
-    if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
+    if (b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
 
     // Validate before sheet_() can create a header row or the lead branch can
     // append a data row. This protects the email and sheet sinks even if the
@@ -115,7 +116,8 @@ function doPost(e) {
       'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''), b, action);
     return _json({ ok:true, id:id });
   } catch (err) {
-    return _json({ ok:false, error:String(err) });
+    console.error(String(err));
+    return _json({ ok:false, error:'internal_error' });
   } finally {
     if (lock) lock.releaseLock();
   }

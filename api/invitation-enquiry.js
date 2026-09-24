@@ -21,6 +21,7 @@
  *   CALLMEBOT_APIKEY       CallMeBot API key                                [optional]
  */
 
+const { guard, noStore } = require('./_security');
 const EVENT_TYPES = ['Wedding', 'Nikah', 'Birthday', 'Housewarming', 'Dargah Event',
   'School Event', 'Business Event', 'Political Event', 'Other'];
 const INTEREST = ['PDF Invitation', 'Website Invitation', 'Both'];
@@ -134,8 +135,8 @@ module.exports = async (req, res) => {
   const headers = req.headers || {};
   const ip = (headers['x-forwarded-for'] || '').split(',')[0].trim() ||
     headers['x-real-ip'] || (req.socket && req.socket.remoteAddress) || '';
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res);
+  const blocked = guard(req, res, 'invitation-enquiry', 10); if (blocked) return;
   if (req.method !== 'POST') {
     res.statusCode = 405;
     return res.end(JSON.stringify({ ok: false, error: 'method_not_allowed' }));

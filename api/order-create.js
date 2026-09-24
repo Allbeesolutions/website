@@ -7,6 +7,7 @@
  * Env: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET   [required for live payments]
  */
 
+const { guard, noStore } = require('./_security');
 // Configurable pricing structure (must mirror the wizard display).
 const PRICING = {
   'PDF Invitation':       { Basic: 299,  Premium: 599,  Elite: 999 },
@@ -18,8 +19,7 @@ const EVENTS = ['Wedding','Nikah','Birthday','Housewarming','Dargah Event','Scho
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res); const blocked = guard(req, res, 'order-create', 10); if (blocked) return;
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false, error:'method_not_allowed' })); }
 
   let b = req.body;

@@ -5,6 +5,7 @@
  *
  * Env: ADMIN_PASSCODE, LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET
  */
+const { guard, noStore } = require('./_security');
 const ORDER_STATUSES=['Order Placed','Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered','Payment Failed','Refunded','Cancelled'];
 function authed(req){
   const pass=req.headers['x-admin-pass']||'', exp=process.env.ADMIN_PASSCODE||'';

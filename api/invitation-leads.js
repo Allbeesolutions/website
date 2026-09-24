@@ -18,6 +18,7 @@
  *   POST /api/invitation-leads  {action:'update', id, patch:{status,value,crm_note}}
  */
 
+const { guard, noStore } = require('./_security');
 function authed(req) {
   const pass = req.headers['x-admin-pass'] || '';
   const expected = process.env.ADMIN_PASSCODE || '';
@@ -43,8 +44,8 @@ async function callScript(payload) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res);
+  const blocked = guard(req, res, 'invitation-leads', 30); if (blocked) return;
 
   const a = authed(req);
   if (!a.ok) { res.statusCode = a.code; return res.end(JSON.stringify({ ok: false, error: a.error })); }

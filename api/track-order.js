@@ -6,11 +6,11 @@
  *
  * Env: LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET
  */
+const { guard, noStore } = require('./_security');
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res); const blocked = guard(req, res, 'track-order', 20); if (blocked) return;
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false, error:'method_not_allowed' })); }
 
   let b = req.body;

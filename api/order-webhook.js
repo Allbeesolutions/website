@@ -9,6 +9,7 @@
  * NOTE: configure this URL in Razorpay Dashboard → Webhooks for the
  * `payment.captured` event, using RAZORPAY_WEBHOOK_SECRET as the secret.
  */
+const { guard, noStore } = require('./_security');
 const crypto = require('crypto');
 
 function readRaw(req) {
@@ -20,8 +21,7 @@ function readRaw(req) {
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res); const blocked = guard(req, res, 'order-webhook', 60); if (blocked) return;
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false })); }
 
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;

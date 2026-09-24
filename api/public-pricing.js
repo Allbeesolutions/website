@@ -1,5 +1,6 @@
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://ogacjpwlbhmonycjevml.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const { guard } = require('./_security');
+const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 const FALLBACK = [
   { service_slug:'invitation-pdf', package_slug:'basic', label:'Basic PDF', price:299 },
   { service_slug:'invitation-pdf', package_slug:'premium', label:'Premium PDF', price:599 },
