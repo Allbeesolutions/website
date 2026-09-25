@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
   if (!KEY || !SECRET) {
     // Not wired yet → tell the client to use the capture fallback.
     res.statusCode = 200;
-    return res.end(JSON.stringify({ ok:true, configured:false, amount:amountPaise, receipt }));
+    return res.end(JSON.stringify({ ok:true, configured:false, payment_state:'pending', order_state:'request_received', amount:amountPaise, receipt }));
   }
 
   try {
@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
     const order = await rp.json();
     if (!rp.ok || !order.id) throw new Error('razorpay ' + rp.status);
     res.statusCode = 200;
-    return res.end(JSON.stringify({ ok:true, configured:true, order_id:order.id, amount:amountPaise, key_id:KEY, receipt }));
+    return res.end(JSON.stringify({ ok:true, configured:true, payment_state:'created', order_state:'payment_pending', order_id:order.id, amount:amountPaise, key_id:KEY, receipt }));
   } catch (e) {
     console.error('[order-create] error:', String(e.message || e));
     res.statusCode = 502;
