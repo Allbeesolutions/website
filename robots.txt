@@ -1,10 +1,6 @@
 User-agent: *
 Allow: /
 
-# Duplicate-content pages — index the canonical instead
-Disallow: /webpricing.html
-Disallow: /reels-growth.html
-
 # Internal admin CRM — never index
 Disallow: /admin/
 

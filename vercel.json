@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/reels-growth", "destination": "/digitalmarketing", "permanent": true },
+    { "source": "/reels-growth.html", "destination": "/digitalmarketing", "permanent": true },
+    { "source": "/webpricing", "destination": "/webdevelopment", "permanent": true },
+    { "source": "/webpricing.html", "destination": "/webdevelopment", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/services", "destination": "/services.html" },
@@ -10,7 +16,6 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/refund", "destination": "/refund.html" },
-    { "source": "/reels-growth", "destination": "/reels-growth.html" },
     { "source": "/invitation", "destination": "/invitation.html" },
     { "source": "/invitation-samples", "destination": "/invitation-samples.html" },
     { "source": "/wedding-invitations", "destination": "/wedding-invitations.html" },
@@ -30,7 +35,6 @@
     { "source": "/admin/ceo", "destination": "/admin/ceo.html" },
     { "source": "/admin/launch", "destination": "/admin/launch.html" },
     { "source": "/order", "destination": "/order.html" },
-    { "source": "/webpricing", "destination": "/webpricing.html" },
     { "source": "/404", "destination": "/404.html" }
   ],
   "headers": [

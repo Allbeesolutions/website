@@ -36,6 +36,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.allbeesolutions.com/portfolio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://www.allbeesolutions.com/invitation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -44,11 +49,6 @@
     <loc>https://www.allbeesolutions.com/invitation-samples</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.allbeesolutions.com/order</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.allbeesolutions.com/demo/muslim-wedding</loc>
