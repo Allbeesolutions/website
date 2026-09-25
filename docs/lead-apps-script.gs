@@ -2,7 +2,7 @@
  * AllBee Invitations — Google Apps Script web app (lead capture + CRM).
  *
  * Handles three actions on the "Leads" sheet:
- *   (no action)      append a new lead   (called by /api/invitation-enquiry)
+ *   action:'lead'    append a new lead   (called by /api/invitation-enquiry)
  *   action:'list'    return all leads    (called by /api/invitation-leads — CRM read)
  *   action:'update'  patch a lead by ID  (called by /api/invitation-leads — CRM write)
  *
@@ -46,8 +46,20 @@ function doPost(e) {
     var props = PropertiesService.getScriptProperties();
     var secret = props.getProperty('SHARED_SECRET');
     var b = JSON.parse(e.postData.contents || '{}');
+    var action = b.action;
+    if (['lead','list','update','order_list','order_track','order_create','order_update','order_mark',
+      'review_public','review_list','review_create','review_moderate'].indexOf(action) === -1) {
+      return _json({ ok:false, error:'invalid_action', status:400 });
+    }
     if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
-    var action = b.action || 'lead';
+
+    // Validate before sheet_() can create a header row or the lead branch can
+    // append a data row. This protects the email and sheet sinks even if the
+    // Apps Script URL is called directly instead of through Vercel.
+    if (action === 'lead') {
+      var leadValidation = validateLeadPayload_(b);
+      if (!leadValidation.ok) return _json({ ok:false, error:'validation_error', fields:leadValidation.errors, status:422 });
+    }
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
     var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate');
@@ -91,14 +103,14 @@ function doPost(e) {
       return _json({ ok:false, error:'not_found' });
     }
 
-    // default: append a new lead (ID is race-safe under the lock)
+    // append a validated lead (ID is race-safe under the lock)
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
       b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
     safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
       'New AllBee Invitations lead — ' + (b.name||'Unknown'),
-      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''));
+      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''), b, action);
     return _json({ ok:true, id:id });
   } catch (err) {
     return _json({ ok:false, error:String(err) });
@@ -117,9 +129,25 @@ function ordersListCached_(){
   return data;
 }
 function bustCache_(key){ try { CacheService.getScriptCache().remove(key); } catch (e) {} }
+function isNonBlank_(v) { return typeof v === 'string' && v.trim() !== ''; }
+function validateLeadPayload_(b) {
+  var errors = {};
+  if (!isNonBlank_(b.name) || b.name.trim().length < 2) errors.name = 'name_required';
+  if (!isNonBlank_(b.mobile)) errors.mobile = 'mobile_required';
+  if (!isNonBlank_(b.event_type)) errors.event_type = 'occasion_required';
+  if (!isNonBlank_(b.mobile) && !isNonBlank_(b.email)) errors.contact = 'contact_required';
+  return { ok:Object.keys(errors).length === 0, errors:errors };
+}
+
 // MailApp has a hard daily quota (100/day consumer, 1500 Workspace). Never let an
 // email failure roll back a paid order — skip silently when out of quota.
-function safeEmail_(to, subject, html){
+function safeEmail_(to, subject, html, payload, action){
+  if (action === 'lead') {
+    var validation = validateLeadPayload_(payload || {});
+    if (!validation.ok) {
+      return;
+    }
+  }
   try { if (MailApp.getRemainingDailyQuota() > 0) MailApp.sendEmail({ to:to, subject:subject, htmlBody:html }); } catch (e) {}
 }
 
@@ -146,7 +174,7 @@ function orderCreate_(b) {
     'New', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
   safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
     'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
-    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0));
+    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0), b, 'order_create');
   return { ok:true, id:id };
 }
 /* Mark an order by payment_id (refund / failed). Records an orphan row if the

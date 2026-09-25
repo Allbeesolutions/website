@@ -64,15 +64,31 @@ function isSpam(b) {
   return null;
 }
 
-async function sendToSheetAndEmail(lead) {
+async function sendToSheetAndEmail(lead, requestMeta) {
   const url = process.env.LEAD_APPS_SCRIPT_URL;
   if (!url) return { ok: false, skipped: 'no LEAD_APPS_SCRIPT_URL' };
+  const payload = {
+    ...lead,
+    action: 'lead',
+    secret: process.env.LEAD_SHARED_SECRET || '',
+    request_meta: {
+      current_url: lead.source || '',
+      referer: requestMeta.referer,
+      origin: requestMeta.origin,
+      user_agent: requestMeta.userAgent,
+      ip: requestMeta.ip,
+      request_headers: requestMeta.headers,
+    },
+  };
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...lead, secret: process.env.LEAD_SHARED_SECRET || '' }),
+    body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error('apps-script HTTP ' + res.status);
+  const result = await res.json().catch(() => null);
+  if (!res.ok || !result || result.ok !== true) {
+    throw new Error('apps-script ' + (result && result.error ? result.error : 'HTTP ' + res.status));
+  }
   return { ok: true };
 }
 
@@ -115,6 +131,9 @@ async function sendWhatsApp(lead) {
 }
 
 module.exports = async (req, res) => {
+  const headers = req.headers || {};
+  const ip = (headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+    headers['x-real-ip'] || (req.socket && req.socket.remoteAddress) || '';
   res.setHeader('Content-Type', 'application/json');
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -144,8 +163,18 @@ module.exports = async (req, res) => {
   }
 
   // Enrich with server-side metadata
-  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
-    req.headers['x-real-ip'] || (req.socket && req.socket.remoteAddress) || '';
+  const requestMeta = {
+    referer: headers.referer || '',
+    origin: headers.origin || '',
+    userAgent: headers['user-agent'] || '',
+    ip,
+    headers: {
+      referer: headers.referer || '',
+      origin: headers.origin || '',
+      user_agent: headers['user-agent'] || '',
+      content_type: headers['content-type'] || '',
+    },
+  };
   const enriched = {
     ...lead,
     timestamp: new Date().toISOString(),
@@ -155,7 +184,7 @@ module.exports = async (req, res) => {
 
   // Fan-out — never let one failure block the others or the response
   const results = {};
-  try { results.sheet = await sendToSheetAndEmail(enriched); }
+  try { results.sheet = await sendToSheetAndEmail(enriched, requestMeta); }
   catch (e) { results.sheet = { ok: false, error: String(e.message || e) }; }
   try { results.whatsapp = await sendWhatsApp(enriched); }
   catch (e) { results.whatsapp = { ok: false, error: String(e.message || e) }; }

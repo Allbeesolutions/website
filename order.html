@@ -261,7 +261,7 @@ function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createEle
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
 function successView(orderId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Order placed!</h2><p>Thank you, ${order.name}. Your order <strong>${orderId||''}</strong> is confirmed and our design team will begin shortly. We'll reach you on WhatsApp at ${order.mobile}.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`); }
 
-$('#payBtn').onclick=async()=>{
+$('#payBtn').onclick=async(e)=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
   try{
     const res=await fetch('/api/order-create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});
