@@ -5381,7 +5381,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
   }
 
   /* ─────────────────────────────────────────────────────────────────
-     FORMS - WhatsApp lead handoff for static site
+     FORMS - capture first, then offer WhatsApp follow-up
   ───────────────────────────────────────────────────────────────── */
   function labelForField(field){
     if (!field || !field.name) return '';
@@ -5406,47 +5406,98 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     return lines.join('\n');
   }
 
-  function openWhatsAppLead(form, statusEl){
+  function leadPayload(form){
+    const data = new FormData(form);
+    const values = {};
+    data.forEach(function(value, key){
+      if (key === '_gotcha' || key === '_subject') return;
+      if (values[key]) values[key] = Array.isArray(values[key]) ? values[key].concat(String(value)) : [values[key], String(value)];
+      else values[key] = String(value).trim();
+    });
+    const asText = function(value){ return Array.isArray(value) ? value.join(', ') : String(value || '').trim(); };
+    const eventType = asText(values.event_type || values.event || 'Other');
+    const allowedEvents = ['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
+    const notes = [];
+    Object.keys(values).forEach(function(key){
+      if (['name','full_name','phone','mobile','email','event_type','event','event_date','interested_in'].includes(key)) return;
+      const value = asText(values[key]);
+      if (value) notes.push(labelForField(form.querySelector('[name="' + key + '"]')) + ': ' + value);
+    });
+    return {
+      name: asText(values.name || values.full_name),
+      mobile: asText(values.mobile || values.phone),
+      email: asText(values.email),
+      event_type: allowedEvents.includes(eventType) ? eventType : 'Other',
+      event_date: asText(values.event_date),
+      interested_in: Array.isArray(values.interested_in) ? values.interested_in : (values.interested_in ? [values.interested_in] : []),
+      notes: notes.join('\n'),
+      source: window.location.pathname + (form.id ? '#' + form.id : ''),
+      render_ts: form.dataset.renderTs || String(Date.now() - 4000),
+      _gotcha: data.get('_gotcha') || ''
+    };
+  }
+
+  function showWhatsAppFollowUp(form, statusEl, message){
+    if (!statusEl) return;
     const phone = String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506';
-    const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildWhatsAppLeadMessage(form));
-    if (statusEl) {
-      statusEl.className = 'form-status success';
-      statusEl.textContent = 'Opening WhatsApp. Please press Send to share your enquiry.';
-    }
-    trackEvent('form_submit_whatsapp', { form_id: form.id || 'unknown' });
-    const opened = window.open(url, '_blank', 'noopener');
-    if (!opened) window.location.href = url;
+    const link = document.createElement('a');
+    link.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Continue in WhatsApp';
+    statusEl.className = 'form-status success';
+    statusEl.textContent = 'Request received. ';
+    statusEl.appendChild(link);
+  }
+
+  async function submitLead(form, statusEl){
+    const response = await fetch('/api/invitation-enquiry', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(leadPayload(form))
+    });
+    const payload = await response.json().catch(function(){ return {}; });
+    if (!response.ok || !payload.ok) throw new Error(payload.error || 'Unable to save enquiry');
+    return payload;
   }
 
   function wireForm(form){
     if (!form) return;
-    form.action = 'https://wa.me/' + (String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506');
-    form.method = 'GET';
+    form.action = '/api/invitation-enquiry';
+    form.method = 'POST';
+    form.dataset.renderTs = String(Date.now());
     form.addEventListener('submit', function(e){
       e.preventDefault();
       const statusEl = form.querySelector('.form-status');
       const submitBtn = form.querySelector('[type="submit"]');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
-
       const honeypot = form.querySelector('[name="_gotcha"]');
       if (honeypot && honeypot.value) {
         if (statusEl) { statusEl.className = 'form-status success'; statusEl.textContent = 'Submitted.'; }
         return;
       }
-
       if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Opening WhatsApp...';
-      }
-      openWhatsAppLead(form, statusEl);
-      window.setTimeout(function(){
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending securely...'; }
+      submitLead(form, statusEl).then(function(){
+        showWhatsAppFollowUp(form, statusEl, buildWhatsAppLeadMessage(form));
+        trackEvent('form_submit_captured', { form_id: form.id || 'unknown' });
+        form.reset();
+      }).catch(function(){
+        if (statusEl) {
+          statusEl.className = 'form-status error';
+          statusEl.textContent = 'We could not save the request. ';
+          const phone = String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506';
+          const link = document.createElement('a');
+          link.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildWhatsAppLeadMessage(form));
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = 'Continue in WhatsApp';
+          statusEl.appendChild(link);
         }
-      }, 1600);
+        trackEvent('form_submit_capture_failed', { form_id: form.id || 'unknown' });
+      }).finally(function(){
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText; }
+      });
     });
   }
   document.querySelectorAll('form[data-form="allbee"]').forEach(wireForm);

@@ -89,7 +89,7 @@ async function sendToSheetAndEmail(lead, requestMeta) {
   if (!res.ok || !result || result.ok !== true) {
     throw new Error('apps-script ' + (result && result.error ? result.error : 'HTTP ' + res.status));
   }
-  return { ok: true };
+  return { ok: true, id: result.id || result.lead_id || null };
 }
 
 async function sendWhatsApp(lead) {
@@ -189,13 +189,13 @@ module.exports = async (req, res) => {
   try { results.whatsapp = await sendWhatsApp(enriched); }
   catch (e) { results.whatsapp = { ok: false, error: String(e.message || e) }; }
 
-  // If the primary store failed/unconfigured, log the full lead so it is recoverable
-  if (!results.sheet.ok) {
-    console.error('[lead] sheet sink failed — recoverable lead follows:', JSON.stringify({ lead: enriched, results }));
-  } else {
-    console.log('[lead] captured:', enriched.name, enriched.event_type, JSON.stringify(results));
-  }
-
   res.statusCode = 200;
-  return res.end(JSON.stringify({ ok: true }));
+  return res.end(JSON.stringify({
+    ok: true,
+    captured: Boolean(results.sheet && results.sheet.ok),
+    lead_id: results.sheet && results.sheet.id ? results.sheet.id : null,
+    notifications: {
+      whatsapp: results.whatsapp && results.whatsapp.ok ? results.whatsapp.via || 'configured' : null,
+    },
+  }));
 };
