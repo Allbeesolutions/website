@@ -1029,10 +1029,12 @@ function initFilters(){
 }
 
 /* ---- Modal ---- */
+var modalReturnFocus = null;
 function openModal(id){
   var p = PF_PROJECTS.find(function(x){ return x.id === id; });
   if(!p) return;
   var overlay = document.getElementById('pfModal');
+  modalReturnFocus = document.activeElement;
 
   // Image
   var imgEl = document.getElementById('pfModalImg');
@@ -1075,6 +1077,8 @@ function openModal(id){
 function closeModal(){
   document.getElementById('pfModal').classList.remove('open');
   document.body.style.overflow = '';
+  if(modalReturnFocus && typeof modalReturnFocus.focus === 'function') modalReturnFocus.focus();
+  modalReturnFocus = null;
 }
 
 function initModal(){

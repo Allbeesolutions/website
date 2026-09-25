@@ -40,13 +40,13 @@ a{color:inherit}
   <div class="card" id="card">
     <form id="rvForm" novalidate>
       <input type="text" class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="field"><label>Your Rating</label><div class="stars" id="stars"><span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span></div></div>
+      <div class="field"><label id="rating-label">Your Rating</label><div class="stars" id="stars" role="radiogroup" aria-labelledby="rating-label"><span data-v="1" role="radio" tabindex="0" aria-label="1 star" aria-checked="false">★</span><span data-v="2" role="radio" tabindex="0" aria-label="2 stars" aria-checked="false">★</span><span data-v="3" role="radio" tabindex="0" aria-label="3 stars" aria-checked="false">★</span><span data-v="4" role="radio" tabindex="0" aria-label="4 stars" aria-checked="false">★</span><span data-v="5" role="radio" tabindex="0" aria-label="5 stars" aria-checked="false">★</span></div></div>
       <div class="row">
-        <div class="field"><label>Your Name</label><input name="name" required></div>
-        <div class="field"><label>City</label><input name="city" placeholder="e.g. Nagapattinam"></div>
+        <div class="field"><label for="rv-name">Your Name</label><input id="rv-name" name="name" required></div>
+        <div class="field"><label for="rv-city">City</label><input id="rv-city" name="city" placeholder="e.g. Nagapattinam"></div>
       </div>
-      <div class="field"><label>Event Type</label><select name="event_type"><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Business Event</option><option>Other</option></select></div>
-      <div class="field"><label>Your Review</label><textarea name="review" rows="4" placeholder="What did you and your guests love?" required></textarea></div>
+      <div class="field"><label for="rv-event">Event Type</label><select id="rv-event" name="event_type"><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Business Event</option><option>Other</option></select></div>
+      <div class="field"><label for="rv-review">Your Review</label><textarea id="rv-review" name="review" rows="4" placeholder="What did you and your guests love?" required></textarea></div>
       <button class="btn" type="submit" id="go">Submit Review</button>
       <div class="err" id="err"></div>
     </form>
@@ -58,8 +58,8 @@ a{color:inherit}
   var RT=Date.now(),rating=0;
   var q=new URLSearchParams(location.search);
   var stars=document.getElementById('stars').children;
-  function paint(n){for(var i=0;i<stars.length;i++)stars[i].classList.toggle('on',i<n);}
-  for(var i=0;i<stars.length;i++){(function(i){stars[i].addEventListener('click',function(){rating=i+1;paint(rating);});stars[i].addEventListener('mouseover',function(){for(var j=0;j<stars.length;j++)stars[j].classList.toggle('hov',j<=i);});stars[i].addEventListener('mouseout',function(){for(var j=0;j<stars.length;j++)stars[j].classList.remove('hov');});})(i);}
+  function paint(n){for(var i=0;i<stars.length;i++){stars[i].classList.toggle('on',i<n);stars[i].setAttribute('aria-checked',i===n-1?'true':'false');}}
+  for(var i=0;i<stars.length;i++){(function(i){function choose(){rating=i+1;paint(rating);}stars[i].addEventListener('click',choose);stars[i].addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();}});stars[i].addEventListener('mouseover',function(){for(var j=0;j<stars.length;j++)stars[j].classList.toggle('hov',j<=i);});stars[i].addEventListener('mouseout',function(){for(var j=0;j<stars.length;j++)stars[j].classList.remove('hov');});})(i);}
   var form=document.getElementById('rvForm'),err=document.getElementById('err'),go=document.getElementById('go');
   form.addEventListener('submit',function(e){
     e.preventDefault();err.classList.remove('show');
