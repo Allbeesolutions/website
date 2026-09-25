@@ -4073,6 +4073,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 }
 @media (min-width:769px){ #navbar .hamburger{display:none} }
 /*nav-dd-end*/
+.path-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}.path-card{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.72);color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}.path-card:hover,.path-card:focus-visible{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 16px 34px rgba(15,123,110,.12)}.path-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--teal);color:#fff}.path-card:nth-child(2) .path-icon{background:#DCA50C;color:#1f2b25}.path-card:nth-child(3) .path-icon{background:#085A52}.path-card:nth-child(4) .path-icon{background:#7d5a9e}.path-title{font:700 1.08rem 'Lato',sans-serif}.path-desc{font-size:.9rem;line-height:1.55;color:var(--muted)}.path-link{margin-top:auto;color:var(--teal-d);font-weight:700;font-size:.88rem}@media(max-width:900px){.path-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.path-grid{grid-template-columns:1fr;gap:12px}.path-card{padding:18px}}
 </style>
 
 <script type="application/ld+json">
@@ -4544,6 +4545,42 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     </div>
   </div>
 </div>
+
+<section class="section section-alt" aria-labelledby="paths-h">
+  <div class="section-container">
+    <div class="text-center" data-aos>
+      <div class="section-eyebrow">Choose Your Path</div>
+      <h2 id="paths-h" class="section-title">One Team. <em>Four Ways</em> to Move Forward.</h2>
+      <p class="section-sub">Start with the AllBee service that matches your goal. You can move between paths whenever you need us.</p>
+    </div>
+    <div class="path-grid">
+      <a class="path-card" href="/courses">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-teacher"/></svg></span>
+        <span class="path-title">Learn with AllBee</span>
+        <span class="path-desc">Practical IT courses for students, job seekers and career switchers.</span>
+        <span class="path-link">Explore courses →</span>
+      </a>
+      <a class="path-card" href="/services">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-rocket"/></svg></span>
+        <span class="path-title">Grow your business</span>
+        <span class="path-desc">Websites, marketing, branding and support for growing businesses.</span>
+        <span class="path-link">View business services →</span>
+      </a>
+      <a class="path-card" href="/invitation">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-spark"/></svg></span>
+        <span class="path-title">Create an invitation</span>
+        <span class="path-desc">Browse premium digital invitations for weddings, birthdays and events.</span>
+        <span class="path-link">Browse invitations →</span>
+      </a>
+      <a class="path-card" href="/portfolio">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-code"/></svg></span>
+        <span class="path-title">Build software</span>
+        <span class="path-desc">Discuss a custom website, platform, dashboard or internal system.</span>
+        <span class="path-link">See our work →</span>
+      </a>
+    </div>
+  </div>
+</section>
 
 <section class="section" aria-labelledby="services-h">
   <div class="section-container">
