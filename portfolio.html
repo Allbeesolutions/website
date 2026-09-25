@@ -1037,7 +1037,7 @@ function openModal(id){
   // Image
   var imgEl = document.getElementById('pfModalImg');
   imgEl.innerHTML = p.img
-    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy">'
+    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy" width="800" height="450">'
     : placeholderThumb(ICONS[p.categoryKey] || 'i-briefcase');
 
   // Cat + title
