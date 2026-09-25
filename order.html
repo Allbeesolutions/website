@@ -156,6 +156,11 @@ const PRICING={
   'Website Invitation':{Basic:999, Premium:1999, Elite:3999},
   'Both (PDF + Website)':{Basic:1299, Premium:2499, Elite:4999}
 };
+const PRICING_SERVICE={
+  'PDF Invitation':'invitation-pdf',
+  'Website Invitation':'invitation-website',
+  'Both (PDF + Website)':'invitation-both'
+};
 const EVENTS=['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
 const TYPES=[
  {k:'PDF Invitation',d:'A beautiful downloadable invitation card to share on WhatsApp.'},
@@ -198,6 +203,19 @@ function show(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function amount(){ return (PRICING[order.type]&&PRICING[order.type][order.pkg])||0; }
+async function loadPricing(){
+  try{
+    const res=await fetch('/api/public-pricing',{headers:{Accept:'application/json'},cache:'no-store'});
+    const data=await res.json();
+    if(!data || !data.ok || !Array.isArray(data.rows)) return;
+    data.rows.forEach(function(row){
+      const type=Object.keys(PRICING_SERVICE).find(function(k){return PRICING_SERVICE[k]===row.service_slug;});
+      const pkg=String(row.package_slug||'').replace(/^./,function(ch){return ch.toUpperCase();});
+      const price=Number(row.price);
+      if(type && PRICING[type] && ['Basic','Premium','Elite'].indexOf(pkg)>=0 && Number.isFinite(price) && price>=0) PRICING[type][pkg]=price;
+    });
+  }catch(_error){ /* Keep the last-known safe fallback if the catalogue is unavailable. */ }
+}
 
 /* step builders */
 $('#evGrid').innerHTML=EVENTS.map(e=>`<div class="ev" data-ev="${e}">${e}</div>`).join('');
@@ -292,8 +310,10 @@ $('#payBtn').onclick=async(e)=>{
   function reset(){ $('#payBtn').disabled=false; $('#payBtn').innerHTML='Pay <span id="payAmt">'+fmt(amount())+'</span> &amp; Place Order'; }
 };
 
-show();
-gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''});
+loadPricing().finally(function(){
+  show();
+  gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''});
+});
 </script>
 </body>
 </html>

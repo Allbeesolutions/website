@@ -8,12 +8,9 @@
  */
 
 // Configurable pricing structure (must mirror the wizard display).
-const PRICING = {
-  'PDF Invitation':       { Basic: 299,  Premium: 599,  Elite: 999 },
-  'Website Invitation':   { Basic: 999,  Premium: 1999, Elite: 3999 },
-  'Both (PDF + Website)': { Basic: 1299, Premium: 2499, Elite: 4999 },
-};
-const EVENTS = ['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
+const catalog = require('../lib/catalog');
+const PRICING = catalog.invitationPricing;
+const EVENTS = catalog.events;
 
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
