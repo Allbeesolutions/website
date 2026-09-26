@@ -189,11 +189,17 @@ module.exports = async (req, res) => {
   try { results.whatsapp = await sendWhatsApp(enriched); }
   catch (e) { results.whatsapp = { ok: false, error: String(e.message || e) }; }
 
+  if (!results.sheet.ok || !results.sheet.id) {
+    console.error('[lead] capture failed:', results.sheet.error || results.sheet.skipped || 'missing_reference');
+    res.statusCode = 503;
+    return res.end(JSON.stringify({ ok: false, captured: false, error: 'capture_unavailable' }));
+  }
+
   res.statusCode = 200;
   return res.end(JSON.stringify({
     ok: true,
-    captured: Boolean(results.sheet && results.sheet.ok),
-    lead_id: results.sheet && results.sheet.id ? results.sheet.id : null,
+    captured: true,
+    lead_id: results.sheet.id,
     notifications: {
       whatsapp: results.whatsapp && results.whatsapp.ok ? results.whatsapp.via || 'configured' : null,
     },

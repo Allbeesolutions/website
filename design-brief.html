@@ -90,7 +90,7 @@ a{color:inherit}
     go.disabled=true;go.textContent='Submitting…';
     fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
-      .then(function(res){if(res&&res.ok){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
+      .then(function(res){if(res&&res.ok&&res.captured===true&&res.lead_id){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');document.getElementById('ok').querySelector('p').textContent='Brief saved. Reference: '+res.lead_id+'. We will contact you soon.';window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
       .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';});
   });
 })();

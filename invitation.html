@@ -5066,12 +5066,12 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     if (!statusEl) return;
     const phone = String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506';
     const link = document.createElement('a');
-    link.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
+    link.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message.text + '\nReference: ' + message.lead_id);
     link.target = '_blank';
     link.rel = 'noopener';
     link.textContent = 'Continue in WhatsApp';
     statusEl.className = 'form-status success';
-    statusEl.textContent = 'Request received. ';
+    statusEl.textContent = 'Request saved. Reference: ' + message.lead_id + '. ';
     statusEl.appendChild(link);
   }
 
@@ -5082,7 +5082,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
       body: JSON.stringify(leadPayload(form))
     });
     const payload = await response.json().catch(function(){ return {}; });
-    if (!response.ok || !payload.ok) throw new Error(payload.error || 'Unable to save enquiry');
+    if (!response.ok || !payload.ok || payload.captured !== true || !payload.lead_id) throw new Error(payload.error || 'Unable to save enquiry');
     return payload;
   }
 
@@ -5103,8 +5103,8 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
       }
       if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
       if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending securely...'; }
-      submitLead(form, statusEl).then(function(){
-        showWhatsAppFollowUp(form, statusEl, buildWhatsAppLeadMessage(form));
+      submitLead(form, statusEl).then(function(result){
+        showWhatsAppFollowUp(form, statusEl, {text:buildWhatsAppLeadMessage(form),lead_id:result.lead_id});
         trackEvent('form_submit_captured', { form_id: form.id || 'unknown' });
         form.reset();
       }).catch(function(){
@@ -6450,7 +6450,7 @@ function tsHover(id){
       fetch('/api/invitation-enquiry',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
         .then(function(r){ return r.json().catch(function(){ return {ok:r.ok}; }); })
         .then(function(res){
-          if(res && res.ok){ showToast('Thank you! We will contact you soon.'); form.reset(); }
+          if(res && res.ok && res.captured === true && res.lead_id){ showToast('Request saved. Reference: '+res.lead_id+'. We will contact you soon.'); form.reset(); }
           else { showToast('Sorry, something went wrong. Please try again or WhatsApp us.'); }
         })
         .catch(function(){ showToast('Network error. Please try again or WhatsApp us.'); })

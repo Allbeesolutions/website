@@ -287,15 +287,18 @@ $('#payBtn').onclick=async(e)=>{
     const data=await res.json();
     if(!data.ok){ $('#payErr').textContent=data.error==='validation_error'?'Please check your details.':'Something went wrong. Please try again.'; reset(); return; }
     if(!data.configured){
-      /* Razorpay not live yet — capture the order so no customer is lost.
-         Skip creating a new lead when this came from an existing lead (avoid duplicates). */
-      if(!order.lead_id){
-        await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
-            interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
+      /* Save the exact package request. A previous lead does not record this selection. */
+      const captureRes=await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:order.name,mobile:order.mobile,email:order.email,event_type:order.event,event_date:order.event_date,
+          interested_in:[order.type],notes:`ORDER REQUEST · ${order.template_name?order.template_name+' ['+order.template_id+'] · ':''}${order.type} · ${order.pkg} · ${fmt(order.amount)}${order.lead_id?' · Previous lead '+order.lead_id:''}`,source:order.source||'/order',template_id:order.template_id,template_name:order.template_name,demo:order.demo,render_ts:Date.now()-3000})});
+      const capture=await captureRes.json().catch(()=>({}));
+      if(!captureRes.ok || capture.captured!==true || !capture.lead_id){
+        $('#payErr').textContent='We could not save your request. Please try again or contact us on WhatsApp.';
+        reset();
+        return;
       }
-      gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
-      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${order.name}. We saved your request for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">No payment was taken on this screen.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`);
+      gax('order_request_saved',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
+      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${order.name}. We saved your request for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">Reference: ${capture.lead_id}. No payment was taken on this screen.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`);
       return;
     }
     loadRzp(()=>{
