@@ -24,11 +24,46 @@
 var HEADERS = ['Lead ID','Timestamp','Name','Mobile','Email','Event Type','Event Date',
   'Interested In','Notes','Source Page','Visitor IP','Status','Value','CRM Notes','Updated',
   'Template ID','Template Name','Demo'];
+var LEGACY_LEAD_HEADERS = ['Timestamp','Name','Mobile','Email','Event Type',
+  'Event Date','Interested In','Notes','Source Page','Visitor IP'];
+
+// The first production script wrote ten columns without IDs. Copy the entire
+// sheet before adding the ID column; preserve all existing rows in place.
+function migrateLegacyLeads_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName('Leads');
+  if (!sh || sh.getLastRow() === 0) return false;
+  if (sh.getRange(1,1).getValue() === 'Lead ID') return false;
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(25000)) throw new Error('legacy_migration_busy');
+  try {
+    var first = sh.getRange(1,1,1,LEGACY_LEAD_HEADERS.length).getValues()[0];
+    if (first[0] === 'Lead ID') return false;
+    if (!LEGACY_LEAD_HEADERS.every(function(h,i){ return first[i] === h; }))
+      throw new Error('unknown_leads_schema');
+    var backupName = 'Leads backup 2026-09-26';
+    if (ss.getSheetByName(backupName)) throw new Error('legacy_backup_already_exists');
+    sh.copyTo(ss).setName(backupName);
+    var count = sh.getLastRow() - 1;
+    sh.insertColumnBefore(1);
+    if (sh.getMaxColumns() < HEADERS.length)
+      sh.insertColumnsAfter(sh.getMaxColumns(), HEADERS.length - sh.getMaxColumns());
+    if (count > 0) {
+      var ids = [], statuses = [];
+      for (var i=0; i<count; i++) { ids.push(['AB-' + Utilities.formatString('%04d', i+1)]); statuses.push(['New Lead']); }
+      sh.getRange(2,1,count,1).setValues(ids);
+      sh.getRange(2,12,count,1).setValues(statuses);
+    }
+    sh.getRange(1,1,1,HEADERS.length).setValues([HEADERS]);
+    return true;
+  } finally { lock.releaseLock(); }
+}
 
 function sheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName('Leads') || ss.insertSheet('Leads');
   if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); sh.getRange(1,1,1,HEADERS.length).setFontWeight('bold'); }
+  if (sh.getRange(1,1).getValue() !== 'Lead ID') throw new Error('leads_schema_not_migrated');
   return sh;
 }
 function rowsToLeads_(sh) {
@@ -62,6 +97,10 @@ function doPost(e) {
       var leadValidation = validateLeadPayload_(b);
       if (!leadValidation.ok) return _json({ ok:false, error:'validation_error', fields:leadValidation.errors, status:422 });
     }
+
+    // Migrate the original lead-only sheet once, under its own lock, before
+    // taking the normal write lock. Other actions do not touch this sheet.
+    if (action === 'lead' || action === 'list' || action === 'update') migrateLegacyLeads_();
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
     var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate' || action === 'reference_upload');
