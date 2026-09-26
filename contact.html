@@ -1317,8 +1317,9 @@ img,svg,video{max-width:100%;height:auto;display:block}
    CONTACT (FIXED: ci-value, form-title now visible)
 ================================================================= */
 .contact-grid{
-  display:grid; grid-template-columns:1fr 1.3fr; gap:56px;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:56px;
 }
+.contact-grid > *{min-width:0}
 .contact-info-cards{
   display:flex; flex-direction:column; gap:14px;
   margin-top:32px;
@@ -1851,7 +1852,7 @@ footer{
   }
   .tm-grid{grid-template-columns:repeat(3,1fr)}
   .footer-grid{grid-template-columns:1fr 1fr; gap:32px}
-  .contact-grid, .about-grid, .college-grid{grid-template-columns:1fr; gap:48px}
+  .contact-grid, .about-grid, .college-grid{grid-template-columns:minmax(0,1fr); gap:48px}
   .stats-row{grid-template-columns:repeat(2,1fr)}
 }
 
