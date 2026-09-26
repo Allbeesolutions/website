@@ -71,7 +71,7 @@ a{color:inherit}
     go.disabled=true;go.textContent='Submitting…';
     fetch('/api/reviews',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
-      .then(function(res){if(res&&res.ok){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0});}else{err.textContent='Please check your details and try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';}})
+      .then(function(res){if(res&&res.ok&&res.configured===true){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0});}else{err.textContent='Please check your details and try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';}})
       .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';});
   });
 })();
