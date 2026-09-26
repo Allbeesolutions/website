@@ -174,6 +174,7 @@ const PKG_FEATURES={
  Elite:['Signature design','Fastest delivery','Unlimited revisions','Custom domain (website)']
 };
 const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',amount:0,lead_id:'',source:'/order',template_id:'',template_name:'',demo:''};
 /* Prefill from URL (e.g. "Convert Lead to Order" from the CRM, or "Order this design" from a demo) */
@@ -241,12 +242,12 @@ function buildPackages(){
 }
 function buildSummary(sel){
   $(sel).innerHTML=`
-    ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${order.template_name}${order.template_id?` <small style="color:var(--muted)">(${order.template_id})</small>`:''}</span></div>`:''}
+    ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${esc(order.template_name)}${order.template_id?` <small style="color:var(--muted)">(${esc(order.template_id)})</small>`:''}</span></div>`:''}
     <div class="sline"><span class="lbl">Event</span><span>${order.event||'—'}</span></div>
     <div class="sline"><span class="lbl">Invitation</span><span>${order.type.replace(' (PDF + Website)','')||'—'}</span></div>
     <div class="sline"><span class="lbl">Package</span><span>${order.pkg||'—'}</span></div>
-    <div class="sline"><span class="lbl">Name</span><span>${order.name||'—'}</span></div>
-    <div class="sline"><span class="lbl">Mobile</span><span>${order.mobile||'—'}</span></div>
+    <div class="sline"><span class="lbl">Name</span><span>${esc(order.name||'—')}</span></div>
+    <div class="sline"><span class="lbl">Mobile</span><span>${esc(order.mobile||'—')}</span></div>
     <div class="sline"><span class="lbl">Event date</span><span>${order.event_date||'—'}</span></div>
     <div class="sline"><span class="lbl">Total</span><span class="stotal">${fmt(amount())}</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line,#e7e3da);font-size:12.5px;color:#33403d;font-weight:600">
@@ -254,7 +255,7 @@ function buildSummary(sel){
       <span>&#10003; Unlimited Guests</span><span>&#10003; 100% Custom Design</span>
       <span>&#10003; Fast Delivery</span><span>&#10003; Support Available</span>
     </div>
-    <div style="text-align:center;margin-top:14px;font-size:12px;color:#9a6a12;background:linear-gradient(90deg,rgba(220,165,12,.08),rgba(220,165,12,.14),rgba(220,165,12,.08));border:1px solid rgba(220,165,12,.3);border-radius:100px;padding:8px 14px">&#10022; Wedding season — booking fast &middot; we&rsquo;re currently designing 7 invitations</div>`;
+    `;
 }
 function buildPay(){ buildSummary('#paySummary'); $('#payAmt').textContent=fmt(amount()); }
 
@@ -278,7 +279,7 @@ $('#backBtn').onclick=()=>{ if(step>1){step--;show();} };
 /* ---------- payment ---------- */
 function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=cb; s.onerror=()=>{$('#payErr').textContent='Could not load the payment gateway. Please try again.';}; document.head.appendChild(s); }
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
-function successView(orderId, paymentId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Payment submitted</h2><p>Thank you, ${order.name}. Payment for order <strong>${orderId||''}</strong> was submitted. We are verifying it now and will confirm your order on WhatsApp at ${order.mobile}.</p><p class="sub">Keep this reference for support: ${paymentId||orderId||'pending'}</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`); }
+function successView(orderId, paymentId){ gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Payment submitted</h2><p>Thank you, ${esc(order.name)}. Payment for order <strong>${esc(orderId||'')}</strong> was submitted. We are verifying it now and will confirm your order on WhatsApp at ${esc(order.mobile)}.</p><p class="sub">Keep this reference for support: ${esc(paymentId||orderId||'pending')}</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="https://wa.me/918903607506">Ask about your payment</a></div>`); }
 
 $('#payBtn').onclick=async(e)=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';
@@ -298,7 +299,7 @@ $('#payBtn').onclick=async(e)=>{
         return;
       }
       gax('order_request_saved',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false});
-      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${order.name}. We saved your request for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">Reference: ${capture.lead_id}. No payment was taken on this screen.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="/track-order">Track your order</a></div>`);
+      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${esc(order.name)}. We saved your request for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">Reference: ${esc(capture.lead_id)}. No payment was taken on this screen.</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief">Share your event details →</a><a class="btn btn-secondary" href="https://wa.me/918903607506">Contact us about this request</a></div>`);
       return;
     }
     loadRzp(()=>{

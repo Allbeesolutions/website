@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
   const receipt = 'ORD-' + Date.now().toString(36).toUpperCase();
 
   const KEY = process.env.RAZORPAY_KEY_ID, SECRET = process.env.RAZORPAY_KEY_SECRET;
-  if (!KEY || !SECRET) {
+  if (!KEY || !SECRET || !process.env.RAZORPAY_WEBHOOK_SECRET || !process.env.LEAD_APPS_SCRIPT_URL || !process.env.LEAD_SHARED_SECRET) {
     // Not wired yet → tell the client to use the capture fallback.
     res.statusCode = 200;
     return res.end(JSON.stringify({ ok:true, configured:false, payment_state:'pending', order_state:'request_received', amount:amountPaise, receipt }));
