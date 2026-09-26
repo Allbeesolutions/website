@@ -59,6 +59,10 @@ function migrateLegacyLeads_() {
   } finally { lock.releaseLock(); }
 }
 
+// Run once from the Apps Script editor after installing this version. The
+// deployed web app also calls the migration automatically for lead actions.
+function migrateLegacyLeads() { return migrateLegacyLeads_(); }
+
 function sheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName('Leads') || ss.insertSheet('Leads');
