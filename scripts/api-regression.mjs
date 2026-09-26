@@ -33,6 +33,17 @@ assert.equal((await invoke(reviews, 'POST', review, { ok: false }, false)).statu
 assert.equal((await invoke(reviews, 'POST', review, { ok: true, id: 'REV-1' }, false)).payload.configured, true);
 assert.equal((await invoke(reviews, 'POST', { action: 'moderate', id: 'REV-1', moderated: true }, { ok: false })).statusCode, 502);
 assert.equal((await invoke(reviews, 'POST', { ...review, rating: 0 }, { ok: true }, false)).statusCode, 422);
+const track = require('../api/track-order.js');
+async function trackResult(upstream) {
+  global.fetch = async () => ({ok:true,json:async()=>upstream});
+  let statusCode=200,payload;
+  const res={setHeader(){},get statusCode(){return statusCode;},set statusCode(v){statusCode=v;},end(v){payload=JSON.parse(v);}};
+  await track({method:'POST',body:{order_id:'ORD-TEST1234',mobile:'0000000000'},headers:{}},res);
+  return {statusCode,payload};
+}
+assert.equal((await trackResult({ok:true})).payload.error,'not_found');
+assert.equal((await trackResult({ok:true,order:{id:'ORD-OTHER'}})).payload.error,'not_found');
+assert.equal((await trackResult({ok:true,order:{id:'ORD-TEST1234',status:'Delivered'}})).payload.order.status,'Delivered');
 delete process.env.LEAD_APPS_SCRIPT_URL;
 assert.equal((await invoke(reviews, 'POST', review, null, false)).statusCode, 503);
 console.log('API regression: lead, order and review failure paths passed');

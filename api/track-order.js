@@ -28,7 +28,10 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ action: 'order_track', id: order_id, mobile, secret: process.env.LEAD_SHARED_SECRET }),
     });
     const d = await r.json();
-    if (!d || !d.ok) { res.statusCode = 200; return res.end(JSON.stringify({ ok:false, configured:true, error:'not_found' })); }
+    if (!d || d.ok !== true || !d.order || typeof d.order !== 'object' ||
+        String(d.order.id || '').toUpperCase() !== order_id.toUpperCase()) {
+      res.statusCode = 200; return res.end(JSON.stringify({ ok:false, configured:true, error:'not_found' }));
+    }
     res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:true, order: d.order }));
   } catch (e) {
     console.error('[track-order] error:', String(e.message || e));
