@@ -90,8 +90,10 @@ a{color:inherit}
     var box=document.getElementById('uploadBox'),input=document.getElementById('referenceFiles');
     var button=document.getElementById('uploadBtn'),status=document.getElementById('uploadStatus');
     box.classList.add('show');
+    var savedTotal=0,retryFiles=null;
+    input.addEventListener('change',function(){retryFiles=null;});
     button.addEventListener('click',async function(){
-      var files=Array.from(input.files||[]);
+      var files=retryFiles||Array.from(input.files||[]);
       if(!files.length){status.textContent='Choose photos to upload.';return;}
       if(files.length>3 || files.some(function(file){return !['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>1536*1024||!file.size;})){
         status.textContent='Choose up to 3 JPG, PNG or WebP images, 1.5 MB each.';return;
@@ -109,13 +111,15 @@ a{color:inherit}
           var response=await fetch('/api/reference-upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead_id:leadId,upload_token:token,filename:files[i].name,mime:files[i].type,data:data})});
           var result=await response.json();
           if(!response.ok||!result.ok||!result.id)throw new Error(result.error||'upload_failed');
-          saved++;
+          saved++;savedTotal++;
         }catch(e){
-          status.textContent=saved+' photo'+(saved===1?'':'s')+' saved. Photo '+(i+1)+' could not be saved. Send remaining photos on WhatsApp or try again.';
+          retryFiles=files.slice(i);
+          status.textContent=savedTotal+' photo'+(savedTotal===1?'':'s')+' saved. The next photo could not be saved. Retry the remaining '+retryFiles.length+' or send them on WhatsApp.';
           button.disabled=false;return;
         }
       }
-      status.textContent=saved+' photo'+(saved===1?'':'s')+' saved with brief '+leadId+'.';
+      retryFiles=null;
+      status.textContent=savedTotal+' photo'+(savedTotal===1?'':'s')+' saved with brief '+leadId+'.';
       input.value='';button.disabled=true;
     });
   }
