@@ -24,6 +24,7 @@ module.exports=async(req,res)=>{
     if(req.method==='GET'){
       const d=await callScript({action:'order_list'});
       if(!d){res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:false,orders:[]}));}
+      if(d.ok!==true||!Array.isArray(d.orders)){res.statusCode=502;return res.end(JSON.stringify({ok:false,error:'upstream_error'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true,orders:d.orders||[]}));
     }
     if(req.method==='POST'){
@@ -31,6 +32,7 @@ module.exports=async(req,res)=>{
       if(!b||b.action!=='update'||!b.id){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'bad_request'}));}
       const d=await callScript({action:'order_update',id:b.id,patch:b.patch||{}});
       if(!d){res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:false}));}
+      if(d.ok!==true){res.statusCode=502;return res.end(JSON.stringify({ok:false,error:'upstream_error'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true}));
     }
     res.statusCode=405;return res.end(JSON.stringify({ok:false,error:'method_not_allowed'}));

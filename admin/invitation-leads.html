@@ -199,13 +199,13 @@ const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setT
 async function apiGet(){
   const r=await fetch('/api/invitation-leads',{headers:{'x-admin-pass':PASS}});
   if(r.status===401) throw {code:401};
-  if(r.status===503) return {ok:true,configured:false,leads:[]};
-  return r.json();
+  if(r.status===503) throw {code:503};
+  const data=await r.json(); if(!r.ok||data.ok!==true) throw {code:r.status}; return data;
 }
 async function apiUpdate(id,patch){
   if(MODE==='demo'){const l=LEADS.find(x=>x.id===id);Object.assign(l,patch);return {ok:true};}
   const r=await fetch('/api/invitation-leads',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'update',id,patch})});
-  return r.json();
+  const data=await r.json(); if(!r.ok||data.ok!==true||data.configured!==true) throw {code:r.status}; return data;
 }
 
 /* ---------- auth ---------- */
@@ -214,11 +214,11 @@ async function unlock(pass){
   try{
     PASS=pass; const data=await apiGet();
     MODE='live'; LEADS=data.leads||[];
-    $('#conn').className='conn live'; $('#conn').textContent='Live';
-    if(!data.configured){ $('#banner').style.display='block'; $('#banner').innerHTML='CRM connected, but no Google Sheet is wired yet. Set <b>LEAD_APPS_SCRIPT_URL</b> in Vercel to see real leads.'; }
+    $('#conn').className=data.configured?'conn live':'conn demo'; $('#conn').textContent=data.configured?'Live':'Read-only';
+    if(!data.configured){ $('#banner').style.display='block'; $('#banner').textContent='Read-only: the Leads sheet is not connected. Edits cannot be saved.'; }
     sessionStorage.setItem('crm_pass',pass);
     $('#lock').style.display='none'; render();
-  }catch(e){ $('#lockErr').textContent='Incorrect passcode. Try again.'; }
+  }catch(e){ $('#lockErr').textContent=e.code===401?'Incorrect passcode. Try again.':e.code===503?'Admin access is not configured. Use the demo preview.':'Could not load leads. Try again.'; }
 }
 function loadDemo(){
   MODE='demo'; PASS=''; LEADS=JSON.parse(JSON.stringify(DEMO));
