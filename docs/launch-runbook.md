@@ -31,7 +31,7 @@ Everything else is stateless (CDN + serverless), so it can't "go down" with data
 
 ## Production project identity
 
-The GitHub `Allbeesolutions/website` main branch deploys to the AllBee Vercel project whose production URLs have the form `website-…-allbee.vercel.app`; the public domain is `www.allbeesolutions.com`. The checkout's existing `.vercel/project.json` points to `kuddosahib-8503s-projects/allbee-website`, a different project with no environment variables. Do not configure that local link and assume the public site changed. Confirm the team, project ID, production domain, and current deployment before changing settings.
+The GitHub `Allbeesolutions/website` main branch deploys to **`allbee/website`** (project ID `prj_zeYZ88T1S5vChWN9jril2ujJuypv`), whose production URLs have the form `website-…-allbee.vercel.app`; the public domain is `www.allbeesolutions.com`. The checkout's existing `.vercel/project.json` points to `kuddosahib-8503s-projects/allbee-website`, a different project. Always use the `allbee` scope and `website` project for environment changes, then inspect the deployment alias before declaring the public site updated.
 
 The public `/api/health` endpoint reports whether environment variables exist; it does not prove the Apps Script responses, Razorpay capture, webhook delivery or admin writes work. Run the integration checks below before calling the site ready.
 
@@ -54,17 +54,16 @@ After changing any var: **Redeploy** (Vercel → Deployments → Redeploy) so fu
 
 ## 2. Deploy the Apps Script (do this after ANY edit to `docs/lead-apps-script.gs`)
 
-1. Google Sheet → **Extensions → Apps Script** → paste the full contents of `docs/lead-apps-script.gs`.
+1. Open the existing **AllBee Invitations Leads** Sheet → **Extensions → Apps Script**. The original web app was lead-only with a ten-column `Leads` tab. Before updating an older installation, retain its deployment URL and a source backup; the current script copies that tab to `Leads backup 2026-09-26` and migrates existing rows to the eighteen-column schema under a lock. Verify the copied tab and lead IDs before deleting any backup. Paste the full contents of `docs/lead-apps-script.gs` and save.
 2. **Project Settings → Script properties:**
    - `SHARED_SECRET` = (long random string; mirror into Vercel `LEAD_SHARED_SECRET`)
    - `NOTIFY_EMAIL` = the alert inbox
    - `REFERENCE_FOLDER_ID` = private Drive folder ID when enabling brief image uploads
-3. **Deploy → New deployment → Web app** → Execute as **Me**, Who has access **Anyone**.
-4. Copy the **/exec URL** → Vercel `LEAD_APPS_SCRIPT_URL`. Authorize when prompted.
-5. The script auto-creates the `Leads`, `Orders`, and `Reviews` tabs on first use.
+3. For the existing web app, use **Deploy → Manage deployments → Edit → Version: New version → Deploy**. This preserves its `/exec` URL, so Vercel `LEAD_APPS_SCRIPT_URL` stays unchanged. Authorize any new scopes when prompted.
+4. Run `migrateLegacyLeads` once from the editor if the `Leads` tab still has the old header; the deployed script also migrates automatically on the first lead read/write. Verify the `Leads` and backup tabs. The script creates `Orders` and `Reviews` tabs on first use.
+5. Verify public reviews and an authenticated CRM read without publishing lead details. Keep the `SHARED_SECRET` script property synchronized with the sensitive Vercel `LEAD_SHARED_SECRET` for Production and Preview.
 
-> ⚠️ Re-deploying creates a new version; if you keep the **same deployment** and click
-> "Deploy → Manage deployments → edit → Version: New", the URL stays the same (no Vercel change needed).
+The production `ADMIN_PASSCODE` and Apps Script shared secret generated during the September 26 setup are stored in the owner's macOS Keychain as **AllBee website admin passcode** and **AllBee Apps Script shared secret**. Never copy them into the repository or a handoff file. The Apps Script `NOTIFY_EMAIL` property is the actual notification destination; mirror it in the Vercel variable used by `/api/health`.
 
 ---
 
