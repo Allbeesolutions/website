@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>A Royal Decree — Zaid &amp; Halima | AllBee Invitations Demo</title>
 <meta name="description" content="A sample royal-scroll Nikah invitation for Zaid &amp; Halima by AllBee Solutions — an ancient parchment decree that unrolls, with wax seals, a proclamation and a kingdom map.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/royal-scroll">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/royal-scroll">
 <meta property="og:title" content="A Royal Decree — Zaid &amp; Halima | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Pirata+One&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Wedding","name":"Zaid & Halima — Nikah","startDate":"2026-11-21T18:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Qasr Hall","address":"Royal Court Road, Nagore, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/royal-scroll"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--wood:#3a2a17;--wood2:#54402a;--parch:#e9dcbb;--parch2:#ddcda3;--ink:#43301c;--burg:#6e1f2a;--gold:#a9802f;--soft:#7a6648}
@@ -79,6 +78,7 @@ a{color:inherit;text-decoration:none}
 .foot{text-align:center;padding:24px;font-size:.84rem;color:#bda981}.foot a{color:#f0e2bf}
 .rv{opacity:0;transform:translateY(18px);transition:.8s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -124,7 +124,7 @@ a{color:inherit;text-decoration:none}
     <div class="subhead">Reply by Royal Command</div>
     <div class="rsvp">
       <form id="rsvp" novalidate>
-        <input name="name" type="text" placeholder="Your noble name" required>
+        <input name="name" type="text" placeholder="Your noble name" required aria-label="Your noble name">
         <select name="att" aria-label="Your response"><option>I shall attend, by my honour</option><option>I regret I cannot</option></select>
         <button class="btn" type="submit">Pledge Attendance</button>
         <div class="ok" id="ok">Your word is recorded in the royal ledger. (Demo)</div>

@@ -12,6 +12,7 @@
  *  3. Project Settings → Script properties:
  *        SHARED_SECRET = <long random string>   (match Vercel LEAD_SHARED_SECRET)
  *        NOTIFY_EMAIL  = contact@allbeesolutions.com
+ *        REFERENCE_FOLDER_ID = <private Google Drive folder ID for brief photos>
  *  4. Deploy → New deployment → Web app → Execute as: Me · Who has access: Anyone.
  *  5. Copy the Web app URL → Vercel env LEAD_APPS_SCRIPT_URL.  Authorize when prompted.
  *
@@ -47,12 +48,11 @@ function doPost(e) {
     var secret = props.getProperty('SHARED_SECRET');
     var b = JSON.parse(e.postData.contents || '{}');
     var action = b.action;
-    if (!secret) return _json({ ok:false, error:'not_configured' });
-    leadTrace_('doPost received', b, action, secret, 43);
     if (['lead','list','update','order_list','order_track','order_create','order_update','order_mark',
-      'review_public','review_list','review_create','review_moderate'].indexOf(action) === -1) {
+      'review_public','review_list','review_create','review_moderate','reference_upload'].indexOf(action) === -1) {
       return _json({ ok:false, error:'invalid_action', status:400 });
     }
+    if (!secret) return _json({ ok:false, error:'not_configured' });
     if (b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
 
     // Validate before sheet_() can create a header row or the lead branch can
@@ -64,8 +64,10 @@ function doPost(e) {
     }
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
-    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate');
+    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate' || action === 'reference_upload');
     if (isWrite) { lock = LockService.getScriptLock(); if (!lock.tryLock(25000)) return _json({ ok:false, error:'busy_try_again' }); }
+
+    if (action === 'reference_upload') return _json(referenceUpload_(b, props));
 
     // ----- reads (cheap, cacheable, paginated) -----
     if (action === 'list') {
@@ -107,7 +109,6 @@ function doPost(e) {
 
     // append a validated lead (ID is race-safe under the lock)
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
-    leadTrace_('before lead appendRow', b, action, secret, 110);
     sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
       b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
       b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
@@ -123,6 +124,43 @@ function doPost(e) {
   }
 }
 
+/* Brief reference images stay in a private Drive folder. The Vercel endpoint
+   validates the signed order token; this sink verifies the shared secret, paid
+   order status, content and per-order count under the script write lock. */
+var REFERENCE_HEADERS = ['Order ID','Uploaded','File ID','Filename','MIME','Bytes'];
+function referenceUpload_(b, props) {
+  var folderId = props.getProperty('REFERENCE_FOLDER_ID');
+  if (!folderId) return { ok:false, error:'upload_unavailable' };
+  var id = String(b.order_id || '');
+  if (!/^ORD-\d{4,12}$/.test(id)) return { ok:false, error:'invalid_order' };
+  var orders = orderSheet_().getDataRange().getValues();
+  var allowed = ['Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered'];
+  if (!orders.some(function(row, i){ return i > 0 && String(row[0]) === id && allowed.indexOf(String(row[10])) !== -1; })) return { ok:false, error:'invalid_order' };
+  var mime = String(b.mime || '');
+  if (['image/jpeg','image/png','image/webp'].indexOf(mime) === -1) return { ok:false, error:'invalid_image' };
+  var encoded = b.data;
+  if (typeof encoded !== 'string' || encoded.length > 2097152 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) return { ok:false, error:'invalid_image' };
+  var bytes = Utilities.base64Decode(encoded);
+  if (bytes.length < 16 || bytes.length > 1572864) return { ok:false, error:'invalid_image' };
+  var u = function(n){ return bytes[n] & 255; };
+  var valid = mime === 'image/jpeg' ? u(0)===255 && u(1)===216 && u(2)===255 :
+    mime === 'image/png' ? [137,80,78,71,13,10,26,10].every(function(v,i){return u(i)===v;}) :
+    [82,73,70,70].every(function(v,i){return u(i)===v;}) && [87,69,66,80].every(function(v,i){return u(i+8)===v;});
+  if (!valid) return { ok:false, error:'invalid_image' };
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName('References') || ss.insertSheet('References');
+  if (sh.getLastRow() === 0) { sh.appendRow(REFERENCE_HEADERS); sh.getRange(1,1,1,REFERENCE_HEADERS.length).setFontWeight('bold'); }
+  var rows = sh.getDataRange().getValues();
+  if (rows.filter(function(row,i){return i>0 && String(row[0])===id;}).length >= 3) return { ok:false, error:'limit_reached' };
+  var original = String(b.filename || '').replace(/^.*[\\/]/,'').replace(/[^a-zA-Z0-9._ -]/g,'_').replace(/^\.+/,'').slice(0,70) || 'reference';
+  var extension = { 'image/jpeg':'.jpg','image/png':'.png','image/webp':'.webp' }[mime];
+  var name = id + '-' + Utilities.getUuid().slice(0,8) + '-' + original.replace(/\.[^.]*$/,'') + extension;
+  var file = DriveApp.getFolderById(folderId).createFile(Utilities.newBlob(bytes, mime, name));
+  try { sh.appendRow([id, new Date().toISOString(), file.getId(), name, mime, bytes.length]); }
+  catch (err) { file.setTrashed(true); throw err; }
+  return { ok:true, id:file.getId() };
+}
+
 /* ===== Production-hardening helpers (Phase 1) ===== */
 function paginate_(arr, b){ var lim = Number(b && b.limit) || 0; if (!lim) return arr; var off = Number(b && b.offset) || 0; return arr.slice(off, off + lim); }
 function ordersListCached_(){
@@ -133,19 +171,6 @@ function ordersListCached_(){
   return data;
 }
 function bustCache_(key){ try { CacheService.getScriptCache().remove(key); } catch (e) {} }
-function leadTrace_(phase, b, action, secret, callerLine) {
-  var secretValidation = secret ? (b.secret === secret ? 'valid' : 'invalid') : 'not_configured';
-  console.log(JSON.stringify({
-    phase: phase,
-    timestamp: new Date().toISOString(),
-    caller_filename: 'docs/lead-apps-script.gs',
-    caller_line: callerLine,
-    action: action || b.action || 'missing',
-    request_from_vercel: secret ? b.secret === secret : false,
-    shared_secret_validation: secretValidation
-  }));
-}
-
 function isNonBlank_(v) { return typeof v === 'string' && v.trim() !== ''; }
 function validateLeadPayload_(b) {
   var errors = {};
@@ -162,11 +187,9 @@ function safeEmail_(to, subject, html, payload, action){
   if (action === 'lead') {
     var validation = validateLeadPayload_(payload || {});
     if (!validation.ok) {
-      leadTrace_('MailApp skipped invalid lead', payload || {}, action, PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 180);
       return;
     }
   }
-  leadTrace_('before MailApp.sendEmail', payload || {}, action || 'unknown', PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 180);
   try { if (MailApp.getRemainingDailyQuota() > 0) MailApp.sendEmail({ to:to, subject:subject, htmlBody:html }); } catch (e) {}
 }
 
@@ -189,7 +212,6 @@ function orderCreate_(b) {
     for (var k = 1; k < vals.length; k++) { if (String(vals[k][9]) === String(b.payment_id)) { return { ok:true, id:vals[k][0], duplicate:true }; } }
   }
   var id = b.receipt ? String(b.receipt).slice(0,40) : ('ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow()));
-  leadTrace_('before order appendRow', b, 'order_create', PropertiesService.getScriptProperties().getProperty('SHARED_SECRET'), 168);
   sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
     b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
     'Payment Confirmed', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);

@@ -1,0 +1,23 @@
+name: AllBee static audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check HTML, routes, images and API syntax
+        run: |
+          node scripts/audit.mjs
+          node scripts/pricing-check.mjs
+          node scripts/api-regression.mjs
+          node scripts/reference-upload-check.mjs
+          node scripts/reference-sink-check.mjs

@@ -90,7 +90,7 @@ async function sendToSheetAndEmail(lead, requestMeta) {
   if (!res.ok || !result || result.ok !== true) {
     throw new Error('apps-script ' + (result && result.error ? result.error : 'HTTP ' + res.status));
   }
-  return { ok: true };
+  return { ok: true, id: result.id || result.lead_id || null };
 }
 
 async function sendWhatsApp(lead) {
@@ -186,10 +186,23 @@ module.exports = async (req, res) => {
 
   const results = {};
   try { results.sheet = await sendToSheetAndEmail(enriched, requestMeta); }
-  catch (e) { console.error('[lead] persistence failed:', String(e.message || e)); res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'lead_persistence_failed' })); }
+  catch (e) { results.sheet = { ok: false, error: String(e.message || e) }; }
   try { results.whatsapp = await sendWhatsApp(enriched); }
   catch (e) { results.whatsapp = { ok: false, error: String(e.message || e) }; }
-  console.log('[lead] captured', { event_type: enriched.event_type, source: enriched.source, whatsapp: results.whatsapp.ok === true });
+
+  if (!results.sheet.ok || !results.sheet.id) {
+    console.error('[lead] capture failed:', results.sheet.error || results.sheet.skipped || 'missing_reference');
+    res.statusCode = 503;
+    return res.end(JSON.stringify({ ok: false, captured: false, error: 'capture_unavailable' }));
+  }
+
   res.statusCode = 200;
-  return res.end(JSON.stringify({ ok: true }));
+  return res.end(JSON.stringify({
+    ok: true,
+    captured: true,
+    lead_id: results.sheet.id,
+    notifications: {
+      whatsapp: results.whatsapp && results.whatsapp.ok ? results.whatsapp.via || 'configured' : null,
+    },
+  }));
 };

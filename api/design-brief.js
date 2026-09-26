@@ -4,6 +4,7 @@
  * forwarding the brief. The browser never receives the shared secret.
  */
 const { guard, noStore } = require('./_security');
+const { issueToken } = require('../lib/reference-token');
 const clean = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
 const digits = v => clean(v, 30).replace(/\D/g, '').slice(-10);
 
@@ -38,7 +39,8 @@ module.exports = async (req, res) => {
     const result = await saved.json().catch(() => ({}));
     if (!result.ok) throw new Error(result.error || 'order update rejected');
     res.statusCode = 200;
-    return res.end(JSON.stringify({ ok:true, order_id:orderId }));
+    return res.end(JSON.stringify({ ok:true, order_id:orderId,
+      ...(process.env.REFERENCE_UPLOAD_ENABLED === 'true' ? { upload_token:issueToken(orderId, secret) } : {}) }));
   } catch (e) {
     console.error('[design-brief]', String(e.message || e));
     res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'brief_save_failed' }));

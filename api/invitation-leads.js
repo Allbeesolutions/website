@@ -54,6 +54,7 @@ module.exports = async (req, res) => {
     if (req.method === 'GET') {
       const data = await callScript({ action: 'list' });
       if (!data) { res.statusCode = 200; return res.end(JSON.stringify({ ok: true, configured: false, leads: [] })); }
+      if (data.ok !== true || !Array.isArray(data.leads)) { res.statusCode = 502; return res.end(JSON.stringify({ ok: false, error: 'upstream_error' })); }
       res.statusCode = 200;
       return res.end(JSON.stringify({ ok: true, configured: true, leads: data.leads || [] }));
     }
@@ -66,6 +67,7 @@ module.exports = async (req, res) => {
       }
       const data = await callScript({ action: 'update', id: body.id, patch: body.patch || {} });
       if (!data) { res.statusCode = 200; return res.end(JSON.stringify({ ok: true, configured: false })); }
+      if (data.ok !== true) { res.statusCode = 502; return res.end(JSON.stringify({ ok: false, error: 'upstream_error' })); }
       res.statusCode = 200;
       return res.end(JSON.stringify({ ok: true, configured: true, lead: data.lead || null }));
     }

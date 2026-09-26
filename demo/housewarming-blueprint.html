@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Sharma Residence — Open House | AllBee Invitations Demo</title>
 <meta name="description" content="A sample architectural-blueprint digital housewarming invitation by AllBee Solutions — technical-drawing aesthetic with floor plan, title block and move-in countdown.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/housewarming-blueprint">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/housewarming-blueprint">
 <meta property="og:title" content="The Sharma Residence — Open House | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"The Sharma Residence — Housewarming","startDate":"2026-08-30T11:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"The Sharma Residence","address":"Plot 24, Lake View Layout, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/housewarming-blueprint"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--blue:#0a2440;--blue2:#0d2b4e;--cyan:#7fd4ff;--ink:#dce9f5;--soft:#7e9bb8;--line:rgba(127,212,255,.35)}
@@ -81,6 +80,7 @@ section,header,.ribbon{position:relative;z-index:2}
 .foot{text-align:center;padding:24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--soft);text-transform:uppercase}.foot a{color:var(--cyan)}
 .rv{opacity:0;transform:translateY(18px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="grid-bg"></div>
@@ -122,9 +122,9 @@ section,header,.ribbon{position:relative;z-index:2}
 
 <section class="rsvp"><div class="sectit rv">Confirm attendance</div><h2 class="rv" style="font-weight:300;font-size:clamp(1.4rem,5vw,2rem);margin-bottom:4px">Add yourself to the <b style="font-weight:600">guest log</b></h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>Will attend the open house</option><option>Unable to attend</option></select>
-    <input name="g" type="number" min="1" value="2" placeholder="Party size">
+    <input name="g" type="number" min="1" value="2" placeholder="Party size" aria-label="Party size">
     <button class="btn" type="submit">Log RSVP</button>
     <div class="ok" id="ok">// Logged. We'll keep a plate warm. (Demo)</div>
   </form>

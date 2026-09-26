@@ -693,7 +693,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
           <span>Since 2025</span>
         </div>
       </div>
-      <p class="footer-tagline">IT Training Institute &amp; Digital Marketing Agency in Nagore, Tamil Nadu. Empowering students and businesses since 2025.</p>
+      <p class="footer-tagline">Based in Nagore, Tamil Nadu. Explore our courses, business websites, marketing services and digital invitations.</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a>
         <a href="https://www.youtube.com/@allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on YouTube"><svg aria-hidden="true"><use href="#i-youtube"/></svg></a>
@@ -802,7 +802,7 @@ var PF_PROJECTS = [
     client: 'HajiHaz',
     industry: 'Artificial Intelligence',
     featured: true,
-    img: '/assets/images/inline/hajihaz-ai-preview.png',
+    img: '/assets/images/inline/hajihaz-ai-preview.webp',
     summary: 'Personal AI assistant with admin-managed knowledge retrieval, business assistance, research support, and custom knowledge-base capabilities.',
     challenge: 'Generic AI chat tools can\'t answer from private, curated knowledge or reflect a person\'s own working context.',
     solution: 'Built a personal AI assistant platform with an admin-managed knowledge base, retrieval-augmented answers, and support for business, research and everyday productivity workflows.',
@@ -856,7 +856,7 @@ var PF_PROJECTS = [
     client: 'Mohamed Backer Alim Sahib',
     industry: 'Personal Branding',
     featured: false,
-    img: '/assets/images/inline/alim-sahib-z-preview.png',
+    img: '/assets/images/inline/alim-sahib-z-preview.webp',
     summary: 'Professional personal portfolio website built for Mohamed Backer Alim Sahib, showcasing profile, projects, experience, achievements, and personal branding.',
     challenge: 'A strong personal brand needed one polished place to present profile, work, experience and achievements to opportunities and collaborators.',
     solution: 'Designed and built a responsive personal portfolio website presenting profile, projects, experience and achievements with clean personal branding.',
@@ -1049,15 +1049,17 @@ function initFilters(){
 }
 
 /* ---- Modal ---- */
-function openModal(id){
+var modalReturnFocus = null;
+function openModal(id, trigger){
   var p = PF_PROJECTS.find(function(x){ return x.id === id; });
   if(!p) return;
   var overlay = document.getElementById('pfModal');
+  modalReturnFocus = trigger || document.activeElement;
 
   // Image
   var imgEl = document.getElementById('pfModalImg');
   imgEl.innerHTML = p.img
-    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy">'
+    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy" width="800" height="450">'
     : placeholderThumb(ICONS[p.categoryKey] || 'i-briefcase');
 
   // Cat + title
@@ -1095,6 +1097,8 @@ function openModal(id){
 function closeModal(){
   document.getElementById('pfModal').classList.remove('open');
   document.body.style.overflow = '';
+  if(modalReturnFocus && typeof modalReturnFocus.focus === 'function') modalReturnFocus.focus();
+  modalReturnFocus = null;
 }
 
 function initModal(){
@@ -1103,7 +1107,16 @@ function initModal(){
     if(e.target === this) closeModal();
   });
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closeModal();
+    if(!document.getElementById('pfModal').classList.contains('open')) return;
+    if(e.key === 'Escape'){ closeModal(); return; }
+    if(e.key === 'Tab'){
+      var focusables = Array.from(document.querySelectorAll('#pfModal button, #pfModal a[href], #pfModal [tabindex]:not([tabindex="-1"])')).filter(function(el){ return el.getClientRects().length; });
+      if(!focusables.length){ e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      else if(!document.getElementById('pfModal').contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    }
   });
   // Card click delegation — featured + grid
   ['pf-featured-grid','pf-grid'].forEach(function(containerId){
@@ -1111,12 +1124,12 @@ function initModal(){
     if(!el) return;
     el.addEventListener('click', function(e){
       var card = e.target.closest('.pf-card');
-      if(card) openModal(card.getAttribute('data-id'));
+      if(card) openModal(card.getAttribute('data-id'), card);
     });
     el.addEventListener('keydown', function(e){
       if(e.key === 'Enter' || e.key === ' '){
         var card = e.target.closest('.pf-card');
-        if(card){ e.preventDefault(); openModal(card.getAttribute('data-id')); }
+        if(card){ e.preventDefault(); openModal(card.getAttribute('data-id'), card); }
       }
     });
   });

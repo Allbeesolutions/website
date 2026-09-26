@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Yusuf &amp; Mariam — An Imperial Nikah | AllBee Invitations Demo</title>
 <meta name="description" content="A sample Ottoman-empire Nikah invitation for Yusuf &amp; Mariam by AllBee Solutions — imperial palace storytelling, Iznik tilework and a royal procession.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/nikah-ottoman">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/nikah-ottoman">
 <meta property="og:title" content="Yusuf &amp; Mariam — An Imperial Nikah | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital@0;1&family=Amiri:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Wedding","name":"Yusuf & Mariam — Nikah","startDate":"2026-11-14T18:30:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Imperial Mahal","address":"Palace Road, Nagore, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/nikah-ottoman"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--green:#0b352a;--green2:#114436;--crimson:#7a1228;--gold:#c9a227;--gold-l:#ecd79a;--ivory:#f4ecd6;--ink:#ece6d4}
@@ -79,6 +78,7 @@ section,header,.ribbon{position:relative;z-index:2}
 .foot{text-align:center;padding:30px 24px;font-size:.84rem;color:var(--gold-l)}.foot a{color:#fff}
 .rv{opacity:0;transform:translateY(20px);transition:.9s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="tiles"></div>
@@ -115,7 +115,7 @@ section,header,.ribbon{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kicker rv">Honour the court</div><h2 class="h2 rv">Confirm Your Attendance</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>It is my honour to attend</option><option>I regret I cannot attend</option></select>
     <button class="btn btn-g" type="submit">Send Reply</button>
     <div class="ok" id="ok">Received with gratitude. (Demo)</div>

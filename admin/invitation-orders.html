@@ -22,6 +22,7 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
 .brand{font-weight:800}.brand b{font-family:var(--font-display)}.brand span{font-size:11px;opacity:.8;margin-left:6px}
 .tb-actions{display:flex;align-items:center;gap:8px}
+@media(max-width:560px){.topbar .wrap{height:auto;padding:10px 14px;align-items:flex-start;flex-direction:column;gap:8px}.tb-actions{width:100%;flex-wrap:wrap;justify-content:flex-start}.tb-actions .tablink{padding-left:0}.tb-actions .conn{margin-left:auto}.tb-btn{padding:7px 10px;font-size:.76rem}}
 .conn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.15)}
 .conn.live{background:#16A34A}.conn.demo{background:var(--gold);color:#3a2c06}
 .tb-btn{background:rgba(255,255,255,.14);border:none;color:#fff;font-weight:700;font-size:.82rem;padding:7px 14px;border-radius:9px;cursor:pointer}
@@ -90,12 +91,16 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
 .rep-bar{height:9px;border-radius:100px;background:var(--s-3);overflow:hidden}
 .rep-bar span{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-l))}
 .rep-row small{color:var(--muted);font-size:.76rem}
+.admin-nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;background:#073f3a;color:#fff;padding:9px max(16px,calc((100vw - 1240px)/2));font:700 13px Lato,system-ui,sans-serif}
+.admin-nav span{margin-right:12px;color:#f0d47d}.admin-nav a{color:#fff;text-decoration:none;border-radius:7px;padding:6px 10px}.admin-nav a:hover,.admin-nav a[aria-current="page"]{background:#0f7b6e}
+.admin-nav a:focus-visible{outline:2px solid #f0d47d;outline-offset:2px}
 </style>
 </head>
 <body>
+<nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo">Overview</a><a href="/admin/invitation-leads">Leads</a><a href="/admin/invitation-orders" aria-current="page">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch">Launch</a></nav>
 <div class="lock" id="lock"><div class="lock-card"><h1>📦 Order Management</h1><p>AllBee Invitations — team access</p>
   <div class="lock-err" id="lockErr"></div>
-  <input id="passInput" type="password" placeholder="Admin passcode" autocomplete="off">
+  <input id="passInput" aria-label="Admin passcode" type="password" placeholder="Admin passcode" autocomplete="off">
   <button class="btn-go" id="passGo">Open Orders</button>
   <span class="demo-link" id="demoLink">Preview with demo data →</span></div></div>
 
@@ -112,9 +117,9 @@ a{color:inherit}button,select,input,textarea{font-family:inherit}
   <div class="stats" id="stats"></div>
   <div class="pipe" id="pipe"></div>
   <div class="toolbar">
-    <input type="search" id="search" placeholder="Search order, name or mobile…">
-    <select id="fStatus"><option value="">All statuses</option></select>
-    <span style="font-size:.82rem;color:var(--muted)">From <input type="date" id="fFrom"> to <input type="date" id="fTo"></span>
+    <input type="search" id="search" aria-label="Search orders" placeholder="Search order, name or mobile…">
+    <select id="fStatus" aria-label="Status"><option value="">All statuses</option></select>
+    <span style="font-size:.82rem;color:var(--muted)">From <input type="date" id="fFrom" aria-label="Start date"> to <input type="date" id="fTo" aria-label="End date"></span>
     <button class="clear" id="clearBtn">Clear</button>
   </div>
   <div class="lhead"><div>Order ID</div><div>Customer</div><div>Package</div><div>Amount</div><div>Status</div><div></div></div>
@@ -148,10 +153,10 @@ const fmt=n=>'₹'+(Number(n)||0).toLocaleString('en-IN');
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-async function apiGet(){const r=await fetch('/api/invitation-orders',{headers:{'x-admin-pass':PASS}});if(r.status===401)throw{code:401};if(r.status===503)return{ok:true,configured:false,orders:[]};return r.json();}
-async function apiUpdate(id,patch){if(MODE==='demo'){const o=ORDERS.find(x=>x.id===id);Object.assign(o,patch);return{ok:true};}const r=await fetch('/api/invitation-orders',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'update',id,patch})});return r.json();}
+async function apiGet(){const r=await fetch('/api/invitation-orders',{headers:{'x-admin-pass':PASS}});if(r.status===401)throw{code:401};if(r.status===503)throw{code:503};const d=await r.json();if(!r.ok||d.ok!==true)throw{code:r.status};return d;}
+async function apiUpdate(id,patch){if(MODE==='demo'){const o=ORDERS.find(x=>x.id===id);Object.assign(o,patch);return{ok:true};}const r=await fetch('/api/invitation-orders',{method:'POST',headers:{'x-admin-pass':PASS,'Content-Type':'application/json'},body:JSON.stringify({action:'update',id,patch})});const d=await r.json();if(!r.ok||d.ok!==true||d.configured!==true)throw{code:r.status};return d;}
 
-async function unlock(pass){$('#lockErr').textContent='';try{PASS=pass;const d=await apiGet();MODE='live';ORDERS=d.orders||[];$('#conn').className='conn live';$('#conn').textContent='Live';if(!d.configured){$('#banner').style.display='block';$('#banner').innerHTML='Connected, but no Orders sheet yet. Set <b>LEAD_APPS_SCRIPT_URL</b> + Razorpay env to receive real orders.';}sessionStorage.setItem('crm_pass',pass);$('#lock').style.display='none';render();}catch(e){$('#lockErr').textContent='Incorrect passcode.';}}
+async function unlock(pass){$('#lockErr').textContent='';try{PASS=pass;const d=await apiGet();MODE='live';ORDERS=d.orders||[];$('#conn').className=d.configured?'conn live':'conn demo';$('#conn').textContent=d.configured?'Live':'Read-only';if(!d.configured){$('#banner').style.display='block';$('#banner').textContent='Read-only: the Orders sheet is not connected. Edits cannot be saved.';}sessionStorage.setItem('crm_pass',pass);$('#lock').style.display='none';render();}catch(e){$('#lockErr').textContent=e.code===401?'Incorrect passcode.':e.code===503?'Admin access is not configured. Use the demo preview.':'Could not load orders. Try again.';}}
 function loadDemo(){MODE='demo';PASS='';ORDERS=JSON.parse(JSON.stringify(DEMO));$('#conn').className='conn demo';$('#conn').textContent='Demo';$('#banner').style.display='block';$('#banner').innerHTML='Showing <b>demo data</b> — fictional orders for preview.';$('#lock').style.display='none';render();}
 
 function filtered(){const q=$('#search').value.trim().toLowerCase(),s=$('#fStatus').value||activeStage,from=$('#fFrom').value,to=$('#fTo').value;
@@ -204,12 +209,12 @@ function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id
     <div class="field"><label>Amount</label><strong>${fmt(o.amount)}</strong></div>
     <div class="field"><label>Payment ID</label><small>${esc(o.payment_id||'—')}</small></div>
     <div class="field"><label>Lead Source</label>${esc(o.source||'—')}${o.lead_id?` · <a href="/admin/invitation-leads" target="_blank">${esc(o.lead_id)}</a>`:''}</div>
-    <div class="field"><label>Status</label><select id="eStatus">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
-    <div class="field"><label>Assigned To</label><select id="eAssignee">${ASSIGNEES.map(a=>`<option ${a===(o.assignee||'Unassigned')?'selected':''}>${a}</option>`).join('')}</select></div>
+    <div class="field"><label>Status</label><select id="eStatus" aria-label="Order status">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="field"><label>Assigned To</label><select id="eAssignee" aria-label="Assigned to">${ASSIGNEES.map(a=>`<option ${a===(o.assignee||'Unassigned')?'selected':''}>${a}</option>`).join('')}</select></div>
     <div class="field"><label>SLA</label>${slaOverdue(o)?`<span style="color:#b5302a;font-weight:700">⏱ Overdue — ${esc(o.status)} for ${Math.floor(ageDays(o))}d</span>`:'<span style="color:#16A34A;font-weight:700">✓ On track</span>'}</div>
     <div class="field"><label>Order Date</label>${esc(o.date||'—')}</div></div>
     <div class="field"><label>Tasks</label><div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:4px">${tasksFor(o).map(([t,d])=>`<span style="font-weight:700;color:${d?'#16A34A':'var(--muted)'}">${d?'✓':'○'} ${t}</span>`).join('')}</div></div>
-    <div class="field"><label>Delivery links (PDF / Website / ZIP URLs — space or comma separated)</label><textarea id="eDelivery" rows="2" placeholder="https://… (shown to the customer on /track-order once status is Delivered)">${esc(o.delivery||'')}</textarea></div>
+    <div class="field"><label>Delivery links (PDF / Website / ZIP URLs — space or comma separated)</label><textarea id="eDelivery" aria-label="Delivery links" rows="2" placeholder="https://… (shown to the customer on /track-order once status is Delivered)">${esc(o.delivery||'')}</textarea></div>
     <div class="field"><label>Notify customer on WhatsApp</label><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
       <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'received')}">Order received</a>
       <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'brief')}">Brief request</a>
@@ -218,7 +223,7 @@ function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id
       <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'delivered')}">Delivered</a>
       <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'followup')}">Follow-up</a></div></div>
     <div class="field"><label>Activity Log</label><div class="notelog">${esc(o.notes||'No notes yet.')}</div></div>
-    <div class="field"><label>Add Note</label><textarea id="eNote" rows="2" placeholder="Log an update…"></textarea></div>`;
+    <div class="field"><label>Add Note</label><textarea id="eNote" aria-label="Add note" rows="2" placeholder="Log an update…"></textarea></div>`;
   $('#modal').classList.add('open');}
 function closeModal(){$('#modal').classList.remove('open');editing=null;}
 async function save(){const o=ORDERS.find(x=>x.id===editing);if(!o)return;const status=$('#eStatus').value,note=$('#eNote').value.trim();let notes=o.notes||'';if(note){notes=(notes?notes+'\n':'')+`[${new Date().toISOString().slice(0,10)}] ${note}`;}const patch={status,notes};const asg=$('#eAssignee');if(asg)patch.assignee=asg.value;const dlv=$('#eDelivery');if(dlv)patch.delivery=dlv.value.trim();try{await apiUpdate(o.id,patch);Object.assign(o,patch);toast('Order updated');closeModal();render();}catch(e){toast('Save failed');}}

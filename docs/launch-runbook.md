@@ -40,6 +40,7 @@ Everything else is stateless (CDN + serverless), so it can't "go down" with data
 | `LEAD_SHARED_SECRET` | data auth | must match `SHARED_SECRET` in Apps Script Script Properties |
 | `ADMIN_PASSCODE` | admin dashboards | the team passcode |
 | `NOTIFY_EMAIL` | email alerts | put on **Google Workspace** before volume (Gmail = 100/day) |
+| `REFERENCE_UPLOAD_ENABLED` | optional paid-brief image upload | set to `true` only after the private Drive folder and new Apps Script version are ready; see `reference-upload-setup.md` |
 
 After changing any var: **Redeploy** (Vercel → Deployments → Redeploy) so functions pick it up.
 
@@ -51,6 +52,7 @@ After changing any var: **Redeploy** (Vercel → Deployments → Redeploy) so fu
 2. **Project Settings → Script properties:**
    - `SHARED_SECRET` = (long random string; mirror into Vercel `LEAD_SHARED_SECRET`)
    - `NOTIFY_EMAIL` = the alert inbox
+   - `REFERENCE_FOLDER_ID` = private Drive folder ID when enabling brief image uploads
 3. **Deploy → New deployment → Web app** → Execute as **Me**, Who has access **Anyone**.
 4. Copy the **/exec URL** → Vercel `LEAD_APPS_SCRIPT_URL`. Authorize when prompted.
 5. The script auto-creates the `Leads`, `Orders`, and `Reviews` tabs on first use.

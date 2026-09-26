@@ -54,6 +54,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap"></noscript>
 
 <style>
+.services-heading-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;align-items:end;margin-bottom:48px}
 /* =====================================================================
    AllBee Solutions — Shared Stylesheet
    Production v2.0 — light theme, accessibility-corrected
@@ -2051,6 +2052,7 @@ footer{
   color: #E8B527;
 }
 
+.hero-sf .sf-stats-note{font-size:11px;color:rgba(224,245,241,0.65);margin:12px 0 0;text-align:center}
 .hero-sf .sf-stats {
   display: inline-flex; align-items: center;
   gap: 32px;
@@ -4073,6 +4075,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 }
 @media (min-width:769px){ #navbar .hamburger{display:none} }
 /*nav-dd-end*/
+.path-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}.path-card{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.72);color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}.path-card:hover,.path-card:focus-visible{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 16px 34px rgba(15,123,110,.12)}.path-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--teal);color:#fff}.path-card:nth-child(2) .path-icon{background:#DCA50C;color:#1f2b25}.path-card:nth-child(3) .path-icon{background:#085A52}.path-card:nth-child(4) .path-icon{background:#7d5a9e}.path-title{font:700 1.08rem 'Lato',sans-serif}.path-desc{font-size:.9rem;line-height:1.55;color:var(--muted)}.path-link{margin-top:auto;color:var(--teal-d);font-weight:700;font-size:.88rem}@media(max-width:900px){.path-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.path-grid{grid-template-columns:1fr;gap:12px}.path-card{padding:18px}}
+@media(max-width:650px){.services-heading-row{grid-template-columns:minmax(0,1fr);gap:18px}}
 </style>
 
 <script type="application/ld+json">
@@ -4264,6 +4268,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js" defer></script>
   <link rel="stylesheet" href="/assets/trust.css">
+<script src="/assets/lead-form.js"></script>
 </head>
 <body data-hero="starfall">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -4416,7 +4421,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
   <div class="sf-content">
     <div class="sf-eyebrow">
       <span class="sf-eyebrow-dot" aria-hidden="true"></span>
-      Training · Business Growth · Entrepreneurship
+      Training · Business Services · Invitations · Software
     </div>
 
     <h1 id="hero-title" class="sf-title">
@@ -4424,7 +4429,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       <span class="sf-title-grad">Succeed.</span>
     </h1>
 
-    <p class="sf-sub">Build job-ready skills, take your business online, and turn ideas into income &mdash; IT training, web development and digital marketing, all under one roof in Nagore.</p>
+    <p class="sf-sub">Choose a practical course, build your business website or software, or create a digital invitation. Explore AllBee’s work and tell us what you need.</p>
 
     <div class="sf-cta-wrap">
       <a href="/contact" class="sf-btn sf-btn-primary">
@@ -4436,118 +4441,50 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
       </a>
     </div>
 
-    <div class="sf-stats">
-      <div class="sf-stat">
-        <div class="sf-stat-num" data-count="500">500+</div>
-        <div class="sf-stat-lbl">Students Trained</div>
-      </div>
-      <span class="sf-stat-sep" aria-hidden="true"></span>
-      <div class="sf-stat">
-        <div class="sf-stat-num" data-count="50">50+</div>
-        <div class="sf-stat-lbl">Businesses Served</div>
-      </div>
-      <span class="sf-stat-sep" aria-hidden="true"></span>
-      <div class="sf-stat">
-        <div class="sf-stat-num" data-count="98">98%</div>
-        <div class="sf-stat-lbl">Satisfaction Rate</div>
-      </div>
-    </div>
   </div>
-
-  <div class="sf-fade-to-page" aria-hidden="true"></div>
 </section>
 
-<div class="marquee-strip" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-code"/></svg>Python</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-monitor"/></svg>Web Dev</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-palette"/></svg>Photoshop</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-chart"/></svg>MS-Office</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-wrench"/></svg>Hardware</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-message"/></svg>Spoken English</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-phone-mobile"/></svg>Digital Marketing</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-search"/></svg>SEO</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-palette"/></svg>Branding</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-code"/></svg>Python</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-monitor"/></svg>Web Dev</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-palette"/></svg>Photoshop</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-chart"/></svg>MS-Office</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-wrench"/></svg>Hardware</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-message"/></svg>Spoken English</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-phone-mobile"/></svg>Digital Marketing</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-search"/></svg>SEO</span><span class="marquee-sep"></span>
-    <span class="marquee-item"><svg aria-hidden="true"><use href="#i-palette"/></svg>Branding</span><span class="marquee-sep"></span>
-  </div>
-</div>
 
-<section class="section section-alt" aria-labelledby="why-title">
+
+<section class="section section-alt" aria-labelledby="paths-h">
   <div class="section-container">
     <div class="text-center" data-aos>
-      <div class="section-eyebrow">Why Businesses Choose Us</div>
-      <h2 id="why-title" class="section-title">Why Businesses Choose <em>AllBee Solutions</em></h2>
-      <p class="section-sub">A dependable partner for getting your business online and growing it — clear work, fair pricing, and real support.</p>
+      <div class="section-eyebrow">Choose Your Path</div>
+      <h2 id="paths-h" class="section-title">One Team. <em>Four Ways</em> to Move Forward.</h2>
+      <p class="section-sub">Start with the AllBee service that matches your goal. You can move between paths whenever you need us.</p>
     </div>
-    <div class="why-grid">
-      <div class="why-card" data-aos data-aos-delay="0.05">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-palette"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Custom Solutions</h3>
-          <p class="why-desc">Built around your goals — never a generic template.</p>
-        </div>
-      </div>
-      <div class="why-card" data-aos data-aos-delay="0.1">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-rocket"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Fast Delivery</h3>
-          <p class="why-desc">Clear timelines and quick turnarounds — online without long waits.</p>
-        </div>
-      </div>
-      <div class="why-card" data-aos data-aos-delay="0.15">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-target"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Business-Focused</h3>
-          <p class="why-desc">We build toward outcomes — leads, sales, reach — not just files.</p>
-        </div>
-      </div>
-      <div class="why-card" data-aos data-aos-delay="0.2">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-message"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Ongoing Support</h3>
-          <p class="why-desc">Reliable help after launch over WhatsApp and call.</p>
-        </div>
-      </div>
-      <div class="why-card" data-aos data-aos-delay="0.25">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-code"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Modern Technologies</h3>
-          <p class="why-desc">Fast, secure, mobile-first builds with current best practices.</p>
-        </div>
-      </div>
-      <div class="why-card" data-aos data-aos-delay="0.3">
-        <div class="why-icon"><svg aria-hidden="true"><use href="#i-award"/></svg></div>
-        <div class="why-body">
-          <h3 class="why-title">Affordable Pricing</h3>
-          <p class="why-desc">Transparent, fair pricing for growing Tamil Nadu businesses.</p>
-        </div>
-      </div>
+    <div class="path-grid">
+      <a class="path-card" href="/courses">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-teacher"/></svg></span>
+        <span class="path-title">Learn with AllBee</span>
+        <span class="path-desc">Practical IT courses for students, job seekers and career switchers.</span>
+        <span class="path-link">Explore courses →</span>
+      </a>
+      <a class="path-card" href="/services">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-rocket"/></svg></span>
+        <span class="path-title">Grow your business</span>
+        <span class="path-desc">Websites, marketing, branding and support for growing businesses.</span>
+        <span class="path-link">View business services →</span>
+      </a>
+      <a class="path-card" href="/invitation">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-spark"/></svg></span>
+        <span class="path-title">Create an invitation</span>
+        <span class="path-desc">Browse premium digital invitations for weddings, birthdays and events.</span>
+        <span class="path-link">Browse invitations →</span>
+      </a>
+      <a class="path-card" href="/portfolio">
+        <span class="path-icon" aria-hidden="true"><svg width="19" height="19"><use href="#i-code"/></svg></span>
+        <span class="path-title">Build software</span>
+        <span class="path-desc">Discuss a custom website, platform, dashboard or internal system.</span>
+        <span class="path-link">See our work →</span>
+      </a>
     </div>
   </div>
 </section>
-
-<div class="stats-band" aria-label="Our impact in numbers">
-  <div class="section-container">
-    <div class="stats-row">
-      <div class="stat-item" data-aos><span class="stat-num" data-count="500">500+</span><div class="stat-lbl">Students Trained</div></div>
-      <div class="stat-item" data-aos><span class="stat-num" data-count="50">50+</span><div class="stat-lbl">Businesses Served</div></div>
-      <div class="stat-item" data-aos><span class="stat-num" data-count="98">98%</span><div class="stat-lbl">Satisfaction Rate</div></div>
-      <div class="stat-item" data-aos><span class="stat-num" data-count="10">10+</span><div class="stat-lbl">Colleges Reached</div></div>
-    </div>
-  </div>
-</div>
 
 <section class="section" aria-labelledby="services-h">
   <div class="section-container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:48px;" data-aos>
+    <div class="services-heading-row" data-aos>
       <div>
         <div class="section-eyebrow">Our Services</div>
         <h2 id="services-h" class="section-title">Digital Growth<br><em>Starts Here</em></h2>
@@ -4563,7 +4500,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
         <h3 class="srv-title">Website Development</h3>
         <div class="srv-who">For businesses that need leads</div>
         <p class="srv-desc">Fast, mobile-first websites that turn visitors into enquiries.</p>
-        <div class="srv-price"><small>Starting from</small>₹9,999</div>
+        <div class="srv-price"><small>Starting from</small><span data-price-key="website:basic">₹9,999</span></div>
         <a href="/webdevelopment" class="srv-cta">Get Website Quote <svg aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       </article>
       <article class="srv-card" data-aos data-aos-delay="0.1">
@@ -4612,8 +4549,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
         <a href="/invitation" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px">Explore Invitations <svg width="14" height="14" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       </div>
       <div data-aos data-aos-delay="0.15" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <img src="/demo-shots/AB-WED-001.jpg" alt="AllBee Invitations — royal wedding design" loading="lazy" style="width:100%;border-radius:14px;box-shadow:0 18px 40px rgba(15,31,31,.14)">
-        <img src="/demo-shots/AB-NIK-006.jpg" alt="AllBee Invitations — Makkah Night Nikah design" loading="lazy" style="width:100%;border-radius:14px;box-shadow:0 18px 40px rgba(15,31,31,.14);margin-top:24px">
+        <img src="/demo-shots/AB-WED-001.jpg" alt="AllBee Invitations — royal wedding design" loading="lazy" width="680" height="510" style="width:100%;border-radius:14px;box-shadow:0 18px 40px rgba(15,31,31,.14)">
+        <img src="/demo-shots/AB-NIK-006.jpg" alt="AllBee Invitations — Makkah Night Nikah design" loading="lazy" width="680" height="510" style="width:100%;border-radius:14px;box-shadow:0 18px 40px rgba(15,31,31,.14);margin-top:24px">
       </div>
     </div>
   </div>
@@ -4642,72 +4579,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 
 <div class="sc-goldwrap">
 <canvas id="ctaGold" aria-hidden="true"></canvas>
-<section class="testi-marq" aria-labelledby="testi-h">
-  <!-- SVG turbulence filter for liquid-glass effect -->
-  <svg class="tm-glass-defs" aria-hidden="true">
-    <defs>
-      <filter id="tm-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.02" numOctaves="1" seed="1" result="turb"/>
-        <feGaussianBlur in="turb" stdDeviation="2" result="blurredNoise"/>
-        <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="60" xChannelSelector="R" yChannelSelector="B" result="displaced"/>
-        <feGaussianBlur in="displaced" stdDeviation="2"/>
-      </filter>
-    </defs>
-  </svg>
 
-  <div class="section-container">
-    <div class="text-center" data-aos>
-      <div class="section-eyebrow tm-eyebrow">Client &amp; Student Stories</div>
-      <h2 id="testi-h" class="section-title tm-title">What People <em>Say</em></h2>
-      <p class="section-sub tm-sub">Real outcomes from the businesses and learners who trusted AllBee.</p>
-    </div>
-  </div>
-
-  <div class="tm-track-wrap" aria-label="Testimonials marquee">
-    <div class="tm-track" id="tmTrack">
-      <article class="tm-card">
-        <div class="tm-head">
-          <div class="tm-avatar" style="background:linear-gradient(135deg,#0F7B6E,#149987)">A</div>
-          <div><div class="tm-name">Arjun M.</div><div class="tm-role">Python Programming</div></div>
-        </div>
-        <p class="tm-text">AllBee transformed my career. The Python course was practical and job-oriented — placed within 2 months.</p>
-        <div class="tm-stars" aria-label="5 of 5"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      </article>
-      <article class="tm-card">
-        <div class="tm-head">
-          <div class="tm-avatar" style="background:linear-gradient(135deg,#149987,#1FB8A5)">P</div>
-          <div><div class="tm-name">Priya S.</div><div class="tm-role">Digital Marketing</div></div>
-        </div>
-        <p class="tm-text">The digital marketing course gave me everything I needed to run my own ad campaigns. My boutique's bookings doubled.</p>
-        <div class="tm-stars" aria-label="5 of 5"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      </article>
-      <article class="tm-card">
-        <div class="tm-head">
-          <div class="tm-avatar" style="background:linear-gradient(135deg,#DCA50C,#B88800)">K</div>
-          <div><div class="tm-name">Kavitha R.</div><div class="tm-role">MS-Office Advanced</div></div>
-        </div>
-        <p class="tm-text">Excellent trainers, great atmosphere — the certificate helped me land a job at a reputed IT firm in Chennai.</p>
-        <div class="tm-stars" aria-label="5 of 5"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      </article>
-      <article class="tm-card">
-        <div class="tm-head">
-          <div class="tm-avatar" style="background:linear-gradient(135deg,#085A52,#0F7B6E)">R</div>
-          <div><div class="tm-name">Rahul B.</div><div class="tm-role">Hardware &amp; Networking</div></div>
-        </div>
-        <p class="tm-text">Joined with zero IT background. Now I run my own laptop service shop in Nagapattinam.</p>
-        <div class="tm-stars" aria-label="5 of 5"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      </article>
-      <article class="tm-card">
-        <div class="tm-head">
-          <div class="tm-avatar" style="background:linear-gradient(135deg,#1FB8A5,#149987)">S</div>
-          <div><div class="tm-name">Saranya V.</div><div class="tm-role">Photoshop Advanced</div></div>
-        </div>
-        <p class="tm-text">I started taking design freelance work after just 3 weeks. The hands-on projects are what made it click for me.</p>
-        <div class="tm-stars" aria-label="5 of 5"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-      </article>
-    </div>
-  </div>
-</section>
 <section class="cta-band cta-glow cta-goldfield" aria-labelledby="cta-title">
   <div class="cta-particles" id="ctaParticles" aria-hidden="true"></div>
   <div class="section-container">
@@ -4751,7 +4623,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     </div>
   </a>
     <a class="pf-prev-card" href="/portfolio#all-projects" aria-label="HajiHaz AI">
-    <div class="pf-prev-thumb"><img src="/assets/images/inline/hajihaz-ai-preview.png" alt="HajiHaz AI platform preview" loading="lazy" width="360" height="160"></div>
+    <div class="pf-prev-thumb"><img src="/assets/images/inline/hajihaz-ai-preview.webp" alt="HajiHaz AI platform preview" loading="lazy" width="360" height="160"></div>
     <div class="pf-prev-body">
       <span class="pf-prev-cat">Live Product</span>
       <div class="pf-prev-name">HajiHaz AI</div>
@@ -4791,7 +4663,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
           <span>Since 2025</span>
         </div>
       </div>
-      <p class="footer-tagline">IT Training Institute &amp; Digital Marketing Agency in Nagore, Tamil Nadu. Empowering students and businesses since 2025.</p>
+      <p class="footer-tagline">Based in Nagore, Tamil Nadu. Explore our courses, business websites, marketing services and digital invitations.</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/allbeesolutions" target="_blank" rel="noopener" aria-label="AllBee on Instagram">
           <svg aria-hidden="true"><use href="#i-instagram"/></svg>
@@ -4883,7 +4755,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     </button>
     <div class="modal-icon" aria-hidden="true"><svg><use href="#i-grad-cap"/></svg></div>
     <div id="modal-title" class="modal-title">Free Career Counseling</div>
-    <p class="modal-sub">Our team will call you within 2 hours to help you choose the right course.</p>
+    <p class="modal-sub">Our team will contact you to discuss the course and your goals.</p>
     <form data-form="allbee" id="enrollForm" method="GET" action="https://wa.me/918903607506">
       <input type="hidden" name="_subject" value="New counseling lead — AllBee Solutions">
       <input type="hidden" name="form_source" value="counseling_modal">
@@ -5165,76 +5037,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     });
   }
 
-  /* ─────────────────────────────────────────────────────────────────
-     FORMS - WhatsApp lead handoff for static site
-  ───────────────────────────────────────────────────────────────── */
-  function labelForField(field){
-    if (!field || !field.name) return '';
-    const label = field.id ? document.querySelector('label[for="' + field.id + '"]') : null;
-    if (label) return label.textContent.replace('*', '').trim();
-    return field.name.replace(/^_/, '').replace(/_/g, ' ').replace(/\b\w/g, function(ch){ return ch.toUpperCase(); });
-  }
-
-  function buildWhatsAppLeadMessage(form){
-    const lines = [];
-    const subject = form.querySelector('[name="_subject"]');
-    lines.push(subject && subject.value ? subject.value : 'New website enquiry - AllBee Solutions');
-    lines.push('');
-    Array.from(form.elements).forEach(function(field){
-      if (!field.name || field.name === '_gotcha' || field.name === '_subject') return;
-      if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
-      const value = String(field.value || '').trim();
-      if (!value) return;
-      lines.push(labelForField(field) + ': ' + value);
-    });
-    lines.push('Page: ' + window.location.href.split('#')[0]);
-    return lines.join('\n');
-  }
-
-  function openWhatsAppLead(form, statusEl){
-    const phone = String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506';
-    const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildWhatsAppLeadMessage(form));
-    if (statusEl) {
-      statusEl.className = 'form-status success';
-      statusEl.textContent = 'Opening WhatsApp. Please press Send to share your enquiry.';
-    }
-    trackEvent('form_submit_whatsapp', { form_id: form.id || 'unknown' });
-    const opened = window.open(url, '_blank', 'noopener');
-    if (!opened) window.location.href = url;
-  }
-
-  function wireForm(form){
-    if (!form) return;
-    form.action = 'https://wa.me/' + (String(CFG.phoneWhatsApp || '').replace(/\D/g, '') || '918903607506');
-    form.method = 'GET';
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      const statusEl = form.querySelector('.form-status');
-      const submitBtn = form.querySelector('[type="submit"]');
-      const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
-
-      const honeypot = form.querySelector('[name="_gotcha"]');
-      if (honeypot && honeypot.value) {
-        if (statusEl) { statusEl.className = 'form-status success'; statusEl.textContent = 'Submitted.'; }
-        return;
-      }
-
-      if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Opening WhatsApp...';
-      }
-      openWhatsAppLead(form, statusEl);
-      window.setTimeout(function(){
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
-        }
-      }, 1600);
-    });
-  }
-  document.querySelectorAll('form[data-form="allbee"]').forEach(wireForm);
+  window.AllBeeForms.init({CFG,trackEvent});
 
   /* ─────────────────────────────────────────────────────────────────
      AOS-LITE — IntersectionObserver-based fade-in
@@ -5428,7 +5231,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     { keys:['hardware','networking','network','ccna','lan','router'],
       reply:'🔧 <strong>Hardware & Networking</strong><br>Duration: <strong>60 Days</strong> · Fee: <strong>₹5,999</strong><br><br>PC assembly, troubleshooting, LAN/WAN, routers and switches. Great for IT support careers.' },
     { keys:['service','services','web development','website','seo','digital marketing','social media','logo','branding'],
-      reply:'🌐 <strong>Our Services:</strong><br><br>🌐 Website Design (from ₹9,999)<br>📈 SEO Optimization (₹4,999/mo)<br>📱 Social Media Management (₹999+/mo)<br>🎨 Graphic Design & Branding<br>🎬 Reels Growth Program<br>🖥️ IT Support<br><br>Contact: 📞 +91 89036 07506' },
+      reply:'🌐 <strong>Our Services:</strong><br><br>🌐 Website Design (from ₹9,999)<br>📈 SEO and campaign planning<br>📱 Social Media Management (from ₹999/mo)<br>🎨 Graphic Design & Branding<br>🎬 Reels production and promotion<br>🖥️ IT Support<br><br>Contact: 📞 +91 89036 07506' },
     { keys:['certificate','certified'],
       reply:'✅ Yes — every course includes an <strong>industry-recognised completion certificate</strong>. Great for your resume! 🏆' },
     { keys:['placement','job','career','hire','interview'],
@@ -5436,7 +5239,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     { keys:['online','offline','mode','remote'],
       reply:'🌍 We offer <strong>both modes</strong>!<br><br>🏫 Offline — Nagore campus<br>💻 Online — From anywhere in India' },
     { keys:['about','who','allbee','company','founded'],
-      reply:'🐝 <strong>About AllBee Solutions</strong><br><br>Founded 2025 in Nagore, Tamil Nadu. IT Training Institute and Digital Marketing Agency.<br><br>✅ 500+ students trained<br>✅ 50+ businesses served<br>✅ 4.9 ★ rating · 98% satisfaction' },
+      reply:'🐝 <strong>About AllBee Solutions</strong><br><br>Founded 2025 in Nagore, Tamil Nadu. IT Training Institute and Digital Marketing Agency.<br><br>✅ Practical training and project work<br>✅ Websites and growth services<br>✅ Ask us for current learner and client references' },
     { keys:['hi','hello','hai','hey','vanakkam','helo','good morning','good afternoon','good evening'],
       reply:'👋 Hello! Welcome to <strong>AllBee Solutions</strong>!<br><br>I can help with courses, fees, enrollment and services. What would you like to know?' },
     { keys:['thank','thanks','ok','okay','got it','great','nice','super','perfect'],
@@ -6032,24 +5835,6 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
 })();
 
 
-/* ─── Testimonials marquee: duplicate children for seamless loop ─── */
-(function(){
-  function init(){
-    var track = document.getElementById('tmTrack');
-    if (!track || track.dataset.dup === '1') return;
-    track.dataset.dup = '1';
-    var originals = Array.prototype.slice.call(track.children);
-    originals.forEach(function(node){
-      var clone = node.cloneNode(true);
-      clone.setAttribute('aria-hidden', 'true');
-      track.appendChild(clone);
-    });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
-
-
 /* ─── 1. PARTICLE HERO canvas (falling/rising particles, gold-tinted) ─── */
 (function(){
   function init(){
@@ -6473,13 +6258,15 @@ function tsHover(id){
 (function(){
   function init(){
     var field=document.querySelector('.fih-field'); if(!field) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches) return;
     var icons=[].slice.call(field.querySelectorAll('.fih-icon'));
-    var hero=document.querySelector('.fih-hero');
-    var mx=-9999,my=-9999;
+    var hero=document.querySelector('.fih-hero'); if(!hero || !icons.length) return;
+    var mx=-9999,my=-9999,raf=null,visible=false;
     hero.addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; });
     hero.addEventListener('mouseleave',function(){ mx=-9999; my=-9999; });
     var st=icons.map(function(){return {x:0,y:0,vx:0,vy:0};});
     function loop(){
+      if(!visible || document.hidden){ raf=null; return; }
       for(var i=0;i<icons.length;i++){
         var el=icons[i], r=el.getBoundingClientRect();
         var cx=r.left+r.width/2, cy=r.top+r.height/2;
@@ -6490,9 +6277,16 @@ function tsHover(id){
         s.vx=(tx-s.x)*0.18; s.vy=(ty-s.y)*0.18; s.x+=s.vx; s.y+=s.vy;
         el.style.marginLeft=s.x.toFixed(2)+'px'; el.style.marginTop=s.y.toFixed(2)+'px';
       }
-      requestAnimationFrame(loop);
+      raf=requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
+    function update(){
+      if(visible && !document.hidden && raf===null) raf=requestAnimationFrame(loop);
+      else if((!visible || document.hidden) && raf!==null){ cancelAnimationFrame(raf); raf=null; }
+    }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){ visible=entries[0].isIntersecting; update(); }).observe(hero);
+    } else { visible=true; update(); }
+    document.addEventListener('visibilitychange',update);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -6616,5 +6410,6 @@ function tsHover(id){
   });
 })();
 </script>
+<script src="/assets/pricing.js" defer></script>
 </body>
 </html>

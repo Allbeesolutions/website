@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Iyer Family — Time Capsule | AllBee Invitations Demo</title>
 <meta name="description" content="A sample time-capsule housewarming invitation by AllBee Solutions — a sealed vault that unlocks family memories, milestones and future dreams as you scroll.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/time-capsule">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/time-capsule">
 <meta property="og:title" content="The Iyer Family — Time Capsule | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"The Iyer Family — Housewarming & Capsule Sealing","startDate":"2026-09-12T11:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"The Iyer Residence","address":"Lakeside Lane, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/time-capsule"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#14201f;--bg2:#1c2c2a;--bronze:#c08a4a;--bronze-l:#e6c388;--steel:#8fa3a0;--ink:#e7ece9;--soft:#93a5a1;--sepia:#d9c7a3}
@@ -83,6 +82,7 @@ body.opened .status .s1{display:none}.status .s2{display:none}body.opened .statu
 .foot{text-align:center;padding:28px;font-size:.82rem;color:var(--soft)}.foot a{color:var(--bronze-l)}
 .rv{opacity:0;transform:translateY(22px);transition:.9s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -126,7 +126,7 @@ body.opened .status .s1{display:none}.status .s2{display:none}body.opened .statu
 
 <section class="sec rsvp"><div class="kick rv">Be part of the memory</div><h2 class="h2 rv">RSVP to the Sealing</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>We'll be there to seal it</option><option>Unable to attend</option></select>
     <button class="btn" type="submit">Add My Name to the Capsule</button>
     <div class="ok" id="ok">Sealed in. See you there. (Demo)</div>

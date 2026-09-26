@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Kabir &amp; Sara — A Limited Series | AllBee Invitations Demo</title>
 <meta name="description" content="A sample streaming-premiere style wedding invitation for Kabir &amp; Sara by AllBee Solutions — a binge-worthy title page with episodes, Continue Watching and My List.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/netflix-premiere">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/netflix-premiere">
 <meta property="og:title" content="Kabir &amp; Sara — A Limited Series | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Wedding","name":"Kabir & Sara — Limited Series","startDate":"2026-10-24T19:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Studio Lawns","address":"Lake Road, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/netflix-premiere"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#141414;--bg2:#1c1c1c;--red:#e50914;--ink:#f3f3f3;--soft:#9aa0a6;--card:#2a2a2a}
@@ -81,6 +80,7 @@ a{color:inherit;text-decoration:none}
 .foot{text-align:center;padding:26px;color:var(--soft);font-size:.82rem}.foot a{color:var(--red)}
 .rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -120,7 +120,7 @@ a{color:inherit;text-decoration:none}
 
 <section class="sec rsvp"><div class="htag rv">Don't miss the premiere</div><h2 class="h2c rv">Add to My List</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>Set reminder — I'll watch live</option><option>Skip this one</option></select>
     <button class="btn play" type="submit" style="justify-content:center">＋ Add to My List</button>
     <div class="ok" id="ok">✓ Added. We'll remind you before it drops. (Demo)</div>

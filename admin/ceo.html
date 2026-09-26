@@ -19,7 +19,7 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
 .top a,.top button{color:#cfe; background:none;border:none;font-size:13px;cursor:pointer;text-decoration:none}
 .wrap{max-width:1100px;margin:0 auto;padding:22px}
 .lock{max-width:380px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
-.lock h2{font-family:Playfair Display,serif;margin-bottom:6px}.lock p{color:var(--muted);font-size:14px;margin-bottom:16px}
+.lock h1{font-family:Playfair Display,serif;margin-bottom:6px}.lock p{color:var(--muted);font-size:14px;margin-bottom:16px}
 .lock input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:1rem;margin-bottom:10px;text-align:center}
 .lock button{width:100%;background:var(--teal);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
 .lock .demo{margin-top:14px;color:var(--teal-d);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;display:inline-block}
@@ -44,15 +44,19 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
 .pipe{display:flex;flex-direction:column;gap:8px}
 .pr{display:flex;align-items:center;gap:10px}.pr .pl{width:90px;font-size:13px;font-weight:700}.pr .bar{flex:1;height:18px;background:var(--paper);border-radius:9px;overflow:hidden}.pr .bar span{display:block;height:100%;background:var(--teal);border-radius:9px}.pr .pn{width:30px;text-align:right;font-weight:800}
 .hidden{display:none}
+.admin-nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;background:#073f3a;color:#fff;padding:9px max(16px,calc((100vw - 1240px)/2));font:700 13px Lato,system-ui,sans-serif}
+.admin-nav span{margin-right:12px;color:#f0d47d}.admin-nav a{color:#fff;text-decoration:none;border-radius:7px;padding:6px 10px}.admin-nav a:hover,.admin-nav a[aria-current="page"]{background:#0f7b6e}
+.admin-nav a:focus-visible{outline:2px solid #f0d47d;outline-offset:2px}
 </style>
 </head>
 <body>
+<nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo" aria-current="page">Overview</a><a href="/admin/invitation-leads">Leads</a><a href="/admin/invitation-orders">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch">Launch</a></nav>
 <div class="top"><div><div class="t">AllBee · Executive Dashboard</div><div class="meta" id="meta">—</div></div>
   <div><button id="refresh">↻ Refresh</button> · <a href="/admin/invitation-orders">Orders</a> · <a href="/admin/invitation-leads">Leads</a></div></div>
 
 <div id="lock" class="lock">
-  <h2>CEO Dashboard</h2><p>Enter the admin passcode.</p>
-  <input id="pass" type="password" placeholder="Passcode" autocomplete="off">
+  <h1>CEO Dashboard</h1><p>Enter the admin passcode.</p>
+  <input id="pass" aria-label="Admin passcode" type="password" placeholder="Passcode" autocomplete="off">
   <button id="go">Open dashboard</button>
   <span class="demo" id="demoLink">Preview with demo data →</span>
 </div>
@@ -138,8 +142,9 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
       var ho={'x-admin-pass':pass,'Content-Type':'application/json'};
       var ro=await fetch('/api/invitation-orders',{headers:ho}); var dro=await ro.json();
       if(ro.status===401||ro.status===403){alert('Wrong passcode.');return;}
+      if(!ro.ok||dro.ok!==true||dro.configured===false){alert('Orders are unavailable. Use the demo preview.');return;}
       var rl=await fetch('/api/invitation-leads',{headers:ho}); var drl=await rl.json();
-      if(dro.configured===false){loadDemo();return;}
+      if(!rl.ok||drl.ok!==true||drl.configured===false){alert('Leads are unavailable. Use the demo preview.');return;}
       PASS=pass;MODE='live';ORDERS=dro.orders||[];LEADS=(drl&&drl.leads)||[];open();render();
     }catch(e){alert('Could not load. Try again.');}
   }

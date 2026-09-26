@@ -9,12 +9,9 @@
 
 const { guard, noStore } = require('./_security');
 // Configurable pricing structure (must mirror the wizard display).
-const PRICING = {
-  'PDF Invitation':       { Basic: 299,  Premium: 599,  Elite: 999 },
-  'Website Invitation':   { Basic: 999,  Premium: 1999, Elite: 3999 },
-  'Both (PDF + Website)': { Basic: 1299, Premium: 2499, Elite: 4999 },
-};
-const EVENTS = ['Wedding','Nikah','Birthday','Housewarming','Dargah Event','School Event','Business Event','Political Event','Other'];
+const catalog = require('../lib/catalog');
+const PRICING = catalog.invitationPricing;
+const EVENTS = catalog.events;
 
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
@@ -40,10 +37,10 @@ module.exports = async (req, res) => {
   const receipt = 'ORD-' + Date.now().toString(36).toUpperCase();
 
   const KEY = process.env.RAZORPAY_KEY_ID, SECRET = process.env.RAZORPAY_KEY_SECRET;
-  if (!KEY || !SECRET) {
+  if (!KEY || !SECRET || !process.env.RAZORPAY_WEBHOOK_SECRET || !process.env.LEAD_APPS_SCRIPT_URL || !process.env.LEAD_SHARED_SECRET) {
     // Not wired yet → tell the client to use the capture fallback.
     res.statusCode = 200;
-    return res.end(JSON.stringify({ ok:true, configured:false, amount:amountPaise, receipt }));
+    return res.end(JSON.stringify({ ok:true, configured:false, payment_state:'pending', order_state:'request_received', amount:amountPaise, receipt }));
   }
 
   try {
@@ -59,7 +56,7 @@ module.exports = async (req, res) => {
     const order = await rp.json();
     if (!rp.ok || !order.id) throw new Error('razorpay ' + rp.status);
     res.statusCode = 200;
-    return res.end(JSON.stringify({ ok:true, configured:true, order_id:order.id, amount:amountPaise, key_id:KEY, receipt }));
+    return res.end(JSON.stringify({ ok:true, configured:true, payment_state:'created', order_state:'payment_pending', order_id:order.id, amount:amountPaise, key_id:KEY, receipt }));
   } catch (e) {
     console.error('[order-create] error:', String(e.message || e));
     res.statusCode = 502;

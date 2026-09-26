@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Rohan's 30th — VIP Access | AllBee Invitations Demo</title>
 <meta name="description" content="A sample VIP-pass digital birthday invitation for Rohan's 30th by AllBee Solutions — a premium ticket-style design with barcode, access pass and departures-board countdown.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/birthday-vip">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/birthday-vip">
 <meta property="og:title" content="Rohan's 30th — VIP Access | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Barlow+Condensed:wght@400;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Rohan's 30th — VIP Party","startDate":"2026-07-25T20:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Skyline Lounge","address":"Marina Road, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/birthday-vip"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0b0b0d;--card:#141318;--gold:#e7c469;--gold-d:#b8973f;--ink:#f0ede6;--soft:#8e897e}
@@ -73,6 +72,7 @@ a{color:inherit;text-decoration:none}
 .foot{text-align:center;padding:26px 22px;font-size:12px;letter-spacing:1px;color:var(--soft);text-transform:uppercase}.foot a{color:var(--gold)}
 .rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -109,9 +109,9 @@ a{color:inherit;text-decoration:none}
 
 <section class="sec rsvp"><h2 class="h2 rv">Claim Your Pass</h2><p class="lead rv">Strictly RSVP only — confirm to lock in your spot on the list.</p>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Name on the list" required>
+    <input name="name" type="text" placeholder="Name on the list" required aria-label="Name on the list">
     <select name="att" aria-label="Your response"><option>I'm on the list 🎟️</option><option>Can't make it</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?">
+    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?" aria-label="Plus how many?">
     <button class="btn" type="submit">Confirm My Pass</button>
     <div class="ok" id="ok">You're on the list. See you at the door. (Demo)</div>
   </form>

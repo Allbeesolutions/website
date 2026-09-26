@@ -16,14 +16,15 @@ module.exports = async (req, res) => {
   const ready = !!(url && secret);
   async function script(payload) {
     const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, secret }) });
+    if (!r.ok) throw new Error('review store unavailable');
     return r.json();
   }
 
   // ---- public approved list (catalog) ----
   if (req.method === 'GET') {
-    if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
-    try { const d = await script({ action:'review_public' }); return res.end(JSON.stringify({ ok:true, configured:true, reviews:(d && d.reviews) || [] })); }
-    catch { return res.end(JSON.stringify({ ok:true, configured:true, reviews:[] })); }
+    if (!url) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:false, reviews:[] })); }
+    try { const d = await script({ action:'review_public' }); if (!d || d.ok !== true || !Array.isArray(d.reviews)) throw new Error('review feed failed'); return res.end(JSON.stringify({ ok:true, configured:true, reviews:d.reviews })); }
+    catch { res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' })); }
   }
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false })); }
 
@@ -37,9 +38,10 @@ module.exports = async (req, res) => {
     const pass=req.headers['x-admin-pass'] || ''; if (pass.length!==exp.length) { res.statusCode=401; return res.end(JSON.stringify({ok:false,error:'unauthorized'})); } let diff=0; for(let i=0;i<exp.length;i++) diff|=pass.charCodeAt(i)^exp.charCodeAt(i); if (diff!==0) { res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'unauthorized' })); }
     if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
     try {
-      if (action === 'list') { const d = await script({ action:'review_list' }); return res.end(JSON.stringify({ ok:true, configured:true, reviews:(d && d.reviews) || [] })); }
+      if (action === 'list') { const d = await script({ action:'review_list' }); if (!d || d.ok !== true || !Array.isArray(d.reviews)) throw new Error('review list failed'); return res.end(JSON.stringify({ ok:true, configured:true, reviews:d.reviews })); }
       const d = await script({ action:'review_moderate', id: s(b.id).slice(0,20), moderated: !!b.moderated });
-      return res.end(JSON.stringify(d || { ok:false }));
+      if (!d || d.ok !== true) { res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' })); }
+      return res.end(JSON.stringify({ ok:true }));
     } catch { res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' })); }
   }
 
@@ -48,12 +50,13 @@ module.exports = async (req, res) => {
   const elapsed = Number(b.render_ts) ? Date.now() - Number(b.render_ts) : 9999;
   if (elapsed < 1500) { return res.end(JSON.stringify({ ok:true })); }
   const name = s(b.name).slice(0,60), review = s(b.review).slice(0,600);
-  const rating = Math.max(1, Math.min(5, Number(b.rating) || 0));
-  if (name.length < 2 || review.length < 4 || !rating) { res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'validation_error' })); }
-  if (!ready) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'reviews_not_configured' })); }
+  const rating = Number(b.rating);
+  if (name.length < 2 || review.length < 4 || !Number.isInteger(rating) || rating < 1 || rating > 5) { res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'validation_error' })); }
+  if (!url) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, configured:false, error:'reviews_not_configured' })); }
   try {
-    await script({ action:'review_create', name, city:s(b.city).slice(0,40), event_type:s(b.event_type).slice(0,40),
+    const saved = await script({ action:'review_create', name, city:s(b.city).slice(0,40), event_type:s(b.event_type).slice(0,40),
       rating, review, template_id:s(b.template_id).slice(0,20), order_id:s(b.order_id).slice(0,24) });
-    return res.end(JSON.stringify({ ok:true }));
+    if (!saved || saved.ok !== true) { res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' })); }
+    return res.end(JSON.stringify({ ok:true, configured:true }));
   } catch { res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' })); }
 };

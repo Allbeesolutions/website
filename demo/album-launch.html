@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MAYA — THIRTY (The Album) | AllBee Invitations Demo</title>
 <meta name="description" content="A sample album-launch birthday invitation for Maya's 30th by AllBee Solutions — a chart-topping record release with album cover, tracklist, features and a music-player UI.">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://www.allbeesolutions.com/demo/album-launch">
 <meta property="og:type" content="website"><meta property="og:url" content="https://www.allbeesolutions.com/demo/album-launch">
 <meta property="og:title" content="MAYA — THIRTY (The Album) | AllBee Invitations Demo">
@@ -17,7 +17,6 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"MAYA — THIRTY (Birthday)","startDate":"2026-08-29T20:00:00+05:30","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"The Sound Room","address":"Marina Strip, Nagapattinam, Tamil Nadu"},"organizer":{"@type":"Organization","name":"AllBee Solutions","url":"https://www.allbeesolutions.com"},"url":"https://www.allbeesolutions.com/demo/album-launch"}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0d0d12;--bg2:#16161e;--c1:#ff4d8d;--c2:#ff9a3d;--c3:#8a5cff;--ink:#f1eef7;--soft:#9a96ad}
@@ -88,6 +87,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:24px 22px 90px;color:var(--soft);font-size:.82rem}.foot a{color:var(--c2)}
 .rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -131,9 +131,9 @@ section,header{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kick rv">Limited capacity</div><h2 class="h2 rv">Get on the Guest List</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'm coming to the listening party 🎶</option><option>Can't make it</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?">
+    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?" aria-label="Plus how many?">
     <button class="btn" type="submit">Add Me to the List</button>
     <div class="ok" id="ok">You're on the list. Turn it up. (Demo)</div>
   </form>
