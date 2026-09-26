@@ -15,4 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check HTML, routes, images and API syntax
-        run: node scripts/audit.mjs
+        run: |
+          node scripts/audit.mjs
+          node scripts/pricing-check.mjs
