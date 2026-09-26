@@ -29,6 +29,12 @@ Everything else is stateless (CDN + serverless), so it can't "go down" with data
 
 ---
 
+## Production project identity
+
+The GitHub `Allbeesolutions/website` main branch deploys to the AllBee Vercel project whose production URLs have the form `website-…-allbee.vercel.app`; the public domain is `www.allbeesolutions.com`. The checkout's existing `.vercel/project.json` points to `kuddosahib-8503s-projects/allbee-website`, a different project with no environment variables. Do not configure that local link and assume the public site changed. Confirm the team, project ID, production domain, and current deployment before changing settings.
+
+The public `/api/health` endpoint reports whether environment variables exist; it does not prove the Apps Script responses, Razorpay capture, webhook delivery or admin writes work. Run the integration checks below before calling the site ready.
+
 ## 1. Environment variables (Vercel → Project → Settings → Environment Variables)
 
 | Variable | Required for | Notes |
