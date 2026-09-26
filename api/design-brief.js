@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   let b = req.body;
   try { if (typeof b === 'string') b = JSON.parse(b || '{}'); } catch { b = {}; }
   b = b && typeof b === 'object' ? b : {};
-  const orderId = clean(b.order_id, 40), mobile = digits(b.mobile);
+  const orderId = clean(b.order_id, 40).toUpperCase(), mobile = digits(b.mobile);
   if (!orderId || mobile.length !== 10) { res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'order_and_mobile_required' })); }
 
   try {

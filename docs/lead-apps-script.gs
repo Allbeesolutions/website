@@ -132,7 +132,7 @@ function referenceUpload_(b, props) {
   var folderId = props.getProperty('REFERENCE_FOLDER_ID');
   if (!folderId) return { ok:false, error:'upload_unavailable' };
   var id = String(b.order_id || '');
-  if (!/^ORD-\d{4,12}$/.test(id)) return { ok:false, error:'invalid_order' };
+  if (!/^ORD-[A-Z0-9]{4,20}$/.test(id)) return { ok:false, error:'invalid_order' };
   var orders = orderSheet_().getDataRange().getValues();
   var allowed = ['Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered'];
   if (!orders.some(function(row, i){ return i > 0 && String(row[0]) === id && allowed.indexOf(String(row[10])) !== -1; })) return { ok:false, error:'invalid_order' };
