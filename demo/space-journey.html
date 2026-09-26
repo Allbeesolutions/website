@@ -81,6 +81,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:28px;font-size:.82rem;color:var(--soft)}.foot a{color:var(--cyan)}
 .rv{opacity:0;transform:translateY(22px);transition:.8s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="stars"><div class="layer l1"></div><div class="layer l2"></div><div class="layer l3"></div></div>
@@ -119,9 +120,9 @@ section,header{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kick rv">Recruiting crew</div><h2 class="h2 rv">Join the Mission</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Astronaut name" required>
+    <input name="name" type="text" placeholder="Astronaut name" required aria-label="Astronaut name">
     <select name="att" aria-label="Your response"><option>Cleared for launch — I'm in 🚀</option><option>Grounded — can't make it</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="Crew size">
+    <input name="g" type="number" min="1" value="1" placeholder="Crew size" aria-label="Crew size">
     <button class="btn" type="submit">Board the Ship</button>
     <div class="ok" id="ok">✓ Crew confirmed. See you at lift-off. (Demo)</div>
   </form>

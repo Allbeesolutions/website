@@ -77,6 +77,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:30px 24px;color:var(--soft);font-size:.85rem}.foot a{color:var(--accent2);font-weight:500}
 .rv{opacity:0;transform:translateY(22px);transition:.8s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <script>(function(){var V={
@@ -127,10 +128,10 @@ var v=new URLSearchParams(location.search).get('v');if(v&&V[v]){var d=V[v],r=doc
 
 <section class="s wrap"><div class="reg rv"><div class="tag">Reserve your seat</div><h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700">Register to attend.</h2><p style="color:var(--soft);margin-top:8px">Seats are limited. Confirm below and we'll send your pass.</p>
   <form id="reg" novalidate>
-    <input class="full" name="name" type="text" placeholder="Full name" required>
-    <input name="email" type="email" placeholder="Work email">
-    <input name="company" type="text" placeholder="Company">
-    <select class="full" name="att"><option>I'll be there</option><option>Sending a colleague</option><option>Can't attend</option></select>
+    <input class="full" name="name" type="text" placeholder="Full name" required aria-label="Full name">
+    <input name="email" type="email" placeholder="Work email" aria-label="Work email">
+    <input name="company" type="text" placeholder="Company" aria-label="Company">
+    <select class="full" name="att" aria-label="Attendance"><option>I'll be there</option><option>Sending a colleague</option><option>Can't attend</option></select>
     <button class="btn full" type="submit">Confirm Registration</button>
     <div class="ok" id="ok">✓ You're registered. Your pass is on its way. <small style="color:var(--soft)">(Demo)</small></div>
   </form>

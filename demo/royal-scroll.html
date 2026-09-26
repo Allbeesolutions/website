@@ -78,6 +78,7 @@ a{color:inherit;text-decoration:none}
 .foot{text-align:center;padding:24px;font-size:.84rem;color:#bda981}.foot a{color:#f0e2bf}
 .rv{opacity:0;transform:translateY(18px);transition:.8s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -123,7 +124,7 @@ a{color:inherit;text-decoration:none}
     <div class="subhead">Reply by Royal Command</div>
     <div class="rsvp">
       <form id="rsvp" novalidate>
-        <input name="name" type="text" placeholder="Your noble name" required>
+        <input name="name" type="text" placeholder="Your noble name" required aria-label="Your noble name">
         <select name="att" aria-label="Your response"><option>I shall attend, by my honour</option><option>I regret I cannot</option></select>
         <button class="btn" type="submit">Pledge Attendance</button>
         <div class="ok" id="ok">Your word is recorded in the royal ledger. (Demo)</div>

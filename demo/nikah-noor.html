@@ -58,6 +58,7 @@ section,header,.ribbon{position:relative;z-index:2}
 .foot{text-align:center;padding:34px 26px;font-size:.82rem;color:var(--soft);border-top:1px solid rgba(189,154,69,.2)}.foot a{color:var(--gold-d)}
 .rv{opacity:0;transform:translateY(24px);transition:1.3s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="glow"></div>
@@ -93,7 +94,7 @@ section,header,.ribbon{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kick rv">Kindly respond</div>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>Joyfully accepts</option><option>Respectfully declines</option></select>
     <button class="btn btn-f" type="submit">Send RSVP</button>
     <div class="ok" id="ok">Thank you — your light is welcome. (Demo)</div>

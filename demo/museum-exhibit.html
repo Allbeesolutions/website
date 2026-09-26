@@ -72,6 +72,7 @@ a{color:inherit;text-decoration:none}
 .foot{background:var(--ink);color:rgba(239,233,223,.7);text-align:center;padding:26px;font-family:'Archivo',sans-serif;font-size:.8rem;letter-spacing:1px}.foot a{color:#fff;text-decoration:underline}
 .rv{opacity:0;transform:translateY(20px);transition:.9s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -116,7 +117,7 @@ a{color:inherit;text-decoration:none}
 
 <section class="sec rsvp" style="text-align:center"><div class="plate rv" style="max-width:none"><div class="lbl arch">Admission by invitation</div><h2 class="h2">Reserve Your Viewing</h2>
   <form id="rsvp" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'll attend the opening</option><option>Unable to attend</option></select>
     <button class="btn" type="submit">Reserve Admission</button>
     <div class="ok" id="ok">Your admission is reserved. (Demo)</div>

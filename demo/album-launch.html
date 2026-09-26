@@ -87,6 +87,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:24px 22px 90px;color:var(--soft);font-size:.82rem}.foot a{color:var(--c2)}
 .rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -130,9 +131,9 @@ section,header{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kick rv">Limited capacity</div><h2 class="h2 rv">Get on the Guest List</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'm coming to the listening party 🎶</option><option>Can't make it</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?">
+    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?" aria-label="Plus how many?">
     <button class="btn" type="submit">Add Me to the List</button>
     <div class="ok" id="ok">You're on the list. Turn it up. (Demo)</div>
   </form>

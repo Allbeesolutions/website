@@ -1030,11 +1030,11 @@ function initFilters(){
 
 /* ---- Modal ---- */
 var modalReturnFocus = null;
-function openModal(id){
+function openModal(id, trigger){
   var p = PF_PROJECTS.find(function(x){ return x.id === id; });
   if(!p) return;
   var overlay = document.getElementById('pfModal');
-  modalReturnFocus = document.activeElement;
+  modalReturnFocus = trigger || document.activeElement;
 
   // Image
   var imgEl = document.getElementById('pfModalImg');
@@ -1087,7 +1087,16 @@ function initModal(){
     if(e.target === this) closeModal();
   });
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closeModal();
+    if(!document.getElementById('pfModal').classList.contains('open')) return;
+    if(e.key === 'Escape'){ closeModal(); return; }
+    if(e.key === 'Tab'){
+      var focusables = Array.from(document.querySelectorAll('#pfModal button, #pfModal a[href], #pfModal [tabindex]:not([tabindex="-1"])')).filter(function(el){ return el.getClientRects().length; });
+      if(!focusables.length){ e.preventDefault(); return; }
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      else if(!document.getElementById('pfModal').contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    }
   });
   // Card click delegation — featured + grid
   ['pf-featured-grid','pf-grid'].forEach(function(containerId){
@@ -1095,12 +1104,12 @@ function initModal(){
     if(!el) return;
     el.addEventListener('click', function(e){
       var card = e.target.closest('.pf-card');
-      if(card) openModal(card.getAttribute('data-id'));
+      if(card) openModal(card.getAttribute('data-id'), card);
     });
     el.addEventListener('keydown', function(e){
       if(e.key === 'Enter' || e.key === ' '){
         var card = e.target.closest('.pf-card');
-        if(card){ e.preventDefault(); openModal(card.getAttribute('data-id')); }
+        if(card){ e.preventDefault(); openModal(card.getAttribute('data-id'), card); }
       }
     });
   });

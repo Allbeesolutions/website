@@ -71,6 +71,7 @@ a{color:inherit;text-decoration:none}
 .foot{background:var(--green);color:rgba(236,217,164,.7);text-align:center;padding:24px;font-size:.82rem}.foot a{color:#fff}
 .rv{opacity:0;transform:translateY(18px);transition:.8s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon-bar">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -108,9 +109,9 @@ a{color:inherit;text-decoration:none}
 
 <section class="rsvp"><div class="eyebrow2 rv">Grace us with your presence</div><h2 class="h2 rv">Confirm your seat</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'll attend the opening</option><option>Unable to attend</option></select>
-    <input name="org" type="text" placeholder="Company / association (optional)">
+    <input name="org" type="text" placeholder="Company / association (optional)" aria-label="Company / association (optional)">
     <button class="btn btn-g" type="submit">Reserve My Spot</button>
     <div class="ok" id="ok">Thank you — your seat is reserved. (Demo)</div>
   </form>

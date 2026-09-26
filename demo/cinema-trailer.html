@@ -78,6 +78,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:26px;color:var(--soft);font-size:.82rem;letter-spacing:1px}.foot a{color:var(--gold)}
 .rv{opacity:0;transform:translateY(22px);transition:.8s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="grain"></div>
@@ -118,7 +119,7 @@ section,header{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="htag rv">Limited seating</div><h2 class="h2 rv">Reserve Your Seat</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'll be in the front row</option><option>Can't make the premiere</option></select>
     <button class="btn" type="submit">Reserve Seat</button>
     <div class="ok" id="ok">🎬 Seat reserved. See you at the premiere. (Demo)</div>

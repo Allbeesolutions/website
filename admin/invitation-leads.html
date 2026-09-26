@@ -116,7 +116,7 @@ a{color:inherit} button,select,input,textarea{font-family:inherit}
     <h1>🐝 Lead CRM</h1>
     <p>AllBee Invitations — team access</p>
     <div class="lock-err" id="lockErr"></div>
-    <input id="passInput" type="password" placeholder="Admin passcode" autocomplete="off">
+    <input id="passInput" aria-label="Admin passcode" type="password" placeholder="Admin passcode" autocomplete="off">
     <button class="btn-go" id="passGo">Open CRM</button>
     <span class="demo-link" id="demoLink">Preview with demo data →</span>
   </div>
@@ -140,10 +140,10 @@ a{color:inherit} button,select,input,textarea{font-family:inherit}
   <div class="pipe" id="pipe"></div>
 
   <div class="toolbar">
-    <input type="search" id="search" placeholder="Search name, mobile or email…">
-    <select id="fType"><option value="">All event types</option></select>
-    <select id="fStatus"><option value="">All statuses</option></select>
-    <span class="daterange">From <input type="date" id="fFrom"> to <input type="date" id="fTo"></span>
+    <input type="search" id="search" aria-label="Search leads" placeholder="Search name, mobile or email…">
+    <select id="fType" aria-label="Event type"><option value="">All event types</option></select>
+    <select id="fStatus" aria-label="Status"><option value="">All statuses</option></select>
+    <span class="daterange">From <input type="date" id="fFrom" aria-label="Start date"> to <input type="date" id="fTo" aria-label="End date"></span>
     <button class="clear" id="clearBtn">Clear</button>
   </div>
 
@@ -295,11 +295,11 @@ function openLead(id){
     </div>
     <div class="field"><label>Enquiry Notes</label><div class="val">${esc(l.notes||'—')}</div></div>
     <div class="kv">
-      <div class="field"><label>Status / Stage</label><select id="eStatus">${STAGES.map(s=>`<option ${s===l.status?'selected':''}>${s}</option>`).join('')}</select></div>
-      <div class="field"><label>Deal Value (₹)</label><input id="eValue" type="number" min="0" value="${Number(l.value)||0}"></div>
+      <div class="field"><label>Status / Stage</label><select id="eStatus" aria-label="Status or stage">${STAGES.map(s=>`<option ${s===l.status?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="field"><label>Deal Value (₹)</label><input id="eValue" aria-label="Deal value in rupees" type="number" min="0" value="${Number(l.value)||0}"></div>
     </div>
     <div class="field"><label>Activity Log</label><div class="notelog">${esc(l.crm_notes||'No notes yet.')}</div></div>
-    <div class="field"><label>Add Note</label><textarea id="eNote" rows="2" placeholder="Log a call, message or update…"></textarea></div>`;
+    <div class="field"><label>Add Note</label><textarea id="eNote" aria-label="Add note" rows="2" placeholder="Log a call, message or update…"></textarea></div>`;
   $('#modal').classList.add('open');
 }
 function closeModal(){$('#modal').classList.remove('open');editing=null;}

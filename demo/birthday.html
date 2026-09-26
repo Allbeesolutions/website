@@ -83,6 +83,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:30px 22px;color:#8883a8;font-size:.85rem}.foot a{color:var(--cyan);font-weight:700}
 .rv{opacity:0;transform:translateY(22px) scale(.97);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <script>(function(){var V={
@@ -126,9 +127,9 @@ var v=new URLSearchParams(location.search).get('v');if(v&&V[v]){var d=V[v],r=doc
 <section class="rsvp wrap rv" style="padding:50px 0">
   <div class="kick glow-c" style="text-align:center">Are you in?</div><h2 class="h2" style="text-align:center">RSVP</h2>
   <form id="rsvp" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>I'm SO there! 🎉</option><option>Can't make it 😢</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="How many?">
+    <input name="g" type="number" min="1" value="1" placeholder="How many?" aria-label="How many?">
     <button class="btn" type="submit">Count Me In!</button>
     <div class="ok" id="ok">YESSS! See you there 🎈 <small>(Demo)</small></div>
   </form>

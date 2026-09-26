@@ -73,6 +73,7 @@ section,header{position:relative;z-index:2}
 .foot{text-align:center;padding:30px 22px;font-size:.84rem;color:var(--soft)}.foot a{color:var(--gold-l)}
 .rv{opacity:0;transform:translateY(20px);transition:1s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="skystars"></div>
@@ -106,7 +107,7 @@ section,header{position:relative;z-index:2}
 
 <section class="sec rsvp"><div class="kick rv">Your presence is a blessing</div><h2 class="h2 rv">Kindly Respond</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>In sha'Allah, I will attend</option><option>I am unable to attend</option></select>
     <button class="btn btn-f" type="submit">Send Response</button>
     <div class="ok" id="ok">JazakAllah Khair. (Demo)</div>

@@ -82,6 +82,7 @@ body.opened .status .s1{display:none}.status .s2{display:none}body.opened .statu
 .foot{text-align:center;padding:28px;font-size:.82rem;color:var(--soft)}.foot a{color:var(--bronze-l)}
 .rv{opacity:0;transform:translateY(22px);transition:.9s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -125,7 +126,7 @@ body.opened .status .s1{display:none}.status .s2{display:none}body.opened .statu
 
 <section class="sec rsvp"><div class="kick rv">Be part of the memory</div><h2 class="h2 rv">RSVP to the Sealing</h2>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Your name" required>
+    <input name="name" type="text" placeholder="Your name" required aria-label="Your name">
     <select name="att" aria-label="Your response"><option>We'll be there to seal it</option><option>Unable to attend</option></select>
     <button class="btn" type="submit">Add My Name to the Capsule</button>
     <div class="ok" id="ok">Sealed in. See you there. (Demo)</div>

@@ -46,27 +46,27 @@ a{color:inherit}
     <form id="briefForm" novalidate>
       <input type="text" class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="row">
-        <div class="field"><label class="req">Your Name</label><input name="name" required></div>
-        <div class="field"><label class="req">Mobile</label><input name="mobile" inputmode="tel" required></div>
+        <div class="field"><label class="req" for="brief-name">Your Name</label><input id="brief-name" name="name" required></div>
+        <div class="field"><label class="req" for="brief-mobile">Mobile</label><input id="brief-mobile" name="mobile" inputmode="tel" required></div>
       </div>
       <div class="row">
-        <div class="field"><label class="req">Event Type</label><select name="event_type" required><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Dargah Event</option><option>School Event</option><option>Business Event</option><option>Political Event</option><option>Other</option></select></div>
-        <div class="field"><label>Order ID</label><input name="order_id" id="order_id" placeholder="If you have one"></div>
+        <div class="field"><label class="req" for="brief-event-type">Event Type</label><select id="brief-event-type" name="event_type" required><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Dargah Event</option><option>School Event</option><option>Business Event</option><option>Political Event</option><option>Other</option></select></div>
+        <div class="field"><label for="order_id">Order ID</label><input id="order_id" name="order_id" placeholder="If you have one"></div>
       </div>
       <div class="row">
-        <div class="field"><label>Names (e.g. Bride &amp; Groom)</label><input name="names"></div>
-        <div class="field"><label>Parents / Family</label><input name="parents"></div>
+        <div class="field"><label for="brief-names">Names (e.g. Bride &amp; Groom)</label><input id="brief-names" name="names"></div>
+        <div class="field"><label for="brief-parents">Parents / Family</label><input id="brief-parents" name="parents"></div>
       </div>
       <div class="row">
-        <div class="field"><label>Event Date</label><input name="event_date" type="date"></div>
-        <div class="field"><label>Event Time</label><input name="time" placeholder="e.g. 7:00 PM"></div>
+        <div class="field"><label for="brief-event-date">Event Date</label><input id="brief-event-date" name="event_date" type="date"></div>
+        <div class="field"><label for="brief-time">Event Time</label><input id="brief-time" name="time" placeholder="e.g. 7:00 PM"></div>
       </div>
-      <div class="field"><label>Venue</label><input name="venue" placeholder="Hall name, area, city"></div>
+      <div class="field"><label for="brief-venue">Venue</label><input id="brief-venue" name="venue" placeholder="Hall name, area, city"></div>
       <div class="row">
-        <div class="field"><label>Theme / Colours</label><input name="theme" placeholder="e.g. royal maroon &amp; gold"></div>
-        <div class="field"><label>Language</label><input name="language" placeholder="Tamil / English / Urdu"></div>
+        <div class="field"><label for="brief-theme">Theme / Colours</label><input id="brief-theme" name="theme" placeholder="e.g. royal maroon &amp; gold"></div>
+        <div class="field"><label for="brief-language">Language</label><input id="brief-language" name="language" placeholder="Tamil / English / Urdu"></div>
       </div>
-      <div class="field"><label>Special Notes</label><textarea name="special" rows="3" placeholder="Anything else we should know — events, hashtags, must-haves…"></textarea></div>
+      <div class="field"><label for="brief-special">Special Notes</label><textarea id="brief-special" name="special" rows="3" placeholder="Anything else we should know — events, hashtags, must-haves…"></textarea></div>
       <button class="btn" type="submit" id="go">Submit Design Brief</button>
       <div class="err" id="err"></div>
     </form>
@@ -77,7 +77,7 @@ a{color:inherit}
 (function(){
   var RT=Date.now();
   var q=new URLSearchParams(location.search),oid=q.get('order')||q.get('order_id')||'';
-  if(oid){document.getElementById('order_id').value=oid;var n=document.getElementById('ordNote');n.style.display='block';n.innerHTML='Brief for order <b>'+oid.replace(/[<>]/g,'')+'</b>';}
+  if(oid){document.getElementById('order_id').value=oid;var n=document.getElementById('ordNote');n.style.display='block';n.textContent='Brief for order '+oid;}
   var form=document.getElementById('briefForm'),err=document.getElementById('err'),go=document.getElementById('go');
   form.addEventListener('submit',function(e){
     e.preventDefault();err.classList.remove('show');

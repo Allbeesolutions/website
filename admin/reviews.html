@@ -37,7 +37,7 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
 </head>
 <body>
 <div class="top"><div class="t">Review Moderation</div><div><a href="/admin/ceo">CEO</a> · <a href="/admin/invitation-orders">Orders</a></div></div>
-<div id="lock" class="lock"><h2>Reviews</h2><p style="color:var(--muted);font-size:14px">Enter the admin passcode.</p><input id="pass" type="password" placeholder="Passcode"><button id="go">Open</button><br><span class="demo" id="demoLink">Preview with demo data →</span></div>
+<div id="lock" class="lock"><h2>Reviews</h2><p style="color:var(--muted);font-size:14px">Enter the admin passcode.</p><input id="pass" aria-label="Admin passcode" type="password" placeholder="Passcode"><button id="go">Open</button><br><span class="demo" id="demoLink">Preview with demo data →</span></div>
 <div class="wrap hidden" id="app">
   <div class="banner hidden" id="banner"></div>
   <div class="tabs"><div class="tab on" data-f="pending">Pending</div><div class="tab" data-f="approved">Approved</div><div class="tab" data-f="all">All</div></div>

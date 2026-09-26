@@ -72,6 +72,7 @@ a{color:inherit;text-decoration:none}
 .foot{text-align:center;padding:26px 22px;font-size:12px;letter-spacing:1px;color:var(--soft);text-transform:uppercase}.foot a{color:var(--gold)}
 .rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
 </style>
+<link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
 <div class="ribbon">A sample invitation by AllBee Solutions · <a href="/invitation#enquiry">Create yours</a></div>
@@ -108,9 +109,9 @@ a{color:inherit;text-decoration:none}
 
 <section class="sec rsvp"><h2 class="h2 rv">Claim Your Pass</h2><p class="lead rv">Strictly RSVP only — confirm to lock in your spot on the list.</p>
   <form id="rsvp" class="rv" novalidate>
-    <input name="name" type="text" placeholder="Name on the list" required>
+    <input name="name" type="text" placeholder="Name on the list" required aria-label="Name on the list">
     <select name="att" aria-label="Your response"><option>I'm on the list 🎟️</option><option>Can't make it</option></select>
-    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?">
+    <input name="g" type="number" min="1" value="1" placeholder="Plus how many?" aria-label="Plus how many?">
     <button class="btn" type="submit">Confirm My Pass</button>
     <div class="ok" id="ok">You're on the list. See you at the door. (Demo)</div>
   </form>
