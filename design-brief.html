@@ -71,7 +71,7 @@ a{color:inherit}
       <div class="err" id="err"></div>
     </form>
   </div>
-  <div class="card ok" id="ok"><div class="big">✅</div><h2>Brief received!</h2><p>Thank you — our design team has your details and will begin shortly. Please send any photos to us on WhatsApp.</p><p style="margin-top:14px"><a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="color:var(--teal-d);font-weight:700;text-decoration:none">Send photos on WhatsApp →</a></p></div>
+  <div class="card ok" id="ok"><div class="big">✅</div><h2>Brief received!</h2><p>Thank you — our design team has your details and will begin shortly. Please send any photos to us on WhatsApp.</p><p style="margin-top:14px"><a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="color:var(--teal-d);font-weight:700;text-decoration:none">Attach reference photos on WhatsApp →</a></p></div>
 </div>
 <script>
 (function(){
@@ -90,7 +90,7 @@ a{color:inherit}
     go.disabled=true;go.textContent='Submitting…';
     fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
-      .then(function(res){if(res&&res.ok&&res.captured===true&&res.lead_id){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');document.getElementById('ok').querySelector('p').textContent='Brief saved. Reference: '+res.lead_id+'. We will contact you soon.';window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
+      .then(function(res){if(res&&res.ok&&res.captured===true&&res.lead_id){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');document.getElementById('ok').querySelector('p').textContent='Brief saved. Reference: '+res.lead_id+'. We will contact you soon.';document.querySelector('#ok a[href^="https://wa.me/"]').href='https://wa.me/918903607506?text='+encodeURIComponent('Reference images for brief '+res.lead_id+(oid?' (order '+oid+')':''));window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
       .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';});
   });
 })();

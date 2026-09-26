@@ -114,12 +114,12 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
     <p class="sub">So we can personalise and deliver your invitation.</p>
     <form id="custForm" novalidate>
       <div class="row">
-        <div class="field"><label>Name <span class="req">*</span></label><input name="name" type="text" placeholder="Your name" required autocomplete="name"></div>
-        <div class="field"><label>Mobile <span class="req">*</span></label><input name="mobile" type="tel" placeholder="+91 ..." required pattern="[+0-9 ()-]{8,20}" autocomplete="tel"></div>
+        <div class="field"><label for="order-name">Name <span class="req">*</span></label><input id="order-name" name="name" type="text" placeholder="Your name" required autocomplete="name"></div>
+        <div class="field"><label for="order-mobile">Mobile <span class="req">*</span></label><input id="order-mobile" name="mobile" type="tel" placeholder="+91 ..." required pattern="[+0-9 ()-]{8,20}" autocomplete="tel"></div>
       </div>
       <div class="row">
-        <div class="field"><label>Email</label><input name="email" type="email" placeholder="your@email.com" autocomplete="email"></div>
-        <div class="field"><label>Event Date</label><input name="event_date" type="date"></div>
+        <div class="field"><label for="order-email">Email</label><input id="order-email" name="email" type="email" placeholder="your@email.com" autocomplete="email"></div>
+        <div class="field"><label for="order-event_date">Event Date</label><input id="order-event_date" name="event_date" type="date"></div>
       </div>
     </form>
   </section>
@@ -135,7 +135,7 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
   <section class="card step hidden" data-step="6">
     <div id="payView">
       <h1>Secure payment</h1>
-      <p class="sub">Pay securely to confirm your order. You'll receive an Order ID instantly.</p>
+      <p class="sub">Pay securely. We will confirm your order after payment verification.</p>
       <div class="summary" id="paySummary"></div>
       <button class="btn btn-pay" id="payBtn">Pay <span id="payAmt"></span> &amp; Place Order</button>
       <div class="err" id="payErr"></div>
