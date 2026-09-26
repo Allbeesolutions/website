@@ -16,11 +16,11 @@ window.AllBeeTrust = window.AllBeeTrust || {
   /* Case studies / recent work — real projects with an outcome. */
   caseStudies: [], // e.g. [{ title:'E-commerce site', client:'X Traders', result:'+38% enquiries', img:'/assets/cases/x.jpg', url:'#' }]
 
-  /* Authority numbers — students/businesses already true; fill the rest when available. */
-  authority: { students: '500+', businesses: '50+', projects: '', years: '', gst: '', udyam: '' },
+  /* Authority numbers — populate only after records can substantiate them. */
+  authority: { students: '', businesses: '', projects: '', years: '', gst: '', udyam: '' },
 
   /* Factual trust badges (NOT proof claims) — safe to show now. */
-  badges: ['On-time delivery', 'WhatsApp support', 'Secure & mobile-first', 'Based in Nagore, Tamil Nadu'],
+  badges: ['WhatsApp support', 'Based in Nagore, Tamil Nadu'],
 
   reviewsApi: '/api/reviews', /* approved customer reviews feed (already live) */
 };
