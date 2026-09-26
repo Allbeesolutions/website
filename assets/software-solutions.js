@@ -9,7 +9,7 @@ window.ALLBEE_SOFTWARE_SOLUTIONS = [
     client: 'Chai Al Saadah Cafeteria',
     industry: 'Restaurant & Hospitality',
     featured: false,
-    img: '/assets/portfolio/nagoorar.png',
+    img: '/assets/portfolio/nagoorar.webp',
     imgWidth: 2880,
     imgHeight: 1628,
     summary: 'Cloud-based restaurant management platform developed for Chai Al Saadah Cafeteria (UAE), featuring POS billing, kitchen operations, inventory management, expense tracking, VAT reporting, business analytics, and real-time operational dashboards.',
