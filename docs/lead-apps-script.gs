@@ -12,6 +12,7 @@
  *  3. Project Settings → Script properties:
  *        SHARED_SECRET = <long random string>   (match Vercel LEAD_SHARED_SECRET)
  *        NOTIFY_EMAIL  = contact@allbeesolutions.com
+ *        REFERENCE_FOLDER_ID = <private Google Drive folder ID for brief photos>
  *  4. Deploy → New deployment → Web app → Execute as: Me · Who has access: Anyone.
  *  5. Copy the Web app URL → Vercel env LEAD_APPS_SCRIPT_URL.  Authorize when prompted.
  *
@@ -48,9 +49,10 @@ function doPost(e) {
     var b = JSON.parse(e.postData.contents || '{}');
     var action = b.action;
     if (['lead','list','update','order_list','order_track','order_create','order_update','order_mark',
-      'review_public','review_list','review_create','review_moderate'].indexOf(action) === -1) {
+      'review_public','review_list','review_create','review_moderate','reference_upload'].indexOf(action) === -1) {
       return _json({ ok:false, error:'invalid_action', status:400 });
     }
+    if (action === 'reference_upload' && !secret) return _json({ ok:false, error:'upload_unavailable' });
     if (secret && b.secret !== secret) return _json({ ok:false, error:'unauthorized' });
 
     // Validate before sheet_() can create a header row or the lead branch can
@@ -62,8 +64,10 @@ function doPost(e) {
     }
 
     // Serialize writes so concurrent order_create / appends never collide on IDs.
-    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate');
+    var isWrite = (action === 'order_create' || action === 'order_update' || action === 'order_mark' || action === 'update' || action === 'lead' || action === 'review_create' || action === 'review_moderate' || action === 'reference_upload');
     if (isWrite) { lock = LockService.getScriptLock(); if (!lock.tryLock(25000)) return _json({ ok:false, error:'busy_try_again' }); }
+
+    if (action === 'reference_upload') return _json(referenceUpload_(b, props));
 
     // ----- reads (cheap, cacheable, paginated) -----
     if (action === 'list') {
@@ -117,6 +121,42 @@ function doPost(e) {
   } finally {
     if (lock) lock.releaseLock();
   }
+}
+
+/* Brief reference images stay in a private Drive folder. The Vercel endpoint
+   validates the signed lead token; this sink verifies the shared secret, lead
+   existence, content and per-lead count under the script write lock. */
+var REFERENCE_HEADERS = ['Lead ID','Uploaded','File ID','Filename','MIME','Bytes'];
+function referenceUpload_(b, props) {
+  var folderId = props.getProperty('REFERENCE_FOLDER_ID');
+  if (!folderId) return { ok:false, error:'upload_unavailable' };
+  var id = String(b.lead_id || '');
+  if (!/^AB-\d{4,12}$/.test(id)) return { ok:false, error:'invalid_lead' };
+  var leads = sheet_().getDataRange().getValues();
+  if (!leads.some(function(row, i){ return i > 0 && String(row[0]) === id; })) return { ok:false, error:'invalid_lead' };
+  var mime = String(b.mime || '');
+  if (['image/jpeg','image/png','image/webp'].indexOf(mime) === -1) return { ok:false, error:'invalid_image' };
+  var encoded = b.data;
+  if (typeof encoded !== 'string' || encoded.length > 2097152 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) return { ok:false, error:'invalid_image' };
+  var bytes = Utilities.base64Decode(encoded);
+  if (bytes.length < 16 || bytes.length > 1572864) return { ok:false, error:'invalid_image' };
+  var u = function(n){ return bytes[n] & 255; };
+  var valid = mime === 'image/jpeg' ? u(0)===255 && u(1)===216 && u(2)===255 :
+    mime === 'image/png' ? [137,80,78,71,13,10,26,10].every(function(v,i){return u(i)===v;}) :
+    [82,73,70,70].every(function(v,i){return u(i)===v;}) && [87,69,66,80].every(function(v,i){return u(i+8)===v;});
+  if (!valid) return { ok:false, error:'invalid_image' };
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName('References') || ss.insertSheet('References');
+  if (sh.getLastRow() === 0) { sh.appendRow(REFERENCE_HEADERS); sh.getRange(1,1,1,REFERENCE_HEADERS.length).setFontWeight('bold'); }
+  var rows = sh.getDataRange().getValues();
+  if (rows.filter(function(row,i){return i>0 && String(row[0])===id;}).length >= 3) return { ok:false, error:'limit_reached' };
+  var original = String(b.filename || '').replace(/^.*[\\/]/,'').replace(/[^a-zA-Z0-9._ -]/g,'_').replace(/^\.+/,'').slice(0,70) || 'reference';
+  var extension = { 'image/jpeg':'.jpg','image/png':'.png','image/webp':'.webp' }[mime];
+  var name = id + '-' + Utilities.getUuid().slice(0,8) + '-' + original.replace(/\.[^.]*$/,'') + extension;
+  var file = DriveApp.getFolderById(folderId).createFile(Utilities.newBlob(bytes, mime, name));
+  try { sh.appendRow([id, new Date().toISOString(), file.getId(), name, mime, bytes.length]); }
+  catch (err) { file.setTrashed(true); throw err; }
+  return { ok:true, id:file.getId() };
 }
 
 /* ===== Production-hardening helpers (Phase 1) ===== */

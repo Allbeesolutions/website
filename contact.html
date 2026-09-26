@@ -1031,7 +1031,8 @@ footer{
   .page-hero{padding-top:calc(var(--nav-h) + 40px); padding-bottom:56px}
   .hero-tag, .hero-stat-pill{display:none}
 
-  .wa-float{bottom:88px; right:16px; width:52px; height:52px}
+  .wa-float{display:none}
+  #chatWindow .chat-whatsapp{display:inline-flex}
   #chatBtn{right:16px; bottom:24px; width:52px; height:52px}
   #chatWindow{
     width:calc(100vw - 32px); right:16px; bottom:88px;
@@ -3763,6 +3764,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
   </div>
   <div class="chat-quick" id="chatQuick">
+    <a class="chat-qbtn chat-whatsapp" href="https://wa.me/918903607506?text=Hi%20AllBee%20Solutions!" target="_blank" rel="noopener" style="text-decoration:none">Chat on WhatsApp ↗</a>
     <button class="chat-qbtn" type="button" onclick="sendQuick('What courses do you offer?')">📚 Courses</button>
     <button class="chat-qbtn" type="button" onclick="sendQuick('Tell me about invitations')">💌 Invitations</button>
     <button class="chat-qbtn" type="button" onclick="sendQuick('What are the fees?')">💰 Fees</button>

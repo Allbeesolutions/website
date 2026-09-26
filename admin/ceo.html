@@ -44,9 +44,13 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
 .pipe{display:flex;flex-direction:column;gap:8px}
 .pr{display:flex;align-items:center;gap:10px}.pr .pl{width:90px;font-size:13px;font-weight:700}.pr .bar{flex:1;height:18px;background:var(--paper);border-radius:9px;overflow:hidden}.pr .bar span{display:block;height:100%;background:var(--teal);border-radius:9px}.pr .pn{width:30px;text-align:right;font-weight:800}
 .hidden{display:none}
+.admin-nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;background:#073f3a;color:#fff;padding:9px max(16px,calc((100vw - 1240px)/2));font:700 13px Lato,system-ui,sans-serif}
+.admin-nav span{margin-right:12px;color:#f0d47d}.admin-nav a{color:#fff;text-decoration:none;border-radius:7px;padding:6px 10px}.admin-nav a:hover,.admin-nav a[aria-current="page"]{background:#0f7b6e}
+.admin-nav a:focus-visible{outline:2px solid #f0d47d;outline-offset:2px}
 </style>
 </head>
 <body>
+<nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo" aria-current="page">Overview</a><a href="/admin/invitation-leads">Leads</a><a href="/admin/invitation-orders">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch">Launch</a></nav>
 <div class="top"><div><div class="t">AllBee · Executive Dashboard</div><div class="meta" id="meta">—</div></div>
   <div><button id="refresh">↻ Refresh</button> · <a href="/admin/invitation-orders">Orders</a> · <a href="/admin/invitation-leads">Leads</a></div></div>
 

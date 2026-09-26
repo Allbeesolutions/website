@@ -21,6 +21,8 @@
  *   CALLMEBOT_APIKEY       CallMeBot API key                                [optional]
  */
 
+const { issueToken } = require('../lib/reference-token');
+
 const EVENT_TYPES = ['Wedding', 'Nikah', 'Birthday', 'Housewarming', 'Dargah Event',
   'School Event', 'Business Event', 'Political Event', 'Other'];
 const INTEREST = ['PDF Invitation', 'Website Invitation', 'Both'];
@@ -200,6 +202,8 @@ module.exports = async (req, res) => {
     ok: true,
     captured: true,
     lead_id: results.sheet.id,
+    ...(enriched.source.startsWith('design_brief') && process.env.REFERENCE_UPLOAD_ENABLED === 'true' && process.env.LEAD_SHARED_SECRET
+      ? { upload_token: issueToken(String(results.sheet.id), process.env.LEAD_SHARED_SECRET) } : {}),
     notifications: {
       whatsapp: results.whatsapp && results.whatsapp.ok ? results.whatsapp.via || 'configured' : null,
     },

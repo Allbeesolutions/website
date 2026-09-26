@@ -34,6 +34,7 @@ a{color:inherit}
 .err{color:#b5302a;font-size:13px;margin-top:10px;display:none}.err.show{display:block}
 .ok{display:none;text-align:center;padding:30px 10px}.ok.show{display:block}.ok .big{font-size:2.4rem}.ok h2{font-family:Playfair Display,serif;margin:8px 0}
 .hp{position:absolute;left:-9999px}
+.upload-box{display:none;text-align:left;margin:22px 0;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:12px}.upload-box.show{display:block}.upload-box label{display:block;font-weight:700;margin-bottom:8px}.upload-box input{max-width:100%;margin-bottom:10px}.upload-box p{font-size:13px;color:var(--muted);margin:8px 0}.upload-box .btn{margin-top:8px}.upload-box .btn:disabled{opacity:.6;cursor:wait}
 </style>
 </head>
 <body>
@@ -71,7 +72,13 @@ a{color:inherit}
       <div class="err" id="err"></div>
     </form>
   </div>
-  <div class="card ok" id="ok"><div class="big">✅</div><h2>Brief received!</h2><p>Thank you — our design team has your details and will begin shortly. Please send any photos to us on WhatsApp.</p><p style="margin-top:14px"><a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="color:var(--teal-d);font-weight:700;text-decoration:none">Attach reference photos on WhatsApp →</a></p></div>
+  <div class="card ok" id="ok"><div class="big">✅</div><h2>Brief received!</h2><p>Thank you — our design team has your details and will begin shortly. You can attach reference photos below or send them on WhatsApp.</p><div class="upload-box" id="uploadBox">
+    <label for="referenceFiles">Upload reference photos</label>
+    <input id="referenceFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="uploadHelp">
+    <p id="uploadHelp">Up to 3 JPG, PNG or WebP images, 1.5 MB each. Files are linked to your brief and kept private.</p>
+    <button class="btn" id="uploadBtn" type="button">Upload photos</button>
+    <p id="uploadStatus" role="status" aria-live="polite"></p>
+  </div><p style="margin-top:14px"><a href="https://wa.me/918903607506" target="_blank" rel="noopener" style="color:var(--teal-d);font-weight:700;text-decoration:none">Attach reference photos on WhatsApp →</a></p></div>
 </div>
 <script>
 (function(){
@@ -79,6 +86,39 @@ a{color:inherit}
   var q=new URLSearchParams(location.search),oid=q.get('order')||q.get('order_id')||'';
   if(oid){document.getElementById('order_id').value=oid;var n=document.getElementById('ordNote');n.style.display='block';n.textContent='Brief for order '+oid;}
   var form=document.getElementById('briefForm'),err=document.getElementById('err'),go=document.getElementById('go');
+  function setupUpload(leadId,token){
+    var box=document.getElementById('uploadBox'),input=document.getElementById('referenceFiles');
+    var button=document.getElementById('uploadBtn'),status=document.getElementById('uploadStatus');
+    box.classList.add('show');
+    button.addEventListener('click',async function(){
+      var files=Array.from(input.files||[]);
+      if(!files.length){status.textContent='Choose photos to upload.';return;}
+      if(files.length>3 || files.some(function(file){return !['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>1536*1024||!file.size;})){
+        status.textContent='Choose up to 3 JPG, PNG or WebP images, 1.5 MB each.';return;
+      }
+      button.disabled=true;
+      var saved=0;
+      for(var i=0;i<files.length;i++){
+        status.textContent='Uploading photo '+(i+1)+' of '+files.length+'…';
+        try{
+          var data=await new Promise(function(resolve,reject){
+            var reader=new FileReader();
+            reader.onload=function(){resolve(String(reader.result).split(',')[1]||'');};
+            reader.onerror=reject;reader.readAsDataURL(files[i]);
+          });
+          var response=await fetch('/api/reference-upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead_id:leadId,upload_token:token,filename:files[i].name,mime:files[i].type,data:data})});
+          var result=await response.json();
+          if(!response.ok||!result.ok||!result.id)throw new Error(result.error||'upload_failed');
+          saved++;
+        }catch(e){
+          status.textContent=saved+' photo'+(saved===1?'':'s')+' saved. Photo '+(i+1)+' could not be saved. Send remaining photos on WhatsApp or try again.';
+          button.disabled=false;return;
+        }
+      }
+      status.textContent=saved+' photo'+(saved===1?'':'s')+' saved with brief '+leadId+'.';
+      input.value='';button.disabled=true;
+    });
+  }
   form.addEventListener('submit',function(e){
     e.preventDefault();err.classList.remove('show');
     if(form._gotcha.value)return;
@@ -90,7 +130,7 @@ a{color:inherit}
     go.disabled=true;go.textContent='Submitting…';
     fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
-      .then(function(res){if(res&&res.ok&&res.captured===true&&res.lead_id){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');document.getElementById('ok').querySelector('p').textContent='Brief saved. Reference: '+res.lead_id+'. We will contact you soon.';document.querySelector('#ok a[href^="https://wa.me/"]').href='https://wa.me/918903607506?text='+encodeURIComponent('Reference images for brief '+res.lead_id+(oid?' (order '+oid+')':''));window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
+      .then(function(res){if(res&&res.ok&&res.captured===true&&res.lead_id){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');document.getElementById('ok').querySelector('p').textContent='Brief saved. Reference: '+res.lead_id+'. We will contact you soon.';document.querySelector('#ok a[href^="https://wa.me/"]').href='https://wa.me/918903607506?text='+encodeURIComponent('Reference images for brief '+res.lead_id+(oid?' (order '+oid+')':''));if(res.upload_token){setupUpload(res.lead_id,res.upload_token);}window.scrollTo({top:0,behavior:'smooth'});}else{err.textContent='Something went wrong. Please try again or send your details on WhatsApp.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';}})
       .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Design Brief';});
   });
 })();

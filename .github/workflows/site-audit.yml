@@ -19,3 +19,5 @@ jobs:
           node scripts/audit.mjs
           node scripts/pricing-check.mjs
           node scripts/api-regression.mjs
+          node scripts/reference-upload-check.mjs
+          node scripts/reference-sink-check.mjs

@@ -106,9 +106,13 @@ a{color:inherit} button,select,input,textarea{font-family:inherit}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:var(--teal-d);color:#fff;padding:12px 22px;border-radius:100px;font-weight:700;font-size:.9rem;z-index:200;transition:transform .4s var(--ease);box-shadow:0 12px 30px rgba(0,0,0,.25)}
 .toast.show{transform:translate(-50%,0)}
 .banner{background:rgba(220,165,12,.14);border:1px solid rgba(220,165,12,.4);color:#7a5c06;border-radius:12px;padding:11px 14px;font-size:.85rem;font-weight:600;margin-bottom:14px;text-align:center}
+.admin-nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;background:#073f3a;color:#fff;padding:9px max(16px,calc((100vw - 1240px)/2));font:700 13px Lato,system-ui,sans-serif}
+.admin-nav span{margin-right:12px;color:#f0d47d}.admin-nav a{color:#fff;text-decoration:none;border-radius:7px;padding:6px 10px}.admin-nav a:hover,.admin-nav a[aria-current="page"]{background:#0f7b6e}
+.admin-nav a:focus-visible{outline:2px solid #f0d47d;outline-offset:2px}
 </style>
 </head>
 <body>
+<nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo">Overview</a><a href="/admin/invitation-leads" aria-current="page">Leads</a><a href="/admin/invitation-orders">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch">Launch</a></nav>
 
 <!-- Passcode lock -->
 <div class="lock" id="lock">
