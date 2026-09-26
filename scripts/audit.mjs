@@ -56,7 +56,20 @@ for (const loc of sitemap.matchAll(/<loc>https?:\/\/[^<]+<\/loc>/g)) {
   if (route.startsWith('/demo/')) target = route.replace(/^\//, '') + '.html';
   if (!exists(target) && ![...(config.rewrites || [])].some(r => r.source === route)) {
     issues.push(`sitemap target missing: ${route}`);
+    continue;
   }
+  const page = exists(target) ? read(target) : read((config.rewrites || []).find(r => r.source === route).destination.replace(/^\//, ''));
+  if (/<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(page)) issues.push(`noindex page in sitemap: ${route}`);
+  const canonical = page.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i)?.[1];
+  if (canonical !== url) issues.push(`sitemap canonical mismatch: ${route}`);
+}
+
+const sitemapUrls = new Set([...sitemap.matchAll(/<loc>(https?:\/\/[^<]+)<\/loc>/g)].map(match => match[1]));
+for (const rel of htmlFiles.filter(name => !name.includes('/') && name !== '404.html' && !name.startsWith('google'))) {
+  const html = read(rel);
+  if (/<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(html)) continue;
+  const canonical = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i)?.[1];
+  if (canonical && !sitemapUrls.has(canonical)) issues.push(`indexable page missing from sitemap: ${rel}`);
 }
 
 for (const rel of fs.readdirSync(path.join(root, 'api')).filter(name => name.endsWith('.js'))) {
