@@ -628,7 +628,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
     </button>
     <button type="button" class="pf-hero-card" data-id="suplaykart" aria-label="View Suplaykart project details" style="--slot:1;--angle:10deg;--layer:2;--delay:0.5700000000000001s">
       <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
-      <img src="/assets/portfolio/suplaykart.jpg" alt="Suplaykart project preview" width="486" height="860" decoding="async">
+      <img src="/assets/portfolio/suplaykart-ecommerce-concept-20261002.webp" alt="Suplaykart e-commerce storefront concept preview" width="1536" height="1024" decoding="async">
       <span class="pf-hero-card-label"><small>E-commerce platform</small>Suplaykart</span>
     </button>
     <button type="button" class="pf-hero-card" data-id="qadiri-palace" aria-label="View Qadiri Palace project details" style="--slot:2;--angle:20deg;--layer:1;--delay:0.69s">
@@ -853,7 +853,10 @@ var PF_PROJECTS = [
     client: 'Suplaykart',
     industry: 'Quick Commerce & Delivery',
     featured: true,
-    img: '/assets/portfolio/suplaykart.jpg',
+    img: '/assets/portfolio/suplaykart-ecommerce-concept-20261002.webp',
+    imageAlt: 'Suplaykart e-commerce storefront concept preview',
+    imgWidth: 1536,
+    imgHeight: 1024,
     summary: 'Hyperlocal e-commerce and delivery platform for Nagore — groceries, restaurant orders and pick-&-drop, with search, categories, cart and order tracking.',
     challenge: 'Nagore had no dedicated local platform for fast grocery and restaurant delivery with a modern app experience.',
     solution: 'Built a mobile-first quick-commerce platform: multi-category catalog (grocery, restaurants, pick & drop), product search, cart, wishlist, profiles, delivery zones and live order tracking.',
@@ -1037,7 +1040,7 @@ var ICONS = {
 /* ---- Card HTML ---- */
 function cardHTML(p, role){
   var thumb = p.img
-    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy" width="400" height="200">'
+    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.imageAlt || (p.name+' screenshot'))+'" loading="lazy" width="400" height="200">'
     : placeholderThumb(ICONS[p.categoryKey] || 'i-briefcase');
   return '<article class="pf-card'+(p.featured ? ' featured' : '')+'" '
     +(role ? 'role="listitem"' : '')
@@ -1092,7 +1095,7 @@ function openModal(id, trigger){
   // Image
   var imgEl = document.getElementById('pfModalImg');
   imgEl.innerHTML = p.img
-    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.name)+' screenshot" loading="lazy" width="800" height="450">'
+    ? '<img src="'+esc(p.img)+'" alt="'+esc(p.imageAlt || (p.name+' screenshot'))+'" loading="lazy" width="800" height="450">'
     : placeholderThumb(ICONS[p.categoryKey] || 'i-briefcase');
 
   // Cat + title

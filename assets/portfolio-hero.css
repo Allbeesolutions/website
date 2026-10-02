@@ -52,3 +52,10 @@
 @media(prefers-reduced-motion:reduce) {
   .pf-hero-copy > *,.pf-hero-card { animation:none;transition:none; }
 }
+
+/* Preserve the approved storefront composition in the tall hero card. */
+.pf-hero-card[data-id="suplaykart"] { background:#f8cb46; }
+.pf-hero-card[data-id="suplaykart"] img { object-fit:contain;object-position:center 35%;background:#f8cb46; }
+
+.pf-card[data-id="suplaykart"] .pf-thumb { background:#f8cb46; }
+.pf-card[data-id="suplaykart"] .pf-thumb img { object-fit:contain;object-position:center; }
