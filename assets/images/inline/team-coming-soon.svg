@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1280" role="img" aria-labelledby="title desc">
+  <title id="title">Team member coming soon</title>
+  <desc id="desc">Neutral anonymous profile silhouette.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9efed"/>
+      <stop offset="1" stop-color="#cfd9d6"/>
+    </linearGradient>
+    <radialGradient id="halo" cx=".5" cy=".34" r=".52">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="1280" fill="url(#bg)"/>
+  <rect width="960" height="1280" fill="url(#halo)"/>
+  <circle cx="480" cy="430" r="170" fill="#7b8985"/>
+  <path d="M145 1160c20-260 145-430 335-430s315 170 335 430v120H145z" fill="#65736f"/>
+  <path d="M352 620c32 58 74 88 128 88s96-30 128-88v122c-38 52-80 78-128 78s-90-26-128-78z" fill="#73817d"/>
+  <circle cx="480" cy="430" r="236" fill="none" stroke="#0f7b6e" stroke-opacity=".14" stroke-width="10"/>
+  <g fill="#0f7b6e" opacity=".82">
+    <circle cx="430" cy="432" r="12"/>
+    <circle cx="530" cy="432" r="12"/>
+  </g>
+  <path d="M426 520c36 25 72 25 108 0" fill="none" stroke="#53615d" stroke-width="12" stroke-linecap="round"/>
+</svg>
