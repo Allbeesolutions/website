@@ -179,3 +179,31 @@ body:has(.mobile-menu.open) #allbee-assistant{visibility:hidden}
 }
 @media(prefers-reduced-motion:reduce){#allbee-assistant .ab-launcher{transition:none}}
 @media print{#allbee-assistant{display:none!important}}
+
+/* Global AllBee dark theme */
+html[data-site-theme="dark"] #allbee-assistant{color:#dce9e5}
+html[data-site-theme="dark"] #allbee-assistant .ab-greeting{
+  background:#0d211b;border-color:#24483e;color:#8adfcc;box-shadow:0 12px 34px rgba(0,0,0,.34)
+}
+html[data-site-theme="dark"] #allbee-assistant #chatWindow{
+  background:#091712;border-color:#24483e;box-shadow:0 24px 80px rgba(0,0,0,.48)
+}
+html[data-site-theme="dark"] #allbee-assistant .ab-chat header{
+  background:#0e251e;border-bottom-color:#24483e
+}
+html[data-site-theme="dark"] #allbee-assistant .ab-chat header strong{color:#8adfcc}
+html[data-site-theme="dark"] #allbee-assistant .ab-chat header span,
+html[data-site-theme="dark"] #allbee-assistant .ab-chat-status,
+html[data-site-theme="dark"] #allbee-assistant .ab-note{color:#9db4ad}
+html[data-site-theme="dark"] #allbee-assistant #chatMsgs{background:#091712}
+html[data-site-theme="dark"] #allbee-assistant .ab-bubble.assistant{
+  background:#10271f;color:#dce9e5;border-color:#21463b
+}
+html[data-site-theme="dark"] #allbee-assistant .ab-bubble a{color:#79dbc4}
+html[data-site-theme="dark"] #allbee-assistant .ab-quick button{
+  background:#10271f;color:#9ee3d2;border-color:#285044
+}
+html[data-site-theme="dark"] #allbee-assistant #chatInput{
+  background:#0d211b;color:#f4faf7;border-color:#285044
+}
+html[data-site-theme="dark"] #allbee-assistant .ab-stop{background:#142b24;color:#9ee3d2}

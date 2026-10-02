@@ -34,21 +34,33 @@
   });
 })();
 
-/* Premium global footer: theme state is footer-local and persistent. */
+/* Global AllBee theme: footer toggle controls the whole site and persists. */
 (function(){
-  function initFooterTheme(){
-    var footer=document.querySelector('.ab-footer'); if(!footer) return;
-    var key='allbee-footer-theme-v1', saved='light';
-    try{saved=localStorage.getItem(key)||'light';}catch(e){}
-    if(saved!=='dark') saved='light';
-    function apply(theme){
+  function initSiteThemeControl(){
+    var footer=document.querySelector('.ab-footer');
+    if(!footer) return;
+    function current(){
+      return (window.AllBeeTheme&&window.AllBeeTheme.get)?window.AllBeeTheme.get():(document.documentElement.getAttribute('data-site-theme')||'light');
+    }
+    function applyUI(theme){
       footer.setAttribute('data-footer-theme',theme);
       var btn=footer.querySelector('.footer-theme-button');
-      if(btn){btn.setAttribute('aria-pressed',String(theme==='dark'));btn.setAttribute('aria-label',theme==='dark'?'Use light footer theme':'Use dark footer theme');}
-      var label=footer.querySelector('.footer-theme-label'); if(label) label.textContent=theme==='dark'?'Dark':'Light';
+      if(btn){
+        btn.setAttribute('aria-pressed',String(theme==='dark'));
+        btn.setAttribute('aria-label',theme==='dark'?'Use light site theme':'Use dark site theme');
+      }
     }
-    apply(saved);
-    var btn=footer.querySelector('.footer-theme-button'); if(btn) btn.addEventListener('click',function(){var next=footer.getAttribute('data-footer-theme')==='dark'?'light':'dark';try{localStorage.setItem(key,next);}catch(e){}apply(next);});
+    applyUI(current());
+    var btn=footer.querySelector('.footer-theme-button');
+    if(btn) btn.addEventListener('click',function(){
+      var next=window.AllBeeTheme&&window.AllBeeTheme.toggle?window.AllBeeTheme.toggle():(current()==='dark'?'light':'dark');
+      if(!window.AllBeeTheme){
+        document.documentElement.setAttribute('data-site-theme',next);
+        document.documentElement.style.colorScheme=next;
+      }
+      applyUI(next);
+    });
+    document.addEventListener('allbee:themechange',function(e){applyUI(e.detail&&e.detail.theme==='dark'?'dark':'light');});
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initFooterTheme);else initFooterTheme();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initSiteThemeControl);else initSiteThemeControl();
 })();

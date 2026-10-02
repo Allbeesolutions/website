@@ -1,0 +1,43 @@
+/* Theme bridge for AllBee utility flows that intentionally do not load site-core.css. */
+html[data-site-theme="dark"]{
+  color-scheme:dark;
+  --teal:#55CDB8;
+  --teal-d:#8ADFCC;
+  --teal-l:#6AD8C3;
+  --gold:#E5B83D;
+  --ink:#F4FAF7;
+  --muted:#A7BBB4;
+  --paper:#07130F;
+  --line:rgba(111,213,187,.18);
+  --s-1:#0A1915;
+  --s-3:#102A22;
+  --border:rgba(111,213,187,.18);
+  --ok:#45C879;
+}
+html[data-site-theme="dark"] body{background:var(--paper)!important;color:var(--ink)!important}
+html[data-site-theme="dark"] .card,
+html[data-site-theme="dark"] .opt,
+html[data-site-theme="dark"] .summary,
+html[data-site-theme="dark"] .upload-box{
+  background:#0A1915!important;
+  color:var(--ink)!important;
+  border-color:var(--line)!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.28)!important;
+}
+html[data-site-theme="dark"] .field input,
+html[data-site-theme="dark"] .field select,
+html[data-site-theme="dark"] .field textarea{
+  background:#0D211B!important;
+  color:var(--ink)!important;
+  border-color:var(--line)!important;
+}
+html[data-site-theme="dark"] input::placeholder,
+html[data-site-theme="dark"] textarea::placeholder{color:#829A92}
+html[data-site-theme="dark"] .timeline li .dot{background:#0D211B;border-color:var(--line)}
+html[data-site-theme="dark"] .timeline li.done .dot{background:var(--ok);border-color:var(--ok)}
+html[data-site-theme="dark"] .demo-note{
+  background:rgba(229,184,61,.10)!important;
+  border-color:rgba(229,184,61,.28)!important;
+  color:#F2CB64!important;
+}
+html[data-site-theme="dark"] a{color:inherit}

@@ -1127,3 +1127,181 @@ img,svg,video{max-width:100%;height:auto;display:block}
   .ab-footer .footer-theme-button,
   .ab-footer .footer-theme-button::after{transition:none!important}
 }
+
+/* =================================================================
+   GLOBAL SITE THEME · Light default / premium dark
+   The footer toggle controls document[data-site-theme].
+================================================================= */
+html[data-site-theme="dark"]{
+  color-scheme:dark;
+  --teal:#55CDB8;
+  --teal-d:#8ADFCC;
+  --teal-l:#6AD8C3;
+  --teal-gl:rgba(85,205,184,.14);
+  --yellow:#E5B83D;
+  --yellow-d:#F2CB64;
+  --yellow-gl:rgba(229,184,61,.12);
+  --ink:#F4FAF7;
+  --ink-2:#D6E5E0;
+  --muted:#A7BBB4;
+  --faint:#829A92;
+  --s-0:#07130F;
+  --s-1:#0A1915;
+  --s-2:#0D211B;
+  --s-3:#102A22;
+  --s-4:#17392F;
+  --border:rgba(111,213,187,.16);
+  --border-strong:rgba(111,213,187,.34);
+  --border-y:rgba(229,184,61,.28);
+  --shadow-1:0 2px 10px rgba(0,0,0,.22);
+  --shadow-2:0 10px 28px rgba(0,0,0,.28);
+  --shadow-3:0 18px 52px rgba(0,0,0,.34);
+  --shadow-teal:0 10px 42px rgba(30,150,126,.16);
+  --shadow-y:0 10px 36px rgba(181,132,20,.14);
+}
+html[data-site-theme="dark"] body{
+  background:var(--s-0)!important;
+  color:var(--ink)!important;
+}
+html[data-site-theme="dark"] #navbar{
+  background:rgba(7,19,15,.90)!important;
+  border-bottom-color:var(--border)!important;
+}
+html[data-site-theme="dark"] #navbar.scrolled{
+  background:rgba(7,19,15,.97)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.28)!important;
+}
+html[data-site-theme="dark"] .mobile-menu{
+  background:rgba(7,19,15,.98)!important;
+  border-color:var(--border)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.32)!important;
+}
+html[data-site-theme="dark"] .nav-logo-text strong,
+html[data-site-theme="dark"] .nav-links a,
+html[data-site-theme="dark"] .mobile-menu a{color:var(--ink-2)}
+html[data-site-theme="dark"] .nav-links a:hover,
+html[data-site-theme="dark"] .mobile-menu a:hover{color:var(--ink);background:var(--s-2)}
+html[data-site-theme="dark"] .hamburger{background:rgba(85,205,184,.08);border-color:var(--border)}
+html[data-site-theme="dark"] .hamburger span{background:var(--ink)}
+
+html[data-site-theme="dark"] .hero,
+html[data-site-theme="dark"] .page-hero,
+html[data-site-theme="dark"] main,
+html[data-site-theme="dark"] section{
+  color:var(--ink);
+}
+html[data-site-theme="dark"] .hero-tag,
+html[data-site-theme="dark"] .hero-stat-pill{
+  background:rgba(13,33,27,.92)!important;
+  border-color:var(--border-strong)!important;
+  color:var(--ink-2)!important;
+}
+html[data-site-theme="dark"] .acs-card,
+html[data-site-theme="dark"] .crsx-card,
+html[data-site-theme="dark"] .rt-card,
+html[data-site-theme="dark"] .ptable,
+html[data-site-theme="dark"] .combo-card,
+html[data-site-theme="dark"] .svx-card,
+html[data-site-theme="dark"] .story2-hl,
+html[data-site-theme="dark"] .path-card,
+html[data-site-theme="dark"] .inv-cat-card,
+html[data-site-theme="dark"] .inv-feat,
+html[data-site-theme="dark"] .inv-step,
+html[data-site-theme="dark"] .inv-why,
+html[data-site-theme="dark"] .inv-faq-item,
+html[data-site-theme="dark"] .inv-price-table-scroll,
+html[data-site-theme="dark"] .fcar-arrow,
+html[data-site-theme="dark"] .abp-card{
+  background:var(--s-1)!important;
+  border-color:var(--border)!important;
+  color:var(--ink)!important;
+  box-shadow:var(--shadow-1)!important;
+}
+html[data-site-theme="dark"] .fih-icon .fih-tile{
+  background:rgba(13,33,27,.88)!important;
+  border-color:var(--border)!important;
+}
+html[data-site-theme="dark"] .fs-corner{background:rgba(244,250,247,.78)!important}
+html[data-site-theme="dark"] .views-card.views-gold .views-save{
+  background:rgba(229,184,61,.14)!important;
+  color:var(--yellow-d)!important;
+}
+html[data-site-theme="dark"] table{
+  color:var(--ink);
+  border-color:var(--border);
+}
+html[data-site-theme="dark"] th,
+html[data-site-theme="dark"] td{border-color:var(--border)!important}
+html[data-site-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+html[data-site-theme="dark"] select,
+html[data-site-theme="dark"] textarea{
+  background:var(--s-1)!important;
+  color:var(--ink)!important;
+  border-color:var(--border-strong)!important;
+}
+html[data-site-theme="dark"] input::placeholder,
+html[data-site-theme="dark"] textarea::placeholder{color:var(--faint)!important}
+html[data-site-theme="dark"] option{background:var(--s-1);color:var(--ink)}
+html[data-site-theme="dark"] .modal,
+html[data-site-theme="dark"] [role="dialog"]:not(#chatWindow){
+  background:var(--s-1);
+  color:var(--ink);
+  border-color:var(--border)!important;
+}
+html[data-site-theme="dark"] .modal-overlay{background:rgba(0,0,0,.72)}
+html[data-site-theme="dark"] hr{border-color:var(--border)}
+
+html[data-site-theme="dark"] .ab-footer{
+  --abf-bg:#07130f;
+  --abf-surface:#0d1d18;
+  --abf-ink:#f4faf7;
+  --abf-muted:#a8b9b3;
+  --abf-line:rgba(133,203,184,.18);
+  --abf-soft:#122a23;
+  --abf-accent:#68d0b6;
+  --abf-accent-strong:#93e0cc;
+  background:
+    radial-gradient(circle at 10% 8%,rgba(15,123,110,.18),transparent 34%),
+    radial-gradient(circle at 88% 90%,rgba(220,165,12,.07),transparent 27%),
+    var(--abf-bg);
+}
+html[data-site-theme="light"] .ab-footer{--abf-bg:#eaf4f1}
+html[data-site-theme="dark"] .footer-theme-button::after{transform:translateX(23px)}
+
+@media(prefers-reduced-motion:no-preference){
+  html body,
+  html #navbar,
+  html .mobile-menu,
+  html .ab-footer{
+    transition:background-color .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease;
+  }
+}
+
+/* Page-specific light surfaces that predate shared tokens. */
+html[data-site-theme="dark"]{
+  --paper:#07130F;
+  --line:rgba(111,213,187,.16);
+  --gold:#E5B83D;
+}
+html[data-site-theme="dark"] .pf-fan-hero{
+  background:
+    radial-gradient(ellipse at 15% 30%,rgba(85,205,184,.10),transparent 48%),
+    radial-gradient(ellipse at 88% 65%,rgba(229,184,61,.09),transparent 44%),
+    var(--s-0)!important;
+}
+html[data-site-theme="dark"] .cat-card,
+html[data-site-theme="dark"] .faq,
+html[data-site-theme="dark"] .tst,
+html[data-site-theme="dark"] .alt{
+  background:var(--s-1)!important;
+  border-color:var(--border)!important;
+  color:var(--ink)!important;
+}
+html[data-site-theme="dark"] .pf-hero-card{
+  border-color:rgba(244,250,247,.16)!important;
+  box-shadow:0 20px 46px rgba(0,0,0,.34)!important;
+}
+html[data-site-theme="dark"] .pf-hero-card-chrome{
+  background:rgba(13,33,27,.92)!important;
+  border-bottom-color:var(--border)!important;
+}
