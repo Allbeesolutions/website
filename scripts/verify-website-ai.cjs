@@ -27,7 +27,7 @@ async function request(body,headers={},method='POST'){
  if(old)process.env.ALLBEE_WEBSITE_AI_TOKEN=old;else delete process.env.ALLBEE_WEBSITE_AI_TOKEN;
  const req={headers:{'x-forwarded-for':'rate-limit-test'}};
  const res={setHeader(){},end(){return true}};assert.equal(guard(req,res,'test',1,3600000),null);assert.equal(guard(req,res,'test',1,3600000),true);assert.equal(res.statusCode,429);
- const pages=JSON.parse(fs.readFileSync('.ai/WEBSITE_AI_PAGES.json'));
+ const pages=fs.readdirSync('.').filter(p=>p.endsWith('.html')&&fs.readFileSync(p,'utf8').includes('/assets/allbee-assistant.js'));assert.equal(pages.length,23);
  for(const page of pages){const s=fs.readFileSync(page,'utf8');assert.equal((s.match(/src="\/assets\/allbee-assistant.js/g)||[]).length,1,page);assert(!s.includes('<button id="chatBtn"'),page);}
  const js=fs.readFileSync('assets/allbee-assistant.js','utf8');
  assert(!js.includes('__RIG__'));assert(js.includes('document.createTextNode'));assert(!js.includes('div.innerHTML = text'));
