@@ -335,5 +335,6 @@ Promise.all([
 fetch('/api/health').then(r=>r.json()).then(h=>{const el=document.getElementById('paymentStatus');if(!el)return;if(h&&h.checks&&h.checks.razorpay){el.textContent='🔒 Payments are processed securely via Razorpay. We never store your card details.';}else{el.textContent='ℹ️ Online payment is not active yet. Your order request can still be saved; no payment will be taken until checkout is enabled.';}}).catch(()=>{const el=document.getElementById('paymentStatus');if(el)el.textContent='ℹ️ Online checkout status is unavailable. No payment is taken unless the secure gateway opens.'});
 </script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
+<script src="/assets/site-analytics.js?v=20261003" defer></script>
 </body>
 </html>
