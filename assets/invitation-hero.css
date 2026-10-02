@@ -17,7 +17,7 @@
 .inv-marquee-card span{position:absolute;inset:auto 0 0;padding:30px 12px 13px;background:linear-gradient(transparent,rgba(4,28,25,.85));font-size:13px;font-weight:700;text-align:left}
 .inv-marquee-card:focus-visible{outline:3px solid var(--teal);outline-offset:5px}
 .inv-marquee:hover .inv-marquee-track,.inv-marquee:focus-within .inv-marquee-track,.is-paused .inv-marquee-track{animation-play-state:paused}
-.inv-marquee-toggle{border:1px solid rgba(15,123,110,.25);border-radius:100px;background:rgba(255,255,255,.7);color:var(--teal-d);font:600 12px inherit;font-family:inherit;font-size:12px;padding:8px 14px;cursor:pointer}
+.inv-marquee-toggle{border:1px solid rgba(15,123,110,.25);border-radius:100px;background:rgba(255,255,255,.7);color:var(--teal-d);font-family:inherit;font-size:12px;font-weight:600;padding:8px 14px;cursor:pointer}
 .inv-marquee-toggle:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
 @keyframes invPreviewLoop{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(max-width:600px){
@@ -39,3 +39,8 @@
  .inv-marquee-group[aria-hidden]{display:none}
  .inv-marquee-toggle{display:none}
 }
+
+/* Keyboard users browse a stationary scrollable row. */
+.inv-marquee:focus-within{overflow-x:auto;mask-image:none}
+.inv-marquee:focus-within .inv-marquee-track{animation:none;transform:none}
+.inv-marquee:focus-within .inv-marquee-group[aria-hidden]{display:none}
