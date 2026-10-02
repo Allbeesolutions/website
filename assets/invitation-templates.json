@@ -1,0 +1,492 @@
+[
+  {
+    "id": "AB-WED-001",
+    "name": "Royal Mandap",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "hindu-wedding"
+  },
+  {
+    "id": "AB-WED-002",
+    "name": "Floral Symphony",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "hindu-wedding"
+  },
+  {
+    "id": "AB-WED-003",
+    "name": "Golden Vows",
+    "event": "Wedding",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "christian-wedding"
+  },
+  {
+    "id": "AB-WED-004",
+    "name": "Classic Elegance",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "christian-wedding"
+  },
+  {
+    "id": "AB-WED-005",
+    "name": "Story Timeline",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "wedding-timeline"
+  },
+  {
+    "id": "AB-WED-006",
+    "name": "The Editorial",
+    "event": "Wedding",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "wedding-magazine"
+  },
+  {
+    "id": "AB-WED-007",
+    "name": "Cinema Trailer",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "cinema-trailer"
+  },
+  {
+    "id": "AB-WED-008",
+    "name": "Netflix Premiere",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "netflix-premiere"
+  },
+  {
+    "id": "AB-WED-009",
+    "name": "Passport Journey",
+    "event": "Wedding",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "passport-journey"
+  },
+  {
+    "id": "AB-WED-010",
+    "name": "Newspaper Edition",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "newspaper-special"
+  },
+  {
+    "id": "AB-NIK-001",
+    "name": "Noor Nikah",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "muslim-wedding"
+  },
+  {
+    "id": "AB-NIK-002",
+    "name": "Crescent Elegance",
+    "event": "Nikah",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "muslim-wedding"
+  },
+  {
+    "id": "AB-NIK-003",
+    "name": "Golden Walima",
+    "event": "Nikah",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "muslim-wedding"
+  },
+  {
+    "id": "AB-NIK-004",
+    "name": "Bismillah Bliss",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "muslim-wedding"
+  },
+  {
+    "id": "AB-NIK-005",
+    "name": "Ottoman Empire",
+    "event": "Nikah",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "nikah-ottoman"
+  },
+  {
+    "id": "AB-NIK-006",
+    "name": "Makkah Night",
+    "event": "Nikah",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "nikah-makkah-night"
+  },
+  {
+    "id": "AB-NIK-007",
+    "name": "Islamic Geometry",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "nikah-geometry"
+  },
+  {
+    "id": "AB-NIK-008",
+    "name": "Noor",
+    "event": "Nikah",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "nikah-noor"
+  },
+  {
+    "id": "AB-NIK-009",
+    "name": "Arabic Calligraphy",
+    "event": "Nikah",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "nikah-calligraphy"
+  },
+  {
+    "id": "AB-NIK-010",
+    "name": "Royal Scroll",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "royal-scroll"
+  },
+  {
+    "id": "AB-BIR-001",
+    "name": "Confetti Pop",
+    "event": "Birthday",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "birthday"
+  },
+  {
+    "id": "AB-BIR-002",
+    "name": "Golden Year",
+    "event": "Birthday",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "birthday"
+  },
+  {
+    "id": "AB-BIR-003",
+    "name": "Little Star",
+    "event": "Birthday",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "birthday"
+  },
+  {
+    "id": "AB-BIR-004",
+    "name": "Neon Nights",
+    "event": "Birthday",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "birthday"
+  },
+  {
+    "id": "AB-BIR-005",
+    "name": "VIP Access",
+    "event": "Birthday",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "birthday-vip"
+  },
+  {
+    "id": "AB-BIR-006",
+    "name": "Museum Exhibit",
+    "event": "Birthday",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "museum-exhibit"
+  },
+  {
+    "id": "AB-BIR-007",
+    "name": "Album Launch",
+    "event": "Birthday",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "album-launch"
+  },
+  {
+    "id": "AB-BIR-008",
+    "name": "Space Journey",
+    "event": "Birthday",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "space-journey"
+  },
+  {
+    "id": "AB-BIR-009",
+    "name": "Royal Birthday",
+    "event": "Birthday",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "royal-birthday"
+  },
+  {
+    "id": "AB-BIR-010",
+    "name": "Fun Fiesta",
+    "event": "Birthday",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "fun-fiesta"
+  },
+  {
+    "id": "AB-HOU-001",
+    "name": "The Blueprint",
+    "event": "Housewarming",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "housewarming-blueprint"
+  },
+  {
+    "id": "AB-HOU-002",
+    "name": "Time Capsule",
+    "event": "Housewarming",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "time-capsule"
+  },
+  {
+    "id": "AB-HOU-003",
+    "name": "Sweet Home",
+    "event": "Housewarming",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "sweet-home"
+  },
+  {
+    "id": "AB-HOU-004",
+    "name": "Blessed Abode",
+    "event": "Housewarming",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "blessed-abode"
+  },
+  {
+    "id": "AB-HOU-005",
+    "name": "Housewarming Joy",
+    "event": "Housewarming",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "housewarming-joy"
+  },
+  {
+    "id": "AB-BIZ-001",
+    "name": "Grand Launch",
+    "event": "Business Event",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "business-launch"
+  },
+  {
+    "id": "AB-BIZ-002",
+    "name": "Corporate Prestige",
+    "event": "Business Event",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "business-launch"
+  },
+  {
+    "id": "AB-BIZ-003",
+    "name": "Grand Opening",
+    "event": "Business Event",
+    "pkgs": [
+      "Elite"
+    ],
+    "demo": "business-opening"
+  },
+  {
+    "id": "AB-BIZ-004",
+    "name": "Luxury Watch",
+    "event": "Business Event",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "luxury-watch"
+  },
+  {
+    "id": "AB-BIZ-005",
+    "name": "Opening Gala",
+    "event": "Business Event",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "opening-gala"
+  },
+  {
+    "id": "AB-WED-011",
+    "name": "Botanical Letterpress",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "botanical-letterpress"
+  },
+  {
+    "id": "AB-NIK-011",
+    "name": "Emerald Crescent",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "emerald-crescent"
+  },
+  {
+    "id": "AB-BIR-011",
+    "name": "Midnight Celebration",
+    "event": "Birthday",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "midnight-celebration"
+  },
+  {
+    "id": "AB-WED-012",
+    "name": "Sakeenah Luxe",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "sakeenah-luxe"
+  },
+  {
+    "id": "AB-WED-013",
+    "name": "Modern Vows",
+    "event": "Wedding",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "modern-vows"
+  },
+  {
+    "id": "AB-WED-014",
+    "name": "Weddingly Story",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "weddingly-story"
+  },
+  {
+    "id": "AB-NIK-012",
+    "name": "Noor Garden",
+    "event": "Nikah",
+    "pkgs": [
+      "Basic",
+      "Premium",
+      "Elite"
+    ],
+    "demo": "noor-garden"
+  },
+  {
+    "id": "AB-WED-015",
+    "name": "Celebration Gallery",
+    "event": "Wedding",
+    "pkgs": [
+      "Premium",
+      "Elite"
+    ],
+    "demo": "celebration-gallery"
+  }
+]

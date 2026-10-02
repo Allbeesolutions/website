@@ -190,6 +190,7 @@ const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',am
   if(q.get('demo'))order.demo=q.get('demo').slice(0,40);
   if(q.get('source'))order.source=q.get('source');})();
 let step=1; const TOTAL=6;
+let selectedTemplate=null;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 
 function renderSteps(){
@@ -233,10 +234,15 @@ $('#typeGrid').innerHTML=TYPES.map(t=>`<div class="opt" data-type="${t.k}"><h3>$
   const f=$('#custForm'); if(order.name)f.name.value=order.name; if(order.mobile)f.mobile.value=order.mobile;
   if(order.email)f.email.value=order.email; if(order.event_date)f.event_date.value=order.event_date;
 })();
+function allowedPackages(){
+  return selectedTemplate && Array.isArray(selectedTemplate.pkgs) ? selectedTemplate.pkgs : ['Basic','Premium','Elite'];
+}
 function buildPackages(){
   $('#pkgFor').textContent=order.type;
   const p=PRICING[order.type];
-  $('#pkgGrid').innerHTML=['Basic','Premium','Elite'].map(k=>`
+  const allowed=allowedPackages();
+  if(order.pkg && !allowed.includes(order.pkg)) order.pkg='';
+  $('#pkgGrid').innerHTML=['Basic','Premium','Elite'].filter(k=>allowed.includes(k)).map(k=>`
     <div class="opt ${k==='Premium'?'':''}" data-pkg="${k}">
       ${k==='Premium'?'<span class="pop">Most Popular</span>':''}
       <h3>${k}</h3><div class="price">${fmt(p[k])}</div>
@@ -319,7 +325,13 @@ $('#payBtn').onclick=async(e)=>{
   function reset(){ $('#payBtn').disabled=false; $('#payBtn').innerHTML='Pay <span id="payAmt">'+fmt(amount())+'</span> &amp; Place Order'; }
 };
 
-loadPricing().finally(function(){ show(); gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''}); });
+Promise.all([
+  loadPricing(),
+  order.template_id ? fetch('/assets/invitation-templates.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]).then(rows=>{
+    selectedTemplate=Array.isArray(rows)?rows.find(t=>t.id===order.template_id)||null:null;
+    if(order.template_id && !selectedTemplate){ order.template_id=''; order.template_name=''; order.demo=''; }
+  }).catch(()=>{ selectedTemplate=null; }) : Promise.resolve()
+]).finally(function(){ show(); gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''}); });
 fetch('/api/health').then(r=>r.json()).then(h=>{const el=document.getElementById('paymentStatus');if(!el)return;if(h&&h.checks&&h.checks.razorpay){el.textContent='🔒 Payments are processed securely via Razorpay. We never store your card details.';}else{el.textContent='ℹ️ Online payment is not active yet. Your order request can still be saved; no payment will be taken until checkout is enabled.';}}).catch(()=>{const el=document.getElementById('paymentStatus');if(el)el.textContent='ℹ️ Online checkout status is unavailable. No payment is taken unless the secure gateway opens.'});
 </script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>

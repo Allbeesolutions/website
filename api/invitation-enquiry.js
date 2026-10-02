@@ -24,7 +24,7 @@
 const { guard, noStore } = require('./_security');
 const EVENT_TYPES = ['Wedding', 'Nikah', 'Birthday', 'Housewarming', 'Dargah Event',
   'School Event', 'Business Event', 'Political Event', 'Other'];
-const INTEREST = ['PDF Invitation', 'Website Invitation', 'Both'];
+const INTEREST = ['PDF Invitation', 'Website Invitation', 'Both', 'Both (PDF + Website)', 'Website Development', 'Digital Marketing', 'Branding & Design', 'Software / App', 'Other'];
 
 const s = (v) => (typeof v === 'string' ? v.trim() : '');
 const clip = (v, n) => s(v).slice(0, n);

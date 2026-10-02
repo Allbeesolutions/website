@@ -28,9 +28,11 @@ module.exports = async (req, res) => {
   const lead_id = s(b.lead_id).slice(0,20), source = s(b.source).slice(0,60) || '/order';
   const template_id = s(b.template_id).slice(0,20), template_name = s(b.template_name).slice(0,60), demo = s(b.demo).slice(0,40);
 
-  // validate + authoritative price
+  // validate + authoritative price. If a catalogue design was selected, its
+  // published package eligibility is authoritative on the server as well as in the UI.
   const price = PRICING[type] && PRICING[type][pkg];
-  if (!EVENTS.includes(event) || !price || name.length < 2 || !/^[+0-9 ()\-]{8,20}$/.test(mobile)) {
+  const packageAllowed = catalog.templateAllowsPackage(template_id, pkg);
+  if (!EVENTS.includes(event) || !price || !packageAllowed || name.length < 2 || !/^[+0-9 ()\-]{8,20}$/.test(mobile)) {
     res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'validation_error' }));
   }
   const amountPaise = price * 100;

@@ -3882,60 +3882,22 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
   </article>
 </div>
 
-<!-- Enrollment modal -->
+<!-- Context-aware enquiry modal -->
 <div class="modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal">
-    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog">
-      <svg aria-hidden="true"><use href="#i-x"/></svg>
-    </button>
-    <div class="modal-icon" aria-hidden="true"><svg><use href="#i-grad-cap"/></svg></div>
-    <div id="modal-title" class="modal-title">Free Career Counseling</div>
-    <p class="modal-sub">Our team will contact you to discuss the course and your goals.</p>
-    <form data-form="allbee" id="enrollForm" method="GET" action="https://wa.me/918903607506">
-      <input type="hidden" name="_subject" value="New counseling lead — AllBee Solutions">
-      <input type="hidden" name="form_source" value="counseling_modal">
+    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    <div class="modal-icon" aria-hidden="true"><svg><use href="#i-send"/></svg></div>
+    <div id="modal-title" class="modal-title">Invitation Enquiry</div>
+    <p class="modal-sub">Tell us about your event and the invitation format you are considering. We’ll guide you to a suitable design and package.</p>
+    <form data-form="allbee" id="enrollForm">
+      <input type="hidden" name="_subject" value="New invitation enquiry — AllBee Solutions">
+      <input type="hidden" name="form_source" value="invitation_modal">
       <input type="text" name="_gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="form-group">
-        <label for="enr-name">Full Name <span class="req" aria-hidden="true">*</span></label>
-        <input id="enr-name" type="text" name="full_name" placeholder="Your name" required autocomplete="name">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="enr-phone">Phone <span class="req" aria-hidden="true">*</span></label>
-          <input id="enr-phone" type="tel" name="phone" placeholder="+91 ..." required autocomplete="tel" pattern="[+0-9 ()-]{8,20}">
-        </div>
-        <div class="form-group">
-          <label for="enr-age">Age</label>
-          <input id="enr-age" type="number" name="age" placeholder="20" min="14" max="60" autocomplete="off">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="enr-course">Course of Interest <span class="req" aria-hidden="true">*</span></label>
-        <select id="enr-course" name="course" required>
-          <option value="">Select a course</option>
-          <option>Python Programming</option>
-          <option>MS-Office Advanced</option>
-          <option>Photoshop Advanced</option>
-          <option>Spoken English</option>
-          <option>Basic Computers</option>
-          <option>Hardware &amp; Networking</option>
-          <option>Digital Marketing</option>
-          <option>Web Development</option>
-          <option>Not sure — need guidance</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="enr-mode">Preferred Mode</label>
-        <select id="enr-mode" name="mode">
-          <option>Offline (Nagore campus)</option>
-          <option>Online</option>
-          <option>No preference</option>
-        </select>
-      </div>
-      <button type="submit" class="form-submit">
-        <svg aria-hidden="true"><use href="#i-send"/></svg>
-        Get My Free Counseling Call
-      </button>
+      <div class="form-group"><label for="enr-name">Full Name <span class="req">*</span></label><input id="enr-name" name="full_name" required autocomplete="name"></div>
+      <div class="form-row"><div class="form-group"><label for="enr-phone">Phone <span class="req">*</span></label><input id="enr-phone" type="tel" name="phone" required autocomplete="tel" pattern="[+0-9 ()-]{8,20}"></div><div class="form-group"><label for="enr-event">Event <span class="req">*</span></label><select id="enr-event" name="event_type" required><option value="">Select event</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Dargah Event</option><option>School Event</option><option>Business Event</option><option>Political Event</option><option>Other</option></select></div></div>
+      <div class="form-group"><label for="enr-format">Invitation format</label><select id="enr-format" name="interested_in"><option value="">Need guidance</option><option>PDF Invitation</option><option>Website Invitation</option><option>Both (PDF + Website)</option></select></div>
+      <div class="form-group"><label for="enr-date">Event date</label><input id="enr-date" type="date" name="event_date"></div>
+      <button type="submit" class="form-submit"><svg aria-hidden="true"><use href="#i-send"/></svg> Get Invitation Guidance</button>
       <div class="form-status" role="status" aria-live="polite"></div>
     </form>
   </div>
