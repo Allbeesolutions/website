@@ -13,6 +13,7 @@
  function greet(text){greeting.textContent=text;greeting.hidden=false;state('hello');clearTimeout(greetTimer);greetTimer=setTimeout(()=>{greeting.hidden=true;if(!busy)state('idle');},4500);}
  function renderText(el,text){
   text=String(text).replace(/^#{1,6}\s+/gm,'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/^---+$/gm,'');
+  text=text.split('\n').filter(line=>!/^\s*\|?\s*[-:]+\s*\|[\s|:-]*$/.test(line)).map(line=>/^\s*\|.*\|\s*$/.test(line)?line.split('|').map(x=>x.trim()).filter(Boolean).join(' — '):line).join('\n');
   // AI output is text; only safe Markdown links can create elements.
   const re=/\[([^\]]{1,140})\]\(([^\s)]+)\)/g;let last=0,m;
   while((m=re.exec(text))){
