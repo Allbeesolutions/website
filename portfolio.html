@@ -478,6 +478,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 @media (min-width:769px){ #navbar .hamburger{display:none} }
 /*nav-dd-end*/
 </style>
+<link rel="stylesheet" href="/assets/portfolio-hero.css?v=20261002">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to main content</a>
@@ -599,11 +600,43 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <main id="main">
 
 <!-- PAGE HERO -->
-<section class="page-hero" aria-labelledby="pf-hero-h1">
-  <span class="page-hero-eyebrow">Our Work</span>
-  <h1 id="pf-hero-h1">Projects We've <em>Built</em></h1>
-  <p>Business websites, e-commerce, AI products and internal tools — built for real businesses in Tamil Nadu and for AllBee Solutions itself.</p>
-  <a href="/contact" class="btn-primary">Start a Project</a>
+<section class="page-hero pf-fan-hero" aria-labelledby="pf-hero-h1">
+  <div class="pf-hero-copy">
+    <span class="page-hero-eyebrow">Made by AllBee</span>
+    <h1 id="pf-hero-h1">Ideas made real.<br>Projects built to <em>perform.</em></h1>
+    <p>Business websites, e-commerce and AI products — explore the digital experiences we've built for real businesses.</p>
+    <div class="pf-hero-actions">
+      <a href="/contact" class="btn-primary"><span class="pf-orb-dot" aria-hidden="true"></span>Start a Project <svg width="15" height="15" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+      <a href="#all-projects" class="pf-hero-browse">Explore our work <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+  <div class="pf-hero-fan" role="group" aria-label="Explore selected projects">
+    <button type="button" class="pf-hero-card" data-id="rkn-associates" aria-label="View RKN Associates project details" style="--slot:-2;--angle:-20deg;--layer:1;--delay:0.69s">
+      <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img src="/assets/portfolio/rkn-associates.jpg" alt="RKN Associates project preview" width="900" height="562" decoding="async">
+      <span class="pf-hero-card-label"><small>Business website</small>RKN Associates</span>
+    </button>
+    <button type="button" class="pf-hero-card" data-id="biotin-clinic" aria-label="View Biotin Clinic project details" style="--slot:-1;--angle:-10deg;--layer:2;--delay:0.5700000000000001s">
+      <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img src="/assets/portfolio/biotin-clinic.jpg" alt="Biotin Clinic project preview" width="1536" height="864" decoding="async">
+      <span class="pf-hero-card-label"><small>Healthcare website</small>Biotin Clinic</span>
+    </button>
+    <button type="button" class="pf-hero-card" data-id="hajihaz-ai" aria-label="View HajiHaz AI project details" style="--slot:0;--angle:0deg;--layer:3;--delay:0.45s">
+      <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img src="/assets/images/inline/hajihaz-ai-preview.webp" alt="HajiHaz AI project preview" width="1200" height="703" decoding="async" fetchpriority="high">
+      <span class="pf-hero-card-label"><small>AI product</small>HajiHaz AI</span>
+    </button>
+    <button type="button" class="pf-hero-card" data-id="suplaykart" aria-label="View Suplaykart project details" style="--slot:1;--angle:10deg;--layer:2;--delay:0.5700000000000001s">
+      <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img src="/assets/portfolio/suplaykart.jpg" alt="Suplaykart project preview" width="486" height="860" decoding="async">
+      <span class="pf-hero-card-label"><small>E-commerce platform</small>Suplaykart</span>
+    </button>
+    <button type="button" class="pf-hero-card" data-id="qadiri-palace" aria-label="View Qadiri Palace project details" style="--slot:2;--angle:20deg;--layer:1;--delay:0.69s">
+      <span class="pf-hero-card-chrome" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img src="/assets/images/inline/qadiri-palace-preview.jpg" alt="Qadiri Palace project preview" width="1440" height="802" decoding="async">
+      <span class="pf-hero-card-label"><small>Hotel website</small>Qadiri Palace</span>
+    </button>
+  </div>
 </section>
 
 <!-- FEATURED PROJECTS -->
@@ -1102,6 +1135,9 @@ function closeModal(){
 }
 
 function initModal(){
+  document.querySelectorAll('.pf-hero-card').forEach(function(card){
+    card.addEventListener('click',function(){ openModal(card.getAttribute('data-id'),card); });
+  });
   document.getElementById('pfModalClose').addEventListener('click', closeModal);
   document.getElementById('pfModal').addEventListener('click', function(e){
     if(e.target === this) closeModal();
