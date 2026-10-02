@@ -12,6 +12,7 @@
  function state(name){mascot.className='allbee-mascot allbee-mascot--'+name;}
  function greet(text){greeting.textContent=text;greeting.hidden=false;state('hello');clearTimeout(greetTimer);greetTimer=setTimeout(()=>{greeting.hidden=true;if(!busy)state('idle');},4500);}
  function renderText(el,text){
+  text=String(text).replace(/^#{1,6}\s+/gm,'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/^---+$/gm,'');
   // AI output is text; only safe Markdown links can create elements.
   const re=/\[([^\]]{1,140})\]\(([^\s)]+)\)/g;let last=0,m;
   while((m=re.exec(text))){
