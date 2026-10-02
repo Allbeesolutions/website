@@ -2925,6 +2925,10 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .tg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
   transition: transform .9s var(--ease), filter .55s; filter: saturate(.92) brightness(.94); }
 .tg-panel:hover .tg-img, .tg-panel:focus .tg-img, .tg-panel:focus-visible .tg-img, .tg-panel:active .tg-img, .tg-panel.is-open .tg-img { transform: scale(1.06); filter: saturate(1.05) brightness(1); }
+/* Keep Haji’s full portrait height visible as the gallery card expands. */
+.tg-panel--haji { background: #182630; }
+.tg-panel--haji .tg-img { left: 50%; right: auto; width: auto; min-width: 100%; height: 100%; object-fit: contain; object-position: center; background: #182630; transform: translateX(-50%); }
+.tg-panel--haji:hover .tg-img, .tg-panel--haji:focus .tg-img, .tg-panel--haji:focus-visible .tg-img, .tg-panel--haji:active .tg-img, .tg-panel--haji.is-open .tg-img { transform: translateX(-50%); }
 .tg-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(4,16,14,.86) 0%, rgba(4,16,14,.35) 38%, transparent 64%);
   opacity: .82; transition: opacity .55s; }
 .tg-panel:hover .tg-shade, .tg-panel:focus .tg-shade, .tg-panel:focus-visible .tg-shade, .tg-panel:active .tg-shade, .tg-panel.is-open .tg-shade { opacity: .95; }
@@ -3598,8 +3602,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
           <div class="tg-qual">B.E ECE, DECE, CCNA</div>
         </div>
       </div>
-      <div class="tg-panel" tabindex="0">
-        <img width="1122" height="1402" loading="lazy" decoding="async" src="assets/images/inline/haji-navy-blazer-20261002.webp" alt="Syed Hasan Kuddos Sahib S — Co-Founder and CFO" class="tg-img" style="object-position:center 20%">
+      <div class="tg-panel tg-panel--haji" tabindex="0">
+        <img width="1122" height="1402" loading="lazy" decoding="async" src="assets/images/inline/haji-navy-blazer-20261002.webp" alt="Syed Hasan Kuddos Sahib S — Co-Founder and CFO" class="tg-img">
         <a class="tg-instagram-link" href="https://www.instagram.com/hajihaz/" target="_blank" rel="noopener noreferrer" aria-label="Haji on Instagram">
           <svg aria-hidden="true"><use href="#i-instagram"/></svg>
         </a>
