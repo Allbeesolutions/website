@@ -1305,3 +1305,9 @@ html[data-site-theme="dark"] .pf-hero-card-chrome{
   background:rgba(13,33,27,.92)!important;
   border-bottom-color:var(--border)!important;
 }
+
+/* Keep the YouTube footer glyph unmistakable in both themes. */
+.ab-footer .footer-social .footer-youtube-play{
+  fill:currentColor;
+  stroke:none;
+}
