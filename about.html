@@ -2927,8 +2927,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .tg-panel:hover .tg-img, .tg-panel:focus .tg-img, .tg-panel:focus-visible .tg-img, .tg-panel:active .tg-img, .tg-panel.is-open .tg-img { transform: scale(1.06); filter: saturate(1.05) brightness(1); }
 /* Keep Haji’s full portrait height visible as the gallery card expands. */
 .tg-panel--haji { background: #182630; }
-.tg-panel--haji .tg-img { left: 50%; right: auto; width: max(100%, 575px); max-width: none; height: 100%; object-fit: contain; object-position: center; background: #182630; transform: translateX(-50%); }
-@media (max-width: 820px) { .tg-panel--haji .tg-img { width: max(100%, 350px); } }
+.tg-panel--haji .tg-img { left: calc(50% + clamp(0px, calc(69px - 12%), 45px)); right: auto; width: max(100%, 575px); max-width: none; height: 100%; object-fit: contain; object-position: center; background: #182630; transform: translateX(-50%); }
+@media (max-width: 820px) { .tg-panel--haji .tg-img { width: max(100%, 350px); left: calc(50% + clamp(0px, calc(42px - 12%), 28px)); } }
 .tg-panel--haji:hover .tg-img, .tg-panel--haji:focus .tg-img, .tg-panel--haji:focus-visible .tg-img, .tg-panel--haji:active .tg-img, .tg-panel--haji.is-open .tg-img { transform: translateX(-50%); }
 .tg-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(4,16,14,.86) 0%, rgba(4,16,14,.35) 38%, transparent 64%);
   opacity: .82; transition: opacity .55s; }
