@@ -74,6 +74,7 @@ h1{font-family:var(--font-display);font-size:1.5rem;margin-bottom:4px}
 .result p{color:var(--muted);max-width:440px;margin:0 auto 18px}
 .hidden{display:none}
 </style>
+<link rel="stylesheet" href="/assets/allbee-assistant.css?v=20261003">
 </head>
 <body>
 <div class="bar"><div class="wrap"><div class="brand"><b>AllBee Invitations</b><span>Order</span></div><a class="back" href="/invitation">← Back to site</a></div></div>
@@ -321,5 +322,6 @@ $('#payBtn').onclick=async(e)=>{
 loadPricing().finally(function(){ show(); gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''}); });
 fetch('/api/health').then(r=>r.json()).then(h=>{const el=document.getElementById('paymentStatus');if(!el)return;if(h&&h.checks&&h.checks.razorpay){el.textContent='🔒 Payments are processed securely via Razorpay. We never store your card details.';}else{el.textContent='ℹ️ Online payment is not active yet. Your order request can still be saved; no payment will be taken until checkout is enabled.';}}).catch(()=>{const el=document.getElementById('paymentStatus');if(el)el.textContent='ℹ️ Online checkout status is unavailable. No payment is taken unless the secure gateway opens.'});
 </script>
+<script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 </body>
 </html>

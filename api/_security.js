@@ -22,10 +22,10 @@ function rateLimit(req, key = 'api', limit = 30, windowMs = 60_000) {
   return { ok: true };
 }
 
-function guard(req, res, key, limit) {
+function guard(req, res, key, limit, windowMs = 60_000) {
   const size = requestBody(req);
   if (!size.ok) { res.statusCode = size.code; return res.end(JSON.stringify({ ok:false, error:size.error })); }
-  const rl = rateLimit(req, key, limit);
+  const rl = rateLimit(req, key, limit, windowMs);
   if (!rl.ok) {
     res.setHeader('Retry-After', String(rl.retryAfter));
     res.statusCode = 429;

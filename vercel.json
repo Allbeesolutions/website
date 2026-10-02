@@ -1,41 +1,147 @@
 {
   "redirects": [
-    { "source": "/reels-growth", "destination": "/digitalmarketing", "permanent": true },
-    { "source": "/reels-growth.html", "destination": "/digitalmarketing", "permanent": true },
-    { "source": "/webpricing", "destination": "/webdevelopment", "permanent": true },
-    { "source": "/webpricing.html", "destination": "/webdevelopment", "permanent": true }
+    {
+      "source": "/reels-growth",
+      "destination": "/digitalmarketing",
+      "permanent": true
+    },
+    {
+      "source": "/reels-growth.html",
+      "destination": "/digitalmarketing",
+      "permanent": true
+    },
+    {
+      "source": "/webpricing",
+      "destination": "/webdevelopment",
+      "permanent": true
+    },
+    {
+      "source": "/webpricing.html",
+      "destination": "/webdevelopment",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/services", "destination": "/services.html" },
-    { "source": "/courses", "destination": "/courses.html" },
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/webdevelopment", "destination": "/webdevelopment.html" },
-    { "source": "/digitalmarketing", "destination": "/digitalmarketing.html" },
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/refund", "destination": "/refund.html" },
-    { "source": "/invitation", "destination": "/invitation.html" },
-    { "source": "/invitation-samples", "destination": "/invitation-samples.html" },
-    { "source": "/wedding-invitations", "destination": "/wedding-invitations.html" },
-    { "source": "/nikah-invitations", "destination": "/nikah-invitations.html" },
-    { "source": "/birthday-invitations", "destination": "/birthday-invitations.html" },
-    { "source": "/housewarming-invitations", "destination": "/housewarming-invitations.html" },
-    { "source": "/business-launch-invitations", "destination": "/business-launch-invitations.html" },
-    { "source": "/top-templates", "destination": "/top-templates.html" },
-    { "source": "/portfolio", "destination": "/portfolio.html" },
-    { "source": "/track-order", "destination": "/track-order.html" },
-    { "source": "/design-brief", "destination": "/design-brief.html" },
-    { "source": "/review", "destination": "/review.html" },
-    { "source": "/admin/reviews", "destination": "/admin/reviews.html" },
-    { "source": "/demo/:slug", "destination": "/demo/:slug.html" },
-    { "source": "/admin/invitation-leads", "destination": "/admin/invitation-leads.html" },
-    { "source": "/admin/invitation-orders", "destination": "/admin/invitation-orders.html" },
-    { "source": "/admin/ceo", "destination": "/admin/ceo.html" },
-    { "source": "/admin/launch", "destination": "/admin/launch.html" },
-    { "source": "/order", "destination": "/order.html" },
-    { "source": "/404", "destination": "/404.html" }
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/services",
+      "destination": "/services.html"
+    },
+    {
+      "source": "/courses",
+      "destination": "/courses.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/webdevelopment",
+      "destination": "/webdevelopment.html"
+    },
+    {
+      "source": "/digitalmarketing",
+      "destination": "/digitalmarketing.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/refund",
+      "destination": "/refund.html"
+    },
+    {
+      "source": "/invitation",
+      "destination": "/invitation.html"
+    },
+    {
+      "source": "/invitation-samples",
+      "destination": "/invitation-samples.html"
+    },
+    {
+      "source": "/wedding-invitations",
+      "destination": "/wedding-invitations.html"
+    },
+    {
+      "source": "/nikah-invitations",
+      "destination": "/nikah-invitations.html"
+    },
+    {
+      "source": "/birthday-invitations",
+      "destination": "/birthday-invitations.html"
+    },
+    {
+      "source": "/housewarming-invitations",
+      "destination": "/housewarming-invitations.html"
+    },
+    {
+      "source": "/business-launch-invitations",
+      "destination": "/business-launch-invitations.html"
+    },
+    {
+      "source": "/top-templates",
+      "destination": "/top-templates.html"
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/portfolio.html"
+    },
+    {
+      "source": "/track-order",
+      "destination": "/track-order.html"
+    },
+    {
+      "source": "/design-brief",
+      "destination": "/design-brief.html"
+    },
+    {
+      "source": "/review",
+      "destination": "/review.html"
+    },
+    {
+      "source": "/admin/reviews",
+      "destination": "/admin/reviews.html"
+    },
+    {
+      "source": "/demo/:slug",
+      "destination": "/demo/:slug.html"
+    },
+    {
+      "source": "/admin/invitation-leads",
+      "destination": "/admin/invitation-leads.html"
+    },
+    {
+      "source": "/admin/invitation-orders",
+      "destination": "/admin/invitation-orders.html"
+    },
+    {
+      "source": "/admin/ceo",
+      "destination": "/admin/ceo.html"
+    },
+    {
+      "source": "/admin/launch",
+      "destination": "/admin/launch.html"
+    },
+    {
+      "source": "/order",
+      "destination": "/order.html"
+    },
+    {
+      "source": "/404",
+      "destination": "/404.html"
+    }
   ],
   "headers": [
     {
@@ -45,12 +151,32 @@
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net https://www.clarity.ms https://*.clarity.ms https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com https://www.facebook.com https://www.clarity.ms https://*.razorpay.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com https://www.clarity.ms https://*.clarity.ms https://api.razorpay.com https://lumberjack.razorpay.com; frame-src https://maps.google.com https://www.google.com https://api.razorpay.com https://checkout.razorpay.com; form-action 'self' https://wa.me; upgrade-insecure-requests"
         },
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+        }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/website-ai.js": {
+      "maxDuration": 60
+    }
+  }
 }

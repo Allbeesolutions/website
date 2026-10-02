@@ -3349,6 +3349,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 
   <link rel="stylesheet" href="/assets/trust.css">
 <script src="/assets/lead-form.js"></script>
+<link rel="stylesheet" href="/assets/allbee-assistant.css?v=20261003">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -3900,48 +3901,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <!-- WhatsApp floating button removed (chatbot kept) -->
 
 <!-- AI chatbot -->
-<button id="chatBtn" type="button" onclick="toggleChat()" aria-label="Open AllBee AI assistant" aria-expanded="false" aria-controls="chatWindow">
-  <svg aria-hidden="true"><use href="#i-spark"/></svg>
-  <span class="chat-notif" aria-hidden="true">1</span>
-</button>
 
-<aside id="chatWindow" role="dialog" aria-label="AllBee AI Assistant" aria-hidden="true">
-  <header class="chat-hdr">
-    <div class="chat-hdr-av">
-      <img src="assets/images/inline/450a63069192ca02.png" alt="" width="32" height="32" loading="lazy">
-    </div>
-    <div class="chat-hdr-info">
-      <div class="chat-hdr-name">AllBee AI Assistant</div>
-      <div class="chat-hdr-status"><span class="chat-status-dot" aria-hidden="true"></span>Online · ready to help</div>
-    </div>
-    <button class="chat-hdr-close" type="button" onclick="toggleChat()" aria-label="Close chat">
-      <svg aria-hidden="true"><use href="#i-x"/></svg>
-    </button>
-  </header>
-  <div class="chat-msgs" id="chatMsgs" aria-live="polite" aria-relevant="additions">
-    <div class="chat-bubble bot">
-      👋 Hi! I'm the <strong>AllBee AI Assistant</strong>.<br><br>
-      I can help with courses, services, AllBee Invitations, pricing, and how to get started. How can I help you today?
-    </div>
-  </div>
-  <div class="chat-typing" id="chatTyping" aria-hidden="true">
-    <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
-  </div>
-  <div class="chat-quick" id="chatQuick">
-    <button class="chat-qbtn" type="button" onclick="sendQuick('What courses do you offer?')">📚 Courses</button>
-    <button class="chat-qbtn" type="button" onclick="sendQuick('Tell me about invitations')">💌 Invitations</button>
-    <button class="chat-qbtn" type="button" onclick="sendQuick('What are the fees?')">💰 Fees</button>
-    <button class="chat-qbtn" type="button" onclick="sendQuick('How do I enroll?')">📝 Enroll</button>
-    <button class="chat-qbtn" type="button" onclick="sendQuick('Where are you located?')">📍 Location</button>
-  </div>
-  <div class="chat-input-row">
-    <label for="chatInput" class="sr-only">Type your message</label>
-    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()" autocomplete="off">
-    <button id="chatSend" type="button" onclick="sendChat()" aria-label="Send message">
-      <svg aria-hidden="true"><use href="#i-send"/></svg>
-    </button>
-  </div>
-</aside>
 
 <!-- App scripts -->
 <script>
@@ -5463,5 +5423,6 @@ function tsHover(id){
 })();
 </script>
 <script src="/assets/pricing.js" defer></script>
+<script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 </body>
 </html>
