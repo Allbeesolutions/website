@@ -38,16 +38,65 @@ for (const rel of htmlFiles) {
   const html = read(rel);
   const isUtility = rel.startsWith('admin/') || rel.startsWith('demo/') || rel === '404.html' || rel.startsWith('google');
   if (!isUtility && !/<title>[^<]+<\/title>/i.test(html)) issues.push(`missing title: ${rel}`);
+  if (!isUtility && !/<meta[^>]+name=["']description["'][^>]+content=["'][^"']+/i.test(html)) issues.push(`missing meta description: ${rel}`);
   if (!isUtility && !/<link[^>]+rel=["']canonical["']/i.test(html)) issues.push(`missing canonical: ${rel}`);
+  if (!isUtility && !/<meta[^>]+property=["']og:title["'][^>]+content=["'][^"']+/i.test(html)) issues.push(`missing og:title: ${rel}`);
+  if (!isUtility && !/<h1\b[^>]*>/i.test(html)) issues.push(`missing h1: ${rel}`);
+  if (!isUtility && (html.match(/<h1\b/gi) || []).length > 1) issues.push(`multiple h1 elements: ${rel}`);
+  if (html.includes('/assets/site-core.css') && !html.includes('/assets/site-theme.js')) issues.push(`site-core page missing site-theme.js: ${rel}`);
+  if (html.includes('class="ab-footer"') && !html.includes('/assets/shared-runtime-2.js')) issues.push(`global footer missing shared runtime: ${rel}`);
+  for (const tag of html.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) || []) {
+    if (!/\brel=["'][^"']*noopener/i.test(tag)) issues.push(`target=_blank link missing noopener: ${rel}`);
+  }
   for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
     if (tag.includes("'+") || tag.includes('${')) continue;
+    if (!/\balt=["'][^"']*["']/i.test(tag)) {
+      issues.push(`image missing alt: ${rel}`);
+      break;
+    }
     if (!/\bwidth=["'][^"']+["']/i.test(tag) || !/\bheight=["'][^"']+["']/i.test(tag)) {
       issues.push(`image missing intrinsic dimensions: ${rel}`);
       break;
     }
+    const src = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+    if (src && !/^(?:https?:|data:|blob:)/i.test(src)) {
+      let cleanSrc = src.split('?')[0].split('#')[0];
+      try { cleanSrc = decodeURIComponent(cleanSrc); } catch {}
+      const imagePath = cleanSrc.startsWith('/')
+        ? path.join(root, cleanSrc.replace(/^\//, ''))
+        : path.resolve(path.dirname(path.join(root, rel)), cleanSrc);
+      if (!fs.existsSync(imagePath)) {
+        issues.push(`image source missing: ${rel} -> ${src}`);
+        break;
+      }
+      if (/\.svg$/i.test(imagePath)) {
+        const svgHead = fs.readFileSync(imagePath).subarray(0, 1024).toString('utf8');
+        if (!/<svg\b/i.test(svgHead)) {
+          issues.push(`invalid SVG image: ${rel} -> ${src}`);
+          break;
+        }
+      }
+    }
+  }
+  for (const match of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try { JSON.parse(match[1]); }
+    catch { issues.push(`invalid JSON-LD: ${rel}`); break; }
   }
 }
 
+// All pages using the global AllBee footer should stay structurally identical.
+const footerBlocks = [];
+for (const rel of htmlFiles.filter(name => !name.includes('/'))) {
+  const html = read(rel);
+  const match = html.match(/<footer\b[^>]*class=["'][^"']*\bab-footer\b[^"']*["'][^>]*>[\s\S]*?<\/footer>/i);
+  if (match) footerBlocks.push({ rel, block: match[0].replace(/\s+/g, ' ').trim() });
+}
+if (footerBlocks.length > 1) {
+  const canonicalFooter = footerBlocks[0].block;
+  for (const entry of footerBlocks.slice(1)) {
+    if (entry.block !== canonicalFooter) issues.push(`global footer drift: ${entry.rel}`);
+  }
+}
 const sitemap = read('sitemap.xml');
 for (const loc of sitemap.matchAll(/<loc>https?:\/\/[^<]+<\/loc>/g)) {
   const url = loc[0].replace(/<\/?loc>/g, '');

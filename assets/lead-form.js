@@ -102,6 +102,7 @@ window.AllBeeForms = {
       submitLead(form, statusEl).then(function(result){
         showWhatsAppFollowUp(form, statusEl, {text:buildWhatsAppLeadMessage(form),lead_id:result.lead_id});
         trackEvent('form_submit_captured', { form_id: form.id || 'unknown' });
+        trackEvent('enquiry_success', { form_id: form.id || 'unknown', source: window.location.pathname });
         form.reset();
       }).catch(function(){
         if (statusEl) {

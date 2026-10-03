@@ -1316,3 +1316,19 @@ html[data-site-theme="dark"] .pf-hero-card-chrome{
   fill:currentColor;
   stroke:none;
 }
+
+/* Top templates dark-mode bridge. */
+html[data-site-theme="dark"] .templates-page .bar{
+  background:#0d211b!important;
+  color:var(--ink)!important;
+  border-bottom:1px solid var(--border);
+}
+html[data-site-theme="dark"] .templates-page .bar a{color:var(--teal-l)!important}
+html[data-site-theme="dark"] .templates-page .intro p{color:var(--muted)!important}
+html[data-site-theme="dark"] .templates-page .card{
+  background:var(--s-1)!important;
+  border-color:var(--border)!important;
+  color:var(--ink)!important;
+  box-shadow:var(--shadow-1)!important;
+}
+html[data-site-theme="dark"] .templates-page .card a{color:var(--teal-l)!important}

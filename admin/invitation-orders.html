@@ -208,7 +208,7 @@ function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id
     <div class="field"><label>Package</label>${esc(o.package||'—')}</div>
     <div class="field"><label>Amount</label><strong>${fmt(o.amount)}</strong></div>
     <div class="field"><label>Payment ID</label><small>${esc(o.payment_id||'—')}</small></div>
-    <div class="field"><label>Lead Source</label>${esc(o.source||'—')}${o.lead_id?` · <a href="/admin/invitation-leads" target="_blank">${esc(o.lead_id)}</a>`:''}</div>
+    <div class="field"><label>Lead Source</label>${esc(o.source||'—')}${o.lead_id?` · <a href="/admin/invitation-leads" target="_blank" rel="noopener">${esc(o.lead_id)}</a>`:''}</div>
     <div class="field"><label>Status</label><select id="eStatus" aria-label="Order status">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
     <div class="field"><label>Assigned To</label><select id="eAssignee" aria-label="Assigned to">${ASSIGNEES.map(a=>`<option ${a===(o.assignee||'Unassigned')?'selected':''}>${a}</option>`).join('')}</select></div>
     <div class="field"><label>SLA</label>${slaOverdue(o)?`<span style="color:#b5302a;font-weight:700">⏱ Overdue — ${esc(o.status)} for ${Math.floor(ageDays(o))}d</span>`:'<span style="color:#16A34A;font-weight:700">✓ On track</span>'}</div>
