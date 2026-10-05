@@ -2924,6 +2924,10 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .tg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
   transition: transform .9s var(--ease), filter .55s; filter: saturate(.92) brightness(.94); }
 .tg-panel:hover .tg-img, .tg-panel:focus .tg-img, .tg-panel:focus-visible .tg-img, .tg-panel:active .tg-img, .tg-panel.is-open .tg-img { transform: scale(1.06); filter: saturate(1.05) brightness(1); }
+/* Keep Azees’s full head visible when his landscape-expanded card opens. */
+.tg-panel--azees .tg-img { object-position: center 12%; }
+.tg-panel--azees:hover .tg-img, .tg-panel--azees:focus .tg-img, .tg-panel--azees:focus-visible .tg-img, .tg-panel--azees:active .tg-img, .tg-panel--azees.is-open .tg-img { object-fit: contain; object-position: center top; background: #273536; transform: none; }
+@media (max-width: 820px) { .tg-panel--azees .tg-img { object-fit: cover; object-position: center 12%; } }
 /* Keep Haji’s full portrait height visible as the gallery card expands. */
 .tg-panel--haji { background: #182630; }
 .tg-panel--haji .tg-img { left: calc(50% + clamp(0px, calc(69px - 12%), 45px)); right: auto; width: max(100%, 575px); max-width: none; height: 100%; object-fit: contain; object-position: center; background: #182630; transform: translateX(-50%); }
@@ -3636,8 +3640,8 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
           <div class="tg-qual">M.A</div>
         </div>
       </div>
-      <div class="tg-panel" tabindex="0">
-        <img width="1200" height="1600" loading="lazy" decoding="async" src="assets/images/inline/ca9bc34dbad52724.jpg" alt="Abdul Azees Sahib B — Biz Dev Executive" class="tg-img" style="object-position:center 30%">
+      <div class="tg-panel tg-panel--azees" tabindex="0">
+        <img width="1200" height="1600" loading="lazy" decoding="async" src="assets/images/inline/ca9bc34dbad52724.jpg" alt="Abdul Azees Sahib B — Biz Dev Executive" class="tg-img">
         <div class="tg-shade" aria-hidden="true"></div>
         <div class="tg-info">
           <div class="tg-role">Biz Dev Executive</div>
