@@ -9,9 +9,16 @@ function requestBody(req) {
 
 function rateLimit(req, key = 'api', limit = 30, windowMs = 60_000) {
   const h = req.headers || {};
-  const ip = String(h['x-forwarded-for'] || h['x-real-ip'] || '').split(',')[0].trim() || 'unknown';
+  // Best-effort instance-local limiter; never treat forwarded IP as identity.
+  // Prefer the last proxy hop rather than an arbitrary client-supplied first hop.
+  const ip = String(h['x-real-ip'] || h['x-forwarded-for'] || '').split(',').pop().trim().slice(0, 80) || 'unknown';
   const now = Date.now();
   const bucketKey = `${key}:${ip}`;
+  // Bounded housekeeping; this limiter is best-effort per instance, not global.
+  if (buckets.size > 5000) {
+    for (const [k, v] of buckets) if (now - v.start >= windowMs) buckets.delete(k);
+    if (buckets.size > 5000) buckets.clear();
+  }
   const old = buckets.get(bucketKey);
   if (!old || now - old.start >= windowMs) {
     buckets.set(bucketKey, { start: now, count: 1 });

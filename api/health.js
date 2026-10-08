@@ -17,6 +17,7 @@ module.exports = async (req, res) => {
   checks.tracking = checks.appsScript; // /track-order needs the data layer
   const required = ['razorpay', 'webhook', 'appsScript', 'crm', 'tracking'];
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Cache-Control', 'no-store');
   res.end(JSON.stringify({ ok: true, checks, ready: required.every(k => checks[k]) }));
 };

@@ -20,7 +20,8 @@ async function callScript(payload){
   if(!r.ok) throw new Error('apps-script HTTP '+r.status); return r.json();
 }
 module.exports=async(req,res)=>{
-  res.setHeader('Content-Type','application/json'); res.setHeader('Cache-Control','no-store');
+  noStore(res);
+  const blocked = guard(req, res, 'invitation-orders', 20); if (blocked) return;
   const a=authed(req); if(!a.ok){res.statusCode=a.code;return res.end(JSON.stringify({ok:false,error:a.error}));}
   try{
     if(req.method==='GET'){

@@ -1,4 +1,5 @@
 const { verifyToken } = require('../lib/reference-token');
+const { guard, noStore } = require('./_security');
 const MAX_BYTES = 1536 * 1024;
 const TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
@@ -9,8 +10,11 @@ function matchesImage(bytes, mime) {
   return false;
 }
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Cache-Control', 'no-store');
+  noStore(res);
+  // Base64 JSON uploads may be ~2 MiB; the normal 256 KiB guard would break them.
+  // Keep the existing image byte/type/token validation below.
+  const blocked = guard({ ...req, headers: { ...req.headers, 'content-length': 0 } }, res, 'reference-upload', 10); if (blocked) return;
+  if (Number(req.headers?.['content-length'] || 0) > 2300 * 1024) { res.statusCode = 413; return res.end(JSON.stringify({ ok:false, error:'request_too_large' })); }
   const reply = (status, error, extra = {}) => { res.statusCode = status; return res.end(JSON.stringify({ ok: !error, ...(error ? { error } : {}), ...extra })); };
   if (req.method !== 'POST') return reply(405, 'method_not_allowed');
   const secret = process.env.LEAD_SHARED_SECRET;
