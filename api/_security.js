@@ -1,18 +1,23 @@
 const crypto = require('node:crypto');
 const buckets = new Map();
 
-function requestBody(req) {
-  const max = 256 * 1024;
+function requestBody(req, max = 256 * 1024) {
   const length = req.headers && req.headers['content-length'];
   if (length !== undefined && (!/^\d+$/.test(String(length)) || Number(length) > max)) {
     return { ok: false, code: 413, error: 'request_too_large' };
   }
-  // Check the actual parsed size too: Content-Length can be missing or wrong.
-  const body = req.body;
-  if (typeof body === 'string' && Buffer.byteLength(body, 'utf8') > max ||
-      Buffer.isBuffer(body) && body.length > max ||
-      req.rawBody && Buffer.byteLength(req.rawBody) > max) {
-    return { ok: false, code: 413, error: 'request_too_large' };
+  // JSON body parsers can remove Content-Length or provide an object. Validate
+  // the actual payload too, including uploads that have a larger explicit cap.
+  try {
+    const body = req.body;
+    const bytes = Buffer.isBuffer(body) ? body.length :
+      typeof body === 'string' ? Buffer.byteLength(body, 'utf8') :
+      body && typeof body === 'object' ? Buffer.byteLength(JSON.stringify(body), 'utf8') : 0;
+    if (bytes > max || req.rawBody && Buffer.byteLength(req.rawBody) > max) {
+      return { ok: false, code: 413, error: 'request_too_large' };
+    }
+  } catch {
+    return { ok: false, code: 400, error: 'invalid_request' };
   }
   return { ok: true };
 }
@@ -39,16 +44,21 @@ function rateLimit(req, key = 'api', limit = 30, windowMs = 60_000) {
   return { ok: true };
 }
 
-function guard(req, res, key, limit, windowMs = 60_000) {
-  const size = requestBody(req);
-  if (!size.ok) { res.statusCode = size.code; return res.end(JSON.stringify({ ok:false, error:size.error })); }
+function guard(req, res, key, limit, windowMs = 60_000, maxBodyBytes = 256 * 1024) {
+  const size = requestBody(req, maxBodyBytes);
+  if (!size.ok) {
+    res.statusCode = size.code;
+    res.end(JSON.stringify({ ok:false, error:size.error }));
+    return true;
+  }
   const rl = rateLimit(req, key, limit, windowMs);
   if (!rl.ok) {
     res.setHeader('Retry-After', String(rl.retryAfter));
     res.statusCode = 429;
-    return res.end(JSON.stringify({ ok:false, error:'rate_limited' }));
+    res.end(JSON.stringify({ ok:false, error:'rate_limited' }));
+    return true;
   }
-  return null;
+  return false;
 }
 
 function adminAuth(req) {

@@ -38,6 +38,14 @@ CI executes these checks on pull requests and pushes. Secret detection is a heur
 6. Migrate inline HTML scripts/handlers before removing `unsafe-inline` from CSP; test animations, admin tools, Razorpay checkout, analytics and mobile views after policy changes.
 7. Make a non-destructive production smoke check after deploying. Any real payment, refund, webhook redelivery, user-account test or production data manipulation needs owner approval.
 
+## October 16 follow-up hardening
+
+- Server-side request guards now enforce a configurable byte cap against declared sizes, raw bytes **and** parsed JSON objects. Their control flow returns an explicit blocked boolean and is not dependent on the response writer's return value. The reference-upload route uses the larger 2.3 MiB JSON cap but still validates its existing 1.5 MiB decoded-image maximum.
+- Customer design briefs verify that the backend returned the requested order ID and a paid status. Once an order has progressed beyond `Details Submitted`, customers are directed to contact the team rather than overwriting operational notes or resetting the order status.
+- Public order page query-prefills (including design name, event and package fields) are now HTML-encoded before interpolation; event/type selectors use exact dataset matching instead of interpolating query values into selectors.
+- Synthetic tests execute the order-summary renderer with HTML attack strings and assert no executable markup is emitted. Additional tests cover malformed/missing size headers, parsed JSON payloads, and rejected design-brief submissions.
+- Vercel production firewall rules cannot currently be verified or modified through the connected credentials for the production `allbee` team. Before any change, verify the real production project and existing firewall rules; prefer a conservative WAF rule that targets only high-abuse public API routes, with logging before enforcement, and avoid applying webhook throttling blindly. See [Vercel WAF rate limiting](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
+
 ## Post-deployment public smoke checks
 
 Check public pages, security headers, `/api/health` (GET only), privileged APIs without credentials (must reject), and invalid methods. Never make brute-force attempts or send synthetic orders to live payment endpoints. For rollback, see `docs/rollback-procedures.md`.

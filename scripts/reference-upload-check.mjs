@@ -42,17 +42,38 @@ global.fetch = async () => ({ ok:true, json:async () => ({ ok:false, error:'limi
 assert.equal((await invoke(upload, { method:'POST', body })).statusCode, 409);
 global.fetch = async (_url, options) => {
   const action = JSON.parse(options.body).action;
-  if (action === 'order_track') return { ok:true, json:async()=>({ok:true,order:{status:'Payment Confirmed'}}) };
+  if (action === 'order_track') return { ok:true, json:async()=>({ok:true,order:{id:'ORD-MXABC123',status:'Payment Confirmed'}}) };
   if (action === 'order_update') return { ok:true, json:async()=>({ok:true}) };
   throw new Error('unexpected action');
 };
 const briefResult = await invoke(brief, { method:'POST', body:{ order_id:'ORD-MXABC123', mobile:'9876543210', notes:'Design brief' }, headers:{} });
 assert.equal(briefResult.statusCode, 200);
 assert.ok(verifyToken(briefResult.payload.upload_token, 'ORD-MXABC123', process.env.LEAD_SHARED_SECRET));
-global.fetch = async () => ({ ok:true, json:async()=>({ok:true,order:{status:'Payment Failed'}}) });
+global.fetch = async () => ({ ok:true, json:async()=>({ok:true,order:{id:'ORD-MXABC123',status:'Payment Failed'}}) });
 const unpaid = await invoke(brief, { method:'POST', body:{order_id:'ORD-MXABC123',mobile:'9876543210',notes:'Not paid'},headers:{} });
 assert.equal(unpaid.statusCode, 403);
 assert.equal(unpaid.payload.upload_token, undefined);
+// A guessed/wrong order must never be authorized by an unrelated paid response.
+let briefWrites=0;
+global.fetch = async (_url,opts) => {
+  const action=JSON.parse(opts.body).action;
+  if(action==='order_update'){briefWrites++;return {ok:true,json:async()=>({ok:true})};}
+  return {ok:true,json:async()=>({ok:true,order:{id:'ORD-OTHER1234',status:'Payment Confirmed'}})};
+};
+const wrongOrder=await invoke(brief,{method:'POST',body:{order_id:'ORD-MXABC123',mobile:'9876543210',notes:'Wrong order'},headers:{}});
+assert.equal(wrongOrder.statusCode,403);
+assert.equal(briefWrites,0,'wrong order response never mutates an order');
+// Once fulfilment has started, customer re-submission must not rewind status.
+global.fetch=async (_url,opts)=>{
+  const action=JSON.parse(opts.body).action;
+  if(action==='order_update'){briefWrites++;return {ok:true,json:async()=>({ok:true})};}
+  return {ok:true,json:async()=>({ok:true,order:{id:'ORD-MXABC123',status:'Designing'}})};
+};
+const advanced=await invoke(brief,{method:'POST',body:{order_id:'ORD-MXABC123',mobile:'9876543210',notes:'Late change'},headers:{}});
+assert.equal(advanced.statusCode,409);
+assert.equal(advanced.payload.error,'brief_closed');
+assert.equal(briefWrites,0,'in-progress order status and notes are preserved');
+
 delete process.env.REFERENCE_UPLOAD_ENABLED;
 assert.equal((await invoke(upload, { method:'POST', body })).statusCode, 503);
 global.fetch = originalFetch;

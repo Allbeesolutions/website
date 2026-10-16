@@ -26,9 +26,16 @@ module.exports = async (req, res) => {
     const lookup = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ action:'order_track', id:orderId, mobile, secret }) });
     const tracked = await lookup.json().catch(() => ({}));
+    const verifiedOrder = tracked && tracked.ok === true && tracked.order &&
+      String(tracked.order.id || '').toUpperCase() === orderId;
     const status = String(tracked && tracked.order && tracked.order.status || '').toLowerCase();
-    if (!tracked.ok || !['payment confirmed','details submitted','designing','first preview ready','revision requested','revision in progress','final approval','delivered'].includes(status)) {
+    if (!verifiedOrder || !['payment confirmed','details submitted','designing','first preview ready','revision requested','revision in progress','final approval','delivered'].includes(status)) {
       res.statusCode = 403; return res.end(JSON.stringify({ ok:false, error:'paid_order_required' }));
+    }
+    // Publicly resubmitted briefs must not rewind a live production order or
+    // overwrite operations notes after fulfilment has already started.
+    if (status !== 'payment confirmed' && status !== 'details submitted') {
+      res.statusCode = 409; return res.end(JSON.stringify({ ok:false, error:'brief_closed' }));
     }
     const brief = {
       action:'order_update', id:orderId,

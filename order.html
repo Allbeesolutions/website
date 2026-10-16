@@ -190,7 +190,10 @@ const order={event:'',type:'',pkg:'',name:'',mobile:'',email:'',event_date:'',am
   if(q.get('template_id'))order.template_id=q.get('template_id').slice(0,20);
   if(q.get('template_name'))order.template_name=q.get('template_name').slice(0,60);
   if(q.get('demo'))order.demo=q.get('demo').slice(0,40);
-  if(q.get('source'))order.source=q.get('source');})();
+  if(q.get('source'))order.source=q.get('source');
+  // Only real catalogue choices can be preselected from an external URL.
+  if(!EVENTS.includes(order.event))order.event='';
+  if(!TYPES.some(t=>t.k===order.type))order.type='';})();
 let step=1; const TOTAL=6;
 let selectedTemplate=null;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -202,7 +205,7 @@ function renderSteps(){
 function show(){
   $$('.step').forEach(s=>s.classList.toggle('hidden',+s.dataset.step!==step));
   const hint=$('#designHint');
-  if(hint){ hint.style.display=order.template_id||order.template_name?'block':'none'; if(order.template_id||order.template_name){ hint.innerHTML='<div class="sline"><span class="lbl">Selected design</span><strong>'+String(order.template_name||order.template_id).replace(/[<>]/g,'')+'</strong></div><div style="font-size:12px;color:var(--muted)">You can change the design before ordering by going back to the catalogue.</div>'; } }
+  if(hint){ hint.style.display=order.template_id||order.template_name?'block':'none'; if(order.template_id||order.template_name){ hint.innerHTML='<div class="sline"><span class="lbl">Selected design</span><strong>'+esc(order.template_name||order.template_id)+'</strong></div><div style="font-size:12px;color:var(--muted)">You can change the design before ordering by going back to the catalogue.</div>'; } }
   $('#backBtn').style.visibility=step===1?'hidden':'visible';
   $('#nav').style.display=step===6?'none':'flex';
   if(step===3) buildPackages();
@@ -231,8 +234,8 @@ $('#evGrid').innerHTML=EVENTS.map(e=>`<div class="ev" data-ev="${e}">${e}</div>`
 $('#typeGrid').innerHTML=TYPES.map(t=>`<div class="opt" data-type="${t.k}"><h3>${t.k.replace(' (PDF + Website)','')}</h3><div class="d">${t.d}</div></div>`).join('');
 /* reflect any URL prefill in the UI */
 (function(){
-  if(order.event){const el=document.querySelector('#evGrid [data-ev="'+order.event+'"]');if(el)el.classList.add('sel');}
-  if(order.type){const el=document.querySelector('#typeGrid [data-type="'+order.type+'"]');if(el)el.classList.add('sel');}
+  if(order.event){const el=$$('#evGrid [data-ev]').find(x=>x.dataset.ev===order.event);if(el)el.classList.add('sel');}
+  if(order.type){const el=$$('#typeGrid [data-type]').find(x=>x.dataset.type===order.type);if(el)el.classList.add('sel');}
   const f=$('#custForm'); if(order.name)f.name.value=order.name; if(order.mobile)f.mobile.value=order.mobile;
   if(order.email)f.email.value=order.email; if(order.event_date)f.event_date.value=order.event_date;
 })();
@@ -255,12 +258,12 @@ function buildPackages(){
 function buildSummary(sel){
   $(sel).innerHTML=`
     ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${esc(order.template_name)}${order.template_id?` <small style="color:var(--muted)">(${esc(order.template_id)})</small>`:''}</span></div>`:''}
-    <div class="sline"><span class="lbl">Event</span><span>${order.event||'—'}</span></div>
-    <div class="sline"><span class="lbl">Invitation</span><span>${order.type.replace(' (PDF + Website)','')||'—'}</span></div>
-    <div class="sline"><span class="lbl">Package</span><span>${order.pkg||'—'}</span></div>
+    <div class="sline"><span class="lbl">Event</span><span>${esc(order.event||'—')}</span></div>
+    <div class="sline"><span class="lbl">Invitation</span><span>${esc(order.type.replace(' (PDF + Website)','')||'—')}</span></div>
+    <div class="sline"><span class="lbl">Package</span><span>${esc(order.pkg||'—')}</span></div>
     <div class="sline"><span class="lbl">Name</span><span>${esc(order.name||'—')}</span></div>
     <div class="sline"><span class="lbl">Mobile</span><span>${esc(order.mobile||'—')}</span></div>
-    <div class="sline"><span class="lbl">Event date</span><span>${order.event_date||'—'}</span></div>
+    <div class="sline"><span class="lbl">Event date</span><span>${esc(order.event_date||'—')}</span></div>
     <div class="sline"><span class="lbl">Total</span><span class="stotal">${fmt(amount())}</span></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line,#e7e3da);font-size:12.5px;color:#33403d;font-weight:600">
       <span>&#10003; Mobile Friendly</span><span>&#10003; Share on WhatsApp</span>
@@ -311,7 +314,7 @@ $('#payBtn').onclick=async(e)=>{
         return;
       }
       gax('order_request_saved',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:false}); gax('enquiry_success',{source:'order_fallback',template_id:order.template_id||'',event:order.event||'',value:order.amount||0});
-      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${esc(order.name)}. We saved your request for the <strong>${order.pkg} ${order.type.replace(' (PDF + Website)','')}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">Reference: ${esc(capture.lead_id)}. No payment was taken on this screen.</p><a class="btn btn-primary" href="https://wa.me/918903607506">Contact us about this request</a>`);
+      showResult(`<div class="big">✅</div><h2>Request received</h2><p>Thank you, ${esc(order.name)}. We saved your request for the <strong>${esc(order.pkg)} ${esc(order.type.replace(' (PDF + Website)',''))}</strong> (${fmt(order.amount)}). Payment is still pending; our team will send a secure payment link on WhatsApp shortly.</p><p class="sub">Reference: ${esc(capture.lead_id)}. No payment was taken on this screen.</p><a class="btn btn-primary" href="https://wa.me/918903607506">Contact us about this request</a>`);
       return;
     }
     loadRzp(()=>{

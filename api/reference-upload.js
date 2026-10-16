@@ -11,13 +11,10 @@ function matchesImage(bytes, mime) {
 }
 module.exports = async (req, res) => {
   noStore(res);
-  // Base64 JSON uploads may be ~2 MiB; the normal 256 KiB guard would break them.
-  // Keep the existing image byte/type/token validation below.
-  const blocked = guard({ headers: { ...req.headers, 'content-length': 0 } }, res, 'reference-upload', 10); if (blocked) return;
-  const uploadLimit = 2300 * 1024;
-  if (Number(req.headers?.['content-length'] || 0) > uploadLimit ||
-      (typeof req.body === 'string' && Buffer.byteLength(req.body, 'utf8') > uploadLimit) ||
-      (req.body && typeof req.body.data === 'string' && req.body.data.length > uploadLimit)) { res.statusCode = 413; return res.end(JSON.stringify({ ok:false, error:'request_too_large' })); }
+  // Base64 JSON uploads may exceed the standard API cap. Apply a single
+  // complete-body limit before decoding, then validate token, MIME and bytes.
+  const blocked = guard(req, res, 'reference-upload', 10, 60_000, 2300 * 1024);
+  if (blocked) return;
   const reply = (status, error, extra = {}) => { res.statusCode = status; return res.end(JSON.stringify({ ok: !error, ...(error ? { error } : {}), ...extra })); };
   if (req.method !== 'POST') return reply(405, 'method_not_allowed');
   const secret = process.env.LEAD_SHARED_SECRET;

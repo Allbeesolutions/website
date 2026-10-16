@@ -36,6 +36,14 @@ function guardResponse(req,key='security-synthetic',limit=2){const res=response(
 eq(guardResponse({headers:{'content-length':'999999'}}).statusCode,413,'oversized declared request rejected');
 eq(guardResponse({headers:{},body:'X'.repeat(257*1024)}).statusCode,413,'oversized undeclared request rejected');
 eq(guardResponse({headers:{'content-length':'not-a-number'}}).statusCode,413,'malformed length rejected');
+eq(guardResponse({headers:{},body:{payload:'X'.repeat(257*1024)}}).statusCode,413,'oversized parsed JSON request rejected');
+const voidEnding=response();
+voidEnding.end=function(v){this.payload=JSON.parse(v);}; // intentionally returns undefined
+ok(guard({headers:{},body:{payload:'X'.repeat(257*1024)}},voidEnding,'void-ending',3)===true,'blocked requests explicitly return true');
+eq(voidEnding.statusCode,413,'response ended with too-large status');
+const tinyResponse=response();
+ok(guard({headers:{},body:{normal:'ok'}},tinyResponse,'small-body',3)===false,'allowed requests explicitly return false');
+
 eq(guardResponse({headers:{'x-real-ip':'192.0.2.4'}},'test-429').statusCode,200,'first request allowed');
 eq(guardResponse({headers:{'x-real-ip':'192.0.2.4'}},'test-429').statusCode,200,'second request allowed');
 const limited=guardResponse({headers:{'x-real-ip':'192.0.2.4'}},'test-429');
@@ -85,12 +93,28 @@ for(const k of ['payment_id','email','mobile','name','notes']) ok(!(k in r.paylo
 eq((await invoke(upload,'GET',{})).statusCode,405,'upload POST only');
 eq((await invoke(upload,'POST',{order_id:'ORD-TEST',upload_token:'bad',mime:'image/png',filename:'x.png',data:'AAAA'})).statusCode,503,'upload gated if disabled');
 // DOM script compilation catches syntax errors in inline JS without running it.
-for(const p of ['admin/ceo.html','admin/invitation-leads.html','admin/invitation-orders.html','admin/reviews.html','track-order.html']) {
+for(const p of ['admin/ceo.html','admin/invitation-leads.html','admin/invitation-orders.html','admin/reviews.html','track-order.html','order.html','design-brief.html']) {
   const html=readFileSync(resolve(root,p),'utf8');
   const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
   for(const source of scripts) if(source.trim()) new Script(source,{filename:p});
   checks++;
 }
+// Execute the real order-summary renderer with malicious URL-prefill values.
+const orderPage=readFileSync(resolve(root,'order.html'),'utf8');
+const orderEscape=orderPage.match(/^const esc=.*;$/m)?.[0];
+const orderSummary=orderPage.match(/function buildSummary\(sel\)\{[\s\S]*?\n\}\nfunction buildPay/)?.[0].replace(/\nfunction buildPay$/, '');
+ok(Boolean(orderEscape&&orderSummary), 'order summary renderer and encoding found');
+const attack='<img src=x onerror=alert(1)>';
+const summarySink={innerHTML:''};
+new Script(orderEscape+'\n'+orderSummary+'\nbuildSummary(\"#summary\");').runInNewContext({
+  order:{event:attack,type:attack,pkg:attack,name:attack,mobile:attack,event_date:attack,template_name:attack,template_id:attack},
+  $:()=>summarySink,
+  fmt:()=> '₹100', amount:()=>100,
+});
+ok(!summarySink.innerHTML.includes(attack) && !/<img\s/i.test(summarySink.innerHTML), 'URL-controlled values encoded before HTML rendering');
+ok(summarySink.innerHTML.includes('&lt;img'), 'malicious value displayed as text rather than removed');
+ok(!orderPage.includes('String(order.template_name||order.template_id).replace(/[<>]/g'), 'design hint uses full output encoding');
+ok(orderPage.includes('if(!EVENTS.includes(order.event))order.event=') && orderPage.includes('if(!TYPES.some(t=>t.k===order.type))order.type='), 'URL prefill must match actual catalogue choices');
 const ceo=readFileSync(resolve(root,'admin/ceo.html'),'utf8');
 ok(ceo.includes('esc(e[0])') && ceo.includes('esc(k)'), 'executive XSS sink encoded');
 const deploymentConfig = JSON.parse(readFileSync(resolve(root,'vercel.json'),'utf8'));
