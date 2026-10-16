@@ -33,7 +33,9 @@ module.exports=async(req,res)=>{
     if(req.method==='POST'){
       let b=req.body; try{if(typeof b==='string')b=JSON.parse(b||'{}');}catch{b={}}
       if(!b||b.action!=='update'||!b.id){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'bad_request'}));}
-      const patch=b.patch||{}; if(patch.status!==undefined && !ORDER_STATUSES.includes(String(patch.status))) {res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_status'}));} const d=await callScript({action:'order_update',id:b.id,patch});
+      const patch=b.patch;
+      if(typeof b.id!=='string'||!/^[A-Za-z0-9_-]{1,48}$/.test(b.id)||!patch||typeof patch!=='object'||Array.isArray(patch)||!Object.keys(patch).length||Object.keys(patch).some(k=>!['status','notes','assignee','delivery'].includes(k))||['notes','assignee','delivery'].some(k=>patch[k]!==undefined&&(typeof patch[k]!=='string'||patch[k].length>5000))){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_patch'}));}
+      if(patch.status!==undefined && !ORDER_STATUSES.includes(String(patch.status))) {res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_status'}));} const d=await callScript({action:'order_update',id:b.id,patch});
       if(!d||d.ok!==true){res.statusCode=502;return res.end(JSON.stringify({ok:false,error:'upstream_error'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true}));
     }

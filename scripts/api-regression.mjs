@@ -17,12 +17,15 @@ async function invoke(handler, method, body, response, admin = true) {
 
 for (const [name, field] of [['invitation-leads', 'leads'], ['invitation-orders', 'orders']]) {
   const handler = require(`../api/${name}.js`);
-  const body = { action: 'update', id: 'example', patch: { status: 'Payment Confirmed' } };
+  const body = { action: 'update', id: 'example', patch: { status: name === 'invitation-leads' ? 'Contacted' : 'Payment Confirmed' } };
   assert.equal((await invoke(handler, 'GET', null, { ok: false })).statusCode, 502);
   assert.equal((await invoke(handler, 'GET', null, { ok: true })).statusCode, 502);
   assert.equal((await invoke(handler, 'GET', null, { ok: true, [field]: [] })).statusCode, 200);
   assert.equal((await invoke(handler, 'POST', body, { ok: false, error: 'not_found' })).statusCode, 502);
   assert.equal((await invoke(handler, 'POST', body, { ok: true })).statusCode, 200);
+  assert.equal((await invoke(handler, 'POST', { ...body, patch: { admin: true } }, { ok: true })).statusCode, 422);
+  assert.equal((await invoke(handler, 'POST', { ...body, id: '../other' }, { ok: true })).statusCode, 422);
+  assert.equal((await invoke(handler, 'GET', null, { ok: true, [field]: [] }, false)).statusCode, 401);
 }
 
 const reviews = require('../api/reviews.js');

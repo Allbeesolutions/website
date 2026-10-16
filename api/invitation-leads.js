@@ -65,7 +65,17 @@ module.exports = async (req, res) => {
       if (!body || body.action !== 'update' || !body.id) {
         res.statusCode = 422; return res.end(JSON.stringify({ ok: false, error: 'bad_request' }));
       }
-      const data = await callScript({ action: 'update', id: body.id, patch: body.patch || {} });
+      const patch = body.patch;
+      const stages = ['New Lead','Contacted','Quotation Sent','Negotiation','Won','Lost'];
+      if (typeof body.id !== 'string' || !/^[A-Za-z0-9_-]{1,48}$/.test(body.id) ||
+          !patch || typeof patch !== 'object' || Array.isArray(patch) ||
+          !Object.keys(patch).length || Object.keys(patch).some(k => !['status','value','crm_notes'].includes(k)) ||
+          (patch.status !== undefined && !stages.includes(patch.status)) ||
+          (patch.value !== undefined && (typeof patch.value !== 'number' || !Number.isFinite(patch.value) || patch.value < 0 || patch.value > 100000000)) ||
+          (patch.crm_notes !== undefined && (typeof patch.crm_notes !== 'string' || patch.crm_notes.length > 10000))) {
+        res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'invalid_patch' }));
+      }
+      const data = await callScript({ action: 'update', id: body.id, patch });
       if (!data) { res.statusCode = 200; return res.end(JSON.stringify({ ok: true, configured: false })); }
       if (data.ok !== true) { res.statusCode = 502; return res.end(JSON.stringify({ ok: false, error: 'upstream_error' })); }
       res.statusCode = 200;
