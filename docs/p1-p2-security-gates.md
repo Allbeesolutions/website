@@ -2,7 +2,7 @@
 
 ## 1. Individual admin identities and MFA — implementation complete, activation gated
 
-Code: `lib/admin-identity.js`, `api/admin-session.js`, the authenticated admin APIs, `assets/admin-auth.js`, `scripts/admin-mfa-check.mjs` and `docs/admin-mfa-rollout.md`. Tested with synthetic accounts. **Production is intentionally still in legacy passcode mode.** Completing this gate needs the real owner's unique password and OTP enrolment, correctly scoped sensitive env variables, preview login acceptance and an owner-approved cutover.
+Code: `lib/admin-identity.js`, `lib/admin-session.js` (routed through `/api/health?admin_session=1` to keep the Hobby function count at 12), the authenticated admin APIs, `assets/admin-auth.js`, `scripts/admin-mfa-check.mjs` and `docs/admin-mfa-rollout.md`. Tested with synthetic accounts. **Production is intentionally still in legacy passcode mode.** Completing this gate needs the real owner's unique password and OTP enrolment, correctly scoped sensitive env variables, preview login acceptance and an owner-approved cutover.
 
 ## 2. Live Apps Script deployment — source/test ready, deployment gated
 

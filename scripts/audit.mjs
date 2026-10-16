@@ -15,7 +15,7 @@ const read = rel => fs.readFileSync(path.join(root, rel), 'utf8');
 
 function walk(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    if (['.git', '.vercel', '.ai', 'node_modules', '.private-backups'].includes(entry.name)) continue;
     const rel = path.relative(root, path.join(dir, entry.name));
     if (entry.isDirectory()) walk(path.join(dir, entry.name), out);
     else if (entry.name.endsWith('.html')) out.push(rel);

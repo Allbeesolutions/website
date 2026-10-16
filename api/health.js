@@ -4,6 +4,11 @@
  * (never the values). Powers /admin/launch.
  */
 module.exports = async (req, res) => {
+  // Share this endpoint with the opt-in admin login/session handler so the
+  // Hobby deployment stays within Vercel's 12 standalone Function limit.
+  const adminSession = (req.query && req.query.admin_session) ||
+    new URL(req.url || '/api/health', 'https://www.allbeesolutions.com').searchParams.get('admin_session');
+  if (adminSession === '1') return require('../lib/admin-session')(req, res);
   if (req.method !== 'GET') { res.statusCode = 405; return res.end(JSON.stringify({ ok:false, error:'method_not_allowed' })); }
   const env = process.env;
   const has = (...keys) => keys.every(k => !!(env[k] && String(env[k]).trim()));
@@ -11,7 +16,7 @@ module.exports = async (req, res) => {
     razorpay:   has('RAZORPAY_KEY_ID', 'RAZORPAY_KEY_SECRET'),
     webhook:    has('RAZORPAY_WEBHOOK_SECRET'),
     appsScript: has('LEAD_APPS_SCRIPT_URL', 'LEAD_SHARED_SECRET'),
-    crm:        has('ADMIN_PASSCODE'),
+    crm:        require('../lib/admin-identity').mode() === 'totp' ? !!require('../lib/admin-identity').roster() : require('../lib/admin-identity').mode() === 'legacy' && has('ADMIN_PASSCODE'),
     notifyEmail: has('NOTIFY_EMAIL'),
   };
   checks.tracking = checks.appsScript; // /track-order needs the data layer

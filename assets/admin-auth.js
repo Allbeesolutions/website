@@ -6,7 +6,7 @@
   function prepare(input) {
     if (pending) return pending;
     inputNode = input;
-    pending = fetch('/api/admin-session', {cache:'no-store'}).then(function(r) {
+    pending = fetch('/api/health?admin_session=1', {cache:'no-store'}).then(function(r) {
       return r.json().then(function(d) { if (!r.ok) throw new Error(d.error || 'admin_auth_unavailable'); return d; });
     }).then(function(d) {
       current = d;
@@ -37,7 +37,7 @@
     if(state.authenticated) return true;
     var user=document.getElementById('abAdminUsername');
     var otp=document.getElementById('abAdminOtp');
-    var r=await fetch('/api/admin-session', { method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},
+    var r=await fetch('/api/health?admin_session=1', { method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'login',username:user&&user.value.trim(),password:pass,code:otp&&otp.value.trim()})});
     var data=await r.json().catch(function(){return{};});
     if(!r.ok||!data.ok){var e=new Error('Admin login denied');e.code=r.status;throw e;}
@@ -46,7 +46,7 @@
     return true;
   }
   async function signOut() {
-    if(current&&current.mode==='totp') await fetch('/api/admin-session',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'})});
+    if(current&&current.mode==='totp') await fetch('/api/health?admin_session=1',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'logout'})});
     sessionStorage.removeItem('crm_pass');
     location.reload();
   }
