@@ -9,3 +9,7 @@
 *.p12
 *.pfx
 .DS_Store
+
+# Private admin MFA provisioning output and confidential backup material.
+.admin-mfa.private.json
+.private-backups/

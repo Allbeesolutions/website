@@ -1,4 +1,5 @@
 const crypto = require('node:crypto');
+const identity = require('../lib/admin-identity');
 const buckets = new Map();
 
 function requestBody(req, max = 256 * 1024) {
@@ -61,7 +62,17 @@ function guard(req, res, key, limit, windowMs = 60_000, maxBodyBytes = 256 * 102
   return false;
 }
 
-function adminAuth(req) {
+function adminAuth(req, scope) {
+  if (identity.mode() === 'invalid') return {ok:false,code:503,error:'admin_not_configured'};
+  if (identity.mode() === 'totp') {
+    if (!identity.sameOrigin(req) && req.method !== 'GET') return {ok:false,code:403,error:'origin_denied'};
+    const list = identity.roster();
+    if (!list) return {ok:false,code:503,error:'admin_not_configured'};
+    const user = identity.sessionFromRequest(req,list);
+    if (!user) return {ok:false,code:401,error:'unauthorized'};
+    if (scope && !user.scopes.includes(scope)) return {ok:false,code:403,error:'forbidden'};
+    return {ok:true,user:user.id};
+  }
   const expected = process.env.ADMIN_PASSCODE || '';
   if (!expected) return {ok:false,code:503,error:'crm_not_configured'};
   const supplied = req.headers && req.headers['x-admin-pass'];

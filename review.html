@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#0F7B6E">
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap"></noscript>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -59,29 +59,7 @@ a{color:inherit}
   </div>
   <div class="card ok" id="ok"><div class="big">🌟</div><h2>Thank you!</h2><p>Your review has been received and will appear once our team approves it.</p></div>
 </div>
-<script>
-(function(){
-  var RT=Date.now(),rating=0;
-  var q=new URLSearchParams(location.search);
-  var stars=document.getElementById('stars').children;
-  function paint(n){for(var i=0;i<stars.length;i++){stars[i].classList.toggle('on',i<n);stars[i].setAttribute('aria-checked',i===n-1?'true':'false');}}
-  for(var i=0;i<stars.length;i++){(function(i){function choose(){rating=i+1;paint(rating);}stars[i].addEventListener('click',choose);stars[i].addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();}});stars[i].addEventListener('mouseover',function(){for(var j=0;j<stars.length;j++)stars[j].classList.toggle('hov',j<=i);});stars[i].addEventListener('mouseout',function(){for(var j=0;j<stars.length;j++)stars[j].classList.remove('hov');});})(i);}
-  var form=document.getElementById('rvForm'),err=document.getElementById('err'),go=document.getElementById('go');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();err.classList.remove('show');
-    if(form._gotcha.value)return;
-    if(!rating){err.textContent='Please tap a star rating.';err.classList.add('show');return;}
-    if(!form.checkValidity()){form.reportValidity();return;}
-    var f=new FormData(form);
-    var data={action:'submit',name:f.get('name'),city:f.get('city'),event_type:f.get('event_type'),rating:rating,review:f.get('review'),order_id:q.get('order')||'',template_id:q.get('t')||'',render_ts:RT,_gotcha:''};
-    go.disabled=true;go.textContent='Submitting…';
-    fetch('/api/reviews',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
-      .then(function(r){return r.json().catch(function(){return{ok:r.ok};});})
-      .then(function(res){if(res&&res.ok&&res.configured===true){document.getElementById('card').style.display='none';document.getElementById('ok').classList.add('show');window.scrollTo({top:0});}else{err.textContent='Please check your details and try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';}})
-      .catch(function(){err.textContent='Network error. Please try again.';err.classList.add('show');go.disabled=false;go.textContent='Submit Review';});
-  });
-})();
-</script>
+<script src="/assets/flow-review-1.js"></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>
 </body>

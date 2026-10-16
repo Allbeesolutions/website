@@ -29,4 +29,8 @@ jobs:
           node scripts/webhook-security-check.mjs
           node scripts/security-scan.mjs --history
           node scripts/verify-website-ai.cjs
+          node scripts/admin-mfa-check.mjs
+          node scripts/admin-csp-check.mjs
+          node scripts/flow-csp-check.mjs
+          node scripts/invitations-restore-check.mjs
           node scripts/legacy-leads-migration-check.mjs

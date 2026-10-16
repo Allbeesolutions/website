@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
 
   // ---- admin: list / moderate ----
   if (action === 'list' || action === 'moderate') {
-    const auth = adminAuth(req);
+    const auth = adminAuth(req, 'reviews');
     if (!auth.ok) { res.statusCode = auth.code; return res.end(JSON.stringify({ok:false,error:auth.error})); }
     if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
     try {

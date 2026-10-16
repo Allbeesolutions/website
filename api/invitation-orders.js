@@ -16,7 +16,7 @@ async function callScript(payload){
 module.exports=async(req,res)=>{
   noStore(res);
   const blocked = guard(req, res, 'invitation-orders', 20); if (blocked) return;
-  const a=adminAuth(req); if(!a.ok){res.statusCode=a.code;return res.end(JSON.stringify({ok:false,error:a.error}));}
+  const a=adminAuth(req, 'orders'); if(!a.ok){res.statusCode=a.code;return res.end(JSON.stringify({ok:false,error:a.error}));}
   try{
     if(req.method==='GET'){
       const d=await callScript({action:'order_list'});

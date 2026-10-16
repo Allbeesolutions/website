@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
   noStore(res);
   const blocked = guard(req, res, 'invitation-leads', 30); if (blocked) return;
 
-  const a = adminAuth(req);
+  const a = adminAuth(req, 'leads');
   if (!a.ok) { res.statusCode = a.code; return res.end(JSON.stringify({ ok: false, error: a.error })); }
 
   try {

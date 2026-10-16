@@ -100,7 +100,7 @@ for(const p of ['admin/ceo.html','admin/invitation-leads.html','admin/invitation
   checks++;
 }
 // Execute the real order-summary renderer with malicious URL-prefill values.
-const orderPage=readFileSync(resolve(root,'order.html'),'utf8');
+const orderPage=readFileSync(resolve(root,'assets/flow-order-2.js'),'utf8');
 const orderEscape=orderPage.match(/^const esc=.*;$/m)?.[0];
 const orderSummary=orderPage.match(/function buildSummary\(sel\)\{[\s\S]*?\n\}\nfunction buildPay/)?.[0].replace(/\nfunction buildPay$/, '');
 ok(Boolean(orderEscape&&orderSummary), 'order summary renderer and encoding found');
@@ -115,7 +115,7 @@ ok(!summarySink.innerHTML.includes(attack) && !/<img\s/i.test(summarySink.innerH
 ok(summarySink.innerHTML.includes('&lt;img'), 'malicious value displayed as text rather than removed');
 ok(!orderPage.includes('String(order.template_name||order.template_id).replace(/[<>]/g'), 'design hint uses full output encoding');
 ok(orderPage.includes('if(!EVENTS.includes(order.event))order.event=') && orderPage.includes('if(!TYPES.some(t=>t.k===order.type))order.type='), 'URL prefill must match actual catalogue choices');
-const ceo=readFileSync(resolve(root,'admin/ceo.html'),'utf8');
+const ceo=readFileSync(resolve(root,'assets/admin-ceo.js'),'utf8');
 ok(ceo.includes('esc(e[0])') && ceo.includes('esc(k)'), 'executive XSS sink encoded');
 const deploymentConfig = JSON.parse(readFileSync(resolve(root,'vercel.json'),'utf8'));
 const globalHeaders = deploymentConfig.headers.find(h => h.source === '/(.*)').headers;
@@ -126,7 +126,7 @@ ok(headerMap['content-security-policy'].includes("object-src 'none'"),'CSP objec
 ok(headerMap['content-security-policy'].includes('frame-ancestors'),'CSP framing constrained');
 const home=readFileSync(resolve(root,'index.html'),'utf8');
 ok(/three\.min\.js[^>]+integrity="sha384-[^"]+"/.test(home),'pinned CDN subresource integrity');
-const trackingPage=readFileSync(resolve(root,'track-order.html'),'utf8');
+const trackingPage=readFileSync(resolve(root,'assets/flow-track-order-1.js'),'utf8');
 ok(trackingPage.includes("parsed.protocol==='https:'"),'delivery links scheme checked');
 // Real signature validation, using a synthetic signed unhandled event.
 const webhook=require('../api/order-webhook.js');
