@@ -20,7 +20,7 @@ for(const path of ['/admin/ceo','/admin/invitation-leads','/admin/invitation-ord
 for(const [url,status] of [['/api/health',200],['/api/invitation-leads',401],['/api/invitation-orders',401],['/api/track-order',405],['/api/reference-upload',405],['/api/order-webhook',405]]){
  const r=await get(url);if(r.status!==status)throw new Error(`Expected ${status} at ${url}, received ${r.status}`);count++;
 }
-const session=await get('/api/admin-session');
+const session=await get('/api/health?admin_session=1');
 if(session.status!==200)throw new Error('Admin session endpoint missing');
 const meta=await session.json();
 if(!['legacy','totp'].includes(meta.mode))throw new Error('Admin authentication mode is invalid');
