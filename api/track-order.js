@@ -32,7 +32,11 @@ module.exports = async (req, res) => {
         String(d.order.id || '').toUpperCase() !== order_id.toUpperCase()) {
       res.statusCode = 200; return res.end(JSON.stringify({ ok:false, configured:true, error:'not_found' }));
     }
-    res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:true, order: d.order }));
+    // Do not expose arbitrary CRM/Apps Script fields to a public tracking caller.
+    const safeFields = ['id', 'date', 'status', 'event_type', 'package', 'invitation_type', 'template_name', 'updated', 'delivery'];
+    const publicOrder = Object.fromEntries(safeFields.filter(k => typeof d.order[k] === 'string' || typeof d.order[k] === 'number')
+      .map(k => [k, String(d.order[k]).slice(0, k === 'delivery' ? 4000 : 160)]));
+    res.statusCode = 200; return res.end(JSON.stringify({ ok:true, configured:true, order: publicOrder }));
   } catch (e) {
     console.error('[track-order] error:', String(e.message || e));
     res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'gateway_error' }));

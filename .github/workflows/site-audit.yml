@@ -13,7 +13,9 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2, pinned
+        with:
+          fetch-depth: 0
       - name: Check HTML, routes, images and API syntax
         run: |
           node scripts/audit.mjs
@@ -21,3 +23,10 @@ jobs:
           node scripts/api-regression.mjs
           node scripts/reference-upload-check.mjs
           node scripts/reference-sink-check.mjs
+      - name: Security regression and tracked/history secret heuristics
+        run: |
+          node scripts/security-regression.mjs
+          node scripts/webhook-security-check.mjs
+          node scripts/security-scan.mjs --history
+          node scripts/verify-website-ai.cjs
+          node scripts/legacy-leads-migration-check.mjs

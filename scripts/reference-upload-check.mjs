@@ -30,9 +30,11 @@ async function invoke(handler, request) {
 assert.equal((await invoke(upload, { method:'GET' })).statusCode, 405);
 assert.equal((await invoke(upload, { method:'POST', body:{ ...body, upload_token:'bad' } })).statusCode, 403);
 assert.equal((await invoke(upload, { method:'POST', body:{ ...body, data:Buffer.alloc(32).toString('base64') } })).statusCode, 422);
-assert.equal((await invoke(upload, { method:'POST', body:{ ...body, data:'A'.repeat(3e6) } })).statusCode, 422);
+assert.equal((await invoke(upload, { method:'POST', body:{ ...body, data:'A'.repeat(3e6) } })).statusCode, 413);
 assert.equal((await invoke(upload, { method:'POST', body:{ ...body, mime:'image/svg+xml' } })).statusCode, 422);
 assert.equal((await invoke(upload, { method:'POST', body })).statusCode, 200);
+const largerPng = Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(300*1024)]).toString('base64');
+assert.equal((await invoke(upload, { method:'POST', body:{...body,data:largerPng} })).statusCode, 200, 'legitimate reference over 256 KiB is accepted');
 assert.equal(forwarded.action, 'reference_upload');
 assert.equal(forwarded.order_id, 'ORD-MXABC123');
 assert.equal(forwarded.secret, process.env.LEAD_SHARED_SECRET);

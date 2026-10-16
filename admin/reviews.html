@@ -63,7 +63,7 @@ body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--i
     $('#list').innerHTML=rows.map(function(r){
       return '<div class="rev"><div class="h"><span class="st">'+stars(r.rating)+'</span><span class="badge '+(r.moderated?'a':'p')+'">'+(r.moderated?'Approved':'Pending')+'</span></div>'+
         '<p>&ldquo;'+esc(r.review)+'&rdquo;</p><div class="who">'+esc(r.name)+(r.city?' · '+esc(r.city):'')+(r.event_type?' · '+esc(r.event_type):'')+' · '+esc(r.date)+'</div>'+
-        '<div class="acts">'+(r.moderated?'<button class="rej" data-id="'+r.id+'" data-m="0">Unpublish</button>':'<button class="ap" data-id="'+r.id+'" data-m="1">Approve</button>')+'</div></div>';
+        '<div class="acts">'+(r.moderated?'<button class="rej" data-id="'+esc(r.id)+'" data-m="0">Unpublish</button>':'<button class="ap" data-id="'+esc(r.id)+'" data-m="1">Approve</button>')+'</div></div>';
     }).join('')||'<div class="empty">No '+FILTER+' reviews.</div>';
   }
   function open(){$('#lock').classList.add('hidden');$('#app').classList.remove('hidden');}

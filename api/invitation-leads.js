@@ -18,19 +18,8 @@
  *   POST /api/invitation-leads  {action:'update', id, patch:{status,value,crm_note}}
  */
 
-const { guard, noStore } = require('./_security');
-function authed(req) {
-  const pass = req.headers['x-admin-pass'] || '';
-  const expected = process.env.ADMIN_PASSCODE || '';
-  if (!expected) return { ok: false, code: 503, error: 'crm_not_configured' };
-  // length-safe compare
-  if (pass.length !== expected.length) return { ok: false, code: 401, error: 'unauthorized' };
-  let diff = 0;
-  for (let i = 0; i < expected.length; i++) diff |= pass.charCodeAt(i) ^ expected.charCodeAt(i);
-  if (diff !== 0) return { ok: false, code: 401, error: 'unauthorized' };
-  return { ok: true };
-}
-
+const { guard, noStore, adminAuth } = require('./_security');
+const { cellFields } = require('../lib/sheet-safety');
 async function callScript(payload) {
   const url = process.env.LEAD_APPS_SCRIPT_URL;
   if (!url) return null; // not wired yet
@@ -47,7 +36,7 @@ module.exports = async (req, res) => {
   noStore(res);
   const blocked = guard(req, res, 'invitation-leads', 30); if (blocked) return;
 
-  const a = authed(req);
+  const a = adminAuth(req);
   if (!a.ok) { res.statusCode = a.code; return res.end(JSON.stringify({ ok: false, error: a.error })); }
 
   try {
@@ -75,7 +64,7 @@ module.exports = async (req, res) => {
           (patch.crm_notes !== undefined && (typeof patch.crm_notes !== 'string' || patch.crm_notes.length > 10000))) {
         res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'invalid_patch' }));
       }
-      const data = await callScript({ action: 'update', id: body.id, patch });
+      const data = await callScript({ action: 'update', id: body.id, patch: cellFields(patch, ['crm_notes']) });
       if (!data) { res.statusCode = 200; return res.end(JSON.stringify({ ok: true, configured: false })); }
       if (data.ok !== true) { res.statusCode = 502; return res.end(JSON.stringify({ ok: false, error: 'upstream_error' })); }
       res.statusCode = 200;

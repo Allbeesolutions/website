@@ -21,6 +21,10 @@
  *  Interested In | Notes | Source Page | Visitor IP | Status | Value | CRM Notes | Updated
  */
 
+// All external text entering cells must be treated as literal text, not a formula.
+function sheetCell_(v){ return typeof v === 'string' && /^[\s\u0000-\u001f]*[=+\-@]/.test(v) ? "'" + v : v; }
+function htmlEsc_(v){ return String(v == null ? '' : v).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
 var HEADERS = ['Lead ID','Timestamp','Name','Mobile','Email','Event Type','Event Date',
   'Interested In','Notes','Source Page','Visitor IP','Status','Value','CRM Notes','Updated',
   'Template ID','Template Name','Demo'];
@@ -142,7 +146,7 @@ function doPost(e) {
           var p = b.patch || {};
           if (p.status     !== undefined) sh.getRange(i+1, 12).setValue(p.status);
           if (p.value      !== undefined) sh.getRange(i+1, 13).setValue(p.value);
-          if (p.crm_notes  !== undefined) sh.getRange(i+1, 14).setValue(p.crm_notes);
+          if (p.crm_notes  !== undefined) sh.getRange(i+1, 14).setValue(sheetCell_(p.crm_notes));
           sh.getRange(i+1, 15).setValue(new Date().toISOString());
           return _json({ ok:true });
         }
@@ -152,12 +156,12 @@ function doPost(e) {
 
     // append a validated lead (ID is race-safe under the lock)
     var id = 'AB-' + Utilities.formatString('%04d', sh.getLastRow());
-    sh.appendRow([ id, b.timestamp || new Date().toISOString(), b.name||'', b.mobile||'', b.email||'',
-      b.event_type||'', b.event_date||'', (b.interested_in||[]).join(', '), b.notes||'',
-      b.source||'', b.ip||'', 'New Lead', '', '', '', b.template_id||'', b.template_name||'', b.demo||'' ]);
+    sh.appendRow([ id, b.timestamp || new Date().toISOString(), sheetCell_(b.name||''), sheetCell_(b.mobile||''), sheetCell_(b.email||''),
+      sheetCell_(b.event_type||''), sheetCell_(b.event_date||''), sheetCell_((b.interested_in||[]).join(', ')), sheetCell_(b.notes||''),
+      sheetCell_(b.source||''), sheetCell_(b.ip||''), 'New Lead', '', '', '', sheetCell_(b.template_id||''), sheetCell_(b.template_name||''), sheetCell_(b.demo||'') ]);
     safeEmail_(props.getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
       'New AllBee Invitations lead — ' + (b.name||'Unknown'),
-      'New lead ' + id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + ' · ' + (b.event_type||''), b, action);
+      'New lead ' + htmlEsc_(id) + '<br>' + htmlEsc_(b.name||'') + ' · ' + htmlEsc_(b.mobile||'') + ' · ' + htmlEsc_(b.event_type||''), b, action);
     return _json({ ok:true, id:id });
   } catch (err) {
     console.error(String(err));
@@ -255,12 +259,12 @@ function orderCreate_(b) {
     for (var k = 1; k < vals.length; k++) { if (String(vals[k][9]) === String(b.payment_id)) { return { ok:true, id:vals[k][0], duplicate:true }; } }
   }
   var id = b.receipt ? String(b.receipt).slice(0,40) : ('ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow()));
-  sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.mobile||'', b.email||'',
-    b.event_type||'', b.invitation_type||'', b.package||'', Number(b.amount)||0, b.payment_id||'',
-    'Payment Confirmed', b.source||'/order', b.lead_id||'', b.template_id||'', b.template_name||'', b.demo||'', '', new Date().toISOString(), '', '' ]);
+  sh.appendRow([ id, new Date().toISOString().slice(0,10), sheetCell_(b.name||''), sheetCell_(b.mobile||''), sheetCell_(b.email||''),
+    sheetCell_(b.event_type||''), sheetCell_(b.invitation_type||''), sheetCell_(b.package||''), Number(b.amount)||0, b.payment_id||'',
+    'Payment Confirmed', sheetCell_(b.source||'/order'), sheetCell_(b.lead_id||''), sheetCell_(b.template_id||''), sheetCell_(b.template_name||''), sheetCell_(b.demo||''), '', new Date().toISOString(), '', '' ]);
   safeEmail_(PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || 'contact@allbeesolutions.com',
     'New PAID order ' + id + ' — ₹' + (Number(b.amount)||0),
-    id + '<br>' + (b.name||'') + ' · ' + (b.mobile||'') + '<br>' + (b.package||'') + ' ' + (b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0), b, 'order_create');
+    htmlEsc_(id) + '<br>' + htmlEsc_(b.name||'') + ' · ' + htmlEsc_(b.mobile||'') + '<br>' + htmlEsc_(b.package||'') + ' ' + htmlEsc_(b.invitation_type||'') + ' · ₹' + (Number(b.amount)||0), b, 'order_create');
   return { ok:true, id:id };
 }
 /* Mark an order by payment_id (refund / failed). Records an orphan row if the
@@ -270,15 +274,18 @@ function orderMark_(payment_id, status, note) {
   var sh = orderSheet_(), vals = sh.getDataRange().getValues();
   for (var i = 1; i < vals.length; i++) {
     if (String(vals[i][9]) === String(payment_id)) {
+      // A retried webhook must not append the same note repeatedly.
+      if (String(vals[i][10]) === String(status) && note && String(vals[i][16] || '').indexOf(String(note)) !== -1)
+        return { ok:true, id:vals[i][0], duplicate:true };
       if (status) sh.getRange(i+1, 11).setValue(status);
-      if (note) { var prev = vals[i][16] || ''; sh.getRange(i+1, 17).setValue((prev ? prev + '\n' : '') + '[' + new Date().toISOString().slice(0,10) + '] ' + note); }
+      if (note) { var prev = vals[i][16] || ''; sh.getRange(i+1, 17).setValue((prev ? prev + '\n' : '') + '[' + new Date().toISOString().slice(0,10) + '] ' + sheetCell_(note)); }
       sh.getRange(i+1, 18).setValue(new Date().toISOString());
       return { ok:true, id:vals[i][0] };
     }
   }
   var id = 'ORD-' + Utilities.formatString('%04d', 1000 + sh.getLastRow());
   sh.appendRow([ id, new Date().toISOString().slice(0,10), '', '', '', '', '', '', 0, payment_id,
-    status || 'Payment Failed', 'webhook', '', '', '', '', note || '', new Date().toISOString(), '', '' ]);
+    status || 'Payment Failed', 'webhook', '', '', '', '', sheetCell_(note || ''), new Date().toISOString(), '', '' ]);
   return { ok:true, id:id, created:true };
 }
 function ordersList_() {
@@ -295,9 +302,9 @@ function orderUpdate_(id, patch) {
   for (var i=1;i<vals.length;i++){ if (vals[i][0]===id){
     if (patch.status !== undefined && ORDER_STATUSES.indexOf(String(patch.status)) === -1) return { ok:false, error:'invalid_status' };
     if (patch.status !== undefined) sh.getRange(i+1,11).setValue(patch.status);
-    if (patch.notes    !== undefined) sh.getRange(i+1,17).setValue(patch.notes);
-    if (patch.assignee !== undefined) sh.getRange(i+1,19).setValue(patch.assignee);
-    if (patch.delivery !== undefined) sh.getRange(i+1,20).setValue(patch.delivery);
+    if (patch.notes    !== undefined) sh.getRange(i+1,17).setValue(sheetCell_(patch.notes));
+    if (patch.assignee !== undefined) sh.getRange(i+1,19).setValue(sheetCell_(patch.assignee));
+    if (patch.delivery !== undefined) sh.getRange(i+1,20).setValue(sheetCell_(patch.delivery));
     sh.getRange(i+1,18).setValue(new Date().toISOString());
     return { ok:true };
   }}
@@ -332,8 +339,8 @@ function reviewCreate_(b) {
   var sh = reviewSheet_();
   var id = 'REV-' + Utilities.formatString('%04d', sh.getLastRow());
   var rating = Math.max(1, Math.min(5, Number(b.rating) || 5));
-  sh.appendRow([ id, new Date().toISOString().slice(0,10), b.name||'', b.city||'', b.event_type||'',
-    rating, String(b.review||'').slice(0,600), b.template_id||'', b.order_id||'', false ]); // moderated=false → hidden until approved
+  sh.appendRow([ id, new Date().toISOString().slice(0,10), sheetCell_(b.name||''), sheetCell_(b.city||''), sheetCell_(b.event_type||''),
+    rating, sheetCell_(String(b.review||'').slice(0,600)), sheetCell_(b.template_id||''), sheetCell_(b.order_id||''), false ]); // moderated=false → hidden until approved
   return { ok:true, id:id };
 }
 function isTrue_(v){ return v === true || v === 'TRUE' || v === 'true' || v === 1; }

@@ -5,15 +5,9 @@
  *
  * Env: ADMIN_PASSCODE, LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET
  */
-const { guard, noStore } = require('./_security');
+const { guard, noStore, adminAuth } = require('./_security');
+const { cellFields } = require('../lib/sheet-safety');
 const ORDER_STATUSES=['Order Placed','Payment Confirmed','Details Submitted','Designing','First Preview Ready','Revision Requested','Revision In Progress','Final Approval','Delivered','Payment Failed','Refunded','Cancelled'];
-function authed(req){
-  const pass=req.headers['x-admin-pass']||'', exp=process.env.ADMIN_PASSCODE||'';
-  if(!exp) return {ok:false,code:503,error:'crm_not_configured'};
-  if(pass.length!==exp.length) return {ok:false,code:401,error:'unauthorized'};
-  let d=0; for(let i=0;i<exp.length;i++) d|=pass.charCodeAt(i)^exp.charCodeAt(i);
-  return d===0?{ok:true}:{ok:false,code:401,error:'unauthorized'};
-}
 async function callScript(payload){
   const url=process.env.LEAD_APPS_SCRIPT_URL; if(!url || !process.env.LEAD_SHARED_SECRET) throw new Error('orders data layer not configured');
   const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,secret:process.env.LEAD_SHARED_SECRET||''})});
@@ -22,7 +16,7 @@ async function callScript(payload){
 module.exports=async(req,res)=>{
   noStore(res);
   const blocked = guard(req, res, 'invitation-orders', 20); if (blocked) return;
-  const a=authed(req); if(!a.ok){res.statusCode=a.code;return res.end(JSON.stringify({ok:false,error:a.error}));}
+  const a=adminAuth(req); if(!a.ok){res.statusCode=a.code;return res.end(JSON.stringify({ok:false,error:a.error}));}
   try{
     if(req.method==='GET'){
       const d=await callScript({action:'order_list'});
@@ -35,7 +29,7 @@ module.exports=async(req,res)=>{
       if(!b||b.action!=='update'||!b.id){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'bad_request'}));}
       const patch=b.patch;
       if(typeof b.id!=='string'||!/^[A-Za-z0-9_-]{1,48}$/.test(b.id)||!patch||typeof patch!=='object'||Array.isArray(patch)||!Object.keys(patch).length||Object.keys(patch).some(k=>!['status','notes','assignee','delivery'].includes(k))||['notes','assignee','delivery'].some(k=>patch[k]!==undefined&&(typeof patch[k]!=='string'||patch[k].length>5000))){res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_patch'}));}
-      if(patch.status!==undefined && !ORDER_STATUSES.includes(String(patch.status))) {res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_status'}));} const d=await callScript({action:'order_update',id:b.id,patch});
+      if(patch.status!==undefined && !ORDER_STATUSES.includes(String(patch.status))) {res.statusCode=422;return res.end(JSON.stringify({ok:false,error:'invalid_status'}));} const d=await callScript({action:'order_update',id:b.id,patch:cellFields(patch,['notes','assignee','delivery'])});
       if(!d||d.ok!==true){res.statusCode=502;return res.end(JSON.stringify({ok:false,error:'upstream_error'}));}
       res.statusCode=200;return res.end(JSON.stringify({ok:true,configured:true}));
     }

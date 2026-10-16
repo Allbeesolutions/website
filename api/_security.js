@@ -1,7 +1,17 @@
+const crypto = require('node:crypto');
 const buckets = new Map();
 
 function requestBody(req) {
-  if (req.headers && Number(req.headers['content-length'] || 0) > 256 * 1024) {
+  const max = 256 * 1024;
+  const length = req.headers && req.headers['content-length'];
+  if (length !== undefined && (!/^\d+$/.test(String(length)) || Number(length) > max)) {
+    return { ok: false, code: 413, error: 'request_too_large' };
+  }
+  // Check the actual parsed size too: Content-Length can be missing or wrong.
+  const body = req.body;
+  if (typeof body === 'string' && Buffer.byteLength(body, 'utf8') > max ||
+      Buffer.isBuffer(body) && body.length > max ||
+      req.rawBody && Buffer.byteLength(req.rawBody) > max) {
     return { ok: false, code: 413, error: 'request_too_large' };
   }
   return { ok: true };
@@ -41,10 +51,21 @@ function guard(req, res, key, limit, windowMs = 60_000) {
   return null;
 }
 
+function adminAuth(req) {
+  const expected = process.env.ADMIN_PASSCODE || '';
+  if (!expected) return {ok:false,code:503,error:'crm_not_configured'};
+  const supplied = req.headers && req.headers['x-admin-pass'];
+  if (typeof supplied !== 'string') return {ok:false,code:401,error:'unauthorized'};
+  const providedBytes = Buffer.from(supplied, 'utf8');
+  const expectedBytes = Buffer.from(expected, 'utf8');
+  return providedBytes.length === expectedBytes.length && crypto.timingSafeEqual(providedBytes,expectedBytes)
+    ? {ok:true} : {ok:false,code:401,error:'unauthorized'};
+}
+
 function noStore(res) {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Content-Type-Options', 'nosniff');
 }
 
-module.exports = { guard, noStore };
+module.exports = { guard, noStore, adminAuth };

@@ -7,7 +7,8 @@
  *
  * Env: LEAD_APPS_SCRIPT_URL, LEAD_SHARED_SECRET, ADMIN_PASSCODE
  */
-const { guard, noStore } = require('./_security');
+const { guard, noStore, adminAuth } = require('./_security');
+const { cellFields } = require('../lib/sheet-safety');
 const s = v => (typeof v === 'string' ? v.trim() : '');
 
 module.exports = async (req, res) => {
@@ -15,7 +16,7 @@ module.exports = async (req, res) => {
   const url = process.env.LEAD_APPS_SCRIPT_URL, secret = process.env.LEAD_SHARED_SECRET || '';
   const ready = !!(url && secret);
   async function script(payload) {
-    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, secret }) });
+    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...cellFields(payload, ['name','city','event_type','review','template_id','order_id']), secret }) });
     if (!r.ok) throw new Error('review store unavailable');
     return r.json();
   }
@@ -33,9 +34,8 @@ module.exports = async (req, res) => {
 
   // ---- admin: list / moderate ----
   if (action === 'list' || action === 'moderate') {
-    const exp = process.env.ADMIN_PASSCODE || '';
-    if (!exp) { res.statusCode = 503; return res.end(JSON.stringify({ ok:false, error:'crm_not_configured' })); }
-    const pass=req.headers['x-admin-pass'] || ''; if (pass.length!==exp.length) { res.statusCode=401; return res.end(JSON.stringify({ok:false,error:'unauthorized'})); } let diff=0; for(let i=0;i<exp.length;i++) diff|=pass.charCodeAt(i)^exp.charCodeAt(i); if (diff!==0) { res.statusCode = 401; return res.end(JSON.stringify({ ok:false, error:'unauthorized' })); }
+    const auth = adminAuth(req);
+    if (!auth.ok) { res.statusCode = auth.code; return res.end(JSON.stringify({ok:false,error:auth.error})); }
     if (!ready) { res.statusCode = 200; return res.end(JSON.stringify({ ok:true, reviews:[] })); }
     try {
       if (action === 'list') { const d = await script({ action:'review_list' }); if (!d || d.ok !== true || !Array.isArray(d.reviews)) throw new Error('review list failed'); return res.end(JSON.stringify({ ok:true, configured:true, reviews:d.reviews })); }

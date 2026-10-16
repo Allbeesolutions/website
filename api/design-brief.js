@@ -5,6 +5,7 @@
  */
 const { guard, noStore } = require('./_security');
 const { issueToken } = require('../lib/reference-token');
+const { cellText } = require('../lib/sheet-safety');
 const clean = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
 const digits = v => clean(v, 30).replace(/\D/g, '').slice(-10);
 
@@ -31,7 +32,7 @@ module.exports = async (req, res) => {
     }
     const brief = {
       action:'order_update', id:orderId,
-      patch:{ notes: clean(b.notes, 5000), status:'Details Submitted' },
+      patch:{ notes: cellText(clean(b.notes, 5000)), status:'Details Submitted' },
       secret
     };
     const saved = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(brief) });
@@ -42,7 +43,7 @@ module.exports = async (req, res) => {
     return res.end(JSON.stringify({ ok:true, order_id:orderId,
       ...(process.env.REFERENCE_UPLOAD_ENABLED === 'true' ? { upload_token:issueToken(orderId, secret) } : {}) }));
   } catch (e) {
-    console.error('[design-brief]', String(e.message || e));
+    console.error('[design-brief] upstream persistence failure');
     res.statusCode = 502; return res.end(JSON.stringify({ ok:false, error:'brief_save_failed' }));
   }
 };

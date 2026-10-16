@@ -264,13 +264,13 @@ function render(){
   const rows=filtered();
   $('#empty').style.display=rows.length?'none':'block';
   $('#list').innerHTML=rows.map(l=>`
-    <div class="lead" data-id="${l.id}">
-      <div><span class="cell-label">Lead ID</span><strong>${l.id}</strong></div>
+    <div class="lead" data-id="${esc(l.id)}">
+      <div><span class="cell-label">Lead ID</span><strong>${esc(l.id)}</strong></div>
       <div><span class="cell-label">Name</span><span class="nm">${esc(l.name)}</span><br><small>${esc(l.mobile||'')}</small></div>
       <div><span class="cell-label">Event</span>${esc(l.event_type||'')}<br><small>${esc(l.event_date||'')}</small></div>
       <div><span class="cell-label">Source</span><small>${esc(l.source||'')}</small><br><small>${esc(l.date||'')}</small></div>
-      <div><span class="cell-label">Status</span><span class="badge ${BADGE[l.status]||'b-new'}">${l.status}</span></div>
-      <div class="lead-actions"><button class="mini" data-view="${l.id}">View</button></div>
+      <div><span class="cell-label">Status</span><span class="badge ${BADGE[l.status]||'b-new'}">${esc(l.status)}</span></div>
+      <div class="lead-actions"><button class="mini" data-view="${esc(l.id)}">View</button></div>
     </div>`).join('');
   // populate filter selects once
   if(!$('#fType').dataset.filled){

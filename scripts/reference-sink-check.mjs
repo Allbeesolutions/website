@@ -29,6 +29,8 @@ const context = {
 };
 vm.createContext(context);
 vm.runInContext(fs.readFileSync(new URL('../docs/lead-apps-script.gs', import.meta.url), 'utf8'), context);
+assert.equal(context.sheetCell_('=IMPORTXML(A1,B1)'), "'=IMPORTXML(A1,B1)");
+assert.equal(context.sheetCell_('Safe Customer'), 'Safe Customer');
 const bytes = Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]), Buffer.alloc(24)]);
 const input = { order_id:'ORD-MXABC123', filename:'photo.png', mime:'image/png', data:bytes.toString('base64') };
 const props = { getProperty: () => 'private-folder' };

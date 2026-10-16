@@ -22,6 +22,7 @@
  */
 
 const { guard, noStore } = require('./_security');
+const { cellFields } = require('../lib/sheet-safety');
 const EVENT_TYPES = ['Wedding', 'Nikah', 'Birthday', 'Housewarming', 'Dargah Event',
   'School Event', 'Business Event', 'Political Event', 'Other'];
 const INTEREST = ['PDF Invitation', 'Website Invitation', 'Both', 'Both (PDF + Website)', 'Website Development', 'Digital Marketing', 'Branding & Design', 'Software / App', 'Other'];
@@ -69,7 +70,7 @@ async function sendToSheetAndEmail(lead, requestMeta) {
   const url = process.env.LEAD_APPS_SCRIPT_URL, secret = process.env.LEAD_SHARED_SECRET;
   if (!url || !secret) throw new Error('lead persistence is not configured');
   const payload = {
-    ...lead,
+    ...cellFields(lead, ['name','mobile','email','event_type','event_date','notes','source','ip','template_id','template_name','demo']),
     action: 'lead',
     secret,
     request_meta: {
@@ -191,7 +192,7 @@ module.exports = async (req, res) => {
   catch (e) { results.whatsapp = { ok: false, error: String(e.message || e) }; }
 
   if (!results.sheet.ok || !results.sheet.id) {
-    console.error('[lead] capture failed:', results.sheet.error || results.sheet.skipped || 'missing_reference');
+    console.error('[lead] capture failed: upstream persistence unavailable');
     res.statusCode = 503;
     return res.end(JSON.stringify({ ok: false, captured: false, error: 'capture_unavailable' }));
   }

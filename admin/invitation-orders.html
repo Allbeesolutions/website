@@ -172,13 +172,13 @@ function render(){
     .map(([l,v,c])=>`<div class="stat ${c||''}"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
   $('#pipe').innerHTML=STAGES.map(s=>`<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${ORDERS.filter(o=>o.status===s).length}</div><div class="pc-l"><span class="dot" style="background:${DOT[s]}"></span>${s}</div></div>`).join('');
   const rows=filtered();$('#empty').style.display=rows.length?'none':'block';
-  $('#list').innerHTML=rows.map(o=>`<div class="ord" data-id="${o.id}">
-    <div><span class="cell-label">Order</span><strong>${o.id}</strong><br><small>${esc(o.date||'')}</small></div>
+  $('#list').innerHTML=rows.map(o=>`<div class="ord" data-id="${esc(o.id)}">
+    <div><span class="cell-label">Order</span><strong>${esc(o.id)}</strong><br><small>${esc(o.date||'')}</small></div>
     <div><span class="cell-label">Customer</span><span class="nm">${esc(o.name)}</span><br><small>${esc(o.mobile||'')}</small></div>
     <div><span class="cell-label">Package</span>${esc(o.package||'')}<br><small>${esc((o.invitation_type||'').replace(' (PDF + Website)',''))}</small></div>
     <div><span class="cell-label">Amount</span><span class="amt">${fmt(o.amount)}</span></div>
-    <div><span class="cell-label">Status</span><span class="badge ${BADGE[o.status]||'b-new'}">${o.status}</span>${slaOverdue(o)?` <span class="badge" style="background:#fdecea;color:#b5302a">⏱ Overdue</span>`:''}${o.assignee&&o.assignee!=='Unassigned'?`<br><small>👤 ${esc(o.assignee)}</small>`:''}</div>
-    <div class="ord-actions"><button class="mini" data-view="${o.id}">View</button></div></div>`).join('');
+    <div><span class="cell-label">Status</span><span class="badge ${BADGE[o.status]||'b-new'}">${esc(o.status)}</span>${slaOverdue(o)?` <span class="badge" style="background:#fdecea;color:#b5302a">⏱ Overdue</span>`:''}${o.assignee&&o.assignee!=='Unassigned'?`<br><small>👤 ${esc(o.assignee)}</small>`:''}</div>
+    <div class="ord-actions"><button class="mini" data-view="${esc(o.id)}">View</button></div></div>`).join('');
   if(!$('#fStatus').dataset.filled){$('#fStatus').innerHTML='<option value="">All statuses</option>'+STAGES.map(s=>`<option>${s}</option>`).join('');$('#fStatus').dataset.filled='1';}
 }
 /* ---------- operations: SLA, tasks, assignees, notifications ---------- */

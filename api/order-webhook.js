@@ -11,6 +11,7 @@
  */
 const { guard, noStore } = require('./_security');
 const crypto = require('crypto');
+const { cellFields } = require('../lib/sheet-safety');
 
 async function readRaw(req) {
   // Accessing Vercel's req.body getter parses and consumes the stream. Read the
@@ -71,7 +72,7 @@ module.exports = async (req, res) => {
   async function persist(payload) {
     if (!url || !process.env.LEAD_SHARED_SECRET) throw new Error('sheet_not_configured');
     const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, secret: process.env.LEAD_SHARED_SECRET }) });
+      body: JSON.stringify({ ...cellFields(payload, ['name','mobile','email','event_type','invitation_type','package','source','lead_id','template_id','template_name','demo','note']), secret: process.env.LEAD_SHARED_SECRET }) });
     const result = await response.json().catch(() => null);
     if (!response.ok || !result || result.ok !== true || !result.id) throw new Error('sheet_rejected_event');
     return result;
