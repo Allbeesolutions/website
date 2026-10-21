@@ -1,30 +1,105 @@
-(function(){
+/* AllBee public-site analytics. Consent-first; no private journey/form telemetry. */
+(function () {
   'use strict';
-  var GA='G-TEX4FWGJFQ';
-  window.dataLayer=window.dataLayer||[];
-  if(typeof window.gtag!=='function') window.gtag=function(){window.dataLayer.push(arguments);};
-  if(!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')){
-    var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(s);
-    window.gtag('js',new Date());window.gtag('config',GA,{anonymize_ip:true});
+  var GA = 'G-TEX4FWGJFQ';
+  var KEY = 'allbee-analytics-consent-v2';
+  var BLOCKED = /^(?:admin|api|order|track-order|review|design-brief|checkout|payment|account|login|sign-in|sign-up)$/;
+  var consent = null;
+  var initialized = false;
+  var dnt = navigator.doNotTrack === '1' || navigator.globalPrivacyControl === true;
+  var route = (location.pathname || '/').toLowerCase();
+  var demo = /^\/demo\/([a-z0-9-]{1,60})\.html$/.exec(route);
+  var leaf = route.replace(/^\//, '').replace(/\.html$/, '').replace(/\/$/, '');
+  // Static public routes only. Dynamic identifiers and URL query strings are excluded.
+  if (!demo && (!/^[a-z0-9-]{0,60}$/.test(leaf) || BLOCKED.test(leaf))) return;
+  var path = demo ? '/demo/' + demo[1] : (leaf ? '/' + leaf : '/');
+  try { consent = dnt ? 'no' : localStorage.getItem(KEY); } catch (_) { consent = 'no'; }
+  if (consent !== 'yes' && consent !== 'no') consent = null;
+
+  function enable() {
+    if (initialized || consent !== 'yes' || dnt) return;
+    initialized = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    window.gtag('js', new Date());
+    window.gtag('config', GA, { anonymize_ip: true, page_path: path });
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
+    document.head.appendChild(script);
   }
-  function track(name,params){try{window.gtag('event',name,params||{});}catch(_){}}
-  function label(el){return ((el.getAttribute('aria-label')||el.textContent||'').trim().replace(/\s+/g,' ').slice(0,80));}
-  document.addEventListener('click',function(e){
-    var a=e.target.closest('a,button');if(!a)return;
-    var href=(a.getAttribute('href')||'').trim();
-    if(href.indexOf('wa.me')!==-1) track('whatsapp_click',{page_path:location.pathname,link_text:label(a)});
-    if(a.matches('[data-open-lead],.btn-primary,.nav-cta,.hero-cta')||/quote|enquir|counsel|start a project|get started/i.test(label(a)))
-      track('cta_click',{page_path:location.pathname,link_text:label(a),link_url:href.slice(0,120)});
-    if(href.indexOf('/order')===0) track('order_start_click',{page_path:location.pathname,link_url:href.slice(0,120)});
-  },{passive:true});
-  var started=new WeakSet();
-  document.addEventListener('focusin',function(e){
-    var f=e.target.closest&&e.target.closest('form');if(!f||started.has(f))return;
-    if(e.target.matches('input,select,textarea')){started.add(f);track('form_start',{page_path:location.pathname,form_id:f.id||f.getAttribute('name')||'form'});}
-  });
-  document.addEventListener('submit',function(e){
-    var f=e.target;if(!(f instanceof HTMLFormElement))return;
-    track('form_submit',{page_path:location.pathname,form_id:f.id||f.getAttribute('name')||'form'});
-  });
-  window.AllBeeAnalytics={track:track};
+  function track(name) {
+    if (!initialized || consent !== 'yes' || dnt) return;
+    if (!/^(?:whatsapp_click|cta_click|order_start_click)$/.test(name)) return;
+    try { window.gtag('event', name, { page_path: path }); } catch (_) { /* optional telemetry */ }
+  }
+  // Existing marketing scripts can call this safely, including before consent.
+  window.AllBeeAnalytics = { track: track };
+  function update(choice) {
+    var wasEnabled = initialized;
+    consent = choice;
+    try { localStorage.setItem(KEY, choice); } catch (_) { /* storage disabled */ }
+    var box = document.getElementById('allbee-analytics-choice');
+    if (box) box.remove();
+    ensureControl();
+    if (choice === 'yes') enable();
+    else if (wasEnabled) {
+      // Unload Google's script/cookies context on withdrawal; never send more events.
+      try { window.gtag('consent', 'update', { analytics_storage: 'denied' }); } catch (_) {}
+      location.reload();
+    }
+  }
+  function prompt() {
+    if (dnt || document.getElementById('allbee-analytics-choice')) return;
+    var box = document.createElement('aside');
+    box.id = 'allbee-analytics-choice';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', 'Optional site analytics');
+    box.style.cssText = 'position:fixed;bottom:16px;left:12px;right:12px;z-index:2147483000;max-width:470px;margin:auto;padding:16px;background:#fff;color:#1d2430;border:1px solid #aaa;border-radius:14px;box-shadow:0 10px 35px #0003;font:13px/1.55 system-ui,sans-serif';
+    var heading = document.createElement('strong');
+    heading.textContent = 'Optional AllBee website analytics';
+    box.appendChild(heading);
+    var copy = document.createElement('p');
+    copy.style.margin = '8px 0';
+    copy.textContent = 'Allow anonymous page visits and broad navigation actions through Google Analytics? We do not send form inputs, searches, customer details or payment activity. Change your choice anytime from Privacy settings.';
+    box.appendChild(copy);
+    function button(label, value) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = label;
+      btn.style.cssText = 'padding:8px 12px;margin:0 8px 0 0;border:1px solid #888;border-radius:8px;cursor:pointer;background:' + (value === 'yes' ? '#202838;color:white' : 'white;color:#202838');
+      btn.addEventListener('click', function () { update(value); });
+      return btn;
+    }
+    box.appendChild(button('Allow analytics', 'yes'));
+    box.appendChild(button('No thanks', 'no'));
+    document.body.appendChild(box);
+  }
+  function ensureControl() {
+    if (dnt || document.getElementById('allbee-analytics-manage')) return;
+    var control = document.createElement('button');
+    control.id = 'allbee-analytics-manage'; control.type = 'button';
+    control.textContent = 'Privacy settings';
+    control.setAttribute('aria-label', 'Change optional website analytics permission');
+    control.style.cssText = 'position:fixed;bottom:10px;right:10px;z-index:2147482999;background:#fff;color:#202838;border:1px solid #aaa;border-radius:10px;padding:6px 10px;font:12px system-ui,sans-serif;cursor:pointer';
+    control.addEventListener('click', prompt);
+    document.body.appendChild(control);
+  }
+  function init() {
+    if (dnt) return;
+    ensureControl();
+    if (consent === 'yes') enable();
+    else if (consent === null) prompt();
+    document.addEventListener('click', function (event) {
+      if (consent !== 'yes') return;
+      var el = event.target.closest && event.target.closest('a,button');
+      if (!el || el.closest('form,#allbee-analytics-choice,#allbee-analytics-manage')) return;
+      var href = (el.getAttribute('href') || '').trim();
+      if (/^https:\/\/(?:api\.)?wa\.me\//.test(href)) track('whatsapp_click');
+      else if (el.matches('[data-open-lead],.btn-primary,.nav-cta,.hero-cta')) track('cta_click');
+      else if (/^\/order(?:\.html)?(?:$|[?#])/.test(href)) track('order_start_click');
+    }, { passive: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();
