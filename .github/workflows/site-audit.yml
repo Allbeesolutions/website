@@ -23,6 +23,8 @@ jobs:
           node scripts/api-regression.mjs
           node scripts/reference-upload-check.mjs
           node scripts/reference-sink-check.mjs
+      - name: Consent-first analytics unit tests
+        run: node --test tests/site-analytics-consent.test.cjs
       - name: Security regression and tracked/history secret heuristics
         run: |
           node scripts/security-regression.mjs
