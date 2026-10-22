@@ -35,6 +35,14 @@
 | 27 | Final security review | **OWASP/ASVS thematic mapping already in `docs/security-acceptance-2026-10-22.md`, updated by new synthetic tests.** | Independent live verification for payment, MFA, storage, WAF, incidents before security certification. |
 | 28 | Performance, SEO, accessibility and cross-browser | **Improved locally.** 13-route SEO/PWA/main landmarks/94 image-alt quality suite, accessible tracking/review status, mobile gallery keyboard access. | Real-device WebKit/Android and full visual audits; broader load-speed measurement. |
 
+## GitHub/Vercel release reconciliation — 22 October 2026
+
+- **`111c66f`** — invitation-order integrity, consent-only demo tracking, mobile overflow, contextual enquiry, accessibility and image performance fixes. **GitHub security audit and Pages deployment completed successfully.** Production read-only 47/47 smoke checks passed; new images and checkout/gallery scripts returned 200.
+- **`c9d6542`** — removed unused/unsafe vendor analytics dispatch paths from five shared runtime assets, tested six offline WhatsApp lifecycle templates, and installed a no-secrets, daily public-health check in GitHub Actions. **GitHub security audit and Pages deployment completed successfully.** Production read-only 47/47 smoke checks passed and updated shared runtime was visible on the live website.
+- **Monitoring:** `.github/workflows/production-readonly-watch.yml` is installed on `main`; automated scheduled execution remains unverified until its first scheduled run. GitHub Actions reports failures to repository collaborators according to their account notification settings; do not promise separate SMS or email notifications.
+- **Readiness:** the live health endpoint still reports `razorpay=false` and `webhook=false`, despite `appsScript=true`, `crm=true` and `tracking=true`. The account-dependent launch gates below remain open.
+- **Local worktree isolation:** the project owner's original `AGENTS.md` and `.ai/` working changes were untouched. No real payment, destructive data mutation, production MFA cutover or WAF enforcement was performed.
+
 ## Safety and acceptance gates
 
 1. Never enable/replace live admin authentication without an enrolled owner, backup recovery route, and Preview success.
