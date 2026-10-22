@@ -33,11 +33,26 @@ jobs:
           node scripts/admin-csp-check.mjs
           node scripts/flow-csp-check.mjs
           node scripts/public-csp-check.mjs
+          node scripts/inline-style-csp-check.mjs
           node scripts/invitations-restore-check.mjs
           node scripts/legacy-leads-migration-check.mjs
       - name: Optional customer analytics privacy and CSP regression
         run: node --test tests/site-analytics-consent.test.cjs tests/site-analytics-csp-integration.test.cjs
-      - name: Public strict-CSP browser interactions (Chrome)
+      - name: Strict-CSP browser interactions — desktop
         env:
           CSP_BROWSER_QUICK: '1'
+          CSP_BROWSER_VIEWPORT: 'desktop'
+          CSP_BROWSER_REQUIRED: '1'
+        run: node scripts/public-csp-browser-check.mjs
+      - name: Strict-CSP browser interactions — narrow/mobile window
+        env:
+          CSP_BROWSER_QUICK: '1'
+          CSP_BROWSER_VIEWPORT: 'mobile'
+          CSP_BROWSER_REQUIRED: '1'
+        run: node scripts/public-csp-browser-check.mjs
+      - name: Strict-CSP browser interactions — tablet window
+        env:
+          CSP_BROWSER_QUICK: '1'
+          CSP_BROWSER_VIEWPORT: 'tablet'
+          CSP_BROWSER_REQUIRED: '1'
         run: node scripts/public-csp-browser-check.mjs

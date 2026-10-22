@@ -9,12 +9,16 @@ const chrome=[process.env.CHROME,'/Applications/Google Chrome.app/Contents/MacOS
 if(!chrome){if(process.env.CSP_BROWSER_REQUIRED==='1')throw new Error('Required Chrome binary is unavailable');console.log('Chrome missing: browser smoke skipped');process.exit(0);}
 const config=JSON.parse(fs.readFileSync(path.join(root,'vercel.json'),'utf8'));
 const csp=config.headers.find(x=>x.source==='/(.*)').headers.find(h=>h.key==='Content-Security-Policy').value;
+const viewport=process.env.CSP_BROWSER_VIEWPORT||'desktop';
+const dimensions={mobile:'390,844',tablet:'820,1180',desktop:'1440,900'};
+if(!Object.hasOwn(dimensions,viewport))throw new Error('Unknown viewport: '+viewport);
 const harness=`(function(){
  var errors=[];
  window.addEventListener('error',function(e){ if(e.message && !String(e.message).includes('ResizeObserver') && !String(e.message).includes('Error creating WebGL context')) errors.push(String(e.message).slice(0,100));});
  window.addEventListener('securitypolicyviolation',function(e){ if(String(e.effectiveDirective).startsWith('script-src')) errors.push('CSP script violation: '+String(e.blockedURI).slice(0,100)); });
  window.addEventListener('securitypolicyviolation',function(e){if(e.violatedDirective && e.violatedDirective.startsWith('script-src') && e.blockedURI==='inline')errors.push('Blocked inline script');});
  window.addEventListener('securitypolicyviolation',function(e){if(e.violatedDirective && e.violatedDirective.startsWith('style-src-elem') && e.blockedURI==='inline')errors.push('Blocked inline stylesheet');});
+ window.addEventListener('securitypolicyviolation',function(e){if(String(e.effectiveDirective||'').startsWith('style-src-attr'))errors.push('Blocked style attribute: '+String(e.blockedURI));});
  function verify(){
    var p=location.pathname,behavior='loaded',pass=true;
    try {
@@ -29,6 +33,28 @@ const harness=`(function(){
        a.click();if(!document.getElementById('enrollModal').classList.contains('open'))throw Error('Modal failed to open');
        b.click();if(document.getElementById('enrollModal').classList.contains('open'))throw Error('Modal failed to close');
        behavior='modal works';
+     }else if(p==='/admin/ceo.html'){
+       document.getElementById('demoLink').click();
+       if(!document.querySelector('#kpis .kpi'))throw Error('Executive demo dashboard missing');
+       var bar=document.querySelector('#catRev [data-ab-pct]');
+       if(!bar||!getComputedStyle(bar).width)throw Error('Executive chart widths missing');
+       behavior='executive dashboard and charts';
+     }else if(p==='/admin/invitation-leads.html'){
+       document.getElementById('demoLink').click();
+       if(!document.querySelector('#list .lead'))throw Error('Lead records missing');
+       if(!document.querySelector('#pipe .dot'))throw Error('Lead stage colors missing');
+       behavior='lead pipeline demo';
+     }else if(p==='/admin/invitation-orders.html'){
+       document.getElementById('demoLink').click();
+       if(!document.querySelector('#list .ord'))throw Error('Order records missing');
+       document.getElementById('reportsBtn').click();
+       if(!document.querySelector('#reports [data-ab-pct]'))throw Error('Order report chart missing');
+       behavior='orders pipeline and report charts';
+     }else if(p==='/order.html'){
+       if(typeof window.buildSummary!=='function')throw Error('Checkout summary unavailable');
+       window.buildSummary('#summary');
+       if(!document.querySelector('#summary .ab-summary-features'))throw Error('Checkout summary styles missing');
+       behavior='checkout summary';
      }else if(p==='/about.html'){
        var el=document.querySelector('[data-csp-enter="m0"]');
        if(!el)throw Error('Team item missing');
@@ -52,7 +78,12 @@ const harness=`(function(){
      }
    }catch(e){pass=false;errors.push(e.message);}
    document.documentElement.dataset.cspSmoke=(pass&&!errors.length)?'PASS':'FAIL';
-   document.documentElement.dataset.cspSmokeDetail=(behavior+':'+errors.join('|')).slice(0,200);
+   var overflow=Math.max(0,document.documentElement.scrollWidth-innerWidth);
+   if(overflow>5 && p==='/'){
+     var offenders=[].slice.call(document.body.querySelectorAll('*')).map(function(el){return {el:el,box:el.getBoundingClientRect()};}).filter(function(x){return x.box.right>innerWidth+8 && x.box.width>0 && x.box.height>0;}).sort(function(a,b){return b.box.right-a.box.right;}).slice(0,3).map(function(x){return x.el.tagName.toLowerCase()+'#'+x.el.id+'.'+String(x.el.className||'').slice(0,35)+'@'+Math.round(x.box.right);});
+     behavior+=':offenders='+offenders.join(',');
+   }
+   document.documentElement.dataset.cspSmokeDetail=(behavior+':'+errors.join('|')+':viewport='+innerWidth+':overflow='+overflow).slice(0,460);
  }
  document.addEventListener('DOMContentLoaded',function(){setTimeout(verify,350);});
 })();`;
@@ -77,7 +108,7 @@ const server=http.createServer((req,res)=>{
  }catch(err){if(!route.startsWith('/favicon'))console.error('LOCAL HTTP',route,err.message);if(!res.headersSent)res.writeHead(404);if(!res.writableEnded)res.end();}
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-const routes=process.env.CSP_BROWSER_QUICK==='1'?['/','/about.html','/invitation-samples.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html','/portfolio.html']:['/','/404.html','/about.html','/contact.html','/courses.html','/digitalmarketing.html','/invitation-samples.html','/invitation.html','/portfolio.html','/privacy.html','/refund.html','/services.html','/terms.html','/top-templates.html','/webdevelopment.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html','/demo/muslim-wedding.html','/demo/business-launch.html','/demo/royal-scroll.html'];
+const routes=process.env.CSP_BROWSER_QUICK==='1'?['/','/about.html','/invitation-samples.html','/admin/ceo.html','/admin/invitation-leads.html','/admin/invitation-orders.html','/order.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html']:['/','/404.html','/about.html','/contact.html','/courses.html','/digitalmarketing.html','/invitation-samples.html','/invitation.html','/portfolio.html','/privacy.html','/refund.html','/services.html','/terms.html','/top-templates.html','/webdevelopment.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html','/demo/muslim-wedding.html','/demo/business-launch.html','/demo/royal-scroll.html','/admin/ceo.html','/admin/invitation-leads.html','/admin/invitation-orders.html','/order.html','/track-order.html'];
 async function test(route){
  // Keep the CI smoke deterministic: offline external vendors and GPU/WebGL
  // effects are not required to verify CSP, CSS loading, and DOM interactions.
@@ -85,7 +116,7 @@ async function test(route){
    '--disable-dev-shm-usage','--disable-extensions','--disable-background-networking',
    '--blink-settings=imagesEnabled=false',
    '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1',
-   '--no-first-run','--no-default-browser-check','--virtual-time-budget=1400',
+   '--no-first-run','--no-default-browser-check','--window-size='+dimensions[viewport],'--force-device-scale-factor=1','--virtual-time-budget=1400',
    '--dump-dom','http://127.0.0.1:'+server.address().port+route];
  return await new Promise(resolve=>{
   const p=spawn(chrome,args,{stdio:['ignore','pipe','ignore']});

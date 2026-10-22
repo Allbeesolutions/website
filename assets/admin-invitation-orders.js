@@ -32,14 +32,14 @@ function render(){
   const overdue=ORDERS.filter(slaOverdue).length;
   $('#stats').innerHTML=[['Orders',total],['Revenue',fmt(rev),'rev'],['Avg Order',fmt(aov)],['Pending',pending],['Overdue',overdue,overdue?'warn':''],['Completed',completed]]
     .map(([l,v,c])=>`<div class="stat ${c||''}"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
-  $('#pipe').innerHTML=STAGES.map(s=>`<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${ORDERS.filter(o=>o.status===s).length}</div><div class="pc-l"><span class="dot" style="background:${DOT[s]}"></span>${s}</div></div>`).join('');
+  $('#pipe').innerHTML=STAGES.map(s=>`<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${ORDERS.filter(o=>o.status===s).length}</div><div class="pc-l"><span class="dot"></span>${s}</div></div>`).join('');
   const rows=filtered();$('#empty').style.display=rows.length?'none':'block';
   $('#list').innerHTML=rows.map(o=>`<div class="ord" data-id="${esc(o.id)}">
     <div><span class="cell-label">Order</span><strong>${esc(o.id)}</strong><br><small>${esc(o.date||'')}</small></div>
     <div><span class="cell-label">Customer</span><span class="nm">${esc(o.name)}</span><br><small>${esc(o.mobile||'')}</small></div>
     <div><span class="cell-label">Package</span>${esc(o.package||'')}<br><small>${esc((o.invitation_type||'').replace(' (PDF + Website)',''))}</small></div>
     <div><span class="cell-label">Amount</span><span class="amt">${fmt(o.amount)}</span></div>
-    <div><span class="cell-label">Status</span><span class="badge ${BADGE[o.status]||'b-new'}">${esc(o.status)}</span>${slaOverdue(o)?` <span class="badge" style="background:#fdecea;color:#b5302a">⏱ Overdue</span>`:''}${o.assignee&&o.assignee!=='Unassigned'?`<br><small>👤 ${esc(o.assignee)}</small>`:''}</div>
+    <div><span class="cell-label">Status</span><span class="badge ${BADGE[o.status]||'b-new'}">${esc(o.status)}</span>${slaOverdue(o)?` <span class="badge ab-overdue-badge">⏱ Overdue</span>`:''}${o.assignee&&o.assignee!=='Unassigned'?`<br><small>👤 ${esc(o.assignee)}</small>`:''}</div>
     <div class="ord-actions"><button class="mini" data-view="${esc(o.id)}">View</button></div></div>`).join('');
   if(!$('#fStatus').dataset.filled){$('#fStatus').innerHTML='<option value="">All statuses</option>'+STAGES.map(s=>`<option>${s}</option>`).join('');$('#fStatus').dataset.filled='1';}
 }
@@ -66,24 +66,24 @@ function openOrder(id){const o=ORDERS.find(x=>x.id===id);if(!o)return;editing=id
     <div class="field"><label>Email</label>${o.email?esc(o.email):'—'}</div>
     <div class="field"><label>Event</label>${esc(o.event_type||'—')}</div>
     <div class="field"><label>Invitation</label>${esc(o.invitation_type||'—')}</div>
-    <div class="field"><label>Template</label>${o.template_name?esc(o.template_name)+(o.template_id?` <small style="color:var(--muted)">(${esc(o.template_id)})</small>`:''):'—'}${o.demo?` · <a href="/demo/${esc(o.demo)}" target="_blank" rel="noopener">demo</a>`:''}</div>
+    <div class="field"><label>Template</label>${o.template_name?esc(o.template_name)+(o.template_id?` <small class="ab-muted-small">(${esc(o.template_id)})</small>`:''):'—'}${o.demo?` · <a href="/demo/${esc(o.demo)}" target="_blank" rel="noopener">demo</a>`:''}</div>
     <div class="field"><label>Package</label>${esc(o.package||'—')}</div>
     <div class="field"><label>Amount</label><strong>${fmt(o.amount)}</strong></div>
     <div class="field"><label>Payment ID</label><small>${esc(o.payment_id||'—')}</small></div>
     <div class="field"><label>Lead Source</label>${esc(o.source||'—')}${o.lead_id?` · <a href="/admin/invitation-leads" target="_blank" rel="noopener">${esc(o.lead_id)}</a>`:''}</div>
     <div class="field"><label>Status</label><select id="eStatus" aria-label="Order status">${STAGES.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div>
     <div class="field"><label>Assigned To</label><select id="eAssignee" aria-label="Assigned to">${ASSIGNEES.map(a=>`<option ${a===(o.assignee||'Unassigned')?'selected':''}>${a}</option>`).join('')}</select></div>
-    <div class="field"><label>SLA</label>${slaOverdue(o)?`<span style="color:#b5302a;font-weight:700">⏱ Overdue — ${esc(o.status)} for ${Math.floor(ageDays(o))}d</span>`:'<span style="color:#16A34A;font-weight:700">✓ On track</span>'}</div>
+    <div class="field"><label>SLA</label>${slaOverdue(o)?`<span class="ab-sla-overdue">⏱ Overdue — ${esc(o.status)} for ${Math.floor(ageDays(o))}d</span>`:'<span class="ab-sla-ok">✓ On track</span>'}</div>
     <div class="field"><label>Order Date</label>${esc(o.date||'—')}</div></div>
-    <div class="field"><label>Tasks</label><div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:4px">${tasksFor(o).map(([t,d])=>`<span style="font-weight:700;color:${d?'#16A34A':'var(--muted)'}">${d?'✓':'○'} ${t}</span>`).join('')}</div></div>
+    <div class="field"><label>Tasks</label><div class="ab-task-list">${tasksFor(o).map(([t,d])=>`<span class="${d?'ab-task-complete':'ab-task-pending'}">${d?'✓':'○'} ${t}</span>`).join('')}</div></div>
     <div class="field"><label>Delivery links (PDF / Website / ZIP URLs — space or comma separated)</label><textarea id="eDelivery" aria-label="Delivery links" rows="2" placeholder="https://… (shown to the customer on /track-order once status is Delivered)">${esc(o.delivery||'')}</textarea></div>
-    <div class="field"><label>Notify customer on WhatsApp</label><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'received')}">Order received</a>
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'brief')}">Brief request</a>
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'design')}">Design started</a>
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'review')}">Review ready</a>
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'delivered')}">Delivered</a>
-      <a class="mini" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="${waNotify(o,'followup')}">Follow-up</a></div></div>
+    <div class="field"><label>Notify customer on WhatsApp</label><div class="ab-notify-links">
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'received')}">Order received</a>
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'brief')}">Brief request</a>
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'design')}">Design started</a>
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'review')}">Review ready</a>
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'delivered')}">Delivered</a>
+      <a class="mini ab-notify-link" target="_blank" rel="noopener" href="${waNotify(o,'followup')}">Follow-up</a></div></div>
     <div class="field"><label>Activity Log</label><div class="notelog">${esc(o.notes||'No notes yet.')}</div></div>
     <div class="field"><label>Add Note</label><textarea id="eNote" aria-label="Add note" rows="2" placeholder="Log an update…"></textarea></div>`;
   $('#modal').classList.add('open');}
@@ -105,7 +105,7 @@ function bars(obj,title){
   const ents=Object.entries(obj).sort((a,b)=>b[1].rev-a[1].rev);const max=Math.max(1,...ents.map(e=>e[1].rev));
   return `<div class="rep-card"><h3>${title}</h3>${ents.map(([k,v])=>`
     <div class="rep-row"><div class="top"><b>${esc(k)}</b><span class="amt">${fmt(v.rev)}</span></div>
-    <div class="rep-bar"><span style="width:${Math.round(v.rev/max*100)}%"></span></div>
+    <div class="rep-bar"><span class="ab-meter-fill" data-ab-pct="${Math.max(0,Math.min(100,Math.round(v.rev/max*100)))}"></span></div>
     <small>${v.count} order${v.count===1?'':'s'}</small></div>`).join('')||'<small>No data.</small>'}</div>`;
 }
 function renderReports(){
@@ -113,7 +113,7 @@ function renderReports(){
   const month=ORDERS.filter(o=>(o.date||'').slice(0,7)===ym);
   const monthRev=month.reduce((a,o)=>a+(Number(o.amount)||0),0);
   $('#reports').innerHTML=`<div class="rep-grid">
-    <div class="rep-card rep-month"><div><div class="l" style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700">Revenue this month</div><div class="big">${fmt(monthRev)}</div></div><div><div class="l" style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700">Orders this month</div><div class="big" style="color:var(--teal-d)">${month.length}</div></div></div>
+    <div class="rep-card rep-month"><div><div class="l ab-report-label">Revenue this month</div><div class="big">${fmt(monthRev)}</div></div><div><div class="l ab-report-label">Orders this month</div><div class="big ab-teal-amount">${month.length}</div></div></div>
     ${bars(group(o=>o.package),'Revenue by Package')}
     ${bars(group(o=>o.event_type),'Revenue by Event Type')}
     ${bars(group(o=>o.source||'direct'),'Lead Source Performance')}

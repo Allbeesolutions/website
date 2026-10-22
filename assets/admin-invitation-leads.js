@@ -80,7 +80,7 @@ function render(){
   // pipeline
   $('#pipe').innerHTML=STAGES.map(s=>{
     const n=LEADS.filter(l=>l.status===s).length;
-    return `<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${n}</div><div class="pc-l"><span class="dot" style="background:${DOT[s]}"></span>${s}</div></div>`;
+    return `<div class="pchip ${activeStage===s?'active':''}" data-stage="${s}"><div class="pc-n">${n}</div><div class="pc-l"><span class="dot"></span>${s}</div></div>`;
   }).join('');
   // list
   const rows=filtered();

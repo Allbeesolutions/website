@@ -50,24 +50,30 @@
       location.reload();
     }
   }
+  function ensureStyles() {
+    if (document.querySelector('link[data-allbee-analytics-css]')) return;
+    var sheet = document.createElement('link');
+    sheet.rel = 'stylesheet';
+    sheet.href = '/assets/site-analytics.css';
+    sheet.setAttribute('data-allbee-analytics-css', '1');
+    document.head.appendChild(sheet);
+  }
   function prompt() {
     if (dnt || document.getElementById('allbee-analytics-choice')) return;
     var box = document.createElement('aside');
     box.id = 'allbee-analytics-choice';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-label', 'Optional site analytics');
-    box.style.cssText = 'position:fixed;bottom:16px;left:12px;right:12px;z-index:2147483000;max-width:470px;margin:auto;padding:16px;background:#fff;color:#1d2430;border:1px solid #aaa;border-radius:14px;box-shadow:0 10px 35px #0003;font:13px/1.55 system-ui,sans-serif';
     var heading = document.createElement('strong');
     heading.textContent = 'Optional AllBee website analytics';
     box.appendChild(heading);
     var copy = document.createElement('p');
-    copy.style.margin = '8px 0';
     copy.textContent = 'Allow anonymous page visits and broad navigation actions through Google Analytics? We do not send form inputs, searches, customer details or payment activity. Change your choice anytime from Privacy settings.';
     box.appendChild(copy);
     function button(label, value) {
       var btn = document.createElement('button');
       btn.type = 'button'; btn.textContent = label;
-      btn.style.cssText = 'padding:8px 12px;margin:0 8px 0 0;border:1px solid #888;border-radius:8px;cursor:pointer;background:' + (value === 'yes' ? '#202838;color:white' : 'white;color:#202838');
+      btn.setAttribute('data-analytics-choice',value);
       btn.addEventListener('click', function () { update(value); });
       return btn;
     }
@@ -81,12 +87,12 @@
     control.id = 'allbee-analytics-manage'; control.type = 'button';
     control.textContent = 'Privacy settings';
     control.setAttribute('aria-label', 'Change optional website analytics permission');
-    control.style.cssText = 'position:fixed;bottom:10px;right:10px;z-index:2147482999;background:#fff;color:#202838;border:1px solid #aaa;border-radius:10px;padding:6px 10px;font:12px system-ui,sans-serif;cursor:pointer';
     control.addEventListener('click', prompt);
     document.body.appendChild(control);
   }
   function init() {
     if (dnt) return;
+    ensureStyles();
     ensureControl();
     if (consent === 'yes') enable();
     else if (consent === null) prompt();

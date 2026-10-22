@@ -9,6 +9,7 @@ const source = fs.readFileSync(path.join(root, 'assets/site-analytics.js'), 'utf
 function simulate({ pathname = '/', consent = null, dnt = false } = {}) {
   const storage = new Map(consent ? [['allbee-analytics-consent-v2', consent]] : []);
   const scripts = [];
+  const styles = [];
   let reloads = 0;
   class Element {
     constructor(tag) { this.tagName = tag.toUpperCase(); this.children = []; this.listeners = {}; this.style = {}; }
@@ -20,10 +21,20 @@ function simulate({ pathname = '/', consent = null, dnt = false } = {}) {
   }
   const body = new Element('body');
   const head = new Element('head');
-  head.appendChild = el => { scripts.push(el.src); return el; };
+  head.appendChild = el => {
+    el.parent=head; head.children.push(el);
+    if(el.tagName==='SCRIPT')scripts.push(el.src);
+    if(el.tagName==='LINK')styles.push(el.href);
+    return el;
+  };
   const document = {
     body, head, readyState: 'complete',
     createElement: kind => new Element(kind),
+    querySelector(selector) {
+      if(selector==='link[data-allbee-analytics-css]')
+        return head.children.find(x => x.tagName==='LINK' && x['data-allbee-analytics-css']==='1') ?? null;
+      return null;
+    },
     getElementById(id) { const find = el => el.id === id ? el : el.children.map(find).find(Boolean); return find(body) ?? null; },
     addEventListener() {},
   };
@@ -39,13 +50,14 @@ function simulate({ pathname = '/', consent = null, dnt = false } = {}) {
     assert.ok(btn, `Missing consent action: ${caption}`);
     btn.click();
   };
-  return { window, document, storage, scripts, click, reloads: () => reloads };
+  return { window, document, storage, scripts, styles, click, reloads: () => reloads };
 }
 
 test('never loads Google Analytics or sends events before opt-in', () => {
   const s = simulate();
   assert.equal(s.scripts.length, 0);
   assert.equal(s.window.gtag, undefined);
+  assert.deepEqual(s.styles, ['/assets/site-analytics.css'], 'Consent UI styling loads locally without loading Google Analytics');
   s.window.AllBeeAnalytics.track('whatsapp_click');
   assert.equal(s.scripts.length, 0);
   s.click(s.document.getElementById('allbee-analytics-choice'), 'Allow analytics');

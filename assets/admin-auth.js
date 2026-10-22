@@ -22,8 +22,12 @@
         otp.type='text'; otp.id='abAdminOtp'; otp.placeholder='Six-digit authenticator code';
         otp.inputMode='numeric'; otp.autocomplete='one-time-code'; otp.maxLength=6;
         otp.setAttribute('aria-label','Authenticator code'); otp.required=true;
-        username.style.cssText=inputNode.style.cssText;
-        otp.style.cssText=inputNode.style.cssText;
+        // Copy stylesheet-backed presentation, never inline CSS text.
+        for (const node of [username, otp]) {
+          node.className=(inputNode.className+' ab-admin-auth-extra').trim();
+          const styleKey=inputNode.getAttribute('data-ab-style');
+          if (styleKey) node.setAttribute('data-ab-style',styleKey);
+        }
         inputNode.parentNode.insertBefore(username,inputNode);
         inputNode.parentNode.insertBefore(otp,inputNode.nextSibling);
       }

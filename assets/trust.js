@@ -47,7 +47,18 @@ window.AllBeeTrust = window.AllBeeTrust || {
     else if(type==='cases'){
       if(!T.caseStudies||!T.caseStudies.length) return hide(el);
       el.innerHTML='<div class="tz-wrap">'+head(el,'Recent Work')+'<div class="tz-cases">'+
-        T.caseStudies.map(function(c){var tag=c.url?'a':'div';var href=c.url?(' href="'+esc(c.url)+'"'):'';return '<'+tag+' class="tz-case"'+href+'><span class="img" style="background-image:url('+esc(c.img||'')+')"></span><span class="b"><span class="ct">'+esc(c.client||'')+'</span><h3>'+esc(c.title||'')+'</h3>'+(c.result?'<span class="result">'+esc(c.result)+'</span>':'')+'</span></'+tag+'>';}).join('')+'</div></div>';
+        T.caseStudies.map(function(c){
+          function safeUrl(value){
+            if(typeof value!=='string'||value.length>2048)return '';
+            try{var u=new URL(value,location.origin);return u.protocol==='https:' ||
+              (u.protocol==='http:' && u.origin===location.origin) ? u.href : '';}
+            catch(e){return '';}
+          }
+          var link=safeUrl(c.url), img=safeUrl(c.img);
+          var tag=link?'a':'div';var href=link?(' href="'+esc(link)+'" target="_blank" rel="noopener noreferrer"'):'';
+          var picture=img?'<img src="'+esc(img)+'" alt="" loading="lazy" decoding="async">':'';
+          return '<'+tag+' class="tz-case"'+href+'><span class="img">'+picture+'</span><span class="b"><span class="ct">'+esc(c.client||'')+'</span><h3>'+esc(c.title||'')+'</h3>'+(c.result?'<span class="result">'+esc(c.result)+'</span>':'')+'</span></'+tag+'>';
+        }).join('')+'</div></div>';
     }
     else if(type==='badges'){
       if(!T.badges||!T.badges.length) return hide(el);

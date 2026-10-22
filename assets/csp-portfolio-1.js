@@ -311,7 +311,7 @@ function openModal(id, trigger){
     : placeholderThumb(ICONS[p.categoryKey] || 'i-briefcase');
 
   // Cat + title
-  document.getElementById('pfModalCat').innerHTML = catBadge(p.category) + (p.badge ? ' <span class="pf-cat" style="background:rgba(220,165,12,0.12);border-color:rgba(220,165,12,0.35);color:var(--yellow-d)">'+esc(p.badge)+'</span>' : '');
+  document.getElementById('pfModalCat').innerHTML = catBadge(p.category) + (p.badge ? ' <span class="pf-cat ab-featured-portfolio-tag">'+esc(p.badge)+'</span>' : '');
   document.getElementById('pf-modal-title').textContent = p.name;
 
   // Meta

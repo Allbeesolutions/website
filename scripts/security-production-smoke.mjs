@@ -37,7 +37,23 @@ for(const path of ['/', '/about', '/contact', '/courses', '/digitalmarketing',
  if(!html.includes('/assets/csp-'))throw new Error(`Extracted CSP script missing in ${path}`);
  count++;
 }
-for(const style of ['/assets/csp-style-index-1.css','/assets/csp-style-about-1.css',
+// CSP attribute-policy migration: all app-owned HTML is static-CSS-only.
+for (const route of ['/', '/about','/admin/ceo','/admin/invitation-orders',
+                     '/invitation-samples','/track-order','/demo/blessed-abode','/order']) {
+ const r=await get(route);
+ if(r.status!==200)throw new Error(`Inline-style smoke route failed: ${route}`);
+ const policy=r.headers.get('content-security-policy')||'';
+ const allowed=route==='/order';
+ const attr=policy.match(/(?:^|;)\s*style-src-attr\s+([^;]+)/)?.[1]||'';
+ if(allowed ? !attr.includes("'unsafe-inline'") : !attr.includes("'none'"))
+   throw new Error(`Unexpected inline style CSP at ${route}`);
+ const html=await r.text();
+ if(/\sstyle\s*=\s*['"]/i.test(html))throw new Error(`Static style attribute remains: ${route}`);
+ if(route!=='/order' && html.includes('data-ab-style=') && !html.includes('/assets/csp-inline-attrs.css'))
+   throw new Error(`Missing shared CSS on ${route}`);
+ count++;
+}
+for(const style of ['/assets/csp-inline-attrs.css', '/assets/csp-style-index-1.css','/assets/csp-style-about-1.css',
                     '/assets/csp-style-order-1.css','/assets/csp-particle.css',
                     '/assets/csp-catalog.css']) {
  const r=await get(style);

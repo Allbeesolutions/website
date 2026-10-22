@@ -281,15 +281,19 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     if (reducedMotion) return;
     const c = document.getElementById('heroParticles');
     if (!c) return;
-    c.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;';
+    c.classList.add('ab-hero-particles');
     for (let i = 0; i < 16; i++) {
       const p = document.createElement('div');
       const sz = (2 + Math.random() * 3) + 'px';
-      p.style.cssText = 'position:absolute;border-radius:50%;background:#0F7B6E;' +
-        'left:' + (Math.random() * 100) + '%;width:' + sz + ';height:' + sz + ';' +
-        'opacity:' + (0.3 + Math.random() * 0.35) + ';' +
-        'animation:particleFloat ' + (8 + Math.random() * 10) + 's linear infinite;' +
-        'animation-delay:' + (Math.random() * 8) + 's;';
+      p.classList.add('ab-hero-particle');
+      // CSSOM property writes are permitted by strict style-src-attr. These
+      // finite random numeric values never enter an HTML style attribute.
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.width = sz;
+      p.style.height = sz;
+      p.style.opacity = String(0.3 + Math.random() * 0.35);
+      p.style.animationDuration = (8 + Math.random() * 10) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
       c.appendChild(p);
     }
     // Particle keyframes are provided by the static CSP-safe stylesheet.

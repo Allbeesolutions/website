@@ -48,7 +48,7 @@ function renderSteps(){
 function show(){
   $$('.step').forEach(s=>s.classList.toggle('hidden',+s.dataset.step!==step));
   const hint=$('#designHint');
-  if(hint){ hint.style.display=order.template_id||order.template_name?'block':'none'; if(order.template_id||order.template_name){ hint.innerHTML='<div class="sline"><span class="lbl">Selected design</span><strong>'+esc(order.template_name||order.template_id)+'</strong></div><div style="font-size:12px;color:var(--muted)">You can change the design before ordering by going back to the catalogue.</div>'; } }
+  if(hint){ hint.style.display=order.template_id||order.template_name?'block':'none'; if(order.template_id||order.template_name){ hint.innerHTML='<div class="sline"><span class="lbl">Selected design</span><strong>'+esc(order.template_name||order.template_id)+'</strong></div><div class="ab-order-hint">You can change the design before ordering by going back to the catalogue.</div>'; } }
   $('#backBtn').style.visibility=step===1?'hidden':'visible';
   $('#nav').style.display=step===6?'none':'flex';
   if(step===3) buildPackages();
@@ -100,7 +100,7 @@ function buildPackages(){
 }
 function buildSummary(sel){
   $(sel).innerHTML=`
-    ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${esc(order.template_name)}${order.template_id?` <small style="color:var(--muted)">(${esc(order.template_id)})</small>`:''}</span></div>`:''}
+    ${order.template_name?`<div class="sline"><span class="lbl">Design</span><span>${esc(order.template_name)}${order.template_id?` <small class="ab-muted-small">(${esc(order.template_id)})</small>`:''}</span></div>`:''}
     <div class="sline"><span class="lbl">Event</span><span>${esc(order.event||'—')}</span></div>
     <div class="sline"><span class="lbl">Invitation</span><span>${esc(order.type.replace(' (PDF + Website)','')||'—')}</span></div>
     <div class="sline"><span class="lbl">Package</span><span>${esc(order.pkg||'—')}</span></div>
@@ -108,7 +108,7 @@ function buildSummary(sel){
     <div class="sline"><span class="lbl">Mobile</span><span>${esc(order.mobile||'—')}</span></div>
     <div class="sline"><span class="lbl">Event date</span><span>${esc(order.event_date||'—')}</span></div>
     <div class="sline"><span class="lbl">Total</span><span class="stotal">${fmt(amount())}</span></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line,#e7e3da);font-size:12.5px;color:#33403d;font-weight:600">
+    <div class="ab-summary-features">
       <span>&#10003; Mobile Friendly</span><span>&#10003; Share on WhatsApp</span>
       <span>&#10003; Unlimited Guests</span><span>&#10003; 100% Custom Design</span>
       <span>&#10003; Fast Delivery</span><span>&#10003; Support Available</span>
@@ -137,7 +137,7 @@ $('#backBtn').onclick=()=>{ if(step>1){step--;show();} };
 /* ---------- payment ---------- */
 function loadRzp(cb){ if(window.Razorpay)return cb(); const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=cb; s.onerror=()=>{$('#payErr').textContent='Could not load the payment gateway. Please try again.';}; document.head.appendChild(s); }
 function showResult(html){ $('#payView').classList.add('hidden'); $('#resultView').classList.remove('hidden'); $('#resultView').innerHTML=html; $('#nav').style.display='none'; renderSteps(); }
-function successView(orderId, paymentId){ gax('payment_success',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,currency:'INR'}); gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Payment submitted</h2><p>Thank you, ${esc(order.name)}. Payment for order <strong>${esc(orderId||'')}</strong> was submitted. We are verifying it now and will confirm your order on WhatsApp at ${esc(order.mobile)}.</p><p class="sub">Keep this reference for support: ${esc(paymentId||orderId||'pending')}</p><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="https://wa.me/918903607506">Ask about your payment</a></div>`); }
+function successView(orderId, paymentId){ gax('payment_success',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,currency:'INR'}); gax('order_complete',{template_id:order.template_id||'',template_name:order.template_name||'',event:order.event||'',value:order.amount||0,paid:true}); showResult(`<div class="big">🎉</div><h2>Payment submitted</h2><p>Thank you, ${esc(order.name)}. Payment for order <strong>${esc(orderId||'')}</strong> was submitted. We are verifying it now and will confirm your order on WhatsApp at ${esc(order.mobile)}.</p><p class="sub">Keep this reference for support: ${esc(paymentId||orderId||'pending')}</p><div class="ab-order-success-actions"><a class="btn btn-primary" href="/design-brief?order=${encodeURIComponent(orderId||'')}">Share your event details →</a><a class="btn btn-secondary" href="https://wa.me/918903607506">Ask about your payment</a></div>`); }
 
 $('#payBtn').onclick=async(e)=>{
   $('#payErr').textContent=''; $('#payBtn').disabled=true; $('#payBtn').textContent='Processing…';

@@ -26,7 +26,11 @@ for(const page of pages){
     assert.ok(csp.includes("object-src 'none'"),`Object code disabled: ${route}`);
     const cssElem=csp.match(/(?:^|;)\s*style-src-elem\s+([^;]+)/)?.[1]||'';
     assert.ok(cssElem.includes("'self'")&&!cssElem.includes("'unsafe-inline'"),`Style elements require external stylesheets: ${route}`);
-    assert.ok(csp.includes("style-src-attr 'unsafe-inline'"),`Legacy inline attributes allowed separately: ${route}`);
+    if (['/order','/order.html'].includes(route) || ['/order','/order.html'].includes('/'+page)) {
+      assert.ok(csp.includes("style-src-attr 'unsafe-inline'"),`Checkout third-party compatibility exception: ${route}`);
+    } else {
+      assert.ok(csp.includes("style-src-attr 'none'"),`Inline style attributes are blocked: ${route}`);
+    }
   }
   assert.ok(!/\s(onclick|onload|onerror|onsubmit|onblur|onfocus|onmouseenter|onmouseleave|onmouseover|onmouseout|onchange|oninput|onkeydown|onkeyup)\s*=/.test(html),`Unexpected inline event handler: ${page}`);
   assert.ok(!/<style(?:\s[^>]*)?>/i.test(html),`Inline style block must be external: ${page}`);

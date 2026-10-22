@@ -21,7 +21,7 @@
       '</div>'+
       '<ul class="timeline">'+tl+'</ul>'+
       (idx>=3?deliveryHtml(o.delivery):'')+
-      '<div class="help" style="margin-top:18px">Questions about this order? <a href="https://wa.me/918903607506?text='+encodeURIComponent('Hi AllBee, about order '+o.id)+'" target="_blank" rel="noopener">WhatsApp us →</a></div>';
+      '<div class="help ab-track-help">Questions about this order? <a href="https://wa.me/918903607506?text='+encodeURIComponent('Hi AllBee, about order '+o.id)+'" target="_blank" rel="noopener">WhatsApp us →</a></div>';
     result.classList.add('show');
   }
   form.addEventListener('submit',function(e){

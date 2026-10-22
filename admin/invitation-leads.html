@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/csp-style-admin-invitation-leads-1.css">
+<link rel="stylesheet" href="/assets/csp-inline-attrs.css">
 </head>
 <body>
 <nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo">Overview</a><a href="/admin/invitation-leads" aria-current="page">Leads</a><a href="/admin/invitation-orders">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch">Launch</a></nav>
@@ -38,8 +39,8 @@
   </div>
 </header>
 
-<main class="wrap" style="padding-top:18px;padding-bottom:60px">
-  <div class="banner" id="banner" style="display:none"></div>
+<main class="wrap" data-ab-style="s0173">
+  <div class="banner" id="banner" data-ab-style="s0091"></div>
 
   <div class="stats" id="stats"></div>
   <div class="pipe" id="pipe"></div>
@@ -56,7 +57,7 @@
     <div>Lead ID</div><div>Name / Mobile</div><div>Event</div><div>Source / Date</div><div>Status</div><div></div>
   </div>
   <div id="list"></div>
-  <div class="empty" id="empty" style="display:none">No leads match your filters.</div>
+  <div class="empty" id="empty" data-ab-style="s0091">No leads match your filters.</div>
 </main>
 
 <!-- Lead modal -->
@@ -67,7 +68,7 @@
     <div class="modal-body" id="mBody"></div>
     <div class="modal-foot">
       <button class="btn btn-save" id="mSave">Save changes</button>
-      <button class="btn btn-won" id="mConvert" style="background:var(--gold);color:#3a2c06">Convert to Order →</button>
+      <button class="btn btn-won" id="mConvert" data-ab-style="s0061">Convert to Order →</button>
       <button class="btn btn-won" id="mWon">Mark Won</button>
       <button class="btn btn-lost" id="mLost">Mark Lost</button>
       <button class="btn btn-ghost" data-close>Close</button>

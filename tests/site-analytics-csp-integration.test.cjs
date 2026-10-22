@@ -16,6 +16,14 @@ test('all published static demos must use consent-controlled script and no exter
   assert.match(html,/src="\/assets\/site-analytics\.js" defer/,file);
  }
 });
+test('consent controls are styled with local CSS, never runtime inline CSS text',()=>{
+ const source=read('assets/site-analytics.js');
+ const css=read('assets/site-analytics.css');
+ assert.doesNotMatch(source,/\.style\.cssText\s*=/);
+ assert.match(source,/href\s*=\s*['"]\/assets\/site-analytics\.css/);
+ assert.match(css,/#allbee-analytics-choice/);
+ assert.match(css,/#allbee-analytics-manage/);
+});
 test('site analytics excludes forms, customer content, private routes and dynamic identities',()=>{
  const source=read('assets/site-analytics.js');
  assert.doesNotMatch(source,/\.textContent\s*\|\|\s*''/);

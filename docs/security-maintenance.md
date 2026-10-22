@@ -56,6 +56,10 @@ Vercel project access remains limited to the owner's personal `allbee-website` p
 
 Extracted all 111 checked-in inline `<style>` elements from 59 static pages, deduplicated repeated demo styles down to 63 static CSS files, and moved JavaScript-injected particle and catalogue CSS into same-origin files. The global and route-specific policies now enforce `style-src-elem 'self' https://fonts.googleapis.com` (no inline stylesheet elements) while temporarily allowing legacy style attributes with `style-src-attr 'unsafe-inline'`. Chrome local strict-CSP tests verify that linked stylesheet CSSOM rules exist and 20 representative navigation and form behaviors remain functional. The policy is not yet a full no-inline-style CSP; 457 static style attributes plus JS-generated inline CSS remain a separate compatibility migration.
 
+## 22 October — inline attribute hardening and ongoing verification
+
+Source-level HTML presentation moved 457 `style` attributes to 204 CSS selectors in `assets/csp-inline-attrs.css`, and JavaScript HTML-template/CSS-text styles moved to fixed classes, static stage-color selectors, and bounded width selectors. The CSP strictly disallows style attributes everywhere except `/order` and `/order.html`, preserving third-party payment modal compatibility until a sandbox test. The checkout-owned HTML no longer emits style attributes. CI enforces `scripts/inline-style-csp-check.mjs` and exercises CSP interactions in desktop, narrow/mobile proxy and tablet viewports; it does not certify real Safari/iOS touch support. An encrypted backup synthetic recovery test includes wrong keys, corrupted data, missing schema and truncation. The OWASP risk register and owner gates live in `docs/security-acceptance-2026-10-22.md`.
+
 ## Post-deployment public smoke checks
 
 Check public pages, security headers, `/api/health` (GET only), privileged APIs without credentials (must reject), and invalid methods. Never make brute-force attempts or send synthetic orders to live payment endpoints. For rollback, see `docs/rollback-procedures.md`.
