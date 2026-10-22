@@ -20,6 +20,7 @@ jobs:
         run: |
           node scripts/audit.mjs
           node scripts/pricing-check.mjs
+          node scripts/hvd-typography-check.mjs
           node scripts/invitation-order-integrity-check.mjs
           node scripts/contextual-enquiry-check.mjs
           node scripts/site-quality-check.mjs

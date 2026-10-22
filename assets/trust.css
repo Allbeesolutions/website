@@ -5,7 +5,7 @@
 .tz-section.alt{background:#fff}
 .tz-wrap{max-width:1080px;margin:0 auto}
 .tz-eyebrow{text-align:center;color:var(--tz-gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px}
-.tz-title{text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.4rem,3.5vw,2rem);color:var(--tz-ink);margin:6px 0 22px}
+.tz-title{text-align:center;font-family:'Bricolage Grotesque',Arial,sans-serif;font-size:clamp(1.4rem,3.5vw,2rem);color:var(--tz-ink);margin:6px 0 22px}
 /* logos strip */
 .tz-logos{display:flex;gap:34px;flex-wrap:wrap;align-items:center;justify-content:center}
 .tz-logos img{height:42px;width:auto;filter:grayscale(1);opacity:.7;transition:.25s}
@@ -23,7 +23,7 @@
 .tz-case .img{height:150px;background-size:cover;background-position:center;background-color:#eee}
 .tz-case .b{padding:16px}
 .tz-case .ct{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--tz-muted)}
-.tz-case h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin:4px 0 6px}
+.tz-case h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.15rem;margin:4px 0 6px}
 .tz-case .result{color:var(--tz-teal-d);font-weight:700;font-size:.95rem}
 /* trust badge row */
 .tz-badges{display:flex;gap:14px 26px;flex-wrap:wrap;justify-content:center;font-weight:600;color:#33403d;font-size:14px}
@@ -32,7 +32,7 @@
 /* authority strip */
 .tz-auth{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 .tz-auth .item{background:#fff;border:1px solid var(--tz-line);border-radius:12px;padding:14px 22px;text-align:center;min-width:130px}
-.tz-auth .v{font-family:'Playfair Display',serif;font-weight:800;font-size:1.5rem;color:var(--tz-teal-d)}
+.tz-auth .v{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;color:var(--tz-teal-d)}
 .tz-auth .l{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--tz-muted);font-weight:700;margin-top:4px}
 /* reviews */
 .tz-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}

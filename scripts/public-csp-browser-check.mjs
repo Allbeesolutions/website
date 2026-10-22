@@ -22,6 +22,20 @@ const harness=`(function(){
  function verify(){
    var p=location.pathname,behavior='loaded',pass=true;
    try {
+     // HVD public brand typography must be present and applied, while admin
+     // and individual invitation templates must retain their own identities.
+     if(!p.startsWith('/admin/') && !p.startsWith('/demo/')){
+       if(!document.querySelector('link[href="/assets/hvd-typography.css"]'))
+         throw Error('HVD public typography stylesheet missing');
+       if(!getComputedStyle(document.body).fontFamily.includes('Instrument Sans'))
+         throw Error('HVD body font not applied');
+       var heading=document.querySelector('h1');
+       if(heading&&!getComputedStyle(heading).fontFamily.includes('Bricolage Grotesque'))
+         throw Error('HVD display typography missing');
+     }else{
+       if(document.querySelector('link[href="/assets/hvd-typography.css"]'))
+         throw Error('Admin or invitation design unexpectedly uses HVD override');
+     }
      var linked=[].slice.call(document.querySelectorAll('link[href^="/assets/csp-style-"]'));
      for(var i=0;i<linked.length;i++){
        var sheet=linked[i].sheet;

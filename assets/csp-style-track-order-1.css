@@ -1,14 +1,14 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--paper:#fbfaf7;--line:#e7e3da;--ok:#16A34A}
-body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
 a{color:inherit}
 .bar{background:var(--teal-d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
-.bar .b{font-family:Playfair Display,serif;font-weight:700}
+.bar .b{font-family:'Bricolage Grotesque',sans-serif;font-weight:700}
 .bar a{color:#eafff9;font-size:13px;text-decoration:none}
 .wrap{max-width:620px;margin:0 auto;padding:36px 20px 60px}
 .hd{text-align:center;margin-bottom:24px}
 .hd .eb{color:var(--gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px}
-.hd h1{font-family:Playfair Display,serif;font-size:clamp(1.8rem,5vw,2.6rem);margin-top:6px}
+.hd h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.8rem,5vw,2.6rem);margin-top:6px}
 .hd p{color:var(--muted)}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(15,31,31,.06)}
 .field{margin-bottom:14px}
@@ -21,7 +21,7 @@ a{color:inherit}
 .hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px}
 .result{display:none;margin-top:8px}.result.show{display:block}
 .ohead{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
-.ohead .oid{font-family:Playfair Display,serif;font-size:1.4rem}
+.ohead .oid{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem}
 .ohead .when{font-size:12px;color:var(--muted)}
 .badge{display:inline-block;background:rgba(15,123,110,.1);color:var(--teal-d);font-weight:700;font-size:12px;padding:5px 12px;border-radius:100px}
 .kv{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:22px}

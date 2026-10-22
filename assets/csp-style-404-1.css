@@ -8,8 +8,8 @@
   --s-0:#FFFFFF; --s-1:#FBF8F0; --s-2:#F5F0E0; --s-3:#E9F3F0; --s-4:#CCE5E0;
   --border:rgba(255,255,255,0.16); --border-y:rgba(240,184,0,0.45); --border-strong:rgba(255,255,255,0.34);
   --shadow-y:0 10px 34px rgba(240,184,0,0.30); --shadow-teal:0 14px 44px rgba(0,40,36,0.40);
-  --font-display:'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body:'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display:'Bricolage Grotesque', 'Arial', sans-serif;
+  --font-body:'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --nav-h:72px; --max-w:1300px;
   --r-sm:8px; --r-lg:24px; --r-xl:32px;
   --ease:cubic-bezier(0.22,1,0.36,1);

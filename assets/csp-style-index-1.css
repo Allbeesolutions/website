@@ -41,8 +41,8 @@
   --shadow-y:0 8px 32px rgba(220,165,12,0.22);
 
   /* Type */
-  --font-display:'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body:'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display:'Bricolage Grotesque', 'Arial', sans-serif;
+  --font-body:'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Layout */
   --nav-h:72px;
@@ -3963,7 +3963,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .pf-prev-card:hover .pf-prev-thumb img{transform:scale(1.05)}
 .pf-prev-body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column}
 .pf-prev-cat{display:inline-flex;padding:3px 10px;border-radius:100px;background:rgba(15,123,110,0.08);border:1px solid rgba(15,123,110,0.18);font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal,#0F7B6E);margin-bottom:8px;width:fit-content}
-.pf-prev-name{font-family:var(--font-display,'Playfair Display',serif);font-size:1.05rem;font-weight:700;color:var(--ink,#0F1F1F);margin-bottom:6px}
+.pf-prev-name{font-family:var(--font-display,'Bricolage Grotesque',sans-serif);font-size:1.05rem;font-weight:700;color:var(--ink,#0F1F1F);margin-bottom:6px}
 .pf-prev-desc{font-size:12.5px;color:var(--muted,#4A6363);line-height:1.65;flex:1;margin-bottom:12px}
 .pf-prev-link{font-size:12px;font-weight:800;color:var(--teal,#0F7B6E);display:inline-flex;align-items:center;gap:5px;transition:gap .2s}
 .pf-prev-card:hover .pf-prev-link{gap:9px}
@@ -4024,5 +4024,5 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 }
 @media (min-width:769px){ #navbar .hamburger{display:none} }
 /*nav-dd-end*/
-.path-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}.path-card{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.72);color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}.path-card:hover,.path-card:focus-visible{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 16px 34px rgba(15,123,110,.12)}.path-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--teal);color:#fff}.path-card:nth-child(2) .path-icon{background:#DCA50C;color:#1f2b25}.path-card:nth-child(3) .path-icon{background:#085A52}.path-card:nth-child(4) .path-icon{background:#7d5a9e}.path-title{font:700 1.08rem 'Lato',sans-serif}.path-desc{font-size:.9rem;line-height:1.55;color:var(--muted)}.path-link{margin-top:auto;color:var(--teal-d);font-weight:700;font-size:.88rem}@media(max-width:900px){.path-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.path-grid{grid-template-columns:1fr;gap:12px}.path-card{padding:18px}}
+.path-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}.path-card{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.72);color:var(--ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}.path-card:hover,.path-card:focus-visible{transform:translateY(-4px);border-color:var(--teal);box-shadow:0 16px 34px rgba(15,123,110,.12)}.path-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--teal);color:#fff}.path-card:nth-child(2) .path-icon{background:#DCA50C;color:#1f2b25}.path-card:nth-child(3) .path-icon{background:#085A52}.path-card:nth-child(4) .path-icon{background:#7d5a9e}.path-title{font:700 1.08rem 'Instrument Sans',sans-serif}.path-desc{font-size:.9rem;line-height:1.55;color:var(--muted)}.path-link{margin-top:auto;color:var(--teal-d);font-weight:700;font-size:.88rem}@media(max-width:900px){.path-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.path-grid{grid-template-columns:1fr;gap:12px}.path-card{padding:18px}}
 @media(max-width:650px){.services-heading-row{grid-template-columns:minmax(0,1fr);gap:18px}}

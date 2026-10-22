@@ -1,6 +1,6 @@
 :root{--teal:#0F7B6E;--teal-d:#085A52;--teal-l:#149987;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;
  --s-1:#FBF8F0;--s-3:#E9F3F0;--border:rgba(15,123,110,.16);--paper:#fff;
- --font-display:'Playfair Display',Georgia,serif;--font-body:'Lato',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+ --font-display:'Bricolage Grotesque',Arial,sans-serif;--font-body:'Instrument Sans',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font-body);background:var(--s-3);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit}

@@ -1,0 +1,29 @@
+/* AllBee · HajiHaz Visual DNA (HVD) typography system
+   Scope: public AllBee website only. Admin dashboards and individual invitation
+   demo templates deliberately retain their established type identities.
+   Typeface licences: SIL Open Font License 1.1. Fonts served by Google Fonts.
+   No palette, layout grid, animation, interaction or content overrides here.
+*/
+:root {
+  --font-display: 'Bricolage Grotesque', 'Trebuchet MS', Arial, sans-serif;
+  --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+html { text-rendering: optimizeLegibility; }
+body { font-family: var(--font-body); font-kerning: normal; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+button, input, select, textarea { font-family: var(--font-body); }
+/* Expressive editorial headlines with carefully controlled tracking; do not
+   change existing section layout, font sizes, or scroll-linked animations. */
+h1 { letter-spacing: -0.025em; }
+h2 { letter-spacing: -0.018em; }
+h3 { letter-spacing: -0.01em; }
+/* Accessibility: avoid illegibly tight letter spacing in small UI controls. */
+button, input, select, textarea, small, label { letter-spacing: normal; }
+/* Keep the homepage introduction on its intended two-line desktop measure
+   despite the new body font's slightly wider letterforms. */
+@media (min-width: 900px) {
+  .hero-sf .sf-sub { letter-spacing: -0.016em; }
+}
