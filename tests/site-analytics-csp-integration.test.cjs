@@ -29,5 +29,12 @@ test('site analytics excludes forms, customer content, private routes and dynami
  assert.doesNotMatch(source,/\.textContent\s*\|\|\s*''/);
  assert.match(source,/allbee-analytics-consent-v2/);
  assert.match(source,/globalPrivacyControl/);
- assert.match(source,/checkout/);
+ assert.match(source,/var PUBLIC = new Set/);
+ assert.match(source,/!PUBLIC.has\(leaf\)/);
+});
+
+test('published demo allowlist and fixed public pages stay in sync with current source',()=>{
+ const source=read('assets/site-analytics.js');
+ const demos=fs.readdirSync(path.join(root,'demo')).filter(f=>f.endsWith('.html'));
+ for(const file of demos)assert.ok(source.includes('"'+file.slice(0,-5)+'"'),file+' missing in GA route allowlist');
 });
