@@ -35,6 +35,8 @@ jobs:
           node scripts/public-csp-check.mjs
           node scripts/invitations-restore-check.mjs
           node scripts/legacy-leads-migration-check.mjs
+      - name: Optional customer analytics privacy and CSP regression
+        run: node --test tests/site-analytics-consent.test.cjs tests/site-analytics-csp-integration.test.cjs
       - name: Public strict-CSP browser interactions (Chrome)
         env:
           CSP_BROWSER_QUICK: '1'

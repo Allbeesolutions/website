@@ -71,7 +71,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
       })(window, document, 'clarity', 'script', CFG.clarityId);
     }
   }
-  loadAnalytics();
+  // Analytics is consent-controlled in site-analytics.js; no unconditional third-party loaders.
 
   function trackEvent(name, params){
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
