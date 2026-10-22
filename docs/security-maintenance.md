@@ -60,6 +60,10 @@ Extracted all 111 checked-in inline `<style>` elements from 59 static pages, ded
 
 Source-level HTML presentation moved 457 `style` attributes to 204 CSS selectors in `assets/csp-inline-attrs.css`, and JavaScript HTML-template/CSS-text styles moved to fixed classes, static stage-color selectors, and bounded width selectors. The CSP strictly disallows style attributes everywhere except `/order` and `/order.html`, preserving third-party payment modal compatibility until a sandbox test. The checkout-owned HTML no longer emits style attributes. CI enforces `scripts/inline-style-csp-check.mjs` and exercises CSP interactions in desktop, narrow/mobile proxy and tablet viewports; it does not certify real Safari/iOS touch support. An encrypted backup synthetic recovery test includes wrong keys, corrupted data, missing schema and truncation. The OWASP risk register and owner gates live in `docs/security-acceptance-2026-10-22.md`.
 
+## Post-merge analytics-consent and upload boundary regressions (22 October)
+
+The parallel consent/CSP integration now has a real local Chrome strict-CSP assertion for stylesheet loading, banner visibility and opt-out persistence on the homepage. It also checks that Google Analytics is not injected before consent or after selecting **No thanks**; repeat these tests at desktop, narrow Chrome and tablet widths. The reference-image upload regression exercises a valid 1.5 MiB base64 PNG, an image exceeding that limit by one byte, and an oversized declared JSON request. These tests use synthetic images, local browser state and stubbed storage; they do not authorize a payment, access customer data or prove a real-world network rate-limit threshold.
+
 ## Post-deployment public smoke checks
 
 Check public pages, security headers, `/api/health` (GET only), privileged APIs without credentials (must reject), and invalid methods. Never make brute-force attempts or send synthetic orders to live payment endpoints. For rollback, see `docs/rollback-procedures.md`.

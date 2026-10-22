@@ -32,7 +32,21 @@ const harness=`(function(){
        if(!a||!b)throw Error('Modal controls missing');
        a.click();if(!document.getElementById('enrollModal').classList.contains('open'))throw Error('Modal failed to open');
        b.click();if(document.getElementById('enrollModal').classList.contains('open'))throw Error('Modal failed to close');
-       behavior='modal works';
+       var consent=document.getElementById('allbee-analytics-choice');
+       var manage=document.getElementById('allbee-analytics-manage');
+       var sheet=document.querySelector('link[data-allbee-analytics-css]');
+       if(!consent||!manage||!sheet)throw Error('Consent controls or external CSS missing');
+       if(!sheet.sheet || !sheet.sheet.cssRules.length)throw Error('Consent CSS failed to load');
+       if(getComputedStyle(consent).position!=='fixed')throw Error('Consent banner CSS not applied');
+       if(document.querySelector('script[src*="googletagmanager.com/gtag/js"]'))
+         throw Error('Analytics started before consent');
+       var no=[].slice.call(consent.querySelectorAll('button')).find(function(x){return x.textContent==='No thanks';});
+       if(!no)throw Error('Consent opt-out button missing');
+       no.click();
+       if(localStorage.getItem('allbee-analytics-consent-v2')!=='no')throw Error('Opt-out not stored');
+       if(document.querySelector('script[src*="googletagmanager.com/gtag/js"]'))
+         throw Error('Analytics started after opt-out');
+       behavior='modal and consent opt-out works';
      }else if(p==='/admin/ceo.html'){
        document.getElementById('demoLink').click();
        if(!document.querySelector('#kpis .kpi'))throw Error('Executive demo dashboard missing');

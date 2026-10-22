@@ -35,6 +35,17 @@ assert.equal((await invoke(upload, { method:'POST', body:{ ...body, mime:'image/
 assert.equal((await invoke(upload, { method:'POST', body })).statusCode, 200);
 const largerPng = Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(300*1024)]).toString('base64');
 assert.equal((await invoke(upload, { method:'POST', body:{...body,data:largerPng} })).statusCode, 200, 'legitimate reference over 256 KiB is accepted');
+// Prove the documented 1.5 MiB image cap is compatible with JSON/base64 and
+// the upload-specific 2.3 MiB envelope (not the ordinary 256 KiB API cap).
+const largestPng = Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(1536*1024-8)]).toString('base64');
+assert.equal((await invoke(upload, { method:'POST', headers:{'content-length':String(1536*1024*4/3+512)}, body:{...body,data:largestPng} })).statusCode,200,
+  'maximum allowed 1.5 MiB PNG should survive the complete-body size check');
+const aboveMaxPng=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(1536*1024-7)]).toString('base64');
+assert.equal((await invoke(upload,{method:'POST',body:{...body,data:aboveMaxPng}})).statusCode,422,
+  'image one byte above 1.5 MiB limit must fail');
+assert.equal((await invoke(upload,{method:'POST',headers:{'content-length':String(2300*1024+1)},body})).statusCode,413,
+  'oversized declared complete-body length is rejected even if parsed body is small');
+
 assert.equal(forwarded.action, 'reference_upload');
 assert.equal(forwarded.order_id, 'ORD-MXABC123');
 assert.equal(forwarded.secret, process.env.LEAD_SHARED_SECRET);
