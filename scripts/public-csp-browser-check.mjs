@@ -79,7 +79,14 @@ const server=http.createServer((req,res)=>{
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const routes=process.env.CSP_BROWSER_QUICK==='1'?['/','/about.html','/invitation-samples.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html','/portfolio.html']:['/','/404.html','/about.html','/contact.html','/courses.html','/digitalmarketing.html','/invitation-samples.html','/invitation.html','/portfolio.html','/privacy.html','/refund.html','/services.html','/terms.html','/top-templates.html','/webdevelopment.html','/demo/blessed-abode.html','/demo/botanical-letterpress.html','/demo/muslim-wedding.html','/demo/business-launch.html','/demo/royal-scroll.html'];
 async function test(route){
- const args=['--headless','--disable-gpu','--disable-extensions','--disable-background-networking','--no-first-run','--no-default-browser-check','--virtual-time-budget=2200','--dump-dom','http://127.0.0.1:'+server.address().port+route];
+ // Keep the CI smoke deterministic: offline external vendors and GPU/WebGL
+ // effects are not required to verify CSP, CSS loading, and DOM interactions.
+ const args=['--headless','--disable-gpu','--disable-webgl','--disable-software-rasterizer',
+   '--disable-dev-shm-usage','--disable-extensions','--disable-background-networking',
+   '--blink-settings=imagesEnabled=false',
+   '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1',
+   '--no-first-run','--no-default-browser-check','--virtual-time-budget=1400',
+   '--dump-dom','http://127.0.0.1:'+server.address().port+route];
  return await new Promise(resolve=>{
   const p=spawn(chrome,args,{stdio:['ignore','pipe','ignore']});
   let output='',done=false;const finish=result=>{if(done)return;done=true;clearTimeout(timer);p.kill();resolve(result);};
