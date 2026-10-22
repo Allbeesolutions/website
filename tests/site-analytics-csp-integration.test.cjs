@@ -66,3 +66,27 @@ test('all legacy invitation demo scripts create no GA queue before consent',()=>
   }
   assert.equal(tested,25,'Expected all 25 published legacy demo CTA controllers');
 });
+
+test('shared legacy click handlers forward only consent-aware event names, never contact data',()=>{
+  const files=['shared-runtime-1.js','csp-index-1.js','csp-about-1.js','csp-contact-1.js','csp-courses-1.js'];
+  for(const file of files){
+    const source=read('assets/'+file);
+    assert.doesNotMatch(source,/\bfunction loadAnalytics\(/,file+' must not expose unused unconditional vendor loader');
+    assert.doesNotMatch(source,/trackEvent\('click_phone',\s*\{\s*phone:/,file+' must not pass phone numbers');
+    assert.doesNotMatch(source,/trackEvent\('click_whatsapp',\s*\{\s*url:/,file+' must not pass private WhatsApp URL');
+    const fn=source.match(/function trackEvent\(name\)\{[\s\S]*?\n  \}/)?.[0];
+    assert.ok(fn,'Sanitized legacy bridge must be present: '+file);
+    const tracked=[],unexpected=[];
+    const context={window:{
+      AllBeeAnalytics:{track:(...args)=>tracked.push(args)},
+      gtag:(...args)=>unexpected.push(args),
+      fbq:(...args)=>unexpected.push(args),
+    }};
+    vm.runInNewContext(fn,context,{timeout:1000});
+    for(const event of ['click_phone','click_whatsapp','click_email','open_chat','open_counseling_modal','form_submit_captured'])
+      vm.runInNewContext(`trackEvent(${JSON.stringify(event)})`,context,{timeout:1000});
+    assert.deepEqual(tracked.map(args=>args[0]),['cta_click','whatsapp_click','cta_click','cta_click','cta_click']);
+    assert.ok(tracked.every(args=>args.length===1),file+' may only send broad event name');
+    assert.equal(unexpected.length,0,file+' must not bypass central consent via gtag/fbq');
+  }
+});

@@ -28,48 +28,20 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
 (function(){
   'use strict';
   const CFG = window.ALLBEE_CONFIG;
-  const hasTrackingId = (v) => typeof v === 'string' && v.trim().length > 0;
 
   /* ─────────────────────────────────────────────────────────────────
      ANALYTICS — only inject if real IDs are present
   ───────────────────────────────────────────────────────────────── */
-  function loadAnalytics(){
-    // Google Analytics 4
-    if (hasTrackingId(CFG.ga4Id)) {
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + CFG.ga4Id;
-      document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){ window.dataLayer.push(arguments); };
-      window.gtag('js', new Date());
-      window.gtag('config', CFG.ga4Id, { anonymize_ip: true });
-    }
-    // Meta Pixel
-    if (hasTrackingId(CFG.metaPixelId)) {
-      !function(f,b,e,v,n,t,s){
-        if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
-        t=b.createElement(e);t.async=!0;t.src=v;
-        s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
-      }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-      window.fbq('init', CFG.metaPixelId);
-      window.fbq('track', 'PageView');
-    }
-    // Microsoft Clarity
-    if (hasTrackingId(CFG.clarityId)) {
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)
-      })(window, document, 'clarity', 'script', CFG.clarityId);
-    }
-  }
   // Analytics is consent-controlled in site-analytics.js; no unconditional third-party loaders.
 
-  function trackEvent(name, params){
-    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
-    if (typeof window.fbq === 'function') window.fbq('trackCustom', name, params || {});
+  function trackEvent(name){
+    // Never forward URL, phone number, form fields or arbitrary event params.
+    // The central tracker enforces route allowlisting, consent and DNT.
+    const analytics=window.AllBeeAnalytics;
+    if (!analytics || typeof analytics.track !== 'function') return;
+    const sanitized=name==='click_whatsapp'?'whatsapp_click':
+      ['click_phone','click_email','open_counseling_modal','open_chat'].includes(name)?'cta_click':null;
+    if (sanitized) analytics.track(sanitized);
   }
 
   /* ─────────────────────────────────────────────────────────────────
@@ -444,8 +416,8 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     const a = e.target.closest && e.target.closest('a[href]');
     if (!a) return;
     const href = a.getAttribute('href') || '';
-    if (href.startsWith('tel:')) trackEvent('click_phone', { phone: href });
-    else if (href.indexOf('wa.me') !== -1) trackEvent('click_whatsapp', { url: href });
+    if (href.startsWith('tel:')) trackEvent('click_phone');
+    else if (href.indexOf('wa.me') !== -1) trackEvent('click_whatsapp');
     else if (href.startsWith('mailto:')) trackEvent('click_email');
   });
 

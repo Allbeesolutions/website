@@ -1,0 +1,28 @@
+name: AllBee production read-only checks
+
+on:
+  schedule:
+    # Once daily (approximately 07:47 IST); GitHub may delay scheduled starts.
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: allbee-production-readonly-watch
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout current production branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Read-only public security and route smoke
+        run: node scripts/security-production-smoke.mjs --live
+      - name: Public configuration readiness (no secrets or customer data)
+        run: node scripts/production-readiness-summary.mjs --live

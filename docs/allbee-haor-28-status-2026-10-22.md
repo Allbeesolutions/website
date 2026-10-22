@@ -19,7 +19,7 @@
 | 11 | Homepage overflow | **Fixed locally.** Global `html` clip prevents horizontal document scrolling while nested photo gallery retains swipe. Verified at Chrome min-width 500px and tablet 820px. | Live deployment/browser recheck. |
 | 12 | Real iOS and Android | **Not certified.** Chromium desktop emulation is not equivalent to device Safari/Chrome/GPU/touch. | Representative device/browser sessions. |
 | 13 | Responsive layouts | **Representative suites pass** for 25 desktop pages and nine critical routes each at narrow and tablet sizes. | Full visual/device signoff across 69 pages. |
-| 14 | Privacy/analytics | **Improved locally.** 25 demo scripts no longer create GA queues without consent. Runtime VM regression validates sanitized CTA events; consent/withdrawal tests retained. | Verify GA4 receiving only opted-in permitted public-site events and admin metric interpretation. |
+| 14 | Privacy/analytics | **Deployed in the first batch; further improved.** 25 demo scripts no longer create GA queues without consent; five legacy shared-page trackers now forward only broad actions through the central consent/DNT guard, never phone numbers, WhatsApp URLs, form fields or arbitrary events. Runtime privacy regressions cover both. | Verify GA4 receiving only opted-in permitted public-site events and admin metric interpretation. |
 | 15 | Service packages and quotes | **Already substantially present** as public package deliverables, prices and honest quote qualifiers; service CTA corrected to say “Get a Project Quote”. | Commercial scope/turnaround support approval where needed; never invent guarantees. |
 | 16 | Contextual forms and package eligibility | **Improved locally.** Business service preselection, counseling `course` saved to CRM interest, server canonical template ID/name/event/demo and package validation, browser selection coherence. Synthetic gateway captures correct amount. | Production release validation and controlled end-to-end order. |
 | 17 | Courses details | **Partially present:** public catalogue fees/durations, completion statement and mode/batch/trainer disclaimers. | Actual batch dates, trainer qualifications, certificate policy and independently verified learner outcomes. |
@@ -29,9 +29,9 @@
 | 21 | Google Business Profile | **No fabricated rating or review counts.** | Verified owner-controlled profile and review source. |
 | 22 | Registrations and credentials | **No invented GST/Udyam/partner credentials.** | Real registration/certification details and permission to publish. |
 | 23 | Refund terms | **Existing policy pages preserved, no silent business-policy changes.** | Owner-approved refund terms matching payment-provider and actual fulfillment rules. |
-| 24 | WhatsApp delivery workflows | **Source and existing checklist available; customer-specific messages not sent.** | Authorized test records for six WhatsApp templates, delivery notifications and support review. |
+| 24 | WhatsApp delivery workflows | **Added offline verification** of all six order WhatsApp lifecycle templates (received/brief/design/review/delivered/follow-up), including recipient formatting, order IDs and delivery/tracking links; no actual customer message sent. | Authorized test records for six WhatsApp templates, delivery notifications and support review. |
 | 25 | GitHub/third-party deployment controls | **Static CI/audit retained, scoped isolated worktree used.** GitHub branch-protection REST returns 403 for connected GitHub integration. | Admin permission review and required review/check policy. |
-| 26 | Production monitoring/backup alerts | **Read-only smoke suite and basic API logs present; no true scheduled backup or WAF alert configured.** | Verified production team/Drive access and owner custody plan. |
+| 26 | Production monitoring/backup alerts | **Added a daily read-only GitHub Actions security/health workflow** and a public readiness report showing booleans only (no secrets or customer data). This is availability monitoring, not a verified backup/WAF alert; its first scheduled run still requires verification. | Verified production team/Drive access and owner custody plan. |
 | 27 | Final security review | **OWASP/ASVS thematic mapping already in `docs/security-acceptance-2026-10-22.md`, updated by new synthetic tests.** | Independent live verification for payment, MFA, storage, WAF, incidents before security certification. |
 | 28 | Performance, SEO, accessibility and cross-browser | **Improved locally.** 13-route SEO/PWA/main landmarks/94 image-alt quality suite, accessible tracking/review status, mobile gallery keyboard access. | Real-device WebKit/Android and full visual audits; broader load-speed measurement. |
 
@@ -47,3 +47,10 @@
 ## Evidence commands
 
 `node scripts/invitation-order-integrity-check.mjs`; `node scripts/contextual-enquiry-check.mjs`; `node scripts/site-quality-check.mjs`; `node --test tests/site-analytics-consent.test.cjs tests/site-analytics-csp-integration.test.cjs`; `node scripts/public-csp-browser-check.mjs`; `CSP_BROWSER_QUICK=1 CSP_BROWSER_VIEWPORT=mobile node scripts/public-csp-browser-check.mjs`; `CSP_BROWSER_QUICK=1 CSP_BROWSER_VIEWPORT=tablet node scripts/public-csp-browser-check.mjs` plus the pre-existing security, pricing, upload, backup and CSP regressions.
+
+## Follow-up monitoring and analytics hardening
+
+- `scripts/whatsapp-template-check.mjs` validates the six published WhatsApp delivery stages without dispatching any messages.
+- `scripts/production-readiness-summary.mjs --live` reports only safe public configuration booleans. `/.github/workflows/production-readonly-watch.yml` runs read-only checks approximately daily (GitHub schedule is best-effort) and can be launched manually from Actions. Workflow failures are visible in GitHub Actions; **no email/SMS delivery is guaranteed** by this change.
+- The five shared runtime scripts no longer include dormant vendor analytics loaders or forward phone/WhatsApp URL data to Google; all public tracking flows through `AllBeeAnalytics.track`, which enforces a consent/DNT gate and broad event allowlist.
+- No real data, paid checkout, MFA cutover, WAF rules, production Apps Script versions, or Google Drive ACLs were changed.
