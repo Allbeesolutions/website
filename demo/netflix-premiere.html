@@ -17,69 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#141414;--bg2:#1c1c1c;--red:#e50914;--ink:#f3f3f3;--soft:#9aa0a6;--card:#2a2a2a}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-weight:300}
-.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
-a{color:inherit;text-decoration:none}
-.ribbon{background:#000;color:#fff;font-size:11px;letter-spacing:.5px;text-align:center;padding:8px 14px}
-.ribbon a{color:var(--red);font-weight:700}
-/* top nav */
-.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:linear-gradient(#141414,rgba(20,20,20,.6) 80%,transparent)}
-.nav .logo{font-family:'Bebas Neue',sans-serif;color:var(--red);font-size:1.7rem;letter-spacing:2px}
-.nav .links{display:flex;gap:18px;font-size:.85rem;color:var(--soft)}
-@media(max-width:560px){.nav .links{display:none}}
-.nav .avatar{width:30px;height:30px;border-radius:5px;background:linear-gradient(135deg,#e50914,#7a0009)}
-/* hero featured */
-.hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;padding:0 22px 60px;background:radial-gradient(120% 90% at 75% 20%,#3a1c1f,#141414 65%)}
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(transparent,#141414);z-index:1}
-.hero .inner{position:relative;z-index:2;max-width:620px}
-.hero .series{display:inline-flex;align-items:center;gap:8px;color:var(--soft);letter-spacing:3px;font-size:12px;text-transform:uppercase}
-.hero .series b{color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:1.3rem}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,12vw,6.5rem);line-height:.92;margin:8px 0 10px}
-.hero .meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--soft);font-size:.9rem}
-.hero .meta .mat{border:1px solid var(--soft);padding:0 6px;font-size:.75rem}
-.hero .meta .top{color:var(--red);font-weight:700}
-.hero p{color:#d0d0d0;margin:14px 0 18px;max-width:520px}
-.hero .btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;padding:12px 26px;border-radius:5px;cursor:pointer;border:none}
-.btn.play{background:#fff;color:#000}.btn.play:hover{background:#d6d6d6}
-.btn.list{background:rgba(110,110,110,.6);color:#fff}.btn.list:hover{background:rgba(110,110,110,.4)}
-/* rows */
-.row{padding:26px 22px}
-.row h2{font-size:1.2rem;font-weight:500;margin-bottom:14px}
-.rail{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
-.rail::-webkit-scrollbar{height:6px}.rail::-webkit-scrollbar-thumb{background:#444;border-radius:3px}
-.ep{flex:0 0 280px;scroll-snap-align:start;background:var(--card);border-radius:8px;overflow:hidden;transition:transform .25s}
-.ep:hover{transform:scale(1.04)}
-.ep .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#3a3a3a,#1a1a1a);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative}
-.ep .pbar{position:absolute;left:0;bottom:0;height:4px;background:var(--red)}
-.ep .body{padding:12px 14px}
-.ep .body .t{display:flex;justify-content:space-between;font-weight:500}
-.ep .body .t span{color:var(--soft);font-weight:300}
-.ep .body p{color:var(--soft);font-size:.85rem;margin-top:4px}
-/* premiere countdown */
-.cdsec{margin:20px 22px;background:linear-gradient(120deg,#2a0d10,#1c1c1c);border:1px solid #3a1a1c;border-radius:10px;padding:30px 22px;text-align:center}
-.cdsec .lbl{color:var(--red);letter-spacing:3px;text-transform:uppercase;font-size:12px;font-weight:700}
-.cd{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.cd .n{font-family:'Bebas Neue',sans-serif;font-size:2.6rem}.cd .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-.sec{padding:40px 22px;max-width:760px;margin:0 auto}
-.htag{color:var(--red);letter-spacing:3px;text-transform:uppercase;font-size:12px;font-weight:700;text-align:center}
-.h2c{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,5vw,2.4rem);text-align:center;margin:6px 0 22px}
-.venue{text-align:center}
-.btn-o{display:inline-block;background:rgba(110,110,110,.5);color:#fff;padding:12px 26px;border-radius:5px;font-weight:500;cursor:pointer}
-.btn-o:hover{background:rgba(110,110,110,.3)}
-.rsvp form{max-width:420px;margin:20px auto 0;display:flex;flex-direction:column;gap:12px}
-.rsvp input,.rsvp select{padding:13px;border:1px solid #3a3a3a;border-radius:5px;background:#0e0e0e;color:#fff;font-family:inherit}
-.rsvp .ok{display:none;color:var(--red);margin-top:6px;font-weight:500}.rsvp .ok.show{display:block}
-.cta{text-align:center;padding:50px 22px}
-.cta h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,5vw,2.4rem)}
-.cta p{color:var(--soft);max-width:460px;margin:8px auto 20px}.cta .row2{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:0}
-.cta .red{background:var(--red);color:#fff;padding:12px 26px;border-radius:5px;font-weight:700}
-.foot{text-align:center;padding:26px;color:var(--soft);font-size:.82rem}.foot a{color:var(--red)}
-.rv{opacity:0;transform:translateY(20px);transition:.7s}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-netflix-premiere-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -132,22 +70,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="/assets/csp-demo-netflix-premiere-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/hindu-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Royal Mandap</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/wedding-magazine"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-006.jpg)"></span><span class="abm-meta"><span class="abm-n">The Editorial</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/passport-journey"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-009.jpg)"></span><span class="abm-meta"><span class="abm-n">Passport Journey</span><span class="abm-c">Wedding</span></span></a></div>
@@ -155,20 +78,7 @@ a{color:inherit;text-decoration:none}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Looked far more premium than what we paid.&rdquo;</p><span class="abm-w">Grace J. &middot; Nagapattinam</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Our guests were genuinely stunned by the invite.&rdquo;</p><span class="abm-w">Imran &amp; Fathima &middot; Nagore</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

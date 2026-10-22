@@ -1,0 +1,27 @@
+.abfire{position:relative;overflow:hidden;min-height:clamp(280px,32vw,380px);
+  display:flex;align-items:center;justify-content:center;isolation:isolate;
+  background:
+    radial-gradient(120% 82% at 50% 120%, rgba(80,40,4,.9) 0%, rgba(22,11,6,0) 52%),
+    linear-gradient(180deg,#009B8B 0%, #04857A 8%, #045049 19%, #0a2723 32%, #0b100e 54%, #1c1206 72%, #5e4403 90%, #F0B800 100%);}
+.abfire-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block}
+.abfire-vig{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(80% 120% at 50% 100%, transparent 42%, rgba(8,12,11,.55) 100%);}
+.abfire-inner{position:relative;z-index:4;text-align:center;padding:0 24px;transform:translateY(-6%);pointer-events:none}
+.abfire-eyebrow{display:inline-flex;align-items:center;gap:9px;margin:0 0 16px;
+  font-family:'Lato',system-ui,sans-serif;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:#FFCF6A;text-shadow:0 0 18px rgba(240,150,30,.6)}
+.abfire-eyebrow i{width:7px;height:7px;border-radius:50%;background:#FFB23E;font-style:normal;flex:none;
+  box-shadow:0 0 14px 3px rgba(255,150,40,.9);animation:abFlick 1.4s ease-in-out infinite}
+@keyframes abFlick{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.35)}}
+.abfire-title{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:800;
+  font-size:clamp(30px,5.4vw,58px);line-height:1.05;color:#FFF6E6;letter-spacing:.5px;
+  text-shadow:0 1px 0 #FFE6A8,0 0 26px rgba(255,170,50,.55),0 0 60px rgba(230,110,12,.45);
+  animation:abHeat 2.6s ease-in-out infinite}
+.abfire-title em{font-style:italic;background:linear-gradient(180deg,#FFE9A8 0%,#FFB23E 45%,#F0760C 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(255,150,40,.7))}
+@keyframes abHeat{0%,100%{text-shadow:0 1px 0 #FFE6A8,0 0 24px rgba(255,170,50,.5),0 0 56px rgba(230,110,12,.4)}
+  50%{text-shadow:0 1px 0 #FFEFC0,0 0 34px rgba(255,190,70,.7),0 0 78px rgba(240,120,20,.55)}}
+.abfire-sub{margin:14px 0 0;font-family:'Lato',system-ui,sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,221,160,.85);text-shadow:0 0 16px rgba(220,120,20,.5)}
+@media(prefers-reduced-motion:reduce){.abfire-eyebrow i,.abfire-title{animation:none}}

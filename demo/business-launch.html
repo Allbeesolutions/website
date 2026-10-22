@@ -17,66 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#06080d;--bg2:#0c1018;--accent:#4f7cff;--accent2:#19e3c4;--ink:#eef1f7;--soft:#8b93a7;--line:rgba(255,255,255,.1)}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-weight:300;-webkit-font-smoothing:antialiased}
-.mono{font-family:'Space Grotesk',sans-serif}
-a{color:inherit;text-decoration:none}
-.ribbon{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(6,8,13,.8);color:var(--accent2);font-size:11px;letter-spacing:.6px;text-align:center;padding:8px 14px;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.ribbon a{color:#fff;font-weight:600;border-bottom:1px solid var(--accent)}
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(80% 60% at 50% 30%,#000,transparent);-webkit-mask-image:radial-gradient(80% 60% at 50% 30%,#000,transparent)}
-section,header{position:relative;z-index:2}
-.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
-.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:110px 24px 70px}
-.hero .eyebrow{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--accent2);display:flex;align-items:center;gap:10px}
-.hero .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.8rem,9vw,6rem);line-height:1.02;margin:22px 0 6px;letter-spacing:-.02em}
-.hero h1 .grad{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .lead{color:var(--soft);max-width:520px;font-size:1.15rem;margin-top:10px}
-.hero .meta{margin-top:30px;display:flex;gap:28px;flex-wrap:wrap;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--soft)}
-.hero .meta b{color:#fff;display:block;font-size:1.05rem}
-.cdbar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(79,124,255,.06),rgba(25,227,196,.06))}
-.cdbar .in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 24px;flex-wrap:wrap}
-.cdbar .lab{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--soft)}
-.cd{display:flex;gap:24px}
-.cd .u{text-align:center}.cd .n{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700}.cd .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-.cd .u:nth-child(odd) .n{color:var(--accent2)}.cd .u:nth-child(even) .n{color:var(--accent)}
-.s{padding:90px 0}
-.tag{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
-.s h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.8rem,5vw,2.6rem);letter-spacing:-.01em}
-.s .sub{color:var(--soft);max-width:560px;margin-top:12px}
-.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
-@media(max-width:720px){.feat{grid-template-columns:1fr}}
-.fc{border:1px solid var(--line);border-radius:16px;padding:28px;background:var(--bg2);transition:.3s}
-.fc:hover{border-color:var(--accent);transform:translateY(-4px)}
-.fc .ic{font-size:1.6rem}.fc h3{font-family:'Space Grotesk',sans-serif;margin:12px 0 6px;font-size:1.15rem;font-weight:500}.fc p{color:var(--soft);font-size:.95rem}
-.agenda{margin-top:36px;border-left:2px solid var(--line)}
-.ag{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:20px 0 20px 24px;border-bottom:1px solid var(--line);position:relative}
-.ag::before{content:"";position:absolute;left:-7px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-.ag .time{font-family:'Space Grotesk',sans-serif;color:var(--accent2);font-weight:500}
-.ag h4{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:1.1rem}.ag p{color:var(--soft);font-size:.95rem}
-.venue{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;margin-top:36px}
-@media(max-width:720px){.venue{grid-template-columns:1fr}}
-.vmap{aspect-ratio:16/10;border-radius:16px;background:linear-gradient(135deg,#101725,#1a2740);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--soft);font-family:'Space Grotesk',sans-serif}
-.btn{display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:.9rem;padding:14px 28px;border-radius:10px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:#fff;transition:.25s}
-.btn:hover{box-shadow:0 8px 30px rgba(79,124,255,.45)}
-.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}.btn-ghost:hover{border-color:var(--accent2);box-shadow:none}
-.reg{border:1px solid var(--line);border-radius:20px;padding:40px;background:linear-gradient(135deg,rgba(79,124,255,.08),rgba(25,227,196,.05));margin-top:36px}
-.reg form{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:560px;margin-top:20px}
-@media(max-width:560px){.reg form{grid-template-columns:1fr}}
-.reg input,.reg select{padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04);color:#fff;font-family:inherit}
-.reg input:focus,.reg select:focus{outline:none;border-color:var(--accent2)}
-.reg .full{grid-column:1/-1}
-.reg .ok{display:none;grid-column:1/-1;color:var(--accent2);font-family:'Space Grotesk',sans-serif;margin-top:6px}.reg .ok.show{display:block}
-.cta{text-align:center;padding:90px 24px;border-top:1px solid var(--line)}
-.cta h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.6rem,4.5vw,2.4rem)}
-.cta p{color:var(--soft);max-width:480px;margin:12px auto 24px}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.foot{text-align:center;padding:30px 24px;color:var(--soft);font-size:.85rem}.foot a{color:var(--accent2);font-weight:500}
-.rv{opacity:0;transform:translateY(22px);transition:.8s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-business-launch-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -140,22 +81,7 @@ section,header{position:relative;z-index:2}
 
 <script src="/assets/csp-demo-business-launch-2.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/luxury-watch"><span class="abm-img" style="background-image:url(/demo-shots/AB-BIZ-004.jpg)"></span><span class="abm-meta"><span class="abm-n">Luxury Watch</span><span class="abm-c">Business Launch</span></span></a><a class="abm-card" href="/demo/business-opening"><span class="abm-img" style="background-image:url(/demo-shots/AB-BIZ-003.jpg)"></span><span class="abm-meta"><span class="abm-n">Grand Opening</span><span class="abm-c">Business Launch</span></span></a><a class="abm-card" href="/demo/hindu-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Royal Mandap</span><span class="abm-c">Wedding</span></span></a></div>
@@ -163,20 +89,7 @@ section,header{position:relative;z-index:2}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Polished, on-brand and impressive.&rdquo;</p><span class="abm-w">Suresh B. &middot; Chennai</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Every guest we invited was impressed.&rdquo;</p><span class="abm-w">The Iyer Family &middot; Nagapattinam</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

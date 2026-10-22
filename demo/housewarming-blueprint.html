@@ -17,69 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--blue:#0a2440;--blue2:#0d2b4e;--cyan:#7fd4ff;--ink:#dce9f5;--soft:#7e9bb8;--line:rgba(127,212,255,.35)}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--blue);color:var(--ink);line-height:1.7;font-weight:300}
-.mono{font-family:'Space Mono',monospace}
-a{color:inherit;text-decoration:none}
-/* blueprint grid background */
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;opacity:.4}
-.grid-bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(127,212,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(127,212,255,.18) 1px,transparent 1px);background-size:140px 140px}
-section,header,.ribbon{position:relative;z-index:2}
-.ribbon{background:rgba(0,0,0,.35);color:var(--cyan);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;font-family:'Space Mono',monospace;border-bottom:1px solid var(--line)}
-.ribbon a{color:#fff;font-weight:700;border-bottom:1px solid var(--cyan)}
-.wrap{max-width:920px;margin:0 auto;padding:0 24px}
-/* drafting title block hero */
-.hero{padding:80px 24px 50px}
-.sheet{border:1.5px solid var(--cyan);position:relative}
-.sheet .corner{position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan)}
-.c1{top:-1px;left:-1px;border-right:none;border-bottom:none}.c2{top:-1px;right:-1px;border-left:none;border-bottom:none}
-.c3{bottom:-1px;left:-1px;border-right:none;border-top:none}.c4{bottom:-1px;right:-1px;border-left:none;border-top:none}
-.sheet .head{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:12px 18px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--soft);text-transform:uppercase;flex-wrap:wrap;gap:6px}
-.sheet .body{padding:48px 28px;text-align:center}
-.sheet .proj{font-family:'Space Mono',monospace;color:var(--cyan);letter-spacing:4px;text-transform:uppercase;font-size:12px}
-.sheet h1{font-weight:300;font-size:clamp(2.2rem,8vw,4.4rem);line-height:1.05;margin:14px 0 6px;letter-spacing:-.01em}
-.sheet h1 b{font-weight:600}
-.sheet .scope{color:var(--soft);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px}
-.dim{display:inline-flex;align-items:center;gap:8px;margin-top:24px;color:var(--cyan);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px}
-.dim .l{width:46px;height:1px;background:var(--cyan);position:relative}.dim .l::before,.dim .l::after{content:"";position:absolute;top:-3px;width:1px;height:7px;background:var(--cyan)}.dim .l::before{left:0}.dim .l::after{right:0}
-/* floor plan */
-.plan{padding:60px 24px}
-.plan h2,.sectit{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);text-align:center;margin-bottom:6px}
-.plan .cap{text-align:center;color:var(--soft);margin-bottom:28px;font-size:.95rem}
-.rooms{display:grid;grid-template-columns:1.4fr 1fr;gap:0;border:1.5px solid var(--cyan);max-width:640px;margin:0 auto;aspect-ratio:16/11}
-@media(max-width:560px){.rooms{aspect-ratio:auto}}
-.room{border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;min-height:90px}
-.room .rn{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--ink)}
-.room .rd{font-family:'Space Mono',monospace;font-size:10px;color:var(--soft)}
-.room.big{grid-row:span 2}
-.col2{display:grid;grid-template-rows:1fr 1fr}
-/* spec table */
-.specs{max-width:640px;margin:36px auto 0;border:1px solid var(--line)}
-.specs .r{display:grid;grid-template-columns:160px 1fr;border-bottom:1px solid var(--line);font-family:'Space Mono',monospace;font-size:13px}
-.specs .r:last-child{border-bottom:none}
-.specs .r .k{padding:12px 16px;color:var(--cyan);border-right:1px solid var(--line);letter-spacing:1px;text-transform:uppercase;font-size:11px}
-.specs .r .v{padding:12px 16px}
-.specs .r .v a{color:var(--cyan);border-bottom:1px solid var(--cyan)}
-/* countdown */
-.cdsec{text-align:center;padding:50px 24px}
-.cd{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.cd .u{border:1px solid var(--cyan);padding:14px 16px;min-width:78px;font-family:'Space Mono',monospace}
-.cd .n{font-size:1.9rem;font-weight:700;color:var(--cyan)}.cd .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-top:2px}
-.btn{display:inline-block;font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;padding:13px 28px;border:1.5px solid var(--cyan);background:var(--cyan);color:var(--blue);cursor:pointer;transition:.25s}
-.btn:hover{background:transparent;color:var(--cyan)}
-.btn-o{background:transparent;color:var(--cyan)}.btn-o:hover{background:var(--cyan);color:var(--blue)}
-.rsvp{text-align:center;padding:50px 24px}
-.rsvp form{max-width:420px;margin:22px auto 0;display:flex;flex-direction:column;gap:12px}
-.rsvp input,.rsvp select{padding:13px;border:1px solid var(--line);background:rgba(127,212,255,.05);color:#fff;font-family:'Space Mono',monospace;font-size:.95rem}
-.rsvp .ok{display:none;font-family:'Space Mono',monospace;color:var(--cyan);margin-top:6px;letter-spacing:1px}.rsvp .ok.show{display:block}
-.cta{text-align:center;padding:60px 24px;border-top:1px solid var(--line)}
-.cta h2{font-weight:300;font-size:clamp(1.5rem,4.5vw,2.2rem)}.cta h2 b{font-weight:600}
-.cta p{color:var(--soft);max-width:440px;margin:10px auto 22px}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.foot{text-align:center;padding:24px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--soft);text-transform:uppercase}.foot a{color:var(--cyan)}
-.rv{opacity:0;transform:translateY(18px);transition:.7s}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-housewarming-blueprint-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -135,22 +73,7 @@ section,header,.ribbon{position:relative;z-index:2}
 
 <script src="/assets/csp-demo-housewarming-blueprint-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/time-capsule"><span class="abm-img" style="background-image:url(/demo-shots/AB-HOU-002.jpg)"></span><span class="abm-meta"><span class="abm-n">Time Capsule</span><span class="abm-c">Housewarming</span></span></a><a class="abm-card" href="/demo/hindu-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Royal Mandap</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/wedding-magazine"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-006.jpg)"></span><span class="abm-meta"><span class="abm-n">The Editorial</span><span class="abm-c">Wedding</span></span></a></div>
@@ -158,20 +81,7 @@ section,header,.ribbon{position:relative;z-index:2}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Warm, personal and genuinely premium.&rdquo;</p><span class="abm-w">Grace J. &middot; Nagapattinam</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Made our Griha Pravesh feel really special.&rdquo;</p><span class="abm-w">Imran &amp; Fathima &middot; Nagore</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

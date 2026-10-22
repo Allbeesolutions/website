@@ -17,56 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#f4efe7;--soft:#b3a892;--accent:#d8a657}
-html{scroll-behavior:smooth;scroll-snap-type:y proximity}
-body{font-family:'Jost',sans-serif;background:#11100f;color:var(--ink);line-height:1.7;font-weight:300;-webkit-font-smoothing:antialiased}
-.disp{font-family:'Fraunces',serif}
-a{color:inherit;text-decoration:none}
-.ribbon{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(0,0,0,.5);color:var(--accent);font-size:11px;letter-spacing:.5px;text-align:center;padding:8px 14px;backdrop-filter:blur(6px)}
-.ribbon a{color:#fff;font-weight:500;border-bottom:1px solid var(--accent)}
-/* progress rail */
-.rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:12px}
-.rail .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);transition:.3s}
-.rail .dot.on{background:var(--accent);transform:scale(1.5)}
-@media(max-width:600px){.rail{display:none}}
-/* chapters — full viewport, scroll-snap */
-.ch{min-height:100svh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 24px;position:relative;overflow:hidden}
-.ch .bg{position:absolute;inset:0;z-index:0;opacity:.55}
-.ch .inner{position:relative;z-index:2;max-width:680px}
-.ch .num{font-family:'Fraunces',serif;font-style:italic;color:var(--accent);font-size:1.1rem;letter-spacing:2px;margin-bottom:18px}
-.ch .yr{font-family:'Fraunces',serif;font-size:clamp(3rem,12vw,6rem);line-height:1;color:#fff}
-.ch h2{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(1.8rem,6vw,3.2rem);line-height:1.15;margin:10px 0 16px}
-.ch p{color:var(--soft);font-size:1.1rem;max-width:520px;margin:0 auto}
-.fade{opacity:0;transform:translateY(30px);transition:opacity 1.2s,transform 1.2s}.fade.in{opacity:1;transform:none}
-/* specific chapter backgrounds (each visually different gradient scene) */
-.bg1{background:radial-gradient(120% 100% at 50% 120%,#3a2c18,#11100f)}
-.bg2{background:linear-gradient(160deg,#1a2630,#11100f 70%)}
-.bg3{background:linear-gradient(160deg,#2d1822,#11100f 70%)}
-.bg4{background:radial-gradient(100% 80% at 50% 0,#2a2410,#11100f 70%)}
-.bg5{background:linear-gradient(180deg,#11100f,#1d1407)}
-.bg6{background:radial-gradient(120% 100% at 50% -20%,#3a2c18,#11100f)}
-/* hero chapter */
-.hero .kick{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--accent)}
-.hero .names{font-family:'Fraunces',serif;font-size:clamp(3rem,14vw,7rem);line-height:1;color:#fff;margin:18px 0}
-.hero .amp{font-style:italic;color:var(--accent);display:block;font-size:.5em;margin:4px 0}
-.hero .scroll{margin-top:40px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--soft);animation:bob 2s infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-/* countdown chapter */
-.cd{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-.cd .u .n{font-family:'Fraunces',serif;font-size:2.6rem;color:#fff}.cd .u .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-/* details + rsvp + cta */
-.btn{display:inline-block;border:1px solid var(--accent);color:var(--accent);padding:13px 30px;border-radius:100px;font-size:.85rem;letter-spacing:1px;cursor:pointer;transition:.3s;background:transparent}
-.btn:hover{background:var(--accent);color:#11100f}
-.btn-f{background:var(--accent);color:#11100f}
-.rsvp form{max-width:420px;margin:24px auto 0;display:flex;flex-direction:column;gap:14px}
-.rsvp input,.rsvp select{padding:13px;border:1px solid rgba(216,166,87,.4);border-radius:10px;background:rgba(255,255,255,.04);color:#fff;font-family:inherit}
-.rsvp .ok{display:none;color:var(--accent);font-family:'Fraunces',serif;font-style:italic;margin-top:6px}.rsvp .ok.show{display:block}
-.foot{text-align:center;padding:30px 24px;font-size:.85rem;color:var(--soft);scroll-snap-align:start}.foot a{color:var(--accent)}
-.det{display:flex;gap:30px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.det .b{font-size:.95rem}.det .b .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}.det .b .v{font-family:'Fraunces',serif;font-size:1.3rem;color:#fff}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-wedding-timeline-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -131,22 +82,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="/assets/csp-demo-wedding-timeline-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/hindu-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Royal Mandap</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/wedding-magazine"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-006.jpg)"></span><span class="abm-meta"><span class="abm-n">The Editorial</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/passport-journey"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-009.jpg)"></span><span class="abm-meta"><span class="abm-n">Passport Journey</span><span class="abm-c">Wedding</span></span></a></div>
@@ -154,20 +90,7 @@ a{color:inherit;text-decoration:none}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Looked far more premium than what we paid.&rdquo;</p><span class="abm-w">Grace J. &middot; Nagapattinam</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Our guests were genuinely stunned by the invite.&rdquo;</p><span class="abm-w">Imran &amp; Fathima &middot; Nagore</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

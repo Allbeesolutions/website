@@ -298,13 +298,7 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
         'animation-delay:' + (Math.random() * 8) + 's;';
       c.appendChild(p);
     }
-    // Inject keyframes once
-    if (!document.getElementById('particle-kf')) {
-      const style = document.createElement('style');
-      style.id = 'particle-kf';
-      style.textContent = '@keyframes particleFloat{0%{transform:translateY(100vh) scale(0);opacity:0}5%{opacity:0.55}95%{opacity:0.2}100%{transform:translateY(-50px) scale(1);opacity:0}}';
-      document.head.appendChild(style);
-    }
+    // Particle keyframes are provided by the static CSP-safe stylesheet.
   }
 
   /* ─────────────────────────────────────────────────────────────────

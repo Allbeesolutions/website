@@ -17,61 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--wall:#efe9df;--wall2:#e6dfd1;--ink:#2a2722;--brass:#9a7b3f;--soft:#83796a;--frame:#cdbf9f}
-body{font-family:'EB Garamond',Georgia,serif;background:var(--wall);color:var(--ink);line-height:1.75}
-.arch{font-family:'Archivo',sans-serif}
-a{color:inherit;text-decoration:none}
-.ribbon{background:var(--ink);color:var(--wall);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;font-family:'Archivo',sans-serif}
-.ribbon a{color:#fff;font-weight:600;text-decoration:underline}
-.wrap{max-width:980px;margin:0 auto;padding:0 26px}
-/* entrance hero */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 26px 80px;background:radial-gradient(80% 60% at 50% 30%,#f6f1e8,var(--wall) 75%)}
-.nowshowing{font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--brass);border:1px solid var(--brass);border-radius:100px;padding:6px 18px}
-.hero .gallery{font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--soft);margin-top:30px}
-.hero h1{font-size:clamp(2.6rem,9vw,5rem);font-weight:500;line-height:1.05;margin:10px 0}
-.hero h1 em{font-style:italic;color:var(--brass)}
-.hero .sub{font-style:italic;font-size:1.3rem;color:var(--soft)}
-.hero .open{font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-top:24px;color:var(--ink)}
-.sec{padding:80px 26px;max-width:980px;margin:0 auto}
-.plate{text-align:center;max-width:620px;margin:0 auto}
-.plate .lbl{font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
-.plate .note{font-size:1.3rem;font-style:italic;line-height:1.6}
-.plate .by{font-family:'Archivo',sans-serif;font-size:12px;letter-spacing:1px;color:var(--soft);margin-top:16px}
-.h2{text-align:center;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:500;margin-bottom:8px}
-.sub2{text-align:center;color:var(--soft);font-style:italic;margin-bottom:34px}
-/* exhibit grid */
-.exhibits{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-@media(max-width:760px){.exhibits{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.exhibits{grid-template-columns:1fr}}
-.art{background:#fff;border:1px solid var(--frame);padding:14px;box-shadow:0 12px 30px rgba(42,39,34,.08);transition:.3s}
-.art:hover{transform:translateY(-5px);box-shadow:0 22px 44px rgba(42,39,34,.16)}
-.art .canvas{aspect-ratio:1;background:linear-gradient(150deg,#d9cdb4,#b7a888);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff}
-.art .tag{border-top:1px solid var(--frame);margin-top:12px;padding-top:10px}
-.art .no{font-family:'Archivo',sans-serif;font-size:10px;letter-spacing:2px;color:var(--brass)}
-.art .ti{font-style:italic;font-size:1.15rem}.art .cap{font-size:.92rem;color:var(--soft)}
-/* collection / timeline */
-.coll{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--frame);border-bottom:1px solid var(--frame);max-width:760px;margin:0 auto}
-@media(max-width:620px){.coll{grid-template-columns:1fr}}
-.coll .c{padding:26px;text-align:center;border-right:1px solid var(--frame)}.coll .c:last-child{border-right:none}
-.coll .c .yr{font-family:'Archivo',sans-serif;color:var(--brass);font-size:1.4rem}.coll .c small{color:var(--soft)}
-/* countdown */
-.cd{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.cd .n{font-size:2.8rem;font-weight:500}.cd .l{font-family:'Archivo',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-.btn{display:inline-block;font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border:1px solid var(--ink);background:var(--ink);color:var(--wall);cursor:pointer;transition:.25s}
-.btn:hover{background:var(--brass);border-color:var(--brass)}
-.btn-o{background:transparent;color:var(--ink)}.btn-o:hover{background:var(--ink);color:var(--wall)}
-.venue{text-align:center}
-.rsvp form{max-width:420px;margin:22px auto 0;display:flex;flex-direction:column;gap:14px}
-.rsvp input,.rsvp select{padding:13px;border:1px solid var(--frame);background:#fff;font-family:inherit;font-size:1.05rem}
-.rsvp .ok{display:none;font-style:italic;color:var(--brass);font-size:1.2rem;margin-top:6px}.rsvp .ok.show{display:block}
-.cta{text-align:center;padding:80px 26px;background:var(--wall2);border-top:1px solid var(--frame)}
-.cta h2{font-weight:500;font-size:clamp(1.6rem,4.5vw,2.4rem)}
-.cta p{color:var(--soft);max-width:440px;margin:10px auto 24px;font-style:italic}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.foot{background:var(--ink);color:rgba(239,233,223,.7);text-align:center;padding:26px;font-family:'Archivo',sans-serif;font-size:.8rem;letter-spacing:1px}.foot a{color:#fff;text-decoration:underline}
-.rv{opacity:0;transform:translateY(20px);transition:.9s}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-museum-exhibit-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -129,22 +75,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="/assets/csp-demo-museum-exhibit-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/birthday-vip"><span class="abm-img" style="background-image:url(/demo-shots/AB-BIR-005.jpg)"></span><span class="abm-meta"><span class="abm-n">VIP Access</span><span class="abm-c">Birthday</span></span></a><a class="abm-card" href="/demo/birthday?v=confetti"><span class="abm-img" style="background-image:url(/demo-shots/AB-BIR-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Confetti Pop</span><span class="abm-c">Birthday</span></span></a><a class="abm-card" href="/demo/album-launch"><span class="abm-img" style="background-image:url(/demo-shots/AB-BIR-007.jpg)"></span><span class="abm-meta"><span class="abm-n">Album Launch</span><span class="abm-c">Birthday</span></span></a></div>
@@ -152,20 +83,7 @@ a{color:inherit;text-decoration:none}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Looked amazing on every phone.&rdquo;</p><span class="abm-w">Grace J. &middot; Nagapattinam</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;So much fun — everyone shared it instantly!&rdquo;</p><span class="abm-w">Imran &amp; Fathima &middot; Nagore</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

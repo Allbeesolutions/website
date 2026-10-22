@@ -14,9 +14,15 @@ const harness=`(function(){
  window.addEventListener('error',function(e){ if(e.message && !String(e.message).includes('ResizeObserver') && !String(e.message).includes('Error creating WebGL context')) errors.push(String(e.message).slice(0,100));});
  window.addEventListener('securitypolicyviolation',function(e){ if(String(e.effectiveDirective).startsWith('script-src')) errors.push('CSP script violation: '+String(e.blockedURI).slice(0,100)); });
  window.addEventListener('securitypolicyviolation',function(e){if(e.violatedDirective && e.violatedDirective.startsWith('script-src') && e.blockedURI==='inline')errors.push('Blocked inline script');});
+ window.addEventListener('securitypolicyviolation',function(e){if(e.violatedDirective && e.violatedDirective.startsWith('style-src-elem') && e.blockedURI==='inline')errors.push('Blocked inline stylesheet');});
  function verify(){
    var p=location.pathname,behavior='loaded',pass=true;
    try {
+     var linked=[].slice.call(document.querySelectorAll('link[href^="/assets/csp-style-"]'));
+     for(var i=0;i<linked.length;i++){
+       var sheet=linked[i].sheet;
+       if(!sheet||!sheet.cssRules||sheet.cssRules.length===0)throw Error('CSS not applied: '+linked[i].getAttribute('href'));
+     }
      if(p==='/'){
        var a=document.querySelector('[data-csp-click="open-modal"]'),b=document.querySelector('[data-csp-click="close-modal"]');
        if(!a||!b)throw Error('Modal controls missing');
@@ -57,7 +63,8 @@ const server=http.createServer((req,res)=>{
  if(route==='/__csp_smoke.js'){
   res.writeHead(200,{'Content-Type':'application/javascript'});res.end(harness);return;
  }
- const dest=path.resolve(root,'.'+(route==='/'?'/index.html':route));
+ let dest=path.resolve(root,'.'+(route==='/'?'/index.html':route));
+ if(!fs.existsSync(dest) && !path.extname(dest) && fs.existsSync(dest+'.html'))dest+='.html';
  if(!dest.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}
  try{
   if(path.extname(dest)==='.html'){

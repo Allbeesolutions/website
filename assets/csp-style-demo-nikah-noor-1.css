@@ -1,0 +1,39 @@
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ivory:#faf6ec;--ivory2:#f3ecdc;--gold:#bd9a45;--gold-d:#9a7d34;--ink:#3a3324;--soft:#9a8f78}
+body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--ink);line-height:1.9;font-weight:300;-webkit-font-smoothing:antialiased}
+.cg{font-family:'Cormorant Garamond',serif} .ar{font-family:'Amiri',serif}
+a{color:inherit;text-decoration:none}
+/* ambient light */
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 22%,rgba(189,154,69,.22),transparent 70%);animation:breathe 7s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.7}50%{opacity:1}}
+section,header,.ribbon{position:relative;z-index:2}
+.ribbon{background:rgba(255,255,255,.7);color:var(--gold-d);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;border-bottom:1px solid rgba(189,154,69,.25);backdrop-filter:blur(6px)}
+.ribbon a{color:var(--ink);font-weight:400;border-bottom:1px solid var(--gold)}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 26px 80px;position:relative}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fff,var(--gold-l,#f0dca0) 40%,rgba(189,154,69,.25) 70%,transparent);box-shadow:0 0 80px rgba(189,154,69,.45),0 0 140px rgba(189,154,69,.25);margin-bottom:30px;display:flex;align-items:center;justify-content:center}
+.orb .ar{color:var(--gold-d);font-size:1.8rem}
+.hero .pre{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-d)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,12vw,6rem);line-height:1;margin:16px 0;color:var(--ink)}
+.hero h1 .amp{font-style:italic;color:var(--gold);display:block;font-size:.42em;margin:6px 0}
+.hero .dt{letter-spacing:4px;text-transform:uppercase;font-size:12px;color:var(--soft)}
+.sec{max-width:640px;margin:0 auto;padding:100px 26px;text-align:center}
+.kick{font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-d);margin-bottom:18px}
+.verse{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.5rem,5vw,2.3rem);line-height:1.4;color:var(--ink)}
+.verse em{font-style:italic;color:var(--gold-d)}
+.rule{width:40px;height:1px;background:var(--gold);margin:0 auto}
+.cd{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.cd .n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold-d)}.cd .l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
+.det{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
+.det .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-d)}.det .v{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-top:4px}.det small{color:var(--soft)}
+.btn{display:inline-block;border:1px solid var(--gold);color:var(--gold-d);background:transparent;padding:14px 32px;border-radius:100px;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.35s}
+.btn:hover{background:var(--gold);color:#fff}
+.btn-f{background:var(--gold);color:#fff}.btn-f:hover{background:var(--gold-d)}
+.rsvp form{max-width:400px;margin:26px auto 0;display:flex;flex-direction:column;gap:18px}
+.rsvp input,.rsvp select{padding:12px 0;border:none;border-bottom:1px solid rgba(189,154,69,.4);background:transparent;font-family:inherit;text-align:center;font-size:1rem;color:var(--ink)}
+.rsvp input:focus,.rsvp select:focus{outline:none;border-color:var(--gold)}
+.rsvp .ok{display:none;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-d);font-size:1.3rem}.rsvp .ok.show{display:block}
+.cta{text-align:center;padding:100px 26px;background:var(--ivory2)}
+.cta h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(1.6rem,4.5vw,2.4rem)}
+.cta p{color:var(--soft);max-width:440px;margin:12px auto 26px}.cta .row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.foot{text-align:center;padding:34px 26px;font-size:.82rem;color:var(--soft);border-top:1px solid rgba(189,154,69,.2)}.foot a{color:var(--gold-d)}
+.rv{opacity:0;transform:translateY(24px);transition:1.3s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}

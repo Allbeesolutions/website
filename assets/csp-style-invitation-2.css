@@ -1,0 +1,21 @@
+.fcar{position:relative;max-width:920px;margin:30px auto 0}
+.fcar-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;border-radius:18px}
+.fcar-track::-webkit-scrollbar{display:none}
+.fcar-slide{flex:0 0 100%;scroll-snap-align:center;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:8px}
+@media(max-width:720px){.fcar-slide{grid-template-columns:1fr;text-align:center}}
+.fcar-lap{max-width:480px;margin:0 auto;width:100%}
+.fcar-lap .scr{border:9px solid #1c2422;border-radius:12px 12px 0 0;background:#000;overflow:hidden;aspect-ratio:16/10}
+.fcar-lap .scr img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.fcar-lap .bs{height:12px;background:linear-gradient(#cfd4d2,#9aa3a0);border-radius:0 0 10px 10px}
+.fcar-info .ec{color:var(--gold,#DCA50C);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:11px}
+.fcar-info h3{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin:8px 0 6px;color:var(--ink,#0F1F1F)}
+.fcar-info .el{display:inline-block;background:linear-gradient(135deg,#dca50c,#f3da8e);color:#3a2c06;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:6px;margin-bottom:10px}
+.fcar-info p{color:var(--muted,#4A6363);margin-bottom:16px}
+.fcar-info .row{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:720px){.fcar-info .row{justify-content:center}}
+.fcar-arrow{position:absolute;top:42%;transform:translateY(-50%);z-index:3;width:42px;height:42px;border-radius:50%;border:1px solid var(--line,#e7e3da);background:#fff;color:var(--ink,#0F1F1F);font-size:22px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.fcar-arrow.prev{left:-8px}.fcar-arrow.next{right:-8px}
+@media(max-width:720px){.fcar-arrow{top:32%}}
+.fcar-dots{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.fcar-dots b{width:8px;height:8px;border-radius:50%;background:var(--line,#cfc8b6);cursor:pointer;transition:.2s;border:none;padding:0}
+.fcar-dots b.on{background:var(--teal,#0F7B6E);width:22px;border-radius:5px}

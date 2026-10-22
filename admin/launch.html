@@ -9,31 +9,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#0F1F1F;--muted:#4A6363;--paper:#f4f6f5;--line:#e2e6e4;--ok:#16A34A;--bad:#b5302a;--teal-d:#085A52}
-body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
-.top{background:var(--ink);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
-.top .t{font-family:Playfair Display,serif;font-weight:700;font-size:1.25rem}.top a{color:#cfe;font-size:13px;text-decoration:none}
-.wrap{max-width:780px;margin:0 auto;padding:24px 22px}
-.hero{text-align:center;margin-bottom:20px}
-.hero h1{font-family:Playfair Display,serif;font-size:1.8rem}
-.status{display:inline-block;margin-top:10px;padding:8px 18px;border-radius:100px;font-weight:700}
-.status.go{background:#e7f7ed;color:var(--ok)}.status.nogo{background:#fdecea;color:var(--bad)}
-.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:14px auto;max-width:420px}
-.bar span{display:block;height:100%;background:var(--ok);transition:width .4s}
-.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
-.item .ic{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
-.item.ready .ic{background:var(--ok)}.item.pending .ic{background:var(--bad)}
-.item .b{flex:1}.item h3{font-size:1.05rem;margin-bottom:2px}
-.item .st{font-size:13px;font-weight:700}.item.ready .st{color:var(--ok)}.item.pending .st{color:var(--bad)}
-.item .fix{font-size:13px;color:var(--muted);margin-top:6px}
-.item code{background:var(--paper);padding:1px 6px;border-radius:4px;font-size:12px}
-.muted{color:var(--muted);font-size:13px;text-align:center;margin-top:16px}
-.admin-nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;background:#073f3a;color:#fff;padding:9px max(16px,calc((100vw - 1240px)/2));font:700 13px Lato,system-ui,sans-serif}
-.admin-nav span{margin-right:12px;color:#f0d47d}.admin-nav a{color:#fff;text-decoration:none;border-radius:7px;padding:6px 10px}.admin-nav a:hover,.admin-nav a[aria-current="page"]{background:#0f7b6e}
-.admin-nav a:focus-visible{outline:2px solid #f0d47d;outline-offset:2px}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-admin-launch-1.css">
 </head>
 <body>
 <nav class="admin-nav" aria-label="Admin sections"><span>AllBee Admin</span><a href="/admin/ceo">Overview</a><a href="/admin/invitation-leads">Leads</a><a href="/admin/invitation-orders">Orders</a><a href="/admin/reviews">Reviews</a><a href="/admin/launch" aria-current="page">Launch</a></nav>

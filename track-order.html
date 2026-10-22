@@ -22,53 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap"></noscript>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#0F7B6E;--teal-d:#085A52;--gold:#DCA50C;--ink:#0F1F1F;--muted:#4A6363;--paper:#fbfaf7;--line:#e7e3da;--ok:#16A34A}
-body{font-family:Lato,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
-a{color:inherit}
-.bar{background:var(--teal-d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
-.bar .b{font-family:Playfair Display,serif;font-weight:700}
-.bar a{color:#eafff9;font-size:13px;text-decoration:none}
-.wrap{max-width:620px;margin:0 auto;padding:36px 20px 60px}
-.hd{text-align:center;margin-bottom:24px}
-.hd .eb{color:var(--gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12px}
-.hd h1{font-family:Playfair Display,serif;font-size:clamp(1.8rem,5vw,2.6rem);margin-top:6px}
-.hd p{color:var(--muted)}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(15,31,31,.06)}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
-.field input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:1rem}
-.field input:focus{outline:none;border-color:var(--teal)}
-.btn{width:100%;background:var(--teal);color:#fff;border:none;padding:14px;border-radius:10px;font-weight:700;font-size:1rem;cursor:pointer}
-.btn:hover{background:var(--teal-d)}
-.err{color:#b5302a;font-size:13px;margin-top:10px;display:none}.err.show{display:block}
-.hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px}
-.result{display:none;margin-top:8px}.result.show{display:block}
-.ohead{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
-.ohead .oid{font-family:Playfair Display,serif;font-size:1.4rem}
-.ohead .when{font-size:12px;color:var(--muted)}
-.badge{display:inline-block;background:rgba(15,123,110,.1);color:var(--teal-d);font-weight:700;font-size:12px;padding:5px 12px;border-radius:100px}
-.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:22px}
-.kv .k{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-.kv .v{font-weight:700}
-.timeline{list-style:none;margin:8px 0 4px}
-.timeline li{position:relative;padding:0 0 22px 34px}
-.timeline li::before{content:"";position:absolute;left:9px;top:20px;bottom:-2px;width:2px;background:var(--line)}
-.timeline li:last-child::before{display:none}
-.timeline li .dot{position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:#fff}
-.timeline li.done .dot{background:var(--ok);border-color:var(--ok)}
-.timeline li.done .dot::after{content:"✓";color:#fff;font-size:11px;position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.timeline li.cur .dot{border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,123,110,.15)}
-.timeline li .st{font-weight:700}
-.timeline li .sd{font-size:12px;color:var(--muted)}
-.timeline li.todo .st{color:var(--muted);font-weight:400}
-.deliver{background:rgba(220,165,12,.08);border:1px solid rgba(220,165,12,.3);border-radius:12px;padding:16px;margin-top:8px}
-.deliver h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#9a6a12;margin-bottom:10px}
-.deliver a{display:inline-block;background:var(--gold);color:#3a2c06;font-weight:700;text-decoration:none;padding:10px 16px;border-radius:8px;margin:4px 6px 0 0;font-size:14px}
-.help{text-align:center;margin-top:22px;font-size:13px;color:var(--muted)}.help a{color:var(--teal-d);font-weight:700;text-decoration:none}
-.demo-note{background:#fff7e6;border:1px solid rgba(220,165,12,.4);color:#9a6a12;font-size:12.5px;border-radius:10px;padding:10px 12px;margin-bottom:14px;text-align:center}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-track-order-1.css">
 <link rel="stylesheet" href="/assets/allbee-assistant.css?v=20261003">
 <script src="/assets/site-theme.js?v=20261003"></script>
 <link rel="stylesheet" href="/assets/utility-theme.css?v=20261003">

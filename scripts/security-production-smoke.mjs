@@ -30,8 +30,20 @@ for(const path of ['/', '/about', '/contact', '/courses', '/digitalmarketing',
  const script=csp.match(/(?:^|;)\s*script-src\s+([^;]+)/)?.[1]||'';
  if(!script.includes("'self'")||script.includes("'unsafe-inline'")||!csp.includes("script-src-attr 'none'"))
    throw new Error(`Unsafe executable script CSP at ${path}`);
+ const css=csp.match(/(?:^|;)\s*style-src-elem\s+([^;]+)/)?.[1]||'';
+ if(!css.includes("'self'")||css.includes("'unsafe-inline'"))
+   throw new Error(`Unsafe inline stylesheet policy at ${path}`);
  const html=await r.text();
  if(!html.includes('/assets/csp-'))throw new Error(`Extracted CSP script missing in ${path}`);
+ count++;
+}
+for(const style of ['/assets/csp-style-index-1.css','/assets/csp-style-about-1.css',
+                    '/assets/csp-style-order-1.css','/assets/csp-particle.css',
+                    '/assets/csp-catalog.css']) {
+ const r=await get(style);
+ if(r.status!==200)throw new Error(`CSP stylesheet asset missing: ${style}`);
+ if(!(r.headers.get('content-type')||'').includes('text/css'))
+   throw new Error(`Incorrect stylesheet MIME: ${style}`);
  count++;
 }
 for(const script of ['/assets/csp-index-1.js', '/assets/csp-about-1.js',

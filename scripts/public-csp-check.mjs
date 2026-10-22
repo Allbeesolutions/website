@@ -12,7 +12,7 @@ const findCsp=route=>{
   return specific||rules.find(x=>x.source==='/(.*)')?.headers.find(x=>x.key==='Content-Security-Policy')?.value;
 };
 const pages=[...readdirSync(root).filter(f=>f.endsWith('.html')),...readdirSync(resolve(root,'demo')).filter(f=>f.endsWith('.html')).map(f=>'demo/'+f),...readdirSync(resolve(root,'admin')).filter(f=>f.endsWith('.html')).map(f=>'admin/'+f)];
-let scripts=0,external=0,checked=0;
+let scripts=0,external=0,checked=0,styles=0,stylePages=0;
 for(const page of pages){
   const html=readFileSync(resolve(root,page),'utf8');
   const route='/'+page.replace(/\.html$/,'');
@@ -24,8 +24,21 @@ for(const page of pages){
     assert.ok(!scriptDirective.includes("'unsafe-inline'"),`Inline JS must be blocked: ${route}`);
     assert.ok(csp.includes("script-src-attr 'none'"),`Inline event handlers must be blocked: ${route}`);
     assert.ok(csp.includes("object-src 'none'"),`Object code disabled: ${route}`);
+    const cssElem=csp.match(/(?:^|;)\s*style-src-elem\s+([^;]+)/)?.[1]||'';
+    assert.ok(cssElem.includes("'self'")&&!cssElem.includes("'unsafe-inline'"),`Style elements require external stylesheets: ${route}`);
+    assert.ok(csp.includes("style-src-attr 'unsafe-inline'"),`Legacy inline attributes allowed separately: ${route}`);
   }
   assert.ok(!/\s(onclick|onload|onerror|onsubmit|onblur|onfocus|onmouseenter|onmouseleave|onmouseover|onmouseout|onchange|oninput|onkeydown|onkeyup)\s*=/.test(html),`Unexpected inline event handler: ${page}`);
+  assert.ok(!/<style(?:\s[^>]*)?>/i.test(html),`Inline style block must be external: ${page}`);
+  const links=[...html.matchAll(/<link\b[^>]*\bhref="(\/assets\/csp-style-[^"]+\.css)"[^>]*>/gi)];
+  for(const link of links){
+    const filename=resolve(root,link[1].slice(1));
+    assert.ok(filename.startsWith(root+'/')&&existsSync(filename),`Missing CSS: ${link[1]} in ${page}`);
+    assert.ok(readFileSync(filename,'utf8').trim().length>0,`Empty external CSS: ${link[1]}`);
+    styles++;
+  }
+  if(links.length)stylePages++;
+
   for(const tag of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)){
     const attrs=tag[1],body=tag[2];
     if(/\btype="application\/ld\+json"/i.test(attrs)){
@@ -45,7 +58,10 @@ for(const page of pages){
   checked++;
 }
 assert.ok(checked>=69,'Expected all static pages including demo routes');
+assert.ok(styles===111,'111 inline stylesheet blocks should be extracted without omission');
+assert.ok(stylePages===59,'59 pages with inline style blocks should have extracted CSS');
+assert.ok(new Set([...pages.flatMap(page=>[...readFileSync(resolve(root,page),'utf8').matchAll(/href="(\/assets\/csp-style-[^"]+\.css)"/g)].map(m=>m[1]))]).size===63,'Deduplicated stylesheets should be shared across pages');
 assert.ok(external>=80,'Expected full script migration and external assets');
 const interactions=readFileSync(resolve(root,'assets/csp-interactions.js'),'utf8');
 for(const action of ['open-modal','close-modal','show-ok','preview-message'])assert.ok(interactions.includes(action));
-console.log(`Public CSP regression: ${checked} pages, ${scripts} script tags, ${external} local script references PASS`);
+console.log(`Public CSP regression: ${checked} pages, ${scripts} script tags, ${external} local script references, ${styles} stylesheet links to 63 distinct CSS assets PASS`);

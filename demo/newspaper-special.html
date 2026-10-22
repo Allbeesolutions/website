@@ -17,67 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:ital,wght@0,700,900;1,400&family=Special+Elite&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--paper:#f1ede2;--paper2:#e8e2d2;--ink:#1a1a17;--red:#b5302a;--soft:#5f5a4e;--rule:#1a1a17}
-body{font-family:'Lora',Georgia,serif;background:#cfc8b6;color:var(--ink);line-height:1.55}
-.black{font-family:'UnifrakturCook',serif} .pf{font-family:'Playfair Display',serif} .type{font-family:'Special Elite',monospace}
-a{color:inherit;text-decoration:none}
-.ribbon{background:var(--ink);color:var(--paper);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;font-family:'Special Elite',monospace}
-.ribbon a{color:#fff;font-weight:700;text-decoration:underline}
-.paper{max-width:920px;margin:0 auto;background:var(--paper);box-shadow:0 0 40px rgba(0,0,0,.3);padding:0 0 40px}
-.pad{padding:0 30px}
-@media(max-width:560px){.pad{padding:0 18px}}
-/* masthead */
-.masthead{text-align:center;border-bottom:3px double var(--rule);padding:26px 30px 12px}
-.masthead .black{font-size:clamp(2.6rem,11vw,5.6rem);line-height:1;color:var(--ink)}
-.dateline{display:flex;justify-content:space-between;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 30px;font-family:'Special Elite',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;flex-wrap:wrap;gap:4px}
-.breaking{background:var(--red);color:#fff;text-align:center;font-family:'Special Elite',monospace;letter-spacing:4px;text-transform:uppercase;padding:6px;font-size:13px;margin:0 30px}
-/* lead */
-.lead{padding:24px 30px 0;text-align:center;border-bottom:1px solid var(--rule)}
-.lead h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2rem,8vw,4.2rem);line-height:.98;text-transform:uppercase;letter-spacing:-.01em}
-.lead .sub{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;margin:10px 0;color:var(--soft)}
-.lead .byline{font-family:'Special Elite',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--soft);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 0;margin-bottom:16px}
-/* columns */
-.cols{column-count:3;column-gap:24px;column-rule:1px solid var(--rule);padding:22px 30px;text-align:justify}
-@media(max-width:680px){.cols{column-count:2}}
-@media(max-width:460px){.cols{column-count:1}}
-.cols p{margin-bottom:10px;font-size:.95rem}
-.cols p:first-of-type::first-letter{font-family:'Playfair Display',serif;font-weight:900;float:left;font-size:3.4rem;line-height:.7;padding:4px 8px 0 0}
-.photo{break-inside:avoid;aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#b8b09a 0 3px,#cfc8b6 3px 6px);border:1px solid var(--rule);display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px;color:#4a4636;font-size:2rem}
-.cap{break-inside:avoid;font-family:'Special Elite',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--soft);margin-bottom:10px}
-.secthead{font-family:'Playfair Display',serif;font-weight:900;text-transform:uppercase;text-align:center;font-size:1.4rem;border-top:3px double var(--rule);border-bottom:1px solid var(--rule);margin:0 30px;padding:8px 0;letter-spacing:1px}
-/* announcements */
-.ann{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--rule)}
-@media(max-width:560px){.ann{grid-template-columns:1fr}}
-.ann .a{padding:20px 24px;border-right:1px solid var(--rule)}.ann .a:last-child{border-right:none}
-.ann .a h3{font-family:'Special Elite',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-.ann .a p{font-style:italic;font-size:.95rem;color:var(--soft)}
-/* stop press countdown */
-.stoppress{text-align:center;border:3px double var(--rule);margin:24px 30px;padding:18px}
-.stoppress .lbl{font-family:'Special Elite',monospace;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-size:12px}
-.cd{display:flex;gap:22px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-.cd .n{font-family:'Playfair Display',serif;font-weight:900;font-size:2.2rem}.cd .l{font-family:'Special Elite',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--soft)}
-/* classifieds */
-.classifieds{padding:8px 30px}
-.classifieds .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--rule);font-family:'Special Elite',monospace;font-size:.78rem}
-@media(max-width:600px){.classifieds .grid{grid-template-columns:1fr}}
-.classifieds .c{padding:14px;border-right:1px dashed var(--rule);border-bottom:1px dashed var(--rule)}
-.classifieds .c .h{font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;border-bottom:1px solid var(--rule);padding-bottom:3px}
-.classifieds .c a{color:var(--red);text-decoration:underline}
-.btn{display:inline-block;font-family:'Special Elite',monospace;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;padding:12px 26px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:.2s}
-.btn:hover{background:var(--red);border-color:var(--red)}
-.btn-o{background:transparent;color:var(--ink)}.btn-o:hover{background:var(--ink);color:var(--paper)}
-.rsvp{padding:24px 30px;text-align:center}
-.rsvp form{max-width:420px;margin:14px auto 0;display:flex;flex-direction:column;gap:10px}
-.rsvp input,.rsvp select{padding:12px;border:1px solid var(--rule);background:var(--paper2);font-family:'Special Elite',monospace}
-.rsvp .ok{display:none;font-style:italic;color:var(--red);margin-top:6px}.rsvp .ok.show{display:block}
-.cta{text-align:center;padding:30px;border-top:3px double var(--rule);margin:0 30px}
-.cta h2{font-family:'Playfair Display',serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.3rem,4vw,1.9rem)}
-.cta p{color:var(--soft);max-width:440px;margin:8px auto 18px;font-style:italic}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.foot{text-align:center;padding:16px;font-family:'Special Elite',monospace;font-size:11px;letter-spacing:1px;color:var(--soft)}.foot a{color:var(--ink);text-decoration:underline}
-.rv{opacity:0;transform:translateY(16px);transition:.8s}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-newspaper-special-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -133,22 +73,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="/assets/csp-demo-newspaper-special-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/hindu-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Royal Mandap</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/wedding-magazine"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-006.jpg)"></span><span class="abm-meta"><span class="abm-n">The Editorial</span><span class="abm-c">Wedding</span></span></a><a class="abm-card" href="/demo/passport-journey"><span class="abm-img" style="background-image:url(/demo-shots/AB-WED-009.jpg)"></span><span class="abm-meta"><span class="abm-n">Passport Journey</span><span class="abm-c">Wedding</span></span></a></div>
@@ -156,20 +81,7 @@ a{color:inherit;text-decoration:none}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Everyone asked where we made it.&rdquo;</p><span class="abm-w">Suresh B. &middot; Chennai</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Looked far more premium than what we paid.&rdquo;</p><span class="abm-w">The Iyer Family &middot; Nagapattinam</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>

@@ -17,67 +17,7 @@
 <link rel="icon" href="/favicon.ico?v=20260524b" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Pirata+One&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--wood:#3a2a17;--wood2:#54402a;--parch:#e9dcbb;--parch2:#ddcda3;--ink:#43301c;--burg:#6e1f2a;--gold:#a9802f;--soft:#7a6648}
-body{font-family:'Cormorant Garamond',Georgia,serif;background:#2a1d10;color:var(--ink);line-height:1.7;background-image:radial-gradient(circle at 50% 0,#3a2a17,#1d140a 80%)}
-.cinzel{font-family:'Cinzel',serif} .pirata{font-family:'Pirata One',serif}
-a{color:inherit;text-decoration:none}
-.ribbon{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(0,0,0,.5);color:var(--gold);font-size:11px;letter-spacing:1px;text-align:center;padding:8px 14px;text-transform:uppercase;backdrop-filter:blur(6px)}
-.ribbon a{color:#f0e2bf;font-weight:500;border-bottom:1px solid var(--gold)}
-.scrollwrap{max-width:720px;margin:0 auto;padding:70px 16px 50px}
-.rod{height:26px;border-radius:14px;background:linear-gradient(var(--wood2),var(--wood) 60%,#241a0e);box-shadow:0 6px 16px rgba(0,0,0,.5),inset 0 2px 4px rgba(255,255,255,.12);position:relative;z-index:3}
-.rod::before,.rod::after{content:"";position:absolute;top:50%;width:18px;height:36px;border-radius:6px;background:linear-gradient(var(--gold),#7a5a1e);transform:translateY(-50%)}
-.rod::before{left:-10px}.rod::after{right:-10px}
-/* parchment unrolls */
-.parch{background:linear-gradient(var(--parch),var(--parch2));background-image:radial-gradient(rgba(120,90,40,.06) 1px,transparent 1px);background-size:6px 6px;box-shadow:inset 0 0 60px rgba(120,90,40,.3),0 20px 50px rgba(0,0,0,.5);overflow:hidden;position:relative;z-index:2;margin:-6px 0}
-.parch::before,.parch::after{content:"";position:absolute;left:0;right:0;height:30px;z-index:2;pointer-events:none}
-.parch::before{top:0;background:linear-gradient(rgba(58,42,23,.35),transparent)}
-.parch::after{bottom:0;background:linear-gradient(transparent,rgba(58,42,23,.35))}
-.parch-inner{padding:48px 34px;max-height:90px;animation:unroll 1.8s 1.2s cubic-bezier(.6,0,.2,1) forwards;opacity:.2}
-@keyframes unroll{to{max-height:2000px;opacity:1}}
-@media(prefers-reduced-motion:reduce){.parch-inner{animation:none;max-height:none;opacity:1}}
-.decree{text-align:center}
-.decree .crown{color:var(--gold);font-size:1.8rem}
-.decree .dtag{font-family:'Cinzel',serif;font-weight:700;letter-spacing:6px;text-transform:uppercase;color:var(--burg);font-size:13px;margin:8px 0}
-.decree h1{font-family:'Pirata One',serif;font-size:clamp(2.4rem,9vw,4.2rem);color:var(--ink);line-height:1.05;margin:6px 0}
-.decree .amp{color:var(--burg)}
-.decree .sworn{font-style:italic;color:var(--soft)}
-.rule{display:flex;align-items:center;gap:12px;color:var(--gold);margin:26px 0}
-.rule::before,.rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.proc{font-size:1.15rem;text-align:center;max-width:540px;margin:0 auto}
-.proc .lead{font-family:'Cinzel',serif;color:var(--burg)}
-/* wax seals */
-.seals{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:30px 0}
-.wax{width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#a83b34,var(--burg) 60%,#4d1219);display:flex;align-items:center;justify-content:center;color:#f0d6a8;font-family:'Cinzel',serif;font-size:1.4rem;box-shadow:0 6px 14px rgba(0,0,0,.4),inset 0 0 12px rgba(0,0,0,.4);transform:rotate(-6deg)}
-.wax:nth-child(even){transform:rotate(7deg)}
-.subhead{font-family:'Cinzel',serif;text-align:center;letter-spacing:3px;text-transform:uppercase;color:var(--burg);font-size:13px;margin:36px 0 14px}
-/* kingdom map */
-.map-art{border:2px solid var(--gold);border-radius:8px;background:linear-gradient(135deg,#e3d2a6,#cdb888);padding:24px;position:relative;min-height:200px}
-.map-art .compass{position:absolute;top:12px;right:14px;color:var(--burg);font-size:1.4rem}
-.map-art .place{position:absolute;font-family:'Cinzel',serif;font-size:.8rem;color:var(--ink)}
-.map-art .place::before{content:"⛰ ";color:var(--burg)}
-.map-art .x{position:absolute;left:60%;top:55%;color:var(--burg);font-size:1.6rem;font-weight:700}
-.map-art .x small{display:block;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:1px}
-/* herald + countdown */
-.herald{text-align:center}
-.cd{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:10px}
-.cd .n{font-family:'Pirata One',serif;font-size:2.6rem;color:var(--burg)}.cd .l{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-.detrow{display:flex;gap:30px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.detrow .k{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--burg)}.detrow .v{font-size:1.3rem}
-.btn{display:inline-block;font-family:'Cinzel',serif;font-weight:700;letter-spacing:1px;font-size:.8rem;text-transform:uppercase;padding:13px 28px;border:1px solid var(--gold);background:var(--burg);color:#f0d6a8;cursor:pointer;transition:.25s}
-.btn:hover{background:#82242f}
-.btn-g{background:var(--gold);color:#2a1d10}.btn-g:hover{background:#c29a45}
-.rsvp form{max-width:400px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px}
-.rsvp input,.rsvp select{padding:12px;border:1px solid var(--gold);background:rgba(255,255,255,.4);font-family:inherit;color:var(--ink)}
-.rsvp .ok{display:none;font-style:italic;color:var(--burg);font-size:1.2rem;margin-top:6px}.rsvp .ok.show{display:block}
-.signoff{text-align:center;font-style:italic;color:var(--soft);margin-top:30px}
-.cta{text-align:center;padding:60px 24px 10px}
-.cta h2{font-family:'Cinzel',serif;color:#f0e2bf;font-size:clamp(1.3rem,4vw,1.9rem)}
-.cta p{color:#bda981;max-width:440px;margin:10px auto 22px}.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.foot{text-align:center;padding:24px;font-size:.84rem;color:#bda981}.foot a{color:#f0e2bf}
-.rv{opacity:0;transform:translateY(18px);transition:.8s}.rv.in{opacity:1;transform:none}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-royal-scroll-1.css">
 <link rel="stylesheet" href="/assets/demo-accessibility.css">
 </head>
 <body>
@@ -141,22 +81,7 @@ a{color:inherit;text-decoration:none}
 
 <script src="/assets/csp-demo-royal-scroll-1.js"></script>
 <!--abx-more-->
-<style>
-.abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
-.abm h3{text-align:center;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#9fb3ad;margin:0 0 20px;font-weight:700}
-.abm .abm-rh{margin-top:40px}
-.abm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:640px){.abm-grid{grid-template-columns:1fr}}
-.abm-card{display:block;background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
-.abm-card:hover{transform:translateY(-4px);border-color:rgba(21,160,140,.6)}
-.abm-img{display:block;height:120px;background-size:cover;background-position:top center}
-.abm-meta{display:block;padding:12px 14px}
-.abm-n{display:block;font-weight:700;font-size:14px}.abm-c{display:block;font-size:11px;color:#8fa39d;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.abm-revs{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
-@media(max-width:560px){.abm-revs{grid-template-columns:1fr}}
-.abm-rev{background:#15201d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
-.abm-st{color:#DCA50C;font-size:13px;letter-spacing:1px}.abm-rev p{font-size:.95rem;margin:8px 0 10px;color:#dbe5e1;line-height:1.5}.abm-w{font-size:12px;color:#8fa39d}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-2.css">
 <section class="abm">
   <h3>You may also like</h3>
   <div class="abm-grid"><a class="abm-card" href="/demo/nikah-makkah-night"><span class="abm-img" style="background-image:url(/demo-shots/AB-NIK-006.jpg)"></span><span class="abm-meta"><span class="abm-n">Makkah Night</span><span class="abm-c">Nikah</span></span></a><a class="abm-card" href="/demo/nikah-ottoman"><span class="abm-img" style="background-image:url(/demo-shots/AB-NIK-005.jpg)"></span><span class="abm-meta"><span class="abm-n">Ottoman Empire</span><span class="abm-c">Nikah</span></span></a><a class="abm-card" href="/demo/muslim-wedding"><span class="abm-img" style="background-image:url(/demo-shots/AB-NIK-001.jpg)"></span><span class="abm-meta"><span class="abm-n">Noor Nikah</span><span class="abm-c">Nikah</span></span></a></div>
@@ -164,20 +89,7 @@ a{color:inherit;text-decoration:none}
   <div class="abm-revs"><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;Felt premium without being over the top.&rdquo;</p><span class="abm-w">Grace J. &middot; Nagapattinam</span></div><div class="abm-rev"><div class="abm-st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&ldquo;MashaAllah, simply beautiful and elegant.&rdquo;</p><span class="abm-w">Imran &amp; Fathima &middot; Nagore</span></div></div>
 </section>
 <!--abx-conv-->
-<style>
-.abx-trust{background:#0b1110;color:#e3eae7;font-family:system-ui,-apple-system,sans-serif;padding:26px 16px;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
-.abx-trust .row{display:flex;gap:16px 26px;justify-content:center;flex-wrap:wrap;font-size:13.5px;color:#aebbb6;font-weight:500}
-.abx-trust .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.abx-trust .cta a{padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none;font-size:14.5px;display:inline-block}
-.abx-trust .cta .p{background:#15a08c;color:#fff;box-shadow:0 8px 22px rgba(21,160,140,.35)}
-.abx-trust .cta .s{background:transparent;color:#e3eae7;border:1px solid #2c3b38}
-.abx-trust .idline{font-size:11.5px;color:#6f807b;margin-top:14px;letter-spacing:1.5px;text-transform:uppercase}
-.abx-dock{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:10px;align-items:flex-end;font-family:system-ui,sans-serif}
-.abx-dock a{text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);font-weight:700}
-.abx-dock .o{background:#15a08c;color:#fff;border-radius:100px;padding:12px 18px;font-size:13.5px;display:flex;align-items:center;gap:7px}
-.abx-dock .wa{background:#25d366;color:#fff;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;align-self:flex-end}
-@media(max-width:560px){.abx-dock .o span{display:none}.abx-dock .o{padding:13px}}
-</style>
+<link rel="stylesheet" href="/assets/csp-style-demo-album-launch-3.css">
 <section class="abx-trust">
   <div class="row"><span>&#10003; 100% Custom Design</span><span>&#10003; Mobile Friendly</span><span>&#10003; Delivered Fast</span><span>&#10003; WhatsApp Support</span></div>
   <div class="cta"><a class="p" data-abx-order href="/order">Order This Design &rarr;</a><a class="s" data-abx-enq href="/invitation#enquiry">Enquire First</a></div>
