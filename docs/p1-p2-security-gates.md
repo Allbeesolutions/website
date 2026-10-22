@@ -18,7 +18,7 @@ As of 22 October 2026, inline executable scripts and HTML event-handler attribut
 
 Validation: `node scripts/public-csp-check.mjs` validates all 69 files and 262 local JS references; `node scripts/public-csp-browser-check.mjs` passed on 20 representative pages with enforced CSP, including homepage modal open/close, team-member hover and two demo RSVP interactions. Synthetic security regression, API and checkout test suites must continue to pass. A headless WebGL-unavailable error is treated as a test-environment limitation (the page's 3D animation should be tested on actual GPU-backed browsers).
 
-**Residual CSP weakness:** Inline CSS is still allowed by `style-src 'unsafe-inline'`; a future stylesheet and `style`-attribute migration is needed before eliminating all inline styles. Third-party script hosts must be reviewed periodically. Production verification of the latest CSP deployment and compatibility remains required.
+**Residual CSP weakness:** Inline CSS is still allowed by `style-src 'unsafe-inline'`; a future stylesheet and `style`-attribute migration is needed before eliminating all inline styles. Third-party script hosts must be reviewed periodically. Production deployment for commit `a809ef2` was verified on 22 October 2026: the Vercel GitHub status and audit workflows succeeded, 16 read-only production smoke checks passed, and the live script CSP was confirmed on homepage, About, catalogue, invitation demos, admin, checkout and reviews. Five new script assets returned HTTP 200. Further device-specific animation/checkout UX acceptance is still recommended.
 
 ## 5. Private storage and backup restore — tooling tested, live restore gated
 

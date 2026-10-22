@@ -20,6 +20,29 @@ for(const path of ['/admin/ceo','/admin/invitation-leads','/admin/invitation-ord
 for(const [url,status] of [['/api/health',200],['/api/invitation-leads',401],['/api/invitation-orders',401],['/api/track-order',405],['/api/reference-upload',405],['/api/order-webhook',405]]){
  const r=await get(url);if(r.status!==status)throw new Error(`Expected ${status} at ${url}, received ${r.status}`);count++;
 }
+// Full marketing/demo CSP migration must survive production deploys.
+for(const path of ['/', '/about', '/contact', '/courses', '/digitalmarketing',
+                   '/invitation', '/invitation-samples', '/portfolio', '/services',
+                   '/webdevelopment', '/demo/blessed-abode', '/demo/muslim-wedding']) {
+ const r=await get(path);
+ if(r.status!==200)throw new Error(`Public CSP route unavailable ${path}: ${r.status}`);
+ const csp=r.headers.get('content-security-policy')||'';
+ const script=csp.match(/(?:^|;)\s*script-src\s+([^;]+)/)?.[1]||'';
+ if(!script.includes("'self'")||script.includes("'unsafe-inline'")||!csp.includes("script-src-attr 'none'"))
+   throw new Error(`Unsafe executable script CSP at ${path}`);
+ const html=await r.text();
+ if(!html.includes('/assets/csp-'))throw new Error(`Extracted CSP script missing in ${path}`);
+ count++;
+}
+for(const script of ['/assets/csp-index-1.js', '/assets/csp-about-1.js',
+                     '/assets/csp-interactions.js', '/assets/csp-demo-blessed-abode-1.js',
+                     '/assets/csp-demo-muslim-wedding-1.js']) {
+ const r=await get(script);
+ if(r.status!==200)throw new Error(`CSP script asset missing: ${script}`);
+ if(!(r.headers.get('content-type')||'').includes('javascript'))
+   throw new Error(`Incorrect JavaScript MIME: ${script}`);
+ count++;
+}
 const session=await get('/api/health?admin_session=1');
 if(session.status!==200)throw new Error('Admin session endpoint missing');
 const meta=await session.json();
