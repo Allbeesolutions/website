@@ -3,7 +3,9 @@
   'use strict';
   var GA = 'G-TEX4FWGJFQ';
   var KEY = 'allbee-analytics-consent-v2';
-  var BLOCKED = /^(?:admin|api|order|track-order|review|design-brief|checkout|payment|account|login|sign-in|sign-up)$/;
+  // Fixed public routes only: never send arbitrary slugs or private page IDs.
+  var PUBLIC = new Set(["", "about", "birthday-invitations", "business-launch-invitations", "contact", "courses", "digitalmarketing", "housewarming-invitations", "invitation-samples", "nikah-invitations", "portfolio", "privacy", "refund", "services", "terms", "top-templates", "webdevelopment", "wedding-invitations"]);
+  var DEMOS = new Set(["album-launch", "birthday", "birthday-vip", "blessed-abode", "botanical-letterpress", "business-launch", "business-opening", "celebration-gallery", "christian-wedding", "cinema-trailer", "emerald-crescent", "fun-fiesta", "hindu-wedding", "housewarming-blueprint", "housewarming-joy", "luxury-watch", "midnight-celebration", "modern-vows", "museum-exhibit", "muslim-wedding", "netflix-premiere", "newspaper-special", "nikah-calligraphy", "nikah-geometry", "nikah-makkah-night", "nikah-noor", "nikah-ottoman", "noor-garden", "opening-gala", "passport-journey", "royal-birthday", "royal-scroll", "sakeenah-luxe", "space-journey", "sweet-home", "time-capsule", "wedding-magazine", "wedding-timeline", "weddingly-story"]);
   var consent = null;
   var initialized = false;
   var dnt = navigator.doNotTrack === '1' || navigator.globalPrivacyControl === true;
@@ -11,7 +13,7 @@
   var demo = /^\/demo\/([a-z0-9-]{1,60})(?:\.html)?$/.exec(route);
   var leaf = route.replace(/^\//, '').replace(/\.html$/, '').replace(/\/$/, '');
   // Static public routes only. Dynamic identifiers and URL query strings are excluded.
-  if (!demo && (!/^[a-z0-9-]{0,60}$/.test(leaf) || BLOCKED.test(leaf))) return;
+  if (demo ? !DEMOS.has(demo[1]) : !PUBLIC.has(leaf)) return;
   var path = demo ? '/demo/' + demo[1] : (leaf ? '/' + leaf : '/');
   try { consent = dnt ? 'no' : localStorage.getItem(KEY); } catch (_) { consent = 'no'; }
   if (consent !== 'yes' && consent !== 'no') consent = null;

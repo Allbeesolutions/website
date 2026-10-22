@@ -106,3 +106,13 @@ test('published HTML contains no unconditional Google Analytics loaders', () => 
     ...fs.readdirSync(path.join(root, 'demo')).filter(f => f.endsWith('.html')).map(f => path.join(root, 'demo', f))];
   for (const f of files) assert.doesNotMatch(fs.readFileSync(f, 'utf8'), /googletagmanager\.com\/gtag\/js/, f);
 });
+
+test('unknown one-segment paths and unpublished demo slugs are never sent to GA4',()=>{
+ for(const pathname of ['/private-guest-slug','/customer-account-id','/demo/private-guest-slug.html',
+   '/track-order','/invitation','/review','/google21f2da8f0249edda.html']){
+  const s=simulate({pathname,consent:'yes'});
+  assert.equal(s.scripts.length,0,pathname);
+ }
+ const publicPage=simulate({pathname:'/about.html',consent:'yes'});
+ assert.equal(publicPage.scripts.length,1);
+});
