@@ -1,0 +1,1 @@
+const target=new Date('2026-11-13T19:00:00+05:30').getTime();const boxes=[...document.querySelectorAll('#count b')];function tick(){let d=Math.max(0,target-Date.now());boxes[0].textContent=Math.floor(d/864e5);boxes[1].textContent=Math.floor(d%864e5/36e5);boxes[2].textContent=Math.floor(d%36e5/6e4)}tick();setInterval(tick,1000);

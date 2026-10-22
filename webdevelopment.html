@@ -50,7 +50,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap"></noscript>
 
 
@@ -403,7 +403,7 @@
     </h1>
     <p class="geo-sub">Modern, fast, mobile-responsive websites built to convert visitors into customers — designed and developed right here in Nagore.</p>
     <div class="geo-actions">
-      <button class="btn-primary" type="button" onclick="openModal()"><svg width="14" height="14" aria-hidden="true"><use href="#i-monitor"/></svg>Get a Free Quote</button>
+      <button class="btn-primary" type="button" data-csp-click="open-modal"><svg width="14" height="14" aria-hidden="true"><use href="#i-monitor"/></svg>Get a Free Quote</button>
       <a href="https://wa.me/918903607506?text=Hi%20AllBee!%20I%20want%20a%20website%20for%20my%20business" target="_blank" rel="noopener" class="btn-yellow"><svg width="14" height="14" aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp</a>
     </div>
   </div>
@@ -1101,7 +1101,7 @@
 <!-- Context-aware quote modal -->
 <div class="modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal">
-    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="modal-close" type="button" data-csp-click="close-modal" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
     <div class="modal-icon" aria-hidden="true"><svg><use href="#i-briefcase"/></svg></div>
     <div id="modal-title" class="modal-title">Get a Project Quote</div>
     <p class="modal-sub">Share your goal, approximate budget and timeline. We’ll reply with the most practical next step.</p>
@@ -1125,46 +1125,13 @@
 <script src="/assets/shared-runtime-1.js?v=20261003" defer></script>
 
 <script src="/assets/software-solutions.js"></script>
-<script>
-(function(){
-  var grid = document.getElementById('software-solutions-grid');
-  var projects = window.ALLBEE_SOFTWARE_SOLUTIONS || [];
-  if(!grid || !projects.length) return;
-
-  function esc(s){
-    return String(s || '').replace(/[&<>\"]/g,function(c){
-      return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'})[c];
-    });
-  }
-
-  function displayUrl(url){
-    return String(url || '').replace(/^https?:\/\//,'').replace(/\/$/,'');
-  }
-
-  grid.innerHTML = projects.map(function(p){
-    var tags = (p.tech || []).map(function(tag){ return '<span>'+esc(tag)+'</span>'; }).join('');
-    var url = esc(p.url);
-    var label = esc(p.urlLabel || 'View Product');
-    return '<article class="abp-card">'
-      +'<a class="abp-card-link" href="'+url+'" target="_blank" rel="noopener" aria-label="'+label+' — '+esc(p.name)+' (opens in a new tab)">'
-      +'<div class="abp-preview">'
-      +'<div class="abp-bar"><i></i><i></i><i></i><span class="abp-url">'+esc(displayUrl(p.url))+'</span></div>'
-      +'<div class="abp-shot abp-shot--cover"><img src="'+esc(p.img)+'" alt="'+esc(p.name)+' preview" width="'+esc(p.imgWidth || 900)+'" height="'+esc(p.imgHeight || 506)+'" loading="lazy" decoding="async"></div>'
-      +'</div>'
-      +'<div class="abp-body">'
-      +'<div class="abp-tags">'+tags+'</div>'
-      +'<h3 class="abp-name">'+esc(p.name)+'</h3>'
-      +'<p class="abp-desc">'+esc(p.summary)+'</p>'
-      +'<span class="abp-visit">'+label+' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>'
-      +'</div></a></article>';
-  }).join('');
-})();
-</script>
+<script src="/assets/csp-webdevelopment-1.js"></script>
 
 <script src="/assets/trust.js" defer></script>
 <script src="/assets/shared-runtime-2.js?v=20261003-footer" defer></script>
 <script src="/assets/pricing.js" defer></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>
+<script src="/assets/csp-interactions.js"></script>
 </body>
 </html>

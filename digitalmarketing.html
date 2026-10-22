@@ -50,7 +50,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap"></noscript>
 
 
@@ -3839,7 +3839,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <!-- Context-aware quote modal -->
 <div class="modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal">
-    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="modal-close" type="button" data-csp-click="close-modal" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
     <div class="modal-icon" aria-hidden="true"><svg><use href="#i-briefcase"/></svg></div>
     <div id="modal-title" class="modal-title">Get a Project Quote</div>
     <p class="modal-sub">Share your goal, approximate budget and timeline. We’ll reply with the most practical next step.</p>
@@ -3867,5 +3867,6 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <script src="/assets/pricing.js" defer></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>
+<script src="/assets/csp-interactions.js"></script>
 </body>
 </html>

@@ -124,24 +124,7 @@ section,header{position:relative;z-index:2}
 <section class="cta"><h2>Want a Maison-grade launch invitation?</h2><p>AllBee Solutions designs precise, prestigious product-launch microsites.</p><div class="row"><a class="btn" href="/invitation#enquiry">Enquire Now</a><a class="btn btn-o" href="https://wa.me/918903607506" target="_blank" rel="noopener">WhatsApp Us</a></div></section>
 <footer class="foot">A sample invitation website crafted by <a href="/invitation">AllBee Solutions</a> · <a href="/invitation-samples">View more designs</a></footer>
 
-<script>
-(function(){
-  // build dial ticks
-  var g=document.getElementById('ticks'),svgns="http://www.w3.org/2000/svg";
-  for(var i=0;i<60;i++){var a=i*6*Math.PI/180,r1=i%5===0?80:86,r2=92;
-    var l=document.createElementNS(svgns,'line');
-    l.setAttribute('x1',100+r1*Math.cos(a));l.setAttribute('y1',100+r1*Math.sin(a));
-    l.setAttribute('x2',100+r2*Math.cos(a));l.setAttribute('y2',100+r2*Math.sin(a));
-    l.setAttribute('class','tickmk'+(i%5===0?' h':''));g.appendChild(l);}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12});
-  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
-  var target=new Date("2026-11-07T19:00:00+05:30").getTime(),cd=document.getElementById('cd');
-  function p(n){return String(n).padStart(2,'0');}
-  function tick(){var d=Math.max(0,target-Date.now());cd.querySelector('[data-d]').textContent=Math.floor(d/864e5);cd.querySelector('[data-h]').textContent=p(Math.floor(d%864e5/36e5));cd.querySelector('[data-m]').textContent=p(Math.floor(d%36e5/6e4));cd.querySelector('[data-s]').textContent=p(Math.floor(d%6e4/1e3));}
-  tick();setInterval(tick,1000);
-  document.getElementById('rsvp').addEventListener('submit',function(e){e.preventDefault();if(!this.name.value.trim()){this.name.focus();return;}document.getElementById('ok').classList.add('show');this.querySelector('button').textContent='Confirmed ✓';});
-})();
-</script>
+<script src="/assets/csp-demo-luxury-watch-1.js"></script>
 <!--abx-more-->
 <style>
 .abm{background:#0f1413;color:#e6ece9;font-family:system-ui,-apple-system,sans-serif;padding:48px 18px;border-top:1px solid rgba(255,255,255,.07)}
@@ -190,22 +173,8 @@ section,header{position:relative;z-index:2}
   <a class="wa" data-abx-wa href="https://wa.me/918903607506" target="_blank" rel="noopener" aria-label="WhatsApp us">&#128172;</a>
 </div>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEX4FWGJFQ"></script>
-<script>
-window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TEX4FWGJFQ');
-(function(){var CFG={"slug":"luxury-watch","def":{"id":"AB-BIZ-004","name":"Luxury Watch","event":"Business Event"},"variants":{}};
-var v=new URLSearchParams(location.search).get('v')||'';
-var t=CFG.variants[v]||CFG.def;var enc=encodeURIComponent;
-var u='/order?event='+enc(t.event||'')+'&template_id='+enc(t.id||'')+'&template_name='+enc(t.name||'')+'&demo='+enc(CFG.slug)+(v?('&v='+enc(v)):'')+'&source='+enc('demo:'+CFG.slug);
-var enq='/invitation?t='+enc(t.id||'')+'&tn='+enc(t.name||'')+'&demo='+enc(CFG.slug)+'#enquiry';
-var wa='https://wa.me/918903607506?text='+enc('Hi AllBee! I am interested in template '+(t.id||'')+' '+(t.name||CFG.slug)+'. Please contact me.');
-function ga(n){try{if(window.gtag)gtag('event',n,{template_id:t.id,template_name:t.name,demo:CFG.slug,variant:v||'default'});}catch(e){}}
-[].forEach.call(document.querySelectorAll('[data-abx-order]'),function(a){a.href=u;a.addEventListener('click',function(){ga('order_start');});});
-[].forEach.call(document.querySelectorAll('[data-abx-enq]'),function(a){a.href=enq;a.addEventListener('click',function(){ga('enquiry_click');});});
-[].forEach.call(document.querySelectorAll('[data-abx-wa]'),function(a){a.href=wa;a.addEventListener('click',function(){ga('whatsapp_click');});});
-var idl=document.querySelector('[data-abx-id]');if(idl)idl.textContent=(t.id?('Template '+t.id):'')+(t.name?('  ·  '+t.name):'');
-ga('demo_open');
-})();
-</script>
+<script src="/assets/csp-demo-luxury-watch-2.js"></script>
 
+<script src="/assets/csp-interactions.js"></script>
 </body>
 </html>

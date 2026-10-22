@@ -46,6 +46,12 @@ CI executes these checks on pull requests and pushes. Secret detection is a heur
 - Synthetic tests execute the order-summary renderer with HTML attack strings and assert no executable markup is emitted. Additional tests cover malformed/missing size headers, parsed JSON payloads, and rejected design-brief submissions.
 - Vercel production firewall rules cannot currently be verified or modified through the connected credentials for the production `allbee` team. Before any change, verify the real production project and existing firewall rules; prefer a conservative WAF rule that targets only high-abuse public API routes, with logging before enforcement, and avoid applying webhook throttling blindly. See [Vercel WAF rate limiting](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting).
 
+## 22 October — static-site script CSP migration
+
+All 69 tracked static HTML pages, including demo routes, now use external JavaScript and no inline event handler attributes. The global `script-src` no longer includes `unsafe-inline`, and `script-src-attr 'none'` blocks script event attributes. The public CSS still requires `style-src 'unsafe-inline'` and is a separate future optimization. Preserve script load order, especially for footer, quote modal, catalogue animations, and invitation demos. Run `node scripts/public-csp-check.mjs` (69 pages and 262 local references) and `node scripts/public-csp-browser-check.mjs` (20 representative strict-CSP browser tests) with other security regressions after changes. The latter uses a local synthetic API server and does not contact production for customer data.
+
+Vercel project access remains limited to the owner's personal `allbee-website` project, not the live `allbee/website` production project. Google Drive search did not expose the invitation Apps Script or restricted reference-image folder. These access dependencies remain genuine owner gates for distributed rate limiting, live Apps Script deployment, and isolated backup restoration.
+
 ## Post-deployment public smoke checks
 
 Check public pages, security headers, `/api/health` (GET only), privileged APIs without credentials (must reject), and invalid methods. Never make brute-force attempts or send synthetic orders to live payment endpoints. For rollback, see `docs/rollback-procedures.md`.

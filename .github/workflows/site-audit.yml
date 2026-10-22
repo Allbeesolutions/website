@@ -32,5 +32,10 @@ jobs:
           node scripts/admin-mfa-check.mjs
           node scripts/admin-csp-check.mjs
           node scripts/flow-csp-check.mjs
+          node scripts/public-csp-check.mjs
           node scripts/invitations-restore-check.mjs
           node scripts/legacy-leads-migration-check.mjs
+      - name: Public strict-CSP browser interactions (Chrome)
+        env:
+          CSP_BROWSER_QUICK: '1'
+        run: node scripts/public-csp-browser-check.mjs

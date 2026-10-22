@@ -50,7 +50,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap"></noscript>
 
 
@@ -3612,31 +3612,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 .fcar-dots b{width:8px;height:8px;border-radius:50%;background:var(--line,#cfc8b6);cursor:pointer;transition:.2s;border:none;padding:0}
 .fcar-dots b.on{background:var(--teal,#0F7B6E);width:22px;border-radius:5px}
 </style>
-<script>
-(function(){
-  var F=[
-    {id:'AB-WED-001',n:'Royal Mandap',c:'Wedding',el:1,demo:'hindu-wedding',img:'/demo-shots/AB-WED-001.jpg',d:'Cinematic curtain-open grandeur with a love-story timeline.'},
-    {id:'AB-NIK-006',n:'Makkah Night',c:'Nikah',el:1,demo:'nikah-makkah-night',img:'/demo-shots/AB-NIK-006.jpg',d:'Serene, spiritual, celestial — the Kaaba under a starlit sky.'},
-    {id:'AB-WED-009',n:'Passport Journey',c:'Wedding',el:1,demo:'passport-journey',img:'/demo-shots/AB-WED-009.jpg',d:'A travel-document experience with boarding pass and visa stamps.'},
-    {id:'AB-BIR-005',n:'VIP Access',c:'Birthday',el:0,demo:'birthday-vip',img:'/demo-shots/AB-BIR-005.jpg',d:'A perforated VIP pass with barcode and departures-board countdown.'},
-    {id:'AB-BIZ-004',n:'Luxury Watch',c:'Business Launch',el:1,demo:'luxury-watch',img:'/demo-shots/AB-BIZ-004.jpg',d:'A Maison-grade reveal with a live ticking dial.'},
-    {id:'AB-HOU-002',n:'Time Capsule',c:'Housewarming',el:0,demo:'time-capsule',img:'/demo-shots/AB-HOU-002.jpg',d:'A sealed vault that unlocks family memories as you scroll.'}
-  ];
-  var track=document.getElementById('fcarTrack'),dots=document.getElementById('fcarDots');if(!track)return;
-  function order(t){return '/order?event='+encodeURIComponent(t.c==='Business Launch'?'Business Event':t.c)+'&template_id='+encodeURIComponent(t.id)+'&template_name='+encodeURIComponent(t.n)+'&demo='+encodeURIComponent(t.demo)+'&source='+encodeURIComponent('featured:'+t.id);}
-  track.innerHTML=F.map(function(t){return '<div class="fcar-slide"><a class="fcar-lap" href="/demo/'+t.demo+'" target="_blank" rel="noopener"><div class="scr"><img loading="lazy" src="'+t.img+'" alt="'+t.n+' invitation preview" width="680" height="510"></div><div class="bs"></div></a><div class="fcar-info">'+(t.el?'<span class="el">&#10022; Elite</span><br>':'')+'<span class="ec">'+t.c+'</span><h3>'+t.n+'</h3><p>'+t.d+'</p><div class="row"><a class="btn-primary" href="/demo/'+t.demo+'" target="_blank" rel="noopener">View Demo</a><a class="btn-secondary" href="'+order(t)+'">Order Now</a></div></div></div>';}).join('');
-  dots.innerHTML=F.map(function(_,i){return '<button class="'+(i===0?'on':'')+'" data-i="'+i+'" aria-label="Slide '+(i+1)+'"></button>';}).join('');
-  var dotEls=[].slice.call(dots.children),cur=0,timer;
-  function go(i){cur=(i+F.length)%F.length;track.scrollTo({left:track.clientWidth*cur,behavior:'smooth'});dotEls.forEach(function(d,j){d.classList.toggle('on',j===cur);});}
-  document.getElementById('fcarNext').onclick=function(){go(cur+1);rest();};
-  document.getElementById('fcarPrev').onclick=function(){go(cur-1);rest();};
-  dots.addEventListener('click',function(e){var b=e.target.closest('[data-i]');if(b){go(+b.dataset.i);rest();}});
-  var st;track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){var i=Math.round(track.scrollLeft/track.clientWidth);if(i!==cur){cur=i;dotEls.forEach(function(d,j){d.classList.toggle('on',j===cur);});}},120);});
-  function start(){timer=setInterval(function(){go(cur+1);},5000);}function rest(){clearInterval(timer);start();}
-  start();
-  track.addEventListener('mouseenter',function(){clearInterval(timer);});track.addEventListener('mouseleave',start);
-})();
-</script>
+<script src="/assets/csp-invitation-1.js"></script>
 
 <!-- ===== Event Categories ===== -->
 <section class="section" aria-labelledby="cat-h">
@@ -3882,7 +3858,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <!-- Context-aware enquiry modal -->
 <div class="modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal">
-    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="modal-close" type="button" data-csp-click="close-modal" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
     <div class="modal-icon" aria-hidden="true"><svg><use href="#i-send"/></svg></div>
     <div id="modal-title" class="modal-title">Invitation Enquiry</div>
     <p class="modal-sub">Tell us about your event and the invitation format you are considering. We’ll guide you to a suitable design and package.</p>
@@ -3909,68 +3885,12 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-links .nav-dd-menu a.acti
 <!-- App scripts -->
 <script src="/assets/shared-runtime-1.js?v=20261003" defer></script>
 
-<script>
-/* ── AllBee Invitations — enquiry form → /api/invitation-enquiry ── */
-(function(){
-  var form=document.getElementById('invEnquiryForm');
-  var toast=document.getElementById('invToast');
-  var RENDER_TS=Date.now();              // time-trap baseline for spam protection
-  function showToast(msg){ if(!toast)return; var s=toast.querySelector('.inv-toast-msg'); if(s)s.textContent=msg; toast.classList.add('show'); setTimeout(function(){toast.classList.remove('show');},4500); }
-  if(form){
-    var btn=form.querySelector('button[type="submit"]');
-    var btnHTML=btn?btn.innerHTML:'';
-    var submitting=false;
-    form.addEventListener('submit',function(e){
-      e.preventDefault();
-      if(e.isTrusted===false || submitting){ return; }
-      if(form.querySelector('[name="_gotcha"]') && form.querySelector('[name="_gotcha"]').value){ return; }
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-      var fd=new FormData(form);
-      var aq=new URLSearchParams(location.search);
-      var aDemo=aq.get('demo')||'';
-      var data={ name:fd.get('name'), mobile:fd.get('mobile'), email:fd.get('email'),
-        event_type:fd.get('event_type'), event_date:fd.get('event_date'),
-        interested_in:fd.getAll('interested_in'), notes:fd.get('notes'),
-        template_id:aq.get('t')||'', template_name:aq.get('tn')||'', demo:aDemo,
-        source: aDemo?('demo:'+aDemo):'/invitation', render_ts:RENDER_TS, _gotcha:fd.get('_gotcha')||'' };
-      submitting=true;
-      if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
-      fetch('/api/invitation-enquiry',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
-        .then(function(r){ return r.json().catch(function(){ return {ok:r.ok}; }); })
-        .then(function(res){
-          if(res && res.ok && res.captured === true && res.lead_id){ showToast('Request saved. Reference: '+res.lead_id+'. We will contact you soon.'); form.reset(); }
-          else { showToast('Sorry, something went wrong. Please try again or WhatsApp us.'); }
-        })
-        .catch(function(){ showToast('Network error. Please try again or WhatsApp us.'); })
-        .finally(function(){ submitting=false; if(btn){ btn.disabled=false; btn.innerHTML=btnHTML; } });
-    });
-  }
-  document.querySelectorAll('[data-scroll="enquiry"]').forEach(function(b){
-    b.addEventListener('click',function(e){ e.preventDefault(); var t=document.getElementById('enquiry'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); });
-  });
-})();
-</script>
+<script src="/assets/csp-invitation-2.js"></script>
 <script src="/assets/shared-runtime-2.js?v=20261003-footer" defer></script>
-<script>
-(function(){
-  function fire(name,params){try{if(typeof window.gtag==='function')window.gtag('event',name,params||{});}catch(e){}}
-  document.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';var label=(a.textContent||'').trim().slice(0,80);if(h.indexOf('/invitation-samples')===0)fire('invitation_catalog_view',{label:label});else if(h.indexOf('/order')===0)fire('invitation_order_start',{label:label,href:h});else if(h.indexOf('/demo/')===0)fire('invitation_demo_open',{label:label,href:h});else if(h.indexOf('#price-h')===0)fire('invitation_pricing_view',{label:label});});
-  var form=document.getElementById('invEnquiryForm');if(form)form.addEventListener('submit',function(){fire('invitation_help_submit',{event_type:(form.querySelector('[name=event_type]')||{}).value||''});});
-})();
-</script>
-<script>
-(function(){
- const hero=document.querySelector('.inv-marquee-hero');
- const toggle=hero.querySelector('.inv-marquee-toggle');
- toggle.addEventListener('click',function(){
-  const paused=toggle.getAttribute('aria-pressed')!=='true';
-  toggle.setAttribute('aria-pressed',String(paused));
-  hero.classList.toggle('is-paused',paused);
-  toggle.textContent=paused?'Resume previews':'Pause previews';
- });
-})();
-</script>
+<script src="/assets/csp-invitation-3.js"></script>
+<script src="/assets/csp-invitation-4.js"></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>
+<script src="/assets/csp-interactions.js"></script>
 </body>
 </html>

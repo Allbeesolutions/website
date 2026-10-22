@@ -50,7 +50,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap" media="all">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;600;700&display=swap"></noscript>
 
 
@@ -408,7 +408,7 @@
     <h1 id="ph-h" class="wl-title">Digital Solutions.<br><span class="wl-title-accent">Real Results.</span></h1>
     <p class="wl-sub">SEO, web development, social media &amp; IT support — for businesses across Tamil Nadu and India.</p>
     <div class="wl-actions">
-      <button class="btn-primary" type="button" onclick="openModal()"><svg width="14" height="14" aria-hidden="true"><use href="#i-spark"/></svg>Get Free Counseling</button>
+      <button class="btn-primary" type="button" data-csp-click="open-modal"><svg width="14" height="14" aria-hidden="true"><use href="#i-spark"/></svg>Get Free Counseling</button>
       <a href="https://wa.me/918903607506?text=Hi%20AllBee!%20I%20want%20to%20discuss%20a%20project" target="_blank" rel="noopener" class="btn-yellow"><svg width="14" height="14" aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp</a>
     </div>
   </div>
@@ -692,7 +692,7 @@
 <!-- Context-aware quote modal -->
 <div class="modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal">
-    <button class="modal-close" type="button" onclick="closeModal()" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="modal-close" type="button" data-csp-click="close-modal" aria-label="Close dialog"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
     <div class="modal-icon" aria-hidden="true"><svg><use href="#i-briefcase"/></svg></div>
     <div id="modal-title" class="modal-title">Get a Project Quote</div>
     <p class="modal-sub">Share your goal, approximate budget and timeline. We’ll reply with the most practical next step.</p>
@@ -719,5 +719,6 @@
 <script src="/assets/shared-runtime-2.js?v=20261003-footer" defer></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>
+<script src="/assets/csp-interactions.js"></script>
 </body>
 </html>
