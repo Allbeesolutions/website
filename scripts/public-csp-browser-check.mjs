@@ -146,6 +146,12 @@ const server=http.createServer((req,res)=>{
  try{
   if(path.extname(dest)==='.html'){
     let html=fs.readFileSync(dest,'utf8');
+    // This harness validates our local CSS declarations, not remote vendors.
+    // Strip remote font CSS and third-party scripts from the test response so
+    // GitHub's headless Chrome cannot stall on blocked external DNS requests.
+    // Production and Google Fonts availability are verified separately.
+    html=html.replace(/<link\b[^>]*href=["']https:\/\/fonts\.googleapis\.com\/css2\?[^"']+["'][^>]*>/gi,'');
+    html=html.replace(/<script\b[^>]*src=["']https?:\/\/[^"']+["'][^>]*><\/script>/gi,'');
     html=html.replace('</head>','<script src="/__csp_smoke.js"></script></head>');
     res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':csp});res.end(html);
   }else{
