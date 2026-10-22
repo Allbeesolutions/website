@@ -26,13 +26,18 @@ module.exports = async (req, res) => {
   const name = s(b.name).slice(0,80), mobile = s(b.mobile).slice(0,20), email = s(b.email).slice(0,120);
   const event_date = s(b.event_date).slice(0,20);
   const lead_id = s(b.lead_id).slice(0,20), source = s(b.source).slice(0,60) || '/order';
-  const template_id = s(b.template_id).slice(0,20), template_name = s(b.template_name).slice(0,60), demo = s(b.demo).slice(0,40);
+  const template_id = s(b.template_id).slice(0,20);
+  // Never trust the browser's template name, demo, event or package entitlement:
+  // they must all agree with the published source catalogue before any gateway call.
+  const template = template_id ? catalog.invitationTemplateById(template_id) : null;
+  const template_name = template ? template.name : '';
+  const demo = template ? template.demo : '';
 
-  // validate + authoritative price. If a catalogue design was selected, its
-  // published package eligibility is authoritative on the server as well as in the UI.
   const price = PRICING[type] && PRICING[type][pkg];
-  const packageAllowed = catalog.templateAllowsPackage(template_id, pkg);
-  if (!EVENTS.includes(event) || !price || !packageAllowed || name.length < 2 || !/^[+0-9 ()\-]{8,20}$/.test(mobile)) {
+  const eligibleDesign = !template_id || (template && template.event === event &&
+    catalog.templateAllowsPackage(template_id, pkg) &&
+    (!Array.isArray(template.formats) || template.formats.includes(type)));
+  if (!EVENTS.includes(event) || !price || !eligibleDesign || name.length < 2 || !/^[+0-9 ()\-]{8,20}$/.test(mobile)) {
     res.statusCode = 422; return res.end(JSON.stringify({ ok:false, error:'validation_error' }));
   }
   const amountPaise = price * 100;

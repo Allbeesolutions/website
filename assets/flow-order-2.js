@@ -118,7 +118,17 @@ function buildSummary(sel){
 function buildPay(){ buildSummary('#paySummary'); $('#payAmt').textContent=fmt(amount()); }
 
 /* selection events */
-$('#evGrid').addEventListener('click',e=>{const c=e.target.closest('.ev');if(!c)return;order.event=c.dataset.ev;$$('#evGrid .ev').forEach(x=>x.classList.toggle('sel',x===c));});
+$('#evGrid').addEventListener('click',e=>{
+  const c=e.target.closest('.ev');if(!c)return;
+  if(selectedTemplate && c.dataset.ev!==selectedTemplate.event){
+    // Changing the event means choosing a different design. Never submit a
+    // mismatched design/event pair and accidentally buy the wrong invitation.
+    selectedTemplate=null;order.template_id='';order.template_name='';order.demo='';
+  }
+  order.event=c.dataset.ev;
+  $$('#evGrid .ev').forEach(x=>x.classList.toggle('sel',x===c));
+  show();
+});
 $('#typeGrid').addEventListener('click',e=>{const c=e.target.closest('.opt');if(!c)return;order.type=c.dataset.type;order.pkg='';$$('#typeGrid .opt').forEach(x=>x.classList.toggle('sel',x===c));});
 $('#pkgGrid').addEventListener('click',e=>{const c=e.target.closest('.opt');if(!c)return;order.pkg=c.dataset.pkg;$$('#pkgGrid .opt').forEach(x=>x.classList.toggle('sel',x===c));});
 
@@ -145,6 +155,9 @@ $('#payBtn').onclick=async(e)=>{
     const res=await fetch('/api/order-create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});
     const data=await res.json();
     if(!data.ok){ $('#payErr').textContent=data.error==='validation_error'?'Please check your details.':'Something went wrong. Please try again.'; reset(); return; }
+    // The server is the pricing authority even when checkout is not configured.
+    if(!Number.isSafeInteger(data.amount) || data.amount<=0){ $('#payErr').textContent='Unable to verify this price. Please contact us.';reset();return; }
+    order.amount=data.amount/100;
     if(!data.configured){
       /* Save the exact package request. A previous lead does not record this selection. */
       const captureRes=await fetch('/api/invitation-enquiry',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -179,6 +192,12 @@ Promise.all([
   order.template_id ? fetch('/assets/invitation-templates.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]).then(rows=>{
     selectedTemplate=Array.isArray(rows)?rows.find(t=>t.id===order.template_id)||null:null;
     if(order.template_id && !selectedTemplate){ order.template_id=''; order.template_name=''; order.demo=''; }
+    if(selectedTemplate){
+      order.template_name=selectedTemplate.name;
+      order.demo=selectedTemplate.demo||'';
+      order.event=selectedTemplate.event;
+      $$('#evGrid .ev').forEach(x=>x.classList.toggle('sel',x.dataset.ev===order.event));
+    }
   }).catch(()=>{ selectedTemplate=null; }) : Promise.resolve()
 ]).finally(function(){ show(); gax('order_start',{event:order.event||'',template_id:order.template_id||'',template_name:order.template_name||''}); });
 fetch('/api/health').then(r=>r.json()).then(h=>{const el=document.getElementById('paymentStatus');if(!el)return;if(h&&h.checks&&h.checks.razorpay){el.textContent='🔒 Payments are processed securely via Razorpay. We never store your card details.';}else{el.textContent='ℹ️ Online payment is not active yet. Your order request can still be saved; no payment will be taken until checkout is enabled.';}}).catch(()=>{const el=document.getElementById('paymentStatus');if(el)el.textContent='ℹ️ Online checkout status is unavailable. No payment is taken unless the secure gateway opens.'});

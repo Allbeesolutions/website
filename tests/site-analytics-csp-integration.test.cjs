@@ -1,5 +1,5 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');
-const fs=require('node:fs');const path=require('node:path');
+const fs=require('node:fs');const path=require('node:path');const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 test('strict CSP runtime never initializes vendor analytics unconditionally',()=>{
@@ -37,4 +37,32 @@ test('published demo allowlist and fixed public pages stay in sync with current 
  const source=read('assets/site-analytics.js');
  const demos=fs.readdirSync(path.join(root,'demo')).filter(f=>f.endsWith('.html'));
  for(const file of demos)assert.ok(source.includes('"'+file.slice(0,-5)+'"'),file+' missing in GA route allowlist');
+});
+
+test('all legacy invitation demo scripts create no GA queue before consent',()=>{
+  const files=fs.readdirSync(path.join(root,'assets')).filter(f=>/^csp-demo-.*\.js$/.test(f));
+  let tested=0;
+  for(const filename of files){
+    const code=read('assets/'+filename);
+    if(!code.includes('data-abx-order'))continue;
+    assert.doesNotMatch(code,/\b(?:dataLayer|window\.gtag|gtag\('(?:event|config|js)'|G-TEX4FWGJFQ)\b/,filename);
+    const handlers={};
+    const elements={
+      '[data-abx-order]':[{href:'',addEventListener:(name,fn)=>{handlers.order=fn;}}],
+      '[data-abx-enq]':[{href:'',addEventListener:(name,fn)=>{handlers.enquiry=fn;}}],
+      '[data-abx-wa]':[{href:'',addEventListener:(name,fn)=>{handlers.whatsapp=fn;}}],
+    };
+    const window={};
+    const document={querySelectorAll:sel=>elements[sel]||[],querySelector:()=>null};
+    vm.runInNewContext(code,{window,document,location:{search:''},URLSearchParams,encodeURIComponent},{timeout:1000,filename});
+    assert.equal(window.dataLayer,undefined,filename+' pre-consent GA queue');
+    assert.equal(window.gtag,undefined,filename+' pre-consent tracking shim');
+    const events=[];
+    window.AllBeeAnalytics={track:(name)=>events.push(name)};
+    for(const name of ['order','enquiry','whatsapp'])assert.equal(typeof handlers[name],'function',filename+' missing click handler '+name);
+    handlers.order();handlers.enquiry();handlers.whatsapp();
+    assert.deepEqual(events,['order_start_click','cta_click','whatsapp_click'],filename+' must emit only whitelisted consent-aware events');
+    tested++;
+  }
+  assert.equal(tested,25,'Expected all 25 published legacy demo CTA controllers');
 });

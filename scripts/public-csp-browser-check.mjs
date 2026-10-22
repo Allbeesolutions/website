@@ -46,6 +46,16 @@ const harness=`(function(){
        if(localStorage.getItem('allbee-analytics-consent-v2')!=='no')throw Error('Opt-out not stored');
        if(document.querySelector('script[src*="googletagmanager.com/gtag/js"]'))
          throw Error('Analytics started after opt-out');
+       if(innerWidth<=768){
+         var gallery=document.querySelector('.zp-sticky');
+         var hint=document.querySelector('.zp-swipe-hint');
+         if(!gallery||!hint||!gallery.hasAttribute('tabindex'))throw Error('Accessible mobile gallery missing');
+         if(gallery.scrollWidth<=gallery.clientWidth+30)throw Error('Mobile photo gallery cannot swipe');
+         if(getComputedStyle(gallery).overflowX!=='auto')throw Error('Gallery must own horizontal scroll');
+         if(getComputedStyle(hint).display==='none')throw Error('Mobile gallery guidance hidden');
+         gallery.scrollTo({left:gallery.clientWidth*1.2,behavior:'instant'});
+         if(gallery.scrollLeft<10)throw Error('Photo gallery scroll not working');
+       }
        behavior='modal and consent opt-out works';
      }else if(p==='/admin/ceo.html'){
        document.getElementById('demoLink').click();
@@ -91,12 +101,20 @@ const harness=`(function(){
        if(!document.body)throw Error('Missing document body');
      }
    }catch(e){pass=false;errors.push(e.message);}
-   document.documentElement.dataset.cspSmoke=(pass&&!errors.length)?'PASS':'FAIL';
    var overflow=Math.max(0,document.documentElement.scrollWidth-innerWidth);
+   // A nested, swipeable photo gallery can have large scrollWidth by design.
+   // Detect the actual regression: can the *page itself* scroll sideways?
+   if(p==='/' && innerWidth<=820){
+     try{window.scrollTo({left:300,top:0,behavior:'instant'});}catch(_){window.scrollTo(300,0);}
+     var pageSideScroll=Math.abs(window.scrollX)>2;
+     if(pageSideScroll){pass=false;errors.push('Document horizontally scrollable by '+window.scrollX+'px');}
+     window.scrollTo({left:0,top:0,behavior:'instant'});
+   }
    if(overflow>5 && p==='/'){
      var offenders=[].slice.call(document.body.querySelectorAll('*')).map(function(el){return {el:el,box:el.getBoundingClientRect()};}).filter(function(x){return x.box.right>innerWidth+8 && x.box.width>0 && x.box.height>0;}).sort(function(a,b){return b.box.right-a.box.right;}).slice(0,3).map(function(x){return x.el.tagName.toLowerCase()+'#'+x.el.id+'.'+String(x.el.className||'').slice(0,35)+'@'+Math.round(x.box.right);});
      behavior+=':offenders='+offenders.join(',');
    }
+   document.documentElement.dataset.cspSmoke=(pass&&!errors.length)?'PASS':'FAIL';
    document.documentElement.dataset.cspSmokeDetail=(behavior+':'+errors.join('|')+':viewport='+innerWidth+':overflow='+overflow).slice(0,460);
  }
  document.addEventListener('DOMContentLoaded',function(){setTimeout(verify,350);});

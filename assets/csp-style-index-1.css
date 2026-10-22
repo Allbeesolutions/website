@@ -54,7 +54,7 @@
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
   font-family:var(--font-body);
   background:var(--s-0);
@@ -2945,8 +2945,12 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 .zoom-parallax {
   background: var(--s-2);
   padding-top: 64px;
+  /* Isolate oversized decorative parallax frames without making a new scroll container.
+     Keep the sticky desktop effect and mobile inner swipe carousel intact. */
+  overflow-x: clip;
 }
 .zoom-parallax .text-center { margin-bottom: 32px; }
+.zp-swipe-hint { display: none; }
 .zp-scroll {
   position: relative;
   height: 195vh; /* reduced from 300vh — ~35% less scroll, same parallax effect */
@@ -2991,6 +2995,7 @@ body[data-hero="starfall"] #navbar:not(.scrolled) .nav-cta-btn:hover {
 @media (max-width: 768px) {
   .zoom-parallax { padding-top: 48px; padding-bottom: 8px; }
   .zoom-parallax .text-center { margin-bottom: 18px; }
+  .zp-swipe-hint { display: block; padding: 10px 20px 4px; font-size: 13px; color: var(--ink-2); text-align: center; }
 
   /* Collapse the tall scroll-jack container and un-pin the sticky stage */
   .zp-scroll { height: auto !important; }

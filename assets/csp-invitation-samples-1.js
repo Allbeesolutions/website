@@ -63,13 +63,7 @@ const STYLE_TAGS=["Architectural", "Auspicious", "Bold", "Cinematic", "Colourful
   var proof=document.createElement('div');proof.className='cat-urgency-wrap';
   proof.innerHTML='<div class="cat-proof"><span class="u"><span class="star">&#9733;</span> Preview before you decide</span><span class="u">Personalised support on WhatsApp</span><span class="u">Custom &amp; mobile-ready layouts</span></div><div class="cat-urgency">&#10022; Share your event details and we will recommend the right invitation package.</div>';
   grid.parentNode.insertBefore(proof,grid);
-  /* ── seeded customer reviews ── */
-  var REVIEWS=[
-    {s:5,t:'Our relatives loved this invitation — everyone asked who designed it.',n:'Priya &amp; Karthik',c:'Nagapattinam',e:'Wedding'},
-    {s:5,t:'Very premium looking website, and so easy to share on WhatsApp.',n:'Ayesha N.',c:'Nagore',e:'Nikah'},
-    {s:5,t:'Worth every rupee. It looked far more expensive than it was.',n:'Suresh B.',c:'Chennai',e:'Business Launch'},
-    {s:5,t:'The countdown and RSVP made our housewarming feel so special.',n:'The Iyer Family',c:'Nagapattinam',e:'Housewarming'}
-  ];
+  /* Display only live, approved customer reviews. Never seed review claims. */
   var rev=document.createElement('div');rev.className='cat-reviews';
   rev.innerHTML='<h3>Customer Reviews</h3><div class="sub">Reviews shown here are published from the AllBee review system after moderation.</div><div class="rev-grid"></div>';
   grid.parentNode.appendChild(rev);

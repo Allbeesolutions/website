@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="bar">AllBee Invitations</div>
-<div class="wrap">
+<main class="wrap">
   <div class="hd"><span class="eb">Your Review</span><h1>How was your invitation?</h1><p>Your words help other families choose with confidence.</p></div>
   <div class="card" id="card">
     <form id="rvForm" novalidate>
@@ -34,11 +34,11 @@
       <div class="field"><label for="rv-event">Event Type</label><select id="rv-event" name="event_type"><option value="">Select…</option><option>Wedding</option><option>Nikah</option><option>Birthday</option><option>Housewarming</option><option>Business Event</option><option>Other</option></select></div>
       <div class="field"><label for="rv-review">Your Review</label><textarea id="rv-review" name="review" rows="4" placeholder="What did you and your guests love?" required></textarea></div>
       <button class="btn" type="submit" id="go">Submit Review</button>
-      <div class="err" id="err"></div>
+      <div class="err" id="err" role="alert" aria-live="assertive"></div>
     </form>
   </div>
-  <div class="card ok" id="ok"><div class="big">🌟</div><h2>Thank you!</h2><p>Your review has been received and will appear once our team approves it.</p></div>
-</div>
+  <div class="card ok" id="ok" role="status" aria-live="polite"><div class="big">🌟</div><h2>Thank you!</h2><p>Your review has been received and will appear once our team approves it.</p></div>
+</main>
 <script src="/assets/flow-review-1.js"></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
 <script src="/assets/site-analytics.js?v=20261003" defer></script>

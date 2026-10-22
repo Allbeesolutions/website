@@ -1045,6 +1045,14 @@ window.ALLBEE_CONFIG = window.ALLBEE_CONFIG || {
     var scroll = document.getElementById('zpScroll');
     if (!scroll) return;
     var slots = scroll.querySelectorAll('.zp-slot');
+    var gallery=scroll.querySelector('.zp-sticky');
+    if(gallery)gallery.addEventListener('keydown',function(event){
+      if(window.innerWidth>768 || !['ArrowRight','ArrowLeft'].includes(event.key))return;
+      event.preventDefault();
+      gallery.scrollBy({left:event.key==='ArrowRight'?gallery.clientWidth*0.7:-gallery.clientWidth*0.7,
+        behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+    });
+
     // Scale targets matching the React demo
     var scales = [4, 5, 6, 5, 6, 8, 9];
     function progress(){

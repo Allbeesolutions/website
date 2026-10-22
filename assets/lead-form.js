@@ -50,7 +50,10 @@ window.AllBeeForms = {
       email: asText(values.email),
       event_type: allowedEvents.includes(eventType) ? eventType : 'Other',
       event_date: asText(values.event_date),
-      interested_in: Array.isArray(values.interested_in) ? values.interested_in : (values.interested_in ? [values.interested_in] : []),
+      // Business and invitation forms use interested_in; course counseling
+      // uses course. Store both under the same searchable CRM interest field.
+      interested_in: Array.isArray(values.interested_in) ? values.interested_in :
+        (values.interested_in ? [values.interested_in] : (values.course ? [asText(values.course)] : [])),
       notes: notes.join('\n'),
       source: window.location.pathname + (form.id ? '#' + form.id : ''),
       render_ts: form.dataset.renderTs || String(Date.now() - 4000),

@@ -30,7 +30,7 @@
 </head>
 <body>
 <div class="bar"><span class="b">AllBee Invitations</span><a href="/invitation">← Back to site</a></div>
-<div class="wrap">
+<main class="wrap">
   <div class="hd"><span class="eb">Order Tracking</span><h1>Track your invitation</h1><p>Enter your Order ID and mobile number to see live status.</p></div>
 
   <div class="card" id="formCard">
@@ -38,15 +38,15 @@
       <div class="field"><label for="oid">Order ID</label><input id="oid" name="oid" placeholder="e.g. ORD-1001" autocomplete="off" required></div>
       <div class="field"><label for="mob">Mobile Number</label><input id="mob" name="mob" inputmode="tel" placeholder="The number on your order" autocomplete="off" required></div>
       <button class="btn" type="submit" id="goBtn">Track Order</button>
-      <div class="err" id="err"></div>
+      <div class="err" id="err" role="alert" aria-live="assertive"></div>
     </form>
     <div class="hint">Use the Order ID sent after your payment has been confirmed. For a request or payment reference, contact us on WhatsApp.</div>
   </div>
 
-  <div class="card result" id="result"></div>
+  <div class="card result" id="result" aria-live="polite"></div>
 
   <div class="help">Can't find your order? <a href="https://wa.me/918903607506" target="_blank" rel="noopener">Message us on WhatsApp →</a></div>
-</div>
+</main>
 
 <script src="/assets/flow-track-order-1.js"></script>
 <script src="/assets/allbee-assistant.js?v=20261003" defer></script>
