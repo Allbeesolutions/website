@@ -31,6 +31,7 @@ test('site analytics excludes forms, customer content, private routes and dynami
  assert.match(source,/globalPrivacyControl/);
  assert.match(source,/var PUBLIC = new Set/);
  assert.match(source,/!PUBLIC.has\(leaf\)/);
+ assert.match(source,/if \(location\.search \|\| location\.hash\) return;/);
 });
 
 test('published demo allowlist and fixed public pages stay in sync with current source',()=>{
