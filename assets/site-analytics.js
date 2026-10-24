@@ -12,7 +12,10 @@
   var route = (location.pathname || '/').toLowerCase();
   var demo = /^\/demo\/([a-z0-9-]{1,60})(?:\.html)?$/.exec(route);
   var leaf = route.replace(/^\//, '').replace(/\.html$/, '').replace(/\/$/, '');
-  // Static public routes only. Dynamic identifiers and URL query strings are excluded.
+  // Static public routes only. Dynamic identifiers and query/hash values are private.
+  // GA4 may send page_location and page_referrer automatically, so never load
+  // a vendor script on links with URL parameters, even when pathname is public.
+  if (location.search || location.hash) return;
   if (demo ? !DEMOS.has(demo[1]) : !PUBLIC.has(leaf)) return;
   var path = demo ? '/demo/' + demo[1] : (leaf ? '/' + leaf : '/');
   try { consent = dnt ? 'no' : localStorage.getItem(KEY); } catch (_) { consent = 'no'; }
@@ -25,7 +28,8 @@
     window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
     window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
     window.gtag('js', new Date());
-    window.gtag('config', GA, { anonymize_ip: true, page_path: path });
+    window.gtag('config', GA, { anonymize_ip: true, page_path: path,
+      page_location: location.origin + path, page_referrer: '' });
     var script = document.createElement('script');
     script.async = true;
     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;

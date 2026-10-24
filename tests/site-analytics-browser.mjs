@@ -33,6 +33,21 @@ for(const [name,engine,mobile] of [['Chromium',chromium,false],['WebKit mobile',
    console.log(`PASS ${name} ${route}: consent -> opted-in analytics -> opt-out -> reload silent`);
    await page.close();
   }
+  // Even with stored consent, a query-string/private hash URL must never load GA.
+  const risky=await context.newPage();
+  await risky.route('**/*',req=>req.request().url().startsWith(base)?req.continue():req.abort());
+  await risky.goto(base+'/',{waitUntil:'domcontentloaded',timeout:20000});
+  await risky.evaluate(()=>localStorage.setItem('allbee-analytics-consent-v2','yes'));
+  for(const unsafe of ['/?invite=private-token','/about.html?email=private%40example.test','/demo/royal-scroll.html#guest-data']){
+   await risky.goto(base+unsafe,{waitUntil:'domcontentloaded',timeout:20000});
+   assert.equal(await risky.locator('script[src*="googletagmanager.com/gtag/js"]').count(),0,
+      `${name}: analytics loaded on private query/hash URL ${unsafe}`);
+   assert.equal(await risky.locator('#allbee-analytics-manage').count(),0,
+      `${name}: tracking controls appear on excluded URL ${unsafe}`);
+  }
+  console.log(`PASS ${name}: 3 private query/hash URLs stay vendor-free even after consent`);
+  verified++;
+  await risky.close();
   const privacy=await context.newPage();
   await privacy.addInitScript(()=>Object.defineProperty(navigator,'doNotTrack',{configurable:true,get:()=> '1'}));
   await privacy.route('**/*',req=>req.request().url().startsWith(base)?req.continue():req.abort());

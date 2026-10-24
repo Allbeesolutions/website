@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'assets/site-analytics.js'), 'utf8');
 
-function simulate({ pathname = '/', consent = null, dnt = false } = {}) {
+function simulate({ pathname = '/', search = '', hash = '', consent = null, dnt = false } = {}) {
   const storage = new Map(consent ? [['allbee-analytics-consent-v2', consent]] : []);
   const scripts = [];
   const styles = [];
@@ -39,7 +39,7 @@ function simulate({ pathname = '/', consent = null, dnt = false } = {}) {
     addEventListener() {},
   };
   const window = {};
-  const location = { pathname, reload: () => { reloads++; } };
+  const location = { pathname, search, hash, origin: 'https://allbee.example', reload: () => { reloads++; } };
   vm.runInNewContext(source, { window, document, location,
     navigator: { doNotTrack: dnt ? '1' : '0', globalPrivacyControl: false },
     localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, val) => storage.set(key, val) },
@@ -115,4 +115,26 @@ test('unknown one-segment paths and unpublished demo slugs are never sent to GA4
  }
  const publicPage=simulate({pathname:'/about.html',consent:'yes'});
  assert.equal(publicPage.scripts.length,1);
+});
+
+test('query and hash-bearing links never initialize GA4 even after stored opt-in',()=>{
+ for(const address of [
+  {pathname:'/',search:'?invite=private'},
+  {pathname:'/about.html',search:'?email=test%40example.com'},
+  {pathname:'/demo/nikah-noor.html',search:'?token=private-invite'},
+  {pathname:'/demo/nikah-noor.html',hash:'#guest-name'},
+  {pathname:'/',hash:'#private-details'},
+ ]){
+  const s=simulate({...address,consent:'yes'});
+  assert.equal(s.scripts.length,0,JSON.stringify(address));
+  assert.equal(s.window.gtag,undefined);
+  assert.equal(s.document.getElementById('allbee-analytics-choice'),null);
+ }
+});
+test('GA4 config sends canonical location only and suppresses full third-party referrer',()=>{
+ const s=simulate({pathname:'/demo/nikah-noor.html',consent:'yes'});
+ const config=s.window.dataLayer.find(args=>args[0]==='config');
+ assert.equal(config[2].page_location,'https://allbee.example/demo/nikah-noor');
+ assert.equal(config[2].page_referrer,'');
+ assert.equal(config[2].page_path,'/demo/nikah-noor');
 });
